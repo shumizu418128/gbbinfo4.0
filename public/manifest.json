@@ -1,0 +1,9 @@
+{
+  "name": "GBBINFO 4.0",
+  "short_name": "GBBINFO",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#06070d",
+  "theme_color": "#111322",
+  "icons": []
+}

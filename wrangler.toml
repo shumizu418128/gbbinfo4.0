@@ -1,0 +1,9 @@
+name = "gbbinfo4"
+compatibility_date = "2026-04-25"
+
+[assets]
+directory = "./dist"
+
+[[hyperdrive]]
+binding = "HYPERDRIVE"
+id = "REPLACE_WITH_HYPERDRIVE_ID"
