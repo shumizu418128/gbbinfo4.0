@@ -1,16 +1,18 @@
 export const HeroImage = ({ title, subtitle }: { title: string, subtitle: string }) => {
   return (
-    <div>
+    <>
       <div className="relative w-full h-screen">
+
         <img
-          src="/public/images/background.webp"
+          src="/images/background.webp"
           alt="Grand Beatbox Battle"
           className="absolute inset-0 w-full h-full object-cover"
         />
+
         <div
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,1) 100%)'
+            background: 'linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.6) 40%, rgba(5,5,5,0.7) 80%, rgba(5,5,5,1) 100%)'
           }}
         />
 
@@ -24,7 +26,7 @@ export const HeroImage = ({ title, subtitle }: { title: string, subtitle: string
           <div className="mt-6 z-10 w-80% text-center">
             <span
               className="text-white font-bold"
-              style={{ fontSize: "clamp(16px, 4vw, 48px)" }}
+              style={{ fontSize: "clamp(24px, 4vw, 48px)" }}
             >
               {subtitle}
             </span>
@@ -32,6 +34,6 @@ export const HeroImage = ({ title, subtitle }: { title: string, subtitle: string
         </div>
 
       </div>
-    </div>
+    </>
   )
 }
