@@ -1,8 +1,15 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Averta ExtraBold";
+  src: url("/fonts/Averta-ExtraBold.woff2") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
-    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --font-sans: 'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
 }
 
 html,

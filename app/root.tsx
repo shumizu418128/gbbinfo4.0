@@ -33,9 +33,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
         <Links />
       </head>
       <body>
-        {children}
-        <ScrollRestoration />
-        <Scripts />
+        <main>
+          {children}
+          <ScrollRestoration />
+          <Scripts />
+        </main>
       </body>
     </html>
   );
