@@ -1,5 +1,5 @@
-import type { Route } from "./+types/home";
-import { Welcome } from "../welcome/welcome";
+import type { Route } from "./+types/top.tsx";
+import { TopContent } from "../top/top";
 import { HeaderMenu } from "../components/HeaderMenu";
 import { HeroImage } from "../components/HeroImage";
 
@@ -10,12 +10,14 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
-export default function Home() {
+export const Top = () => {
   return (
     <>
       <HeaderMenu />
-      <HeroImage title="GBB 2026" subtitle="Wildcard結果 & 出場者一覧" />
-      <Welcome />
+      <HeroImage title="GBB 2026" subtitle="WE LOVE BEATBOX" />
+      <TopContent />
     </>
   );
 }
+
+export default Top;
