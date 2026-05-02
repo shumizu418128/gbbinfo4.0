@@ -1,4 +1,4 @@
-export const HeroImage = ({ title, subtitle }: { title: string, subtitle: string }) => {
+export const HeroImage = ({ year, subtitle = "WE LOVE BEATBOX" }: { year: number, subtitle?: string }) => {
   return (
     <>
       <div className="relative w-full h-screen">
@@ -21,7 +21,7 @@ export const HeroImage = ({ title, subtitle }: { title: string, subtitle: string
             className="text-white z-10 w-full text-center"
             style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
           >
-            {title}
+            GBB {year}
           </h1>
           <div className="mt-6 z-10 w-80% text-center">
             <span

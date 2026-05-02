@@ -14,7 +14,7 @@ export const Top = () => {
   return (
     <>
       <HeaderMenu />
-      <HeroImage title="GBB 2026" subtitle="WE LOVE BEATBOX" />
+      <HeroImage year={2026} />
       <TopContent />
     </>
   );
