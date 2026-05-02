@@ -1,12 +1,12 @@
 import type { Route } from "./+types/top.tsx";
-import { TopContent } from "../../2026/top/top";
+import { TopContent } from "../../2026/top.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "GBB 2026 - GBB.info" },
+    { name: "description", content: "Swissbeatboxが主催するHuman Beatboxの世界大会「Grand Beatbox Battle」の各種情報を、見やすくまとめたサイトです。" },
   ];
 }
 
