@@ -1,7 +1,7 @@
 import type { Route } from "./+types/top.tsx";
-import { TopContent } from "../top/top";
-import { HeaderMenu } from "../components/HeaderMenu";
-import { HeroImage } from "../components/HeroImage";
+import { TopContent } from "../../2026/top/top";
+import { HeaderMenu } from "../../components/HeaderMenu.js";
+import { HeroImage } from "../../components/HeroImage.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
