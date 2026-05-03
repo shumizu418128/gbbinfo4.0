@@ -52,7 +52,7 @@ export const TopContent = () => {
         <div className="bg-(--section-color) p-8 text-white mb-12">
           <h2 className="text-2xl font-bold mb-2 text-center">お問い合わせ</h2>
           <hr className="border-(--gbb-color) mb-4" />
-          <Table data={[["", "email"], ["チケットに関する問い合わせ先", "gbb@swissbeatbox.com"], ["イベントに関する問い合わせ先", "tickets@weeztix.com"]]} />
+          <Table data={[["", "email"], ["チケットに関する問い合わせ先", "gbb@swissbeatbox.com"], ["イベントに関する問い合わせ先", "tickets@weeztix.com"]]} textCenter />
         </div>
       </div>
     </main>
