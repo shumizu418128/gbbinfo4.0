@@ -4,7 +4,14 @@ import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
-  plugins: [paraglideVitePlugin({ project: './project.inlang', outdir: './src/paraglide' }),tailwindcss(), reactRouter()],
+  plugins: [
+    paraglideVitePlugin({
+      project: './project.inlang',
+      outdir: './paraglide'
+    }),
+    tailwindcss(),
+    reactRouter()
+  ],
   resolve: {
     tsconfigPaths: true,
   },

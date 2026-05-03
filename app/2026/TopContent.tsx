@@ -1,25 +1,30 @@
 import { GeneralButton } from "~/components/GeneralButton";
 import { Table } from "~/components/Table";
+import * as m from '../../paraglide/messages';
 
-export const TopContent = () => {
+type TopContentProps = {
+  locale: string;
+};
+
+export const TopContent = ({ locale }: TopContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
           <GeneralButton
-            text={<span>Wildcard結果<br />出場者</span>}
+            text={<span>{m.wildcard_result()}<br />{m.participants()}</span>}
             image="/images/sora.webp"
-            href="/2026/participants"
+            href={`/${locale}/2026/participants`}
           />
-          <GeneralButton text={<span>ルール<br />審査員</span>} image="/images/mahiro.webp" href="#" />
-          <GeneralButton text="タイムテーブル" image="/images/scott_jackson.webp" href="#" disabled />
-          <GeneralButton text="日本代表" image="/images/team_japan.webp" href="#" />
+          <GeneralButton text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href="#" />
+          <GeneralButton text={m.time_table()} image="/images/scott_jackson.webp" href="#" disabled />
+          <GeneralButton text={m.team_japan()} image="/images/team_japan.webp" href="#" />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
-          <GeneralButton text="辞退者一覧" image="/images/b4start.webp" href="#" />
-          <GeneralButton text="会場/チケット" image="/images/dice.webp" href="#" />
-          <GeneralButton text="ライブ配信" image="/images/sinjo.webp" href="#" disabled />
-          <GeneralButton text="大会結果" image="/images/winner.webp" href="#" disabled />
+          <GeneralButton text={m.withdrawn_list()} image="/images/b4start.webp" href="#" />
+          <GeneralButton text={m.venue_tickets()} image="/images/dice.webp" href="#" />
+          <GeneralButton text={m.livestream()} image="/images/sinjo.webp" href="#" disabled />
+          <GeneralButton text={m.result()} image="/images/winner.webp" href="#" disabled />
         </div>
       </div>
 

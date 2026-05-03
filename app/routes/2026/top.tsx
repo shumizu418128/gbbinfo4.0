@@ -3,6 +3,14 @@ import { TopContent } from "../../2026/TopContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";
+import { useLoaderData } from "react-router";
+import { requireAndSetLocale } from "../../util/locale";
+import { setLocale } from "../../../paraglide/runtime";
+
+export function loader({ params }: Route.LoaderArgs) {
+  const locale = requireAndSetLocale(params.lang);
+  return locale;
+}
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -12,11 +20,14 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const Top = () => {
+  const locale = useLoaderData<typeof loader>();
+  setLocale(locale, { reload: false });
+
   return (
     <>
       <HeaderMenu />
       <HeroImage year={2026} />
-      <TopContent />
+      <TopContent locale={locale} />
       <FooterMenu />
     </>
   );

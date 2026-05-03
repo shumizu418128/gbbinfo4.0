@@ -1,4 +1,13 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Hello world {username}"
+  "wildcard_result": "Wildcard result",
+  "participants": "Participants",
+  "rules": "Rules",
+  "judges": "Judges",
+  "time_table": "Time table",
+  "team_japan": "Team Japan",
+  "withdrawn_list": "Withdrawn list",
+  "venue_tickets": "Venue/Tickets",
+  "livestream": "Livestream",
+  "result": "result"
 }

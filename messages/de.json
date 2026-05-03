@@ -1,4 +1,13 @@
 {
   "$schema": "https://inlang.com/schema/inlang-message-format",
-  "example_message": "Guten Tag {username}"
+  "wildcard_result": "Wildcard-Ergebnis",
+  "participants": "Teilnehmer",
+  "rules": "Regeln",
+  "judges": "Jury",
+  "time_table": "Zeitplan",
+  "team_japan": "Team Japan",
+  "withdrawn_list": "Zurückgezogene Liste",
+  "venue_tickets": "Veranstaltungsort/Tickets",
+  "livestream": "Livestream",
+  "result": "Ergebnis"
 }

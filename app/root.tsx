@@ -9,6 +9,7 @@ import {
 
 import type { Route } from "./+types/root";
 import "./app.css";
+import { getLocale } from "../paraglide/runtime";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,8 +25,10 @@ export const links: Route.LinksFunction = () => [
 ];
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
+  const locale = getLocale();
+
   return (
-    <html lang="ja">
+    <html lang={locale}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />

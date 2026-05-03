@@ -1,0 +1,13 @@
+{
+  "$schema": "https://inlang.com/schema/inlang-message-format",
+  "wildcard_result": "Wildcard結果",
+  "participants": "出場者",
+  "rules": "ルール",
+  "judges": "審査員",
+  "time_table": "タイムテーブル",
+  "team_japan": "日本代表",
+  "withdrawn_list": "辞退者一覧",
+  "venue_tickets": "会場/チケット",
+  "livestream": "ライブ配信",
+  "result": "大会結果"
+}
