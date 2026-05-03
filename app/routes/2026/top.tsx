@@ -4,11 +4,11 @@ import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
-import { requireAndSetLocale } from "../../util/locale";
+import { requireLocale } from "../../util/locale";
 import { setLocale } from "../../../paraglide/runtime";
 
 export function loader({ params }: Route.LoaderArgs) {
-  const locale = requireAndSetLocale(params.lang);
+  const locale = requireLocale(params.lang);
   return locale;
 }
 

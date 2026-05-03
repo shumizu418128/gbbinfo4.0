@@ -1,10 +1,8 @@
-import { isLocale, setLocale } from "../../paraglide/runtime";
+import { isLocale } from "../../paraglide/runtime";
 
-export const requireAndSetLocale = (lang: string | undefined) => {
+export const requireLocale = (lang: string | undefined) => {
   if (!lang || !isLocale(lang)) {
     throw new Response("Not Found", { status: 404 });
   }
-
-  setLocale(lang, { reload: false });
   return lang;
 };
