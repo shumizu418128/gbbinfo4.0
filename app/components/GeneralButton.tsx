@@ -6,13 +6,13 @@ export const GeneralButton = ({
   href,
   disabled = false,
 }: {
-  text: string;
+  text: string | React.ReactNode;
   image?: string;
   href: string;
   disabled?: boolean;
 }) => {
   const fontSize = "24px";
-  const buttonWidth = "calc((100% - 24px) / 2)";
+  const buttonWidth = "calc((100% - 16px) / 2)";
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (!disabled) {
       return;
@@ -24,23 +24,22 @@ export const GeneralButton = ({
 
   if (image) {
     const imageHeight = 80;
-    const textHeight = 32;
-    const imageTextFontSize = textHeight - 8;
+    const textMinHeight = 32;
+    const imageTextFontSize = textMinHeight - 8;
 
     const fontSizePx = `${imageTextFontSize}px`;
     const imageHeightPx = `${imageHeight}px`;
-    const textHeightPx = `${textHeight}px`;
-    const buttonHeight = `${imageHeight + textHeight}px`;
+    const textMinHeightPx = `${textMinHeight}px`;
 
     return (
       <a
-        className="inline-flex flex-col items-center justify-center text-white"
+        className="inline-flex flex-col items-stretch justify-start font-bold text-white"
         style={{
           position: "relative",
           fontSize,
           textDecoration: "none",
           width: buttonWidth,
-          height: buttonHeight,
+          height: "auto",
           background: "none",
           padding: 0,
           cursor: disabled ? "not-allowed" : "pointer",
@@ -55,6 +54,7 @@ export const GeneralButton = ({
           style={{
             width: "100%",
             height: imageHeightPx,
+            flexShrink: 0,
             backgroundImage: `url(${image})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
@@ -64,13 +64,15 @@ export const GeneralButton = ({
         <div
           style={{
             width: "100%",
-            height: textHeightPx,
+            minHeight: textMinHeightPx,
+            boxSizing: "border-box",
+            padding: "0 4px",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
+            textAlign: "center",
             background: "var(--button-background-color)",
             fontSize: fontSizePx,
-            textDecoration: "underline",
           }}
         >
           {text}
@@ -91,7 +93,7 @@ export const GeneralButton = ({
 
   return (
     <a
-      className="text-white inline-flex items-center justify-center"
+      className="inline-flex items-center justify-center font-bold text-white"
       style={{
         position: "relative",
         fontSize,
