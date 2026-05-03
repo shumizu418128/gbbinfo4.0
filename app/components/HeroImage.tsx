@@ -31,7 +31,6 @@ export const HeroImage = ({ year, subtitle = "WE LOVE BEATBOX" }: { year: number
               {subtitle}
             </span>
           </div>
-          <p className="mt-6 z-10 w-80% text-center text-white">公式よりもわかりやすい！<br />GBB 2026 非公式情報サイト</p>
         </div>
       </div>
     </>
