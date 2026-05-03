@@ -11,21 +11,22 @@ export const GeneralButton = ({
   href: string;
   disabled?: boolean;
 }) => {
+  const comingSoonMessage = "Coming soon...";
   const fontSize = "24px";
   const buttonWidth = "calc((100% - 16px) / 2)";
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (!disabled) {
-      return;
-    }
+  const disabledBackgroundColor = "rgba(0, 0, 0, 0.7)";
 
-    event.preventDefault();
-    window.alert("このコンテンツは未公開です");
+  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (disabled) {
+      event.preventDefault();
+      window.alert(comingSoonMessage);
+    }
   };
 
   if (image) {
     const imageHeight = 80;
     const textMinHeight = 32;
-    const imageTextFontSize = textMinHeight - 8;
+    const imageTextFontSize = textMinHeight - 12;
 
     const fontSizePx = `${imageTextFontSize}px`;
     const imageHeightPx = `${imageHeight}px`;
@@ -52,17 +53,45 @@ export const GeneralButton = ({
       >
         <div
           style={{
+            position: "relative",
             width: "100%",
             height: imageHeightPx,
             flexShrink: 0,
-            backgroundImage: `url(${image})`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
           }}
-        />
+        >
+          <div
+            style={{
+              width: "100%",
+              height: "100%",
+              backgroundImage: `url(${image})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+            }}
+          />
+          {disabled ? (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                background: disabledBackgroundColor,
+                pointerEvents: "none",
+                color: "#ffffff",
+                fontSize: "16px",
+                fontWeight: 700,
+                letterSpacing: "0.04em",
+              }}
+            >
+              {comingSoonMessage}
+            </div>
+          ) : null}
+        </div>
         <div
           style={{
+            position: "relative",
             width: "100%",
             minHeight: textMinHeightPx,
             boxSizing: "border-box",
@@ -76,17 +105,17 @@ export const GeneralButton = ({
           }}
         >
           {text}
+          {disabled ? (
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background: disabledBackgroundColor,
+                pointerEvents: "none",
+              }}
+            />
+          ) : null}
         </div>
-        {disabled ? (
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              background: "rgba(0, 0, 0, 0.5)",
-              pointerEvents: "none",
-            }}
-          />
-        ) : null}
       </a>
     );
   }
@@ -115,7 +144,7 @@ export const GeneralButton = ({
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(0, 0, 0, 0.5)",
+            background: disabledBackgroundColor,
             pointerEvents: "none",
           }}
         />

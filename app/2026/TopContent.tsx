@@ -11,20 +11,20 @@ export const TopContent = () => {
             image="/images/sora.webp"
             href="/2026/participants"
           />
-          <GeneralButton text="test" image="/images/mahiro.webp" href="#" />
-          <GeneralButton text="test" image="/images/zenhit.webp" href="#" />
-          <GeneralButton text="test" image="/images/scott_jackson.webp" href="#" />
+          <GeneralButton text={<span>ルール<br />審査員</span>} image="/images/mahiro.webp" href="#" />
+          <GeneralButton text="タイムテーブル" image="/images/scott_jackson.webp" href="#" disabled />
+          <GeneralButton text="日本代表" image="/images/team_japan.webp" href="#" />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
-          <GeneralButton text="test" image="/images/b4start.webp" href="#" />
-          <GeneralButton text="test" image="/images/sorry.webp" href="#" />
-          <GeneralButton text="test" image="/images/dice.webp" href="#" />
-          <GeneralButton text="test" image="/images/winner.webp" href="#" disabled />
+          <GeneralButton text="辞退者一覧" image="/images/b4start.webp" href="#" />
+          <GeneralButton text="会場/チケット" image="/images/dice.webp" href="#" />
+          <GeneralButton text="ライブ配信" image="/images/sinjo.webp" href="#" disabled />
+          <GeneralButton text="大会結果" image="/images/winner.webp" href="#" disabled />
         </div>
       </div>
 
       <div className="flex justify-center w-full">
-        <ul className="w-full max-w-md list-disc text-left px-12 gap-6 mb-32">
+        <ul className="w-full max-w-md list-disc text-left px-12 gap-6 mb-18">
           <li>
             <a
               href="#"
@@ -50,6 +50,13 @@ export const TopContent = () => {
             </a>
           </li>
         </ul>
+      </div>
+
+      <div className="mx-auto w-full max-w-2xl px-4">
+        <div className="mb-18 flex flex-wrap gap-4">
+          <GeneralButton text="ポーランドへ行こう" image="/images/zenhit.webp" href="#" />
+          <GeneralButton text="7toSmoke" image="/images/afterparty.webp" href="#" />
+        </div>
       </div>
 
       <div className="mx-auto w-full max-w-2xl px-4">
