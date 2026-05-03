@@ -2,6 +2,7 @@ import type { Route } from "./+types/top.tsx";
 import { TopContent } from "../../2026/top.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
+import { FooterMenu } from "../../components/FooterMenu.js";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,6 +17,7 @@ export const Top = () => {
       <HeaderMenu />
       <HeroImage year={2026} />
       <TopContent />
+      <FooterMenu />
     </>
   );
 }
