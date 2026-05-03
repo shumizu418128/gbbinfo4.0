@@ -9,8 +9,8 @@ export const FooterMenu = () => {
         <GbbCountdown />
       </div>
 
-      <footer className="bg-black text-center text-white pt-16">
-        <p>
+      <footer className="bg-black text-center pt-16">
+        <p className="text-white">
           GBB.info<br />
           Unofficial website developed by <a href="https://twitter.com/tari_3210_" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gbb-color)", textDecoration: "underline" }}>tari3210</a><br />
 
@@ -21,9 +21,9 @@ export const FooterMenu = () => {
         <div className="h-100" />
 
         <div className="flex flex-col items-center justify-center">
-          <a href="#" className="flex flex-col items-center pb-16">
+          <a href="#" className="flex flex-col items-center pb-36">
             <img src="/images/background.webp" className="w-[90%] max-w-5xl mx-auto pb-16" />
-            <p className="text-center">いい景色だろ？</p>
+            <p className="text-center text-(--gbb-color) font-bold">いい景色だろ？</p>
           </a>
         </div>
 
