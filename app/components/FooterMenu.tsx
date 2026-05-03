@@ -12,7 +12,8 @@ export const FooterMenu = () => {
       <footer className="bg-black text-center text-white pt-16">
         <p>
           GBB.info<br />
-          Unofficial website developed by <span style={{ color: "var(--gbb-color)" }}>tari3210</span><br />
+          Unofficial website developed by <a href="https://twitter.com/tari_3210_" target="_blank" rel="noopener noreferrer" style={{ color: "var(--gbb-color)", textDecoration: "underline" }}>tari3210</a><br />
+
           NOT affiliated with swissbeatbox
         </p>
 
