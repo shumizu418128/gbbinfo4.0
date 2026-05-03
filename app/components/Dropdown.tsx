@@ -30,7 +30,7 @@ export const Dropdown = ({ trigger, items }: DropdownProps) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative">
+    <div ref={containerRef} className="relative h-6">
       <button
         type="button"
         className="cursor-pointer text-white"
@@ -40,7 +40,7 @@ export const Dropdown = ({ trigger, items }: DropdownProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 min-w-24 bg-black">
+        <div className="absolute z-20 min-w-24 bg-black right-0">
           {items.map((item) => (
             <a
               key={item.key}
