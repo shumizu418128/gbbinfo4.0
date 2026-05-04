@@ -1,13 +1,19 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "wildcard_result": "Wildcard result",
-  "participants": "Participants",
-  "rules": "Rules",
+  "go_to_poland": "Go to Poland",
+  "inquiry_event": "Contact for inquiries about the event",
+  "inquiry_ticket": "Contact for inquiries about the ticket",
   "judges": "Judges",
-  "time_table": "Time table",
-  "team_japan": "Team Japan",
-  "withdrawn_list": "Withdrawn list",
-  "venue_tickets": "Venue/Tickets",
   "livestream": "Livestream",
-  "result": "result"
+  "participants": "Participants",
+  "result": "result",
+  "rules": "Rules",
+  "site_url_notice": "Notice of site URL change",
+  "team_japan": "Team Japan",
+  "time_table": "Time table",
+  "venue_tickets": "Venue/Tickets",
+  "wildcard_list": "{Wildcard} list",
+  "wildcard_result": "{Wildcard} result",
+  "wildcard_stream": "{Wildcard} result announcement broadcast",
+  "withdrawn_list": "Withdrawn list",
+  "$schema": "https://inlang.com/schema/inlang-message-format"
 }

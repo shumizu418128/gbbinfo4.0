@@ -1,13 +1,19 @@
 {
-  "$schema": "https://inlang.com/schema/inlang-message-format",
-  "wildcard_result": "Wildcard結果",
-  "participants": "出場者",
-  "rules": "ルール",
+  "go_to_poland": "ポーランドへ行こう",
+  "inquiry_event": "イベントに関する問い合わせ先",
+  "inquiry_ticket": "チケットに関する問い合わせ先",
   "judges": "審査員",
-  "time_table": "タイムテーブル",
-  "team_japan": "日本代表",
-  "withdrawn_list": "辞退者一覧",
-  "venue_tickets": "会場/チケット",
   "livestream": "ライブ配信",
-  "result": "大会結果"
+  "participants": "出場者",
+  "result": "大会結果",
+  "rules": "ルール",
+  "site_url_notice": "当サイトURL変更のお知らせ",
+  "team_japan": "日本代表",
+  "time_table": "タイムテーブル",
+  "venue_tickets": "会場/チケット",
+  "wildcard_list": "{Wildcard}一覧",
+  "wildcard_result": "{Wildcard}結果",
+  "wildcard_stream": "{Wildcard}結果発表配信",
+  "withdrawn_list": "辞退者一覧",
+  "$schema": "https://inlang.com/schema/inlang-message-format"
 }

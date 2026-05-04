@@ -12,7 +12,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
           <GeneralButton
-            text={<span>{m.wildcard_result()}<br />{m.participants()}</span>}
+            text={<span>{m.wildcard_result({ Wildcard: "Wildcard" })}<br />{m.participants()}</span>}
             image="/images/sora.webp"
             href={`/${locale}/2026/participants`}
           />
@@ -35,7 +35,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
               href="#"
               className="underline transition-colors duration-150 hover:text-(--gbb-color)"
             >
-              当サイトURL変更のお知らせ
+              {m.site_url_notice()}
             </a>
           </li>
           <li>
@@ -43,7 +43,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
               href="#"
               className="underline transition-colors duration-150 hover:text-(--gbb-color)"
             >
-              Wildcard結果発表配信
+              {m.wildcard_stream({ Wildcard: "Wildcard" })}
             </a>
           </li>
           <li>
@@ -51,7 +51,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
               href="#"
               className="underline transition-colors duration-150 hover:text-(--gbb-color)"
             >
-              Wildcard一覧
+              {m.wildcard_list({ Wildcard: "Wildcard" })}
             </a>
           </li>
         </ul>
@@ -59,7 +59,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
 
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
-          <GeneralButton text="ポーランドへ行こう" image="/images/zenhit.webp" href="#" />
+          <GeneralButton text={m.go_to_poland()} image="/images/zenhit.webp" href="#" />
           <GeneralButton text="7toSmoke" image="/images/afterparty.webp" href="#" />
         </div>
       </div>
@@ -68,7 +68,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
         <div className="bg-(--section-color) p-8 text-white mb-12">
           <h2 className="text-2xl font-bold mb-2 text-center">お問い合わせ</h2>
           <hr className="border-(--gbb-color) mb-4" />
-          <Table data={[["", "email"], ["チケットに関する問い合わせ先", "gbb@swissbeatbox.com"], ["イベントに関する問い合わせ先", "tickets@weeztix.com"]]} textCenter />
+          <Table data={[["", "email"], [m.inquiry_ticket(), "gbb@swissbeatbox.com"], [m.inquiry_event(), "tickets@weeztix.com"]]} textCenter />
         </div>
       </div>
     </main>
