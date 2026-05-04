@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 /** GBB 2026 開始（UTC） */
-export const GBB_2026_TARGET_ISO = "2026-09-24T12:00:00+00:00";
+export const NEXT_GBB = "2026-09-24T12:00:00+00:00";
+export const NEXT_GBB_YEAR = NEXT_GBB.split("-")[0];
 
 type Remaining = {
   totalMs: number;
@@ -37,7 +38,7 @@ type GbbCountdownProps = {
  * Args:
  *   targetIso: カウントダウン終点。省略時は ``GBB_2026_TARGET_ISO``。
  */
-export function GbbCountdown({ targetIso = GBB_2026_TARGET_ISO }: GbbCountdownProps) {
+export function GbbCountdown({ targetIso = NEXT_GBB }: GbbCountdownProps) {
   const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
@@ -96,7 +97,7 @@ export function GbbCountdown({ targetIso = GBB_2026_TARGET_ISO }: GbbCountdownPr
   return (
     <div className="mt-8 z-10 w-full max-w-2xl px-4" aria-live="polite">
       <p className="mb-4 text-center text-white text-[24px]">
-        GBB 2026
+        GBB {NEXT_GBB_YEAR}<br />Are you ready?
       </p>
       <div
         className="flex flex-wrap justify-center"
