@@ -1,7 +1,9 @@
 import { redirect } from "react-router";
+import { getLocale } from "../../paraglide/runtime";
 
 export function loader() {
-  return redirect("/2026/top");
+  const locale = getLocale();
+  return redirect(`/${locale}/2026/top`);
 }
 
 export default function Index() {
