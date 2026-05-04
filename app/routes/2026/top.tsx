@@ -6,8 +6,9 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale";
 import { setLocale } from "../../../paraglide/runtime";
+import { getNeonClient } from "~/util/neon.js";
 
-export function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params }: Route.LoaderArgs) {
   const locale = requireLocale(params.lang);
   return locale;
 }
