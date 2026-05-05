@@ -6,11 +6,12 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale";
 import { setLocale } from "../../../paraglide/runtime";
-import { getNeonClient } from "~/util/neon.js";
+import { getNeonClient } from "~/util/neon";
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, context }: Route.LoaderArgs) {
+  // const neonConnectionCheck = await getNeonClient(context);
   const locale = requireLocale(params.lang);
-  return locale;
+  return { locale };
 }
 
 export function meta({}: Route.MetaArgs) {
@@ -21,7 +22,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const Top = () => {
-  const locale = useLoaderData<typeof loader>();
+  const { locale } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
