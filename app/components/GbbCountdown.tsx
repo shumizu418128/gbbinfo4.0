@@ -4,6 +4,19 @@ import { useEffect, useState } from "react";
 export const NEXT_GBB = "2026-09-24T12:00:00+00:00";
 export const NEXT_GBB_YEAR = NEXT_GBB.split("-")[0];
 
+export const MESSAGES = [
+  "I say 3, y'all say 2 & 1.",
+  "Are you ready?",
+  "You know what to do.",
+  "Esh?",
+  "Sounds good?",
+  "Olala!",
+  "Beatbox is MUSIC.",
+  "Do we have a crowd?",
+  "Next up to the stage..."
+]
+const message = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
+
 type Remaining = {
   totalMs: number;
   days: number;
@@ -13,7 +26,7 @@ type Remaining = {
   milliseconds: number;
 };
 
-function parseRemaining(targetMs: number): Remaining {
+const parseRemaining = (targetMs: number): Remaining => {
   const totalMs = Math.max(0, targetMs - Date.now());
   const milliseconds = totalMs % 1000;
   const secondsTotal = Math.floor(totalMs / 1000);
@@ -38,7 +51,7 @@ type GbbCountdownProps = {
  * Args:
  *   targetIso: カウントダウン終点。省略時は ``GBB_2026_TARGET_ISO``。
  */
-export function GbbCountdown({ targetIso = NEXT_GBB }: GbbCountdownProps) {
+export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
   const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
@@ -97,7 +110,7 @@ export function GbbCountdown({ targetIso = NEXT_GBB }: GbbCountdownProps) {
   return (
     <div className="mt-8 z-10 w-full max-w-2xl px-4" aria-live="polite">
       <p className="mb-4 text-center text-white text-[24px]">
-        GBB {NEXT_GBB_YEAR}<br />Are you ready?
+        GBB {NEXT_GBB_YEAR}
       </p>
       <div
         className="flex flex-wrap justify-center"
@@ -116,6 +129,9 @@ export function GbbCountdown({ targetIso = NEXT_GBB }: GbbCountdownProps) {
           </div>
         ))}
       </div>
+      <p className="mb-4 text-center text-white text-[16px] mt-10">
+        {message}
+      </p>
     </div>
   );
 }
