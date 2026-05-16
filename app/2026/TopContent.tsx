@@ -1,4 +1,4 @@
-import { GeneralButton } from "~/components/GeneralButton";
+import { LinkCard } from "~/components/LinkCard";
 import { Table } from "~/components/Table";
 import * as m from '../../paraglide/messages';
 import type { Year } from "../db/type";
@@ -14,20 +14,20 @@ export const TopContent = ({ locale, yearInfo }: TopContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
-          <GeneralButton
+          <LinkCard
             text={<span>{m.wildcard_result({ Wildcard: "Wildcard" })}<br />{m.participants()}</span>}
             image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
-          <GeneralButton text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href="#" />
-          <GeneralButton text={m.time_table()} image="/images/scott_jackson.webp" href="#" disabled />
-          <GeneralButton text={m.team_japan()} image="/images/team_japan.webp" href="#" />
+          <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href="#" />
+          <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href="#" disabled />
+          <LinkCard text={m.team_japan()} image="/images/team_japan.webp" href="#" />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
-          <GeneralButton text={m.withdrawn_list()} image="/images/b4start.webp" href="#" />
-          <GeneralButton text={m.venue_tickets()} image="/images/dice.webp" href="#" />
-          <GeneralButton text={m.livestream()} image="/images/sinjo.webp" href="#" disabled />
-          <GeneralButton text={m.result()} image="/images/winner.webp" href="#" disabled />
+          <LinkCard text={m.withdrawn_list()} image="/images/b4start.webp" href="#" />
+          <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href="#" />
+          <LinkCard text={m.livestream()} image="/images/sinjo.webp" href="#" disabled />
+          <LinkCard text={m.result()} image="/images/winner.webp" href="#" disabled />
         </div>
       </div>
 
@@ -62,8 +62,8 @@ export const TopContent = ({ locale, yearInfo }: TopContentProps) => {
 
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
-          <GeneralButton text={m.go_to_poland()} image="/images/zenhit.webp" href="#" />
-          <GeneralButton text="7toSmoke" image="/images/afterparty.webp" href="#" />
+          <LinkCard text={m.go_to_poland()} image="/images/zenhit.webp" href="#" />
+          <LinkCard text="7toSmoke" image="/images/afterparty.webp" href="#" />
         </div>
       </div>
 

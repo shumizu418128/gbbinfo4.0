@@ -1,6 +1,6 @@
 import type { MouseEvent } from "react";
 
-export const GeneralButton = ({
+export const LinkCard = ({
   text,
   image,
   href,
@@ -13,7 +13,7 @@ export const GeneralButton = ({
 }) => {
   const comingSoonMessage = "Coming soon...";
   const fontSize = "24px";
-  const buttonWidth = "calc((100% - 16px) / 2)";
+  const cardWidth = "calc((100% - 16px) / 2)";
   const disabledBackgroundColor = "rgba(0, 0, 0, 0.7)";
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
@@ -39,7 +39,7 @@ export const GeneralButton = ({
           position: "relative",
           fontSize,
           textDecoration: "none",
-          width: buttonWidth,
+          width: cardWidth,
           height: "auto",
           background: "none",
           padding: 0,
@@ -126,7 +126,7 @@ export const GeneralButton = ({
       style={{
         position: "relative",
         fontSize,
-        width: buttonWidth,
+        width: cardWidth,
         height: "48px",
         background: "var(--button-background-color)",
         textDecorationColor: "var(--gbb-color)",
