@@ -20,9 +20,10 @@ gbbinfo3.0 の Flask/Jinja 実装を、Cloudflare Pages 前提の React Router D
 ## 開発コマンド
 
 ```bash
-npm run dev
-npm run build
+# ローカル実行
 npm run cf:dev
+
+# デプロイ
 npm run cf:deploy
 ```
 
