@@ -1,4 +1,4 @@
-import type { Route } from "../2026/+types/participants.js";
+import type { Route } from "../common/+types/participants.js";
 import { ParticipantsContent } from "../../2026/ParticipantsContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
@@ -6,11 +6,13 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
+import { getYearInfo } from "../../db/neon.js";
 
-export function loader({ params }: Route.LoaderArgs) {
+export const loader = async ({ params, context }: Route.LoaderArgs) => {
+  const yearInfo = await getYearInfo(Number(params.year), context);
   const locale = requireLocale(params.lang);
-  return locale;
-}
+  return { locale, yearInfo };
+};
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -20,13 +22,13 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const Participants = () => {
-  const locale = useLoaderData<typeof loader>();
+  const { locale, yearInfo } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
     <>
       <HeaderMenu />
-      <HeroImage year={2026} />
+      <HeroImage yearInfo={yearInfo} />
       <ParticipantsContent />
       <FooterMenu />
     </>
