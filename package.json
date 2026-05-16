@@ -3,10 +3,8 @@
   "type": "module",
   "scripts": {
     "build": "react-router build",
-    "dev": "react-router dev",
-    "dev:cf": "npx wrangler dev",
-    "dev:cf:build": "npm run build && npx wrangler dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "cf:dev": "npm run build && npx wrangler dev",
+    "cf:deploy": "npm run build && npx wrangler deploy",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {

@@ -15,6 +15,12 @@ export const loader = async ({ params, context }: Route.LoaderArgs) => {
   return { locale, yearInfo };
 };
 
+export const headers: Route.HeadersFunction = () => {
+  return {
+    "Cache-Control": "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400",
+  };
+};
+
 export const meta = ({}: Route.MetaArgs) => {
   return [
     { title: "GBB 2026 - GBBinfo" },
