@@ -8,10 +8,10 @@ import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
 import { getYearInfo } from "../../db/neon.js";
 
-export const loader = async ({ params, context }: Route.LoaderArgs) => {
+export const loader = async ({ params }: Route.LoaderArgs) => {
   const locale = requireLocale(params.lang);
   const year = Number(params.year);
-  const yearInfo = await getYearInfo(year, context);
+  const yearInfo = await getYearInfo(year);
   return { locale, yearInfo };
 };
 

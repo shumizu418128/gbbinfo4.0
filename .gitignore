@@ -5,6 +5,3 @@
 # React Router
 /.react-router/
 /build/
-wrangler.jsonc
-.dev.vars
-.wrangler/

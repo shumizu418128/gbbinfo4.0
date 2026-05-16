@@ -5,34 +5,16 @@ import { yearTable, type Year } from './type.js';
 
 const { Client } = pg;
 
-type LoaderContext = {
-  cloudflare?: {
-    env?: {
-      DATABASE_URL?: string;
-      HYPERDRIVE?: {
-        connectionString: string;
-      };
-    };
-  };
-};
-
-const resolveConnectionString = (context?: LoaderContext): string => {
-  const hyperdriveConnectionString = context?.cloudflare?.env?.HYPERDRIVE?.connectionString;
-  const workerDatabaseUrl = context?.cloudflare?.env?.DATABASE_URL;
-  const envDatabaseUrl = process.env.DATABASE_URL;
-
-  const connectionString =
-    hyperdriveConnectionString ?? workerDatabaseUrl ?? envDatabaseUrl;
+const resolveConnectionString = (): string => {
+  const connectionString = process.env.DATABASE_URL;
   if (!connectionString) {
-    throw new Error('HYPERDRIVE.connectionString or DATABASE_URL is required');
+    throw new Error('DATABASE_URL is required');
   }
   return connectionString;
 };
 
-export const neonTest = async (
-  context?: LoaderContext
-): Promise<{ connected: number }> => {
-  const connectionString = resolveConnectionString(context);
+export const neonTest = async (): Promise<{ connected: number }> => {
+  const connectionString = resolveConnectionString();
   const client = new Client({ connectionString });
   await client.connect();
   try {
@@ -47,11 +29,8 @@ export const neonTest = async (
   }
 };
 
-export const getYearInfo = async (
-  year: number,
-  context?: LoaderContext
-): Promise<Year> => {
-  const connectionString = resolveConnectionString(context);
+export const getYearInfo = async (year: number): Promise<Year> => {
+  const connectionString = resolveConnectionString();
   const client = new Client({ connectionString });
   await client.connect();
   try {

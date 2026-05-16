@@ -1,34 +1,49 @@
 # GBBINFO4.0
 
-gbbinfo3.0 の Flask/Jinja 実装を、Cloudflare Pages 前提の React Router Data APIs（Remix移行互換）へ置き換える実装リポジトリです。
+gbbinfo3.0 の Flask/Jinja 実装を、Netlify 上の React Router Data APIs（Remix移行互換）へ置き換える実装リポジトリです。
 
 ## 実装方針
 
 - 言語状態は URL のみ（`/{lang}/...`）、cookie/session は不使用
-- DB は Supabase へ直接接続せず Hyperdrive 経由で接続
-- サーバ責務を `services` 層に分離し、loader/action から利用
-- world_map は Folium から JS 描画方式へ移行し、データは action で取得
+- DB は Neon Postgres へ `DATABASE_URL` で接続（pooled 接続文字列を推奨）
+- loader/action から `app/db` 層を利用してデータ取得
 
 ## 主なディレクトリ
 
-- `src/router.tsx`: 主要ルート、loader/action 定義
-- `src/screens.tsx`: 各画面コンポーネント
-- `src/services`: DBアクセス層・外部APIアダプタ
-- `docs/migration-inventory.md`: gbbinfo3.0 のルート/環境変数棚卸し
-- `public/`: `robots.txt`, `sitemap.xml`, `manifest.json`, `service-worker.js`
+- `app/routes.ts`: ルート定義
+- `app/routes/`: 各ルートの loader・画面コンポーネント
+- `app/db/`: DBアクセス層（Drizzle ORM）
+- `app/components/`: 共通 UI コンポーネント
+- `docs/schema.md`, `docs/schema.sql`: データベーススキーマ
+- `public/`: 静的アセット
 
 ## 開発コマンド
 
 ```bash
-# ローカル実行
-npm run cf:dev
+# 依存関係のインストール
+npm install
 
-# デプロイ
-npm run cf:deploy
+# ローカル開発（Netlify プラットフォームエミュレーション付き）
+npm run dev
+
+# 本番ビルド
+npm run build
+
+# 型チェック
+npm run typecheck
 ```
 
-## Hyperdrive設定
+ローカルではプロジェクトルートの `.env` に `DATABASE_URL` を設定してください。
 
-1. `wrangler.toml` の `[[hyperdrive]]` に binding/id を設定
-2. `HYPERDRIVE` または `DATABASE_URL` を Worker 環境に設定
-3. サーバ専用モジュール `src/services/hyperdrive.server.ts` で接続文字列を解決
+## デプロイ（Netlify）
+
+1. [Netlify](https://app.netlify.com/) で **Add new site → Import an existing project** から本リポジトリを接続
+2. ビルド設定は [`netlify.toml`](netlify.toml) が適用されます（`npm run build` / `build/client`）
+3. **Site configuration → Environment variables** に `DATABASE_URL` を設定（Neon の pooled URL を推奨）
+4. main ブランチへの push で自動デプロイ
+
+## 環境変数
+
+| 変数名 | 説明 |
+|--------|------|
+| `DATABASE_URL` | Neon Postgres の接続文字列（必須） |
