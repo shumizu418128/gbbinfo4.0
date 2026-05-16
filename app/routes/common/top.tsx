@@ -29,7 +29,7 @@ export const Top = () => {
   return (
     <>
       <HeaderMenu />
-      <HeroImage year={yearInfo.year} />
+      <HeroImage yearInfo={yearInfo} />
       <TopContent locale={locale} yearInfo={yearInfo} />
       <FooterMenu />
     </>

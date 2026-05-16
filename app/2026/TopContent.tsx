@@ -9,7 +9,7 @@ type TopContentProps = {
 };
 
 export const TopContent = ({ locale, yearInfo }: TopContentProps) => {
-  const year = yearInfo.year;
+  const { year } = yearInfo;
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">

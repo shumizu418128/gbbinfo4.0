@@ -1,4 +1,7 @@
-export const HeroImage = ({ year, subtitle = "WE LOVE BEATBOX" }: { year: number, subtitle?: string }) => {
+import type { Year } from "../db/type";
+
+export const HeroImage = ({ yearInfo, subtitle = "WE LOVE BEATBOX" }: { yearInfo: Year, subtitle?: string }) => {
+  const { year, city, isoCode } = yearInfo;
   return (
     <>
       <div className="relative w-full h-screen">
@@ -23,6 +26,14 @@ export const HeroImage = ({ year, subtitle = "WE LOVE BEATBOX" }: { year: number
           >
             GBB {year}
           </h1>
+          <div className="z-10 w-80% text-center">
+            <span
+              className="text-white font-bold"
+              style={{ fontSize: "clamp(16px, 3vw, 32px)" }}
+            >
+              {city}
+            </span>
+          </div>
           <div className="mt-6 z-10 w-80% text-center">
             <span
               className="text-white font-bold"
