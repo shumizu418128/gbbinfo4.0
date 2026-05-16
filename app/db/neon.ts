@@ -1,7 +1,9 @@
-import { Client } from '@neondatabase/serverless';
 import { eq } from 'drizzle-orm';
-import { drizzle } from 'drizzle-orm/neon-serverless';
+import { drizzle } from 'drizzle-orm/node-postgres';
+import pg from 'pg';
 import { yearTable, type Year } from './type.js';
+
+const { Client } = pg;
 
 type LoaderContext = {
   cloudflare?: {
@@ -14,29 +16,36 @@ type LoaderContext = {
   };
 };
 
-function resolveConnectionString(context?: LoaderContext): string | undefined {
-  const envDatabaseUrl = process.env.DATABASE_URL;
-  const workerDatabaseUrl = context?.cloudflare?.env?.DATABASE_URL;
+const resolveConnectionString = (context?: LoaderContext): string => {
   const hyperdriveConnectionString = context?.cloudflare?.env?.HYPERDRIVE?.connectionString;
+  const workerDatabaseUrl = context?.cloudflare?.env?.DATABASE_URL;
+  const envDatabaseUrl = process.env.DATABASE_URL;
 
-  const connectionString = workerDatabaseUrl ?? envDatabaseUrl ?? hyperdriveConnectionString;
+  const connectionString =
+    hyperdriveConnectionString ?? workerDatabaseUrl ?? envDatabaseUrl;
   if (!connectionString) {
-    throw new Error('DATABASE_URL or HYPERDRIVE.connectionString is required');
+    throw new Error('HYPERDRIVE.connectionString or DATABASE_URL is required');
   }
   return connectionString;
-}
+};
 
-export async function neonTest(context?: LoaderContext): Promise<{ connected: number }> {
+export const neonTest = async (
+  context?: LoaderContext
+): Promise<{ connected: number }> => {
   const connectionString = resolveConnectionString(context);
   const client = new Client({ connectionString });
   await client.connect();
   try {
-    const { rows } = await client.query('SELECT 1 as connected');
-    return rows[0];
+    const { rows } = await client.query<{ connected: number }>('SELECT 1 AS connected');
+    const row = rows[0];
+    if (!row) {
+      throw new Error('Database connection test returned no rows');
+    }
+    return row;
   } finally {
     await client.end();
   }
-}
+};
 
 export const getYearInfo = async (
   year: number,
