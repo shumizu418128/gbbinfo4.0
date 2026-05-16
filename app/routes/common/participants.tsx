@@ -1,38 +1,36 @@
-import type { Route } from "./+types/top.tsx";
-import { TopContent } from "../../2026/TopContent.js";
+import type { Route } from "../2026/+types/participants.js";
+import { ParticipantsContent } from "../../2026/ParticipantsContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
-import { requireLocale } from "../../util/locale";
-import { setLocale } from "../../../paraglide/runtime";
-import { getNeonClient } from "~/util/neon";
+import { requireLocale } from "../../util/locale.js";
+import { setLocale } from "../../../paraglide/runtime.js";
 
-export async function loader({ params, context }: Route.LoaderArgs) {
-  // const neonConnectionCheck = await getNeonClient(context);
+export function loader({ params }: Route.LoaderArgs) {
   const locale = requireLocale(params.lang);
-  return { locale };
+  return locale;
 }
 
 export function meta({}: Route.MetaArgs) {
   return [
-    { title: "GBB 2026 - GBB.info" },
+    { title: "GBB 2026 Wildcard結果 & 出場者一覧 - GBBinfo" },
     { name: "description", content: "Swissbeatboxが主催するHuman Beatboxの世界大会「Grand Beatbox Battle」の各種情報を、見やすくまとめたサイトです。" },
   ];
 }
 
-export const Top = () => {
-  const { locale } = useLoaderData<typeof loader>();
+export const Participants = () => {
+  const locale = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
     <>
       <HeaderMenu />
       <HeroImage year={2026} />
-      <TopContent locale={locale} />
+      <ParticipantsContent />
       <FooterMenu />
     </>
   );
 }
 
-export default Top;
+export default Participants;

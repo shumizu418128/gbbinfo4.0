@@ -1,12 +1,15 @@
 import { GeneralButton } from "~/components/GeneralButton";
 import { Table } from "~/components/Table";
 import * as m from '../../paraglide/messages';
+import type { Year } from "../db/type";
 
 type TopContentProps = {
   locale: string;
+  yearInfo: Year;
 };
 
-export const TopContent = ({ locale }: TopContentProps) => {
+export const TopContent = ({ locale, yearInfo }: TopContentProps) => {
+  const year = yearInfo.year;
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
@@ -14,7 +17,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
           <GeneralButton
             text={<span>{m.wildcard_result({ Wildcard: "Wildcard" })}<br />{m.participants()}</span>}
             image="/images/sora.webp"
-            href={`/${locale}/2026/participants`}
+            href={`/${locale}/${year}/participants`}
           />
           <GeneralButton text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href="#" />
           <GeneralButton text={m.time_table()} image="/images/scott_jackson.webp" href="#" disabled />
