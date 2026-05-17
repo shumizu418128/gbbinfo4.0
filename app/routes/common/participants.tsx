@@ -10,6 +10,7 @@ import { getYearWithCountry } from "../../db/neon.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
+import * as m from '../../../paraglide/messages';
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();
@@ -37,7 +38,7 @@ export function meta({ data }: Route.MetaArgs) {
   const env = data?.env;
   const yearWithCountry = data?.yearWithCountry;
 
-  const title = `GBB ${yearWithCountry.year} Wildcard結果 & 出場者一覧 - GBBinfo`;
+  const title = `GBB ${yearWithCountry.year} ${m.wildcard_result_and_participants({ Wildcard: "Wildcard" })}`;
   return createMeta(env, title);
 }
 
@@ -49,7 +50,7 @@ export const Participants = () => {
     <>
       <Dev env={env} />
       <HeaderMenu yearWithCountry={yearWithCountry} />
-      <HeroImage yearWithCountry={yearWithCountry} />
+      <HeroImage yearWithCountry={yearWithCountry} subtitle={m.wildcard_result_and_participants({ Wildcard: "Wildcard" })} />
       <ParticipantsContent />
       <FooterMenu latestYearWithCountry={latestYearWithCountry} />
     </>

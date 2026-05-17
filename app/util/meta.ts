@@ -1,7 +1,7 @@
 export const createMeta = ( env: string, title: string ) => {
-  let metaTitle = title;
+  let metaTitle = title + " - GBBinfo";
   if (env && env !== "production") {
-    metaTitle = `[${env}] ${title}`;
+    metaTitle = `[${env}] ${title} - GBBinfo`;
   }
   return [
     { title: metaTitle },

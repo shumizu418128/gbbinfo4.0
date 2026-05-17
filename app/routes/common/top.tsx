@@ -38,7 +38,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
   const env = data?.env;
   const yearWithCountry = data?.yearWithCountry;
 
-  const title = `GBB ${yearWithCountry.year} - GBBinfo`;
+  const title = `GBB ${yearWithCountry.year}`;
   return createMeta(env, title);
 }
 

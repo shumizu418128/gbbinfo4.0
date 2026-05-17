@@ -15,6 +15,7 @@
   "venue_tickets": "Veranstaltungsort/Tickets",
   "wildcard_list": "{Wildcard}-Liste",
   "wildcard_result": "{Wildcard}-Ergebnis",
+  "wildcard_result_and_participants": "{Wildcard}-Ergebnis & Teilnehmerliste",
   "wildcard_stream": "{Wildcard}-Ergebnis-Ankündigung-Übertragung",
   "withdrawn_list": "Zurückgezogene Liste",
   "$schema": "https://inlang.com/schema/inlang-message-format"
