@@ -1,0 +1,19 @@
+name: PR Source Branch Check
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-source-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if source branch is preview
+        run: |
+          echo "Source branch: ${{ github.head_ref }}"
+          if [ "${{ github.head_ref }}" != "preview" ]; then
+            echo "Error: Pull requests to 'main' must originate from the 'preview' branch."
+            exit 1
+          fi
