@@ -9,11 +9,13 @@ on:
 jobs:
   check-source-branch:
     runs-on: ubuntu-latest
+    env:
+      BRANCH: ${{ github.head_ref }}
     steps:
       - name: Check if source branch is preview
         run: |
-          echo "Source branch: ${{ github.head_ref }}"
-          if [ "${{ github.head_ref }}" != "preview" ]; then
+          echo "Source branch: $BRANCH"
+          if [ "$BRANCH" != "preview" ]; then
             echo "Error: Pull requests to 'main' must originate from the 'preview' branch."
             exit 1
           fi
