@@ -6,13 +6,13 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
-import { getYearInfo } from "../../db/neon.js";
+import { getYearWithCountry } from "../../db/neon.js";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const locale = requireLocale(params.lang);
   const year = Number(params.year);
-  const yearInfo = await getYearInfo(year);
-  return { locale, yearInfo };
+  const yearWithCountry = await getYearWithCountry(year);
+  return { locale, yearWithCountry };
 };
 
 export const headers: Route.HeadersFunction = () => {
@@ -29,14 +29,14 @@ export const meta = ({}: Route.MetaArgs) => {
 }
 
 export const Top = () => {
-  const { locale, yearInfo } = useLoaderData<typeof loader>();
+  const { locale, yearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
     <>
-      <HeaderMenu />
-      <HeroImage yearInfo={yearInfo} />
-      <TopContent locale={locale} yearInfo={yearInfo} />
+      <HeaderMenu yearWithCountry={yearWithCountry} />
+      <HeroImage yearWithCountry={yearWithCountry} />
+      <TopContent locale={locale} yearWithCountry={yearWithCountry} />
       <FooterMenu />
     </>
   );

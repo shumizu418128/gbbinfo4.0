@@ -1,7 +1,9 @@
-import type { Year } from "../db/type";
+import type { YearWithCountry } from "../db/type";
+import { Flag } from "./Flag";
 
-export const HeroImage = ({ yearInfo, subtitle = "WE LOVE BEATBOX" }: { yearInfo: Year, subtitle?: string }) => {
-  const { year, city, isoCode } = yearInfo;
+export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { yearWithCountry: YearWithCountry, subtitle?: string }) => {
+  const { year, city } = yearWithCountry;
+  const { isoAlpha2 } = yearWithCountry.country;
   return (
     <>
       <div className="relative w-full h-screen">
@@ -31,7 +33,7 @@ export const HeroImage = ({ yearInfo, subtitle = "WE LOVE BEATBOX" }: { yearInfo
               className="text-white font-bold"
               style={{ fontSize: "clamp(16px, 3vw, 32px)" }}
             >
-              {city}
+              <Flag isoAlpha2={isoAlpha2} /> {city}
             </span>
           </div>
           <div className="mt-6 z-10 w-80% text-center">

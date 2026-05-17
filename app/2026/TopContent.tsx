@@ -1,15 +1,15 @@
 import { LinkCard } from "~/components/LinkCard";
 import { Table } from "~/components/Table";
 import * as m from '../../paraglide/messages';
-import type { Year } from "../db/type";
+import type { YearWithCountry } from "../db/type";
 
 type TopContentProps = {
   locale: string;
-  yearInfo: Year;
+  yearWithCountry: YearWithCountry;
 };
 
-export const TopContent = ({ locale, yearInfo }: TopContentProps) => {
-  const { year } = yearInfo;
+export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
+  const { year } = yearWithCountry;
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">

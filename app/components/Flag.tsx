@@ -1,7 +1,7 @@
 import React from "react";
 
 type FlagProps = {
-  isoAlpha2: string; // ISO 3166-1 alpha-2 国コード（小文字2文字で渡す）
+  isoAlpha2: string | null; // ISO 3166-1 alpha-2 国コード（小文字2文字で渡す）
   width?: number; // デフォルトは20
   height?: number; // デフォルトは15
   alt?: string;
@@ -10,11 +10,14 @@ type FlagProps = {
 
 export const Flag: React.FC<FlagProps> = ({
   isoAlpha2,
-  width = 20,
-  height = 15,
+  width = 32,
+  height = 24,
   alt = "",
   className = "",
 }) => {
+  if (!isoAlpha2) {
+    return null;
+  }
   return (
     <picture>
       <source

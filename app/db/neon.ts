@@ -1,7 +1,11 @@
 import { eq } from 'drizzle-orm';
 import { drizzle, type NodePgDatabase } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
-import { yearTable, type Year } from './type.js';
+import {
+  countryTable,
+  yearTable,
+  type YearWithCountry,
+} from './type.js';
 
 const { Client } = pg;
 
@@ -31,26 +35,20 @@ const getDb = async (): Promise<NodePgDatabase> => {
   return db;
 };
 
-export const neonTest = async (): Promise<{ connected: number }> => {
-  const pgClient = await getClient();
-  const { rows } = await pgClient.query<{ connected: number }>('SELECT 1 AS connected');
-  const row = rows[0];
-  if (!row) {
-    throw new Error('Database connection test returned no rows');
-  }
-  return row;
-};
-
-export const getYearInfo = async (year: number): Promise<Year> => {
+export const getYearWithCountry = async (year: number): Promise<YearWithCountry> => {
   const database = await getDb();
   const rows = await database
-    .select()
+    .select({
+      year: yearTable,
+      country: countryTable,
+    })
     .from(yearTable)
+    .innerJoin(countryTable, eq(yearTable.isoCode, countryTable.isoCode))
     .where(eq(yearTable.year, year))
     .limit(1);
   const row = rows[0];
   if (!row) {
     throw new Error(`Year not found: ${year}`);
   }
-  return row;
+  return { ...row.year, country: row.country };
 };

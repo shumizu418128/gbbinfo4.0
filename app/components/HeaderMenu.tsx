@@ -1,14 +1,16 @@
 import { useLocation, useParams } from "react-router";
 import { Dropdown } from "./Dropdown";
 import { languageLabels, type SupportedLanguage } from "../constants/languageLabels";
+import type { YearWithCountry } from "../db/type";
 
 const supportedLanguages = Object.keys(languageLabels) as SupportedLanguage[];
 
-export const HeaderMenu = () => {
+export const HeaderMenu = ({ yearWithCountry }: { yearWithCountry: YearWithCountry }) => {
   const location = useLocation();
   const { lang } = useParams();
   const currentLanguage = lang as SupportedLanguage;
   const currentPath = location.pathname;
+  const { year } = yearWithCountry;
 
   const buildLanguagePath = (targetLanguage: SupportedLanguage) => {
     const segments = location.pathname.split("/").filter(Boolean);
@@ -33,7 +35,7 @@ export const HeaderMenu = () => {
   return (
     <>
       <div className="bg-black flex items-center justify-center p-4 space-x-4 h-16">
-        <a href="" className="text-white font-bold text-2xl">Home</a>
+        <a href={`/${lang}/${year}/top`} className="text-white font-bold text-2xl">Home</a>
         <a href="" className="text-white font-bold text-2xl">年度選択</a>
         <Dropdown
           trigger={(
