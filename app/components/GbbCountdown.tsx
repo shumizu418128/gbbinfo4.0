@@ -42,10 +42,13 @@ type GbbCountdownProps = {
   targetIso?: string;
 };
 
+/** ミリ秒表示の更新間隔（ms）。requestAnimationFrame より負荷を抑える */
+const TICK_INTERVAL_MS = 100;
+
 /**
  * 指定日時までの残り時間を日・時・分・秒・ミリ秒で表示する。
  *
- * クライアントで ``requestAnimationFrame`` により更新する。ハイドレーションずれを避けるため、
+ * クライアントで一定間隔の ``setInterval`` により更新する。ハイドレーションずれを避けるため、
  * マウント後に表示を開始する。
  *
  * Args:
@@ -69,30 +72,23 @@ export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
       return;
     }
 
-    let rafId = 0;
-    let cancelled = false;
-
-    const loop = () => {
-      if (cancelled) {
-        return;
-      }
+    const tick = () => {
       setRemaining(parseRemaining(target));
-      rafId = requestAnimationFrame(loop);
     };
 
-    rafId = requestAnimationFrame(loop);
+    tick();
+    const intervalId = window.setInterval(tick, TICK_INTERVAL_MS);
     return () => {
-      cancelled = true;
-      cancelAnimationFrame(rafId);
+      window.clearInterval(intervalId);
     };
   }, [mounted, targetIso]);
 
   if (!mounted || remaining === null) {
-    return
+    return null;
   }
 
   if (remaining.totalMs === 0) {
-    return
+    return null;
   }
 
   const segments: Array<{ label: string; value: number; format: (v: number) => string }> = [

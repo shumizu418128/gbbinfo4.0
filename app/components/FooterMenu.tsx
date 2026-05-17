@@ -20,7 +20,15 @@ export const FooterMenu = () => {
 
         <div className="flex flex-col items-center justify-center">
           <a href="#" className="flex flex-col items-center pb-36">
-            <img src="/images/background.webp" className="w-[90%] max-w-5xl mx-auto pb-16" />
+            <img
+              src="/images/background.webp"
+              alt=""
+              width={1280}
+              height={720}
+              loading="lazy"
+              decoding="async"
+              className="w-[90%] max-w-5xl mx-auto pb-16"
+            />
             <p className="text-center text-(--gbb-color) font-bold">いい景色だろ？</p>
           </a>
         </div>

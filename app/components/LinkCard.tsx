@@ -1,30 +1,40 @@
 import type { MouseEvent } from "react";
+import * as m from "../../paraglide/messages";
 
 export const LinkCard = ({
   text,
   image,
   href,
   disabled = false,
+  unavailable = false,
 }: {
   text: string | React.ReactNode;
   image?: string;
   href: string;
   disabled?: boolean;
+  unavailable?: boolean;
 }) => {
   const comingSoonMessage = "Coming soon...";
+  const unavailableMessage = m.unavailable();
   const fontSize = "24px";
   const cardWidth = "calc((100% - 16px) / 2)";
-  const disabledBackgroundColor = "rgba(0, 0, 0, 0.7)";
+  const disabledBackgroundColor = "rgba(0, 0, 0, 0.6)";
+  const unavailableBackgroundColor = "rgba(0, 0, 0, 0.8)";
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (disabled) {
       event.preventDefault();
       window.alert(comingSoonMessage);
     }
+    if (unavailable) {
+      event.preventDefault();
+      window.alert(unavailableMessage);
+    }
   };
 
   if (image) {
     const imageHeight = 80;
+    const imageWidth = 400;
     const textMinHeight = 32;
     const imageTextFontSize = textMinHeight - 12;
 
@@ -43,11 +53,11 @@ export const LinkCard = ({
           height: "auto",
           background: "none",
           padding: 0,
-          cursor: disabled ? "not-allowed" : "pointer",
+          cursor: disabled || unavailable ? "not-allowed" : "pointer",
         }}
         href={href}
         onClick={handleClick}
-        aria-disabled={disabled}
+        aria-disabled={disabled || unavailable}
         tabIndex={0}
         role="button"
       >
@@ -59,17 +69,22 @@ export const LinkCard = ({
             flexShrink: 0,
           }}
         >
-          <div
+          <img
+            src={image}
+            alt=""
+            width={imageWidth}
+            height={imageHeight}
+            loading="lazy"
+            decoding="async"
             style={{
               width: "100%",
               height: "100%",
-              backgroundImage: `url(${image})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
+              objectFit: "cover",
+              objectPosition: "center",
+              display: "block",
             }}
           />
-          {disabled ? (
+          {(disabled || unavailable) ? (
             <div
               style={{
                 position: "absolute",
@@ -77,7 +92,7 @@ export const LinkCard = ({
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                background: disabledBackgroundColor,
+                background: disabled ? disabledBackgroundColor : unavailableBackgroundColor,
                 pointerEvents: "none",
                 color: "#ffffff",
                 fontSize: "16px",
@@ -85,7 +100,7 @@ export const LinkCard = ({
                 letterSpacing: "0.04em",
               }}
             >
-              {comingSoonMessage}
+              {disabled ? comingSoonMessage : unavailableMessage}
             </div>
           ) : null}
         </div>
@@ -105,7 +120,7 @@ export const LinkCard = ({
           }}
         >
           {text}
-          {disabled ? (
+          {disabled || unavailable ? (
             <div
               style={{
                 position: "absolute",
@@ -130,21 +145,21 @@ export const LinkCard = ({
         height: "48px",
         background: "var(--button-background-color)",
         textDecorationColor: "var(--gbb-color)",
-        cursor: disabled ? "not-allowed" : "pointer",
+        cursor: disabled || unavailable ? "not-allowed" : "pointer",
       }}
       href={href}
       onClick={handleClick}
-      aria-disabled={disabled}
+      aria-disabled={disabled || unavailable}
       tabIndex={0}
       role="button"
     >
       {text}
-      {disabled ? (
+      {disabled || unavailable ? (
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: disabledBackgroundColor,
+            background: disabled || unavailable ? disabledBackgroundColor : unavailableBackgroundColor,
             pointerEvents: "none",
           }}
         />

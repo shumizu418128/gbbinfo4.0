@@ -11,6 +11,10 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { y
         <img
           src="/images/background.webp"
           alt="Grand Beatbox Battle"
+          width={1920}
+          height={1080}
+          fetchPriority="high"
+          decoding="async"
           className="absolute inset-0 w-full h-full object-cover"
         />
 
