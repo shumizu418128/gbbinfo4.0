@@ -10,9 +10,11 @@ export const MESSAGES = [
   "You know what to do.",
   "Esh?",
   "Sounds good?",
-  "Olala!",
+  "Oh-la-la!",
   "Beatbox is MUSIC.",
   "Do we have a crowd?",
+  "#BbkForThePresident",
+  "keep it strange...",
   "Next up to the stage..."
 ]
 const message = MESSAGES[Math.floor(Math.random() * MESSAGES.length)];
@@ -23,32 +25,27 @@ type Remaining = {
   hours: number;
   minutes: number;
   seconds: number;
-  milliseconds: number;
 };
 
 const parseRemaining = (targetMs: number): Remaining => {
   const totalMs = Math.max(0, targetMs - Date.now());
-  const milliseconds = totalMs % 1000;
   const secondsTotal = Math.floor(totalMs / 1000);
   const days = Math.floor(secondsTotal / 86400);
   const hours = Math.floor((secondsTotal % 86400) / 3600);
   const minutes = Math.floor((secondsTotal % 3600) / 60);
   const seconds = secondsTotal % 60;
-  return { totalMs, days, hours, minutes, seconds, milliseconds };
-}
+  return { totalMs, days, hours, minutes, seconds };
+};
 
 type GbbCountdownProps = {
   /** カウントダウン終点の ISO 8601 文字列 */
   targetIso?: string;
 };
 
-/** ミリ秒表示の更新間隔（ms）。requestAnimationFrame より負荷を抑える */
-const TICK_INTERVAL_MS = 100;
-
 /**
- * 指定日時までの残り時間を日・時・分・秒・ミリ秒で表示する。
+ * 指定日時までの残り時間を日・時・分・秒で表示する。
  *
- * クライアントで一定間隔の ``setInterval`` により更新する。ハイドレーションずれを避けるため、
+ * クライアントで秒境界に合わせた ``setTimeout`` により更新する。ハイドレーションずれを避けるため、
  * マウント後に表示を開始する。
  *
  * Args:
@@ -72,14 +69,21 @@ export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
       return;
     }
 
+    let timeoutId: number | undefined;
+
     const tick = () => {
-      setRemaining(parseRemaining(target));
+      const next = parseRemaining(target);
+      setRemaining(next);
+      if (next.totalMs === 0) {
+        return;
+      }
+      const delay = 1000 - (Date.now() % 1000);
+      timeoutId = window.setTimeout(tick, delay);
     };
 
     tick();
-    const intervalId = window.setInterval(tick, TICK_INTERVAL_MS);
     return () => {
-      window.clearInterval(intervalId);
+      window.clearTimeout(timeoutId);
     };
   }, [mounted, targetIso]);
 
@@ -96,11 +100,6 @@ export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
     { label: "h", value: remaining.hours, format: (v) => String(v).padStart(2, "0") },
     { label: "m", value: remaining.minutes, format: (v) => String(v).padStart(2, "0") },
     { label: "s", value: remaining.seconds, format: (v) => String(v).padStart(2, "0") },
-    {
-      label: "ms",
-      value: remaining.milliseconds,
-      format: (v) => String(v).padStart(3, "0"),
-    },
   ];
 
   return (
@@ -117,7 +116,7 @@ export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
           <div key={s.label} className="flex min-w-[32px] flex-col items-center">
             <span
               className="font-bold tabular-nums text-(--gbb-color)"
-              style={{ fontSize: "clamp(24px, 5vw, 40px)" }}
+              style={{ fontSize: "clamp(24px, 6vw, 48px)" }}
             >
               {s.format(s.value)}
             </span>
