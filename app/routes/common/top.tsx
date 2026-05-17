@@ -9,6 +9,7 @@ import { setLocale } from "../../../paraglide/runtime.js";
 import { getYearWithCountry } from "../../db/neon.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "~/components/Dev.js";
+import { createMeta } from "~/util/meta.js";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();
@@ -35,17 +36,10 @@ export const headers: Route.HeadersFunction = () => {
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const env = data?.env;
-  const year = data?.yearWithCountry.year;
+  const yearWithCountry = data?.yearWithCountry;
 
-  let title = `GBB ${year} - GBBinfo`;
-  if (env && env !== "production") {
-    title = `[${env}] ${title}`;
-  }
-
-  return [
-    { title },
-    { name: "description", content: "Swissbeatboxが主催するHuman Beatboxの世界大会「Grand Beatbox Battle」の各種情報を、見やすくまとめたサイトです。" },
-  ];
+  const title = `GBB ${yearWithCountry.year} - GBBinfo`;
+  return createMeta(env, title);
 }
 
 export const Top = () => {
