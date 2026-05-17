@@ -10,8 +10,8 @@ type FlagProps = {
 
 export const Flag: React.FC<FlagProps> = ({
   isoAlpha2,
-  width = 32,
-  height = 24,
+  width = 24,
+  height = 18,
   alt = "",
   className = "",
 }) => {

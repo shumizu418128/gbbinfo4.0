@@ -1,12 +1,13 @@
+import type { YearWithCountry } from "../db/type";
 import { GbbCountdown } from "./GbbCountdown.js";
 
-export const FooterMenu = () => {
+export const FooterMenu = ({ yearWithCountry }: { yearWithCountry: YearWithCountry }) => {
   return (
     <>
       <div className="bg-(--background-color) h-100" />
 
       <div className="flex justify-center bg-(--background-color) pb-36">
-        <GbbCountdown />
+        <GbbCountdown yearWithCountry={yearWithCountry} />
       </div>
 
       <footer className="bg-black text-center pt-16">

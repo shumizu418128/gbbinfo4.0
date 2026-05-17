@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import type { YearWithCountry } from "../db/type";
+import { Flag } from "./Flag";
 
 /** GBB 2026 開始（UTC） */
 export const NEXT_GBB = "2026-09-24T12:00:00+00:00";
@@ -38,6 +40,7 @@ const parseRemaining = (targetMs: number): Remaining => {
 };
 
 type GbbCountdownProps = {
+  yearWithCountry: YearWithCountry;
   /** カウントダウン終点の ISO 8601 文字列 */
   targetIso?: string;
 };
@@ -51,7 +54,7 @@ type GbbCountdownProps = {
  * Args:
  *   targetIso: カウントダウン終点。省略時は ``GBB_2026_TARGET_ISO``。
  */
-export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
+export const GbbCountdown = ({ yearWithCountry, targetIso = NEXT_GBB }: GbbCountdownProps) => {
   const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
@@ -102,10 +105,13 @@ export const GbbCountdown = ({ targetIso = NEXT_GBB }: GbbCountdownProps) => {
     { label: "s", value: remaining.seconds, format: (v) => String(v).padStart(2, "0") },
   ];
 
+  const { isoAlpha2 } = yearWithCountry.country;
+  const { city } = yearWithCountry;
+
   return (
     <div className="mt-8 z-10 w-full max-w-2xl px-4" aria-live="polite">
       <p className="mb-4 text-center text-white text-[24px]">
-        GBB {NEXT_GBB_YEAR}
+        GBB {NEXT_GBB_YEAR}<br /><Flag isoAlpha2={isoAlpha2} /> {city}
       </p>
       <div
         className="flex flex-wrap justify-center"

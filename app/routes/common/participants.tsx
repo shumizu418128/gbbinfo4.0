@@ -36,7 +36,7 @@ export const Participants = () => {
       <HeaderMenu yearWithCountry={yearWithCountry} />
       <HeroImage yearWithCountry={yearWithCountry} />
       <ParticipantsContent />
-      <FooterMenu />
+      <FooterMenu yearWithCountry={yearWithCountry} />
     </>
   );
 }

@@ -37,7 +37,7 @@ export const Top = () => {
       <HeaderMenu yearWithCountry={yearWithCountry} />
       <HeroImage yearWithCountry={yearWithCountry} />
       <TopContent locale={locale} yearWithCountry={yearWithCountry} />
-      <FooterMenu />
+      <FooterMenu yearWithCountry={yearWithCountry} />
     </>
   );
 }

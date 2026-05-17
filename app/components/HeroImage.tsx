@@ -37,7 +37,7 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { y
               className="text-white font-bold"
               style={{ fontSize: "clamp(16px, 3vw, 32px)" }}
             >
-              <Flag isoAlpha2={isoAlpha2} /> {city}
+              {city}
             </span>
           </div>
           <div className="mt-6 z-10 w-80% text-center">
