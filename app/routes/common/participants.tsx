@@ -14,6 +14,12 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   return { locale, yearInfo };
 };
 
+export const headers: Route.HeadersFunction = () => {
+  return {
+    "Cache-Control": "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400",
+  };
+};
+
 export function meta({}: Route.MetaArgs) {
   return [
     { title: "GBB 2026 Wildcard結果 & 出場者一覧 - GBBinfo" },
