@@ -100,7 +100,7 @@ export const LinkCard = ({
                 letterSpacing: "0.04em",
               }}
             >
-              {disabled ? comingSoonMessage : unavailableMessage}
+              {disabled || unavailable ? comingSoonMessage : unavailableMessage}
             </div>
           ) : null}
         </div>
