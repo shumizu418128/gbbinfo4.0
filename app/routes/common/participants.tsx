@@ -9,9 +9,17 @@ import { setLocale } from "../../../paraglide/runtime.js";
 import { getYearWithCountry } from "../../db/neon.js";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
-  const yearWithCountry = await getYearWithCountry(Number(params.year));
+  const year = Number(params.year);
+  const yearWithCountry = await getYearWithCountry(year);
   const locale = requireLocale(params.lang);
-  return { locale, yearWithCountry };
+
+  const now = new Date();
+  const nowYear = now.getFullYear();
+  if (nowYear !== year) {
+    const latestYearWithCountry = await getYearWithCountry(nowYear);
+    return { locale, yearWithCountry, latestYearWithCountry };
+  }
+  return { locale, yearWithCountry, latestYearWithCountry: yearWithCountry };
 };
 
 export const headers: Route.HeadersFunction = () => {
@@ -28,7 +36,7 @@ export function meta({}: Route.MetaArgs) {
 }
 
 export const Participants = () => {
-  const { locale, yearWithCountry } = useLoaderData<typeof loader>();
+  const { locale, yearWithCountry, latestYearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
@@ -36,7 +44,7 @@ export const Participants = () => {
       <HeaderMenu yearWithCountry={yearWithCountry} />
       <HeroImage yearWithCountry={yearWithCountry} />
       <ParticipantsContent />
-      <FooterMenu yearWithCountry={yearWithCountry} />
+      <FooterMenu latestYearWithCountry={latestYearWithCountry} />
     </>
   );
 }

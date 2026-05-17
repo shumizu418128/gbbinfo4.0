@@ -40,7 +40,7 @@ const parseRemaining = (targetMs: number): Remaining => {
 };
 
 type GbbCountdownProps = {
-  yearWithCountry: YearWithCountry;
+  latestYearWithCountry: YearWithCountry;
   /** カウントダウン終点の ISO 8601 文字列 */
   targetIso?: string;
 };
@@ -54,7 +54,7 @@ type GbbCountdownProps = {
  * Args:
  *   targetIso: カウントダウン終点。省略時は ``GBB_2026_TARGET_ISO``。
  */
-export const GbbCountdown = ({ yearWithCountry, targetIso = NEXT_GBB }: GbbCountdownProps) => {
+export const GbbCountdown = ({ latestYearWithCountry, targetIso = NEXT_GBB }: GbbCountdownProps) => {
   const [mounted, setMounted] = useState(false);
   const [remaining, setRemaining] = useState<Remaining | null>(null);
 
@@ -105,8 +105,8 @@ export const GbbCountdown = ({ yearWithCountry, targetIso = NEXT_GBB }: GbbCount
     { label: "s", value: remaining.seconds, format: (v) => String(v).padStart(2, "0") },
   ];
 
-  const { isoAlpha2 } = yearWithCountry.country;
-  const { city } = yearWithCountry;
+  const { isoAlpha2 } = latestYearWithCountry.country;
+  const { city } = latestYearWithCountry;
 
   return (
     <div className="mt-8 z-10 w-full max-w-2xl px-4" aria-live="polite">

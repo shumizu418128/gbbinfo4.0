@@ -12,7 +12,15 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   const locale = requireLocale(params.lang);
   const year = Number(params.year);
   const yearWithCountry = await getYearWithCountry(year);
-  return { locale, yearWithCountry };
+
+  const now = new Date();
+  const nowYear = now.getFullYear();
+
+  if (nowYear !== year) {
+    const latestYearWithCountry = await getYearWithCountry(nowYear);
+    return { locale, yearWithCountry, latestYearWithCountry };
+  }
+  return { locale, yearWithCountry, latestYearWithCountry: yearWithCountry };
 };
 
 export const headers: Route.HeadersFunction = () => {
@@ -29,7 +37,7 @@ export const meta = ({}: Route.MetaArgs) => {
 }
 
 export const Top = () => {
-  const { locale, yearWithCountry } = useLoaderData<typeof loader>();
+  const { locale, yearWithCountry, latestYearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
@@ -37,7 +45,7 @@ export const Top = () => {
       <HeaderMenu yearWithCountry={yearWithCountry} />
       <HeroImage yearWithCountry={yearWithCountry} />
       <TopContent locale={locale} yearWithCountry={yearWithCountry} />
-      <FooterMenu yearWithCountry={yearWithCountry} />
+      <FooterMenu latestYearWithCountry={latestYearWithCountry} />
     </>
   );
 }
