@@ -4,3 +4,9 @@ publish = "build/client"
 
 [dev]
 command = "npm run dev"
+
+[context.production]
+command = "echo 'Production deploy is disabled' && exit 0"
+
+[context.deploy-preview]
+command = "npm run build"
