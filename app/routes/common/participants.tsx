@@ -18,15 +18,11 @@ import { findParticipants } from "~/db/participant.js";
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const category: Category | null = url.searchParams.get("category") as Category | null;
-  const ticketClass: TicketClass | null = url.searchParams.get("ticket_class") as TicketClass | null;
-  const cancel: CancelFilter | null = url.searchParams.get("cancel") as CancelFilter | null;
 
-  // 1つでも値がない場合、デフォルト値を付与してリダイレクト
-  if (!category || !ticketClass || !cancel) {
+  // 値がない場合、デフォルト値を付与してリダイレクト
+  if (!category) {
     const params = new URLSearchParams({
       category: category || "Loopstation",
-      ticket_class: ticketClass || "all",
-      cancel: cancel || "all",
     });
     return redirect(`${url.pathname}?${params.toString()}`);
   }
@@ -38,7 +34,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const latestYear = new Date().getFullYear();
 
   const yearWithCountry = await findYearWithCountry(year);
-  const participants = await findParticipants(year, category, ticketClass, cancel);
+  const participants = await findParticipants(year, category, null, null);
 
   const returnData = { env, locale, yearWithCountry, participants };
 
