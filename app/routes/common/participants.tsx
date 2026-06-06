@@ -3,7 +3,7 @@ import { ParticipantsContent } from "../../2026/ParticipantsContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";
-import { useLoaderData } from "react-router";
+import { redirect, useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
 import { findYearWithCountry } from "../../db/year.js";
@@ -12,20 +12,43 @@ import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
 import * as m from '../../../paraglide/messages';
 import { cache } from "~/constants/cache.js";
+import type { Category, TicketClass, CancelFilter } from "~/constants/participantLabels.js";
+import { findParticipants } from "~/db/participant.js";
 
-export const loader = async ({ params }: Route.LoaderArgs) => {
+export const loader = async ({ params, request }: Route.LoaderArgs) => {
+  const url = new URL(request.url);
+  const category: Category | null = url.searchParams.get("category") as Category | null;
+  const ticketClass: TicketClass | null = url.searchParams.get("ticket_class") as TicketClass | null;
+  const cancel: CancelFilter | null = url.searchParams.get("cancel") as CancelFilter | null;
+
+  // 1つでも値がない場合、デフォルト値を付与してリダイレクト
+  if (!category || !ticketClass || !cancel) {
+    const params = new URLSearchParams({
+      category: category || "Loopstation",
+      ticket_class: ticketClass || "all",
+      cancel: cancel || "all",
+    });
+    return redirect(`${url.pathname}?${params.toString()}`);
+  }
+
   const env = envCheck();
 
   const locale = requireLocale(params.lang);
   const year = Number(params.year);
   const latestYear = new Date().getFullYear();
 
-  const [yearWithCountry, latestYearWithCountry] = await Promise.all([
-    findYearWithCountry(year),
-    findYearWithCountry(latestYear),
-  ]);
+  const yearWithCountry = await findYearWithCountry(year);
+  const participants = await findParticipants(year, category, ticketClass, cancel);
 
-  return { locale, yearWithCountry, latestYearWithCountry, env };
+  const returnData = { env, locale, yearWithCountry, participants };
+
+  // 最新年以外を取得する場合は、最新年のデータも取得する
+  if (year !== latestYear) {
+    const latestYearWithCountry = await findYearWithCountry(latestYear);
+    return { ...returnData, latestYearWithCountry };
+  }
+
+  return { ...returnData, latestYearWithCountry: yearWithCountry };
 };
 
 export const headers: Route.HeadersFunction = () => {
@@ -41,7 +64,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 }
 
 export const Participants = () => {
-  const { locale, yearWithCountry, latestYearWithCountry, env } = useLoaderData<typeof loader>();
+  const { env, locale, yearWithCountry, participants, latestYearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
@@ -49,7 +72,7 @@ export const Participants = () => {
       <Dev env={env} />
       <HeaderMenu yearWithCountry={yearWithCountry} />
       <HeroImage yearWithCountry={yearWithCountry} subtitle={m.wildcard_result_and_participants({ Wildcard: "Wildcard" })} />
-      <ParticipantsContent />
+      <ParticipantsContent participants={participants} locale={locale} />
       <FooterMenu latestYearWithCountry={latestYearWithCountry} />
     </>
   );

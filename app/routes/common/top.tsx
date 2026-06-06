@@ -19,12 +19,17 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   const year = Number(params.year);
   const latestYear = new Date().getFullYear();
 
-  const [yearWithCountry, latestYearWithCountry] = await Promise.all([
-    findYearWithCountry(year),
-    findYearWithCountry(latestYear),
-  ]);
+  const yearWithCountry = await findYearWithCountry(year);
 
-  return { locale, yearWithCountry, latestYearWithCountry, env };
+  const returnData = { env, locale, yearWithCountry };
+
+  // 最新年以外を取得する場合は、最新年のデータも取得する
+  if (year !== latestYear) {
+    const latestYearWithCountry = await findYearWithCountry(latestYear);
+    return { ...returnData, latestYearWithCountry };
+  }
+
+  return { ...returnData, latestYearWithCountry: yearWithCountry };
 };
 
 export const headers: Route.HeadersFunction = () => {
@@ -40,7 +45,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 }
 
 export const Top = () => {
-  const { locale, yearWithCountry, latestYearWithCountry, env } = useLoaderData<typeof loader>();
+  const { env, locale, yearWithCountry, latestYearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (

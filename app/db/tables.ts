@@ -9,6 +9,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
+import type { CountryNames } from "../constants/countryLabels.js";
 
 /**
  * MARK: Category
@@ -28,7 +29,7 @@ export const countryTable = pgTable("Country", {
   isoCode: integer("iso_code").primaryKey().notNull(),
   latitude: numeric("latitude").default("0").notNull(),
   longitude: numeric("longitude").default("0").notNull(),
-  names: jsonb("names").notNull().unique(),
+  names: jsonb("names").$type<CountryNames>().notNull().unique(),
   enName: text("en_name"),
   jaName: text("ja_name"),
   isoAlpha2: text("iso_alpha2"),
