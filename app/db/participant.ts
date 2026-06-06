@@ -1,4 +1,5 @@
 import { and, eq } from "drizzle-orm";
+import { sortParticipants } from "~/util/participant.js";
 import { getDb } from "./client.js";
 import { categoryTable, participantTable } from "./tables.js";
 import type { WithRequired } from "./utils.js";
@@ -55,6 +56,15 @@ export const findParticipants = async (
       categoryInfo: true,
       members: { with: { country: true } },
     },
+  });
+
+  sortParticipants(rows);
+
+  // 名前を大文字に変換
+  rows.forEach(row => {
+    if (row.name && typeof row.name === "string") {
+      row.name = row.name.toUpperCase();
+    }
   });
 
   return rows.map((row) => {

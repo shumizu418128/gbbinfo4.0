@@ -1,6 +1,7 @@
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { getCountryName } from "~/util/country.js";
+import { Flag } from "~/components/Flag.js";
 
 export const ParticipantsContent = ({ participants, locale }: { participants: ParticipantWithRelations[], locale: SupportedLanguage }) => {
   return (
@@ -11,21 +12,19 @@ export const ParticipantsContent = ({ participants, locale }: { participants: Pa
           {participants.map((participant) => (
             <div
               key={participant.id}
-              className="border rounded-md p-4 bg-opacity-10"
+              className="p-4 bg-opacity-10"
             >
-              <div className="font-semibold text-lg mb-1">{participant.name}</div>
-              <div className="text-sm">
-                <span>年: {participant.year}</span>
-                {participant.country && (
-                  <span className="ml-2">国: {getCountryName(participant.country, locale)}</span>
-                )}
-                {participant.categoryInfo && (
-                  <span className="ml-2">カテゴリ: {participant.categoryInfo.name}</span>
-                )}
-                <span className="ml-2">種別: {participant.ticketClass}</span>
+              <div className="font-semibold text-lg mb-1">
                 {participant.isCancelled && (
-                  <span className="ml-2 text-red-400">(キャンセル)</span>
+                  <span className="ml-2 text-red-400">キャンセル - </span>
                 )}
+                {participant.name}
+              </div>
+              <div className="text-sm">
+                {participant.country && (
+                  <span className="ml-2"><Flag isoAlpha2={participant.country.isoAlpha2} /> {getCountryName(participant.country, locale)}</span>
+                )}
+                <span className="ml-2">{participant.ticketClass}</span>
               </div>
               {participant.members && participant.members.length > 0 && (
                 <div className="mt-2">
