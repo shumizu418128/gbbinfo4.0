@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router";
 import { Dropdown } from "./Dropdown";
 import { languageLabels, type SupportedLanguage } from "../constants/languageLabels";
-import type { YearWithCountry } from "../db/tables";
+import type { YearWithCountry } from "../db/year";
 
 const supportedLanguages = Object.keys(languageLabels) as SupportedLanguage[];
 

@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { getDb } from "./client.js";
-import { yearTable, type YearWithCountry } from "./tables.js";
+import { yearTable } from "./tables.js";
+import type { WithRequired } from "./utils.js";
 
 /**
  * 指定年の Year 行と関連 Country を取得する。
@@ -14,9 +15,7 @@ import { yearTable, type YearWithCountry } from "./tables.js";
  * Raises:
  *   Error: 指定年または関連 Country が存在しない場合。
  */
-export const findYearWithCountry = async (
-  year: number,
-): Promise<YearWithCountry> => {
+export const findYearWithCountry = async (year: number) => {
   const row = await getDb().query.yearTable.findFirst({
     where: eq(yearTable.year, year),
     with: { country: true },
@@ -24,9 +23,10 @@ export const findYearWithCountry = async (
   if (!row?.country) {
     throw new Error(`Year not found: ${year}`);
   }
-  const { country, ...yearInfo } = row;
-  return { ...yearInfo, country };
+  return row as WithRequired<typeof row, "country">;
 };
+
+export type YearWithCountry = Awaited<ReturnType<typeof findYearWithCountry>>;
 
 export type YearContext = {
   yearWithCountry: YearWithCountry;

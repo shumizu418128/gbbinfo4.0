@@ -1,4 +1,4 @@
-import type { YearWithCountry } from "../db/tables";
+import type { YearWithCountry } from "../db/year";
 import { Flag } from "./Flag";
 
 export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { yearWithCountry: YearWithCountry, subtitle?: string }) => {
