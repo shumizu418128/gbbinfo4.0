@@ -26,30 +26,5 @@ export const findYearWithCountry = async (year: number) => {
   return row as WithRequired<typeof row, "country">;
 };
 
+// YearWithCountry 型のエイリアス
 export type YearWithCountry = Awaited<ReturnType<typeof findYearWithCountry>>;
-
-export type YearContext = {
-  yearWithCountry: YearWithCountry;
-  latestYearWithCountry: YearWithCountry;
-};
-
-/**
- * ページ表示用に、指定年と最新年の Year + Country を取得する。
- *
- * Args:
- *   year: URL パラメータの開催年。
- *
- * Returns:
- *   指定年と最新年の Year + Country ペア。
- */
-export const loadYearContext = async (year: number): Promise<YearContext> => {
-  const yearWithCountry = await findYearWithCountry(year);
-  const nowYear = new Date().getFullYear();
-
-  if (nowYear !== year) {
-    const latestYearWithCountry = await findYearWithCountry(nowYear);
-    return { yearWithCountry, latestYearWithCountry };
-  }
-
-  return { yearWithCountry, latestYearWithCountry: yearWithCountry };
-};

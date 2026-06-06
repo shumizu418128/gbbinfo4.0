@@ -6,7 +6,7 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { data, useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
-import { loadYearContext } from "../../db/year.js";
+import { findYearWithCountry } from "../../db/year.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "~/components/Dev.js";
 import { createMeta } from "~/util/meta.js";
@@ -16,7 +16,12 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
   const locale = requireLocale(params.lang);
   const year = Number(params.year);
-  const { yearWithCountry, latestYearWithCountry } = await loadYearContext(year);
+  const latestYear = new Date().getFullYear();
+
+  const [yearWithCountry, latestYearWithCountry] = await Promise.all([
+    findYearWithCountry(year),
+    findYearWithCountry(latestYear),
+  ]);
 
   return { locale, yearWithCountry, latestYearWithCountry, env };
 };

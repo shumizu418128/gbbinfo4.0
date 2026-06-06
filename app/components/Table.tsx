@@ -35,7 +35,6 @@ export const Table: React.FC<TableProps> = ({ data, textCenter = false }) => {
           ))}
         </tbody>
       )}
-
     </table>
   );
 };
