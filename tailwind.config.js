@@ -6,6 +6,7 @@ module.exports = {
         'gbb-color': 'var(--gbb-color)',
         'background-color': 'var(--background-color)',
         'button-background-color': 'var(--button-background-color)',
+        'secondary-text-color': 'var(--secondary-text-color)',
       }
     }
   }

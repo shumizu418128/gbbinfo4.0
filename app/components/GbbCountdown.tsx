@@ -126,7 +126,7 @@ export const GbbCountdown = ({ latestYearWithCountry, targetIso = NEXT_GBB }: Gb
             >
               {s.format(s.value)}
             </span>
-            <span className="mt-2 text-[16px] text-white/80">{s.label}</span>
+            <span className="mt-2 text-[16px] text-(--secondary-text-color)">{s.label}</span>
           </div>
         ))}
       </div>

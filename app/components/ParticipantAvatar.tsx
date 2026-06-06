@@ -20,14 +20,21 @@ export const ParticipantAvatar = ({ src, size = 120 }: ParticipantAvatarProps) =
   }, [src]);
 
   return (
-    <div className="shrink-0" style={{ width: size, height: size }}>
+    <div
+      className="shrink-0"
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: loaded ? undefined : "#000000",
+      }}
+    >
       <img
         ref={ref}
         src={src}
         alt=""
         decoding="async"
         className="size-full object-contain"
-        style={{ opacity: loaded ? 1 : 0, color: "black" }}
+        style={{ opacity: loaded ? 1 : 0 }}
         onLoad={() => setLoaded(true)}
         onError={() => setLoaded(false)}
       />
