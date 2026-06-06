@@ -11,6 +11,7 @@ import { envCheck } from "~/util/dev.js";
 import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
 import * as m from '../../../paraglide/messages';
+import { cache } from "~/constants/cache.js";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();
@@ -28,12 +29,10 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 };
 
 export const headers: Route.HeadersFunction = () => {
-  return {
-    "Cache-Control": "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400",
-  };
+  return cache;
 };
 
-export function meta({ data }: Route.MetaArgs) {
+export const meta = ({ data }: Route.MetaArgs) => {
   const env = data?.env;
   const yearWithCountry = data?.yearWithCountry;
 

@@ -3,13 +3,14 @@ import { TopContent } from "../../2026/TopContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";
-import { data, useLoaderData } from "react-router";
+import { useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
 import { findYearWithCountry } from "../../db/year.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "~/components/Dev.js";
 import { createMeta } from "~/util/meta.js";
+import { cache } from "~/constants/cache.js";
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();
@@ -27,9 +28,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 };
 
 export const headers: Route.HeadersFunction = () => {
-  return {
-    "Cache-Control": "public, max-age=60, s-maxage=3600, stale-while-revalidate=86400",
-  };
+  return cache;
 };
 
 export const meta = ({ data }: Route.MetaArgs) => {
