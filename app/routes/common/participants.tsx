@@ -21,10 +21,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   // 値がない場合、デフォルト値を付与してリダイレクト
   if (!category) {
-    const params = new URLSearchParams({
-      category: category || "Loopstation",
-    });
-    return redirect(`${url.pathname}?${params.toString()}`);
+    return redirect(`${url.pathname}?category=Loopstation`);
   }
 
   const env = envCheck();
