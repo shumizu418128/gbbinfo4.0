@@ -9,7 +9,7 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import type { CountryNames } from "../constants/countryLabels.js";
+import type { CountryNames } from "../constants/languageLabels.js";
 
 /**
  * MARK: Category
