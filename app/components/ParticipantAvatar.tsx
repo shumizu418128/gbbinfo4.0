@@ -1,23 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useState } from "react";
 
 type ParticipantAvatarProps = {
   src: string;
   size?: number;
 };
 
-/** 404 時は同サイズの空白を保ち、壊れた画像アイコンを出さない。 */
-export const ParticipantAvatar = ({ src, size = 120 }: ParticipantAvatarProps) => {
-  const ref = useRef<HTMLImageElement>(null);
+const ParticipantAvatarInner = ({ src, size }: Required<ParticipantAvatarProps>) => {
   const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
 
-  useEffect(() => {
-    setLoaded(false);
-    const img = ref.current;
-    if (!img) return;
-    if (img.complete && img.naturalWidth > 0) {
+  const handleImgRef = useCallback((img: HTMLImageElement | null) => {
+    if (img?.complete && img.naturalWidth > 0) {
       setLoaded(true);
     }
-  }, [src]);
+  }, []);
+
+  const showImage = !failed;
 
   return (
     <div
@@ -25,19 +23,29 @@ export const ParticipantAvatar = ({ src, size = 120 }: ParticipantAvatarProps) =
       style={{
         width: size,
         height: size,
-        backgroundColor: loaded ? undefined : "#000000",
+        backgroundColor: showImage && loaded ? undefined : "#000000",
       }}
     >
-      <img
-        ref={ref}
-        src={src}
-        alt=""
-        decoding="async"
-        className="size-full object-contain"
-        style={{ opacity: loaded ? 1 : 0 }}
-        onLoad={() => setLoaded(true)}
-        onError={() => setLoaded(false)}
-      />
+      {showImage ? (
+        <img
+          ref={handleImgRef}
+          src={src}
+          alt=""
+          decoding="async"
+          className="size-full object-contain"
+          style={{ opacity: loaded ? 1 : 0 }}
+          onLoad={() => setLoaded(true)}
+          onError={() => {
+            setLoaded(false);
+            setFailed(true);
+          }}
+        />
+      ) : null}
     </div>
   );
 };
+
+/** 404 時は同サイズの空白を保ち、壊れた画像アイコンを出さない。 */
+export const ParticipantAvatar = ({ src, size = 120 }: ParticipantAvatarProps) => (
+  <ParticipantAvatarInner key={src} src={src} size={size} />
+);

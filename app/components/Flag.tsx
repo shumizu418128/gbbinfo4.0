@@ -2,16 +2,23 @@ import React from "react";
 
 type FlagProps = {
   isoAlpha2: string | null; // ISO 3166-1 alpha-2 国コード（小文字2文字で渡す）
-  width?: number; // デフォルトは20
-  height?: number; // デフォルトは15
+  height?: number; // デフォルトは20
   alt?: string;
   className?: string;
 };
 
+const buildFlagSrcSet = (
+  isoAlpha2: string,
+  height: number,
+  ext: "webp" | "png",
+) =>
+  `https://flagcdn.com/h${height}/${isoAlpha2}.${ext},` +
+  ` https://flagcdn.com/h${height * 2}/${isoAlpha2}.${ext} 2x,` +
+  ` https://flagcdn.com/h${height * 3}/${isoAlpha2}.${ext} 3x`;
+
 export const Flag: React.FC<FlagProps> = ({
   isoAlpha2,
-  width = 24,
-  height = 18,
+  height = 20,
   alt = "",
   className = "",
 }) => {
@@ -22,23 +29,14 @@ export const Flag: React.FC<FlagProps> = ({
     <picture>
       <source
         type="image/webp"
-        srcSet={
-          `https://flagcdn.com/${width}x${height}/${isoAlpha2}.webp,` +
-          ` https://flagcdn.com/${width * 2}x${height * 2}/${isoAlpha2}.webp 2x,` +
-          ` https://flagcdn.com/${width * 3}x${height * 3}/${isoAlpha2}.webp 3x`
-        }
+        srcSet={buildFlagSrcSet(isoAlpha2, height, "webp")}
       />
       <source
         type="image/png"
-        srcSet={
-          `https://flagcdn.com/${width}x${height}/${isoAlpha2}.png,` +
-          ` https://flagcdn.com/${width * 2}x${height * 2}/${isoAlpha2}.png 2x,` +
-          ` https://flagcdn.com/${width * 3}x${height * 3}/${isoAlpha2}.png 3x`
-        }
+        srcSet={buildFlagSrcSet(isoAlpha2, height, "png")}
       />
       <img
-        src={`https://flagcdn.com/${width}x${height}/${isoAlpha2}.png`}
-        width={width}
+        src={`https://flagcdn.com/h${height}/${isoAlpha2}.png`}
         height={height}
         alt={alt}
         className={className}

@@ -49,7 +49,7 @@ export const findParticipants = async (
     conditions.push(eq(participantTable.isCancelled, false));
   }
 
-  const rows = await getDb().query.participantTable.findMany({
+  let rows = await getDb().query.participantTable.findMany({
     where: and(...conditions),
     with: {
       country: true,
@@ -58,7 +58,7 @@ export const findParticipants = async (
     },
   });
 
-  sortParticipants(rows);
+  rows = sortParticipants(rows);
 
   // 名前を大文字に変換
   rows.forEach(row => {
