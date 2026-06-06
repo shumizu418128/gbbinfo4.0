@@ -1,6 +1,6 @@
 # GBBINFO4.0
 
-gbbinfo3.0 の Flask/Jinja 実装を、Netlify 上の React Router Data APIs（Remix移行互換）へ置き換える実装リポジトリです。
+gbbinfo3.0 の Flask/Jinja 実装を、Render.com（Docker）上の React Router Data APIs（Remix移行互換）Node サーバーへ置き換える実装リポジトリです。
 
 ## 実装方針
 
@@ -23,11 +23,14 @@ gbbinfo3.0 の Flask/Jinja 実装を、Netlify 上の React Router Data APIs（R
 # 依存関係のインストール
 npm install
 
-# ローカル開発（Netlify プラットフォームエミュレーション付き）
+# ローカル開発
 npm run dev
 
 # 本番ビルド
 npm run build
+
+# 本番サーバー起動（ビルド後）
+npm run start
 
 # 型チェック
 npm run typecheck
@@ -35,12 +38,14 @@ npm run typecheck
 
 ローカルではプロジェクトルートの `.env` に `DATABASE_URL` を設定してください。
 
-## デプロイ（Netlify）
+## デプロイ（Render.com）
 
-1. [Netlify](https://app.netlify.com/) で **Add new site → Import an existing project** から本リポジトリを接続
-2. ビルド設定は [`netlify.toml`](netlify.toml) が適用されます（`npm run build` / `build/client`）
-3. **Site configuration → Environment variables** に `DATABASE_URL` を設定（Neon の pooled URL を推奨）
+1. [Render Dashboard](https://dashboard.render.com/) で **New → Web Service** から本リポジトリを接続
+2. **Runtime** で **Docker** を選択（[`Dockerfile`](Dockerfile) が使用されます）
+3. **Environment** に `DATABASE_URL` を設定（Neon の pooled URL を推奨）
 4. main ブランチへの push で自動デプロイ
+
+Render は `PORT` 環境変数を自動注入します。`react-router-serve` がこれを参照するため、ポート設定は不要です。
 
 ## 環境変数
 

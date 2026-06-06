@@ -4,11 +4,13 @@
   "scripts": {
     "build": "react-router build",
     "dev": "react-router dev",
+    "start": "react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
     "@inlang/paraglide-vite": "^1.4.0",
     "@react-router/node": "7.14.0",
+    "@react-router/serve": "7.14.0",
     "drizzle-orm": "^0.45.2",
     "isbot": "^5.1.36",
     "pg": "^8.20.0",
@@ -18,8 +20,6 @@
   },
   "devDependencies": {
     "@inlang/paraglide-js": "^2.18.0",
-    "@netlify/vite-plugin": "^2.12.5",
-    "@netlify/vite-plugin-react-router": "^3.1.1",
     "@react-router/dev": "7.14.0",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^22",
