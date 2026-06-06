@@ -313,8 +313,11 @@ create table public."Year" (
   created_at timestamp with time zone not null default now(),
   updated_at timestamp with time zone not null default now(),
   categories integer[] null,
+  city text null,
+  iso_code integer null,
   constraint Year_pkey primary key (year),
-  constraint Year_year_key unique (year)
+  constraint Year_year_key unique (year),
+  constraint Year_iso_code_fkey foreign KEY (iso_code) references "Country" (iso_code) on delete CASCADE
 ) TABLESPACE pg_default;
 ```
 - **year**
@@ -333,13 +336,22 @@ create table public."Year" (
   この年のデータが最後に更新された日時です。自動的に記録されます。
 
 - **categories**
-  その年に行われるカテゴリ（種目）のIDがリスト形式で入っています。複数のカテゴリがある場合はカンマ区切りで格納されます。
+  その年に行われるカテゴリ（種目）のIDを格納するinteger配列です。例：`{1,2,4,5,6}`。
+
+- **city**
+  その年の大会開催都市を表す文字列です。例：「Tokyo」「Warsaw」。未定の場合はNULLです。
+
+- **iso_code**
+  その年の大会開催国を示す番号（ISOコード）です。Countryテーブルの「iso_code」と対応しています。未定の場合はNULLです。
 
 - **Year_pkey**
   「year」カラムがこのテーブルの主キー（重複しない一意の値）であることを示します。
 
 - **Year_year_key**
   「year」カラムが一意であることを保証する制約です。主キーと同じく、同じ年が重複して登録されることを防ぎます。
+
+- **Year_iso_code_fkey**
+  「iso_code」カラムがCountryテーブルの「iso_code」とつながっていることを示します。国データが削除されると、関連する年データも削除されます。
 
 
 ## Tavily
@@ -374,3 +386,16 @@ create table public."Tavily" (
 
 - **Tavily_name_key**
   「cache_key」カラムが一意であることを保証する制約です。同じキャッシュキーで複数登録されることを防ぎます。
+
+
+## Row Level Security (RLS)
+
+全テーブル（Category, Country, Participant, ParticipantMember, RankingResult, TournamentResult, Year, Tavily）でRLSが有効です。
+
+各テーブルに以下のポリシーが設定されています。
+
+| ポリシー名 | 操作 | 対象ロール | 条件 |
+|---|---|---|---|
+| Enable read access for all users | SELECT | public | true |
+
+読み取り（SELECT）のみ全ユーザーに許可され、INSERT・UPDATE・DELETEはポリシー未定義のためデフォルトで拒否されます。

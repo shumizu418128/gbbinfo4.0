@@ -1,4 +1,4 @@
-import type { YearWithCountry } from "../db/type";
+import type { YearWithCountry } from "../db/tables";
 import { GbbCountdown } from "./GbbCountdown.js";
 
 type FooterMenuProps = {

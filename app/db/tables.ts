@@ -51,7 +51,7 @@ export const yearTable = pgTable("Year", {
 });
 
 /** Year テーブルの行のみ */
-export type YearInfo = typeof yearTable.$inferSelect
+export type YearInfo = typeof yearTable.$inferSelect;
 
 /** Year テーブルの行と Country テーブルの行を結合したもの */
 export type YearWithCountry = YearInfo & {
