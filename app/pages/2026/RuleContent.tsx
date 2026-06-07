@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { Link } from "react-router";
 import { LinkCard } from "~/components/LinkCard.js";
 import { Table } from "~/components/Table.js";
 import { Flag } from "~/components/Flag.js";
@@ -24,7 +23,8 @@ const WILDCARD = "Wildcard";
 const SHOWCASE = "SHOWCASE";
 const SWISSBEATBOX = "Swissbeatbox";
 
-const sectionClass = "mt-20 mb-4 text-2xl font-bold";
+const sectionClass = "mt-40 mb-4 text-2xl font-bold";
+const tocSectionClass = "mt-12 mb-4 text-2xl font-bold";
 const paragraphClass = "mb-4 text-secondary-text-color leading-relaxed";
 const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
@@ -34,11 +34,13 @@ const postItClass = "my-4 border-l-4 border-(--gbb-color) bg-(--post-it-color) p
 const RuleSectionHeading = ({
   id,
   children,
+  className = sectionClass,
 }: {
   id: string;
   children: ReactNode;
+  className?: string;
 }) => (
-  <h2 id={id} className={sectionClass}>
+  <h2 id={id} className={className}>
     {children}
   </h2>
 );
@@ -131,7 +133,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
     <main className="bg-(--background-color) pb-8 pt-16 text-white">
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="bg-(--section-color) p-1">
-          <RuleSectionHeading id="toc-section">{m.rule_toc()}</RuleSectionHeading>
+          <RuleSectionHeading id="toc-section" className={tocSectionClass}>
+            {m.rule_toc()}
+          </RuleSectionHeading>
           <ol className="mb-8 list-decimal space-y-2 pl-8 text-(--secondary-text-color)">
             <li>
               <a href="#notices-section" className={anchorClass}>
