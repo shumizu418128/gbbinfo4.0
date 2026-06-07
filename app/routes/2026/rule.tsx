@@ -60,7 +60,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
 
   let seedData = emptySeedData();
   try {
-    const participants = await findParticipants(YEAR, null, null, null);
+    const participants = await findParticipants(YEAR, null, null);
     seedData = classifySeedParticipants(participants);
   } catch {
     seedData = emptySeedData();

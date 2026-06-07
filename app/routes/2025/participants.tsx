@@ -38,7 +38,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const validCategoryNames = validCategories.map((c) => c.name);
 
-  const participants = await findParticipants(YEAR, selectedCategory.name, null, null);
+  const participants = await findParticipants(YEAR, selectedCategory.id, null);
 
   const returnData = { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory };
 

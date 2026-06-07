@@ -3,7 +3,7 @@ import { MULTI_NATIONAL_ISO_CODE } from "~/constants/country.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { sortParticipants } from "~/util/participant.js";
 import { getDb } from "./client.js";
-import { categoryTable, participantTable } from "./tables.js";
+import { participantTable } from "./tables.js";
 import type { WithRequired } from "./utils.js";
 
 /**
@@ -11,7 +11,7 @@ import type { WithRequired } from "./utils.js";
  *
  * Args:
  *   year: 取得対象の開催年。
- *   category: カテゴリ名による絞り込み。null の場合は全カテゴリ。
+ *   category: カテゴリ ID による絞り込み。null の場合は全カテゴリ。
  *   ticketClass: 出場権種別による絞り込み。"all" または null の場合は全種別。
  *   cancel: キャンセル状態による絞り込み。
  *     "cancelled" のときキャンセル済みのみ、"active" のとき未キャンセルのみ、
@@ -25,24 +25,13 @@ import type { WithRequired } from "./utils.js";
  */
 export const findParticipants = async (
   year: number,
-  category: string | null,
-  ticketClass: string | null,
+  category: number | null,
   cancel: string | null,
 ) => {
   const conditions = [eq(participantTable.year, year)];
 
-  if (category) {
-    const categoryRow = await getDb().query.categoryTable.findFirst({
-      where: eq(categoryTable.name, category),
-    });
-    if (!categoryRow) {
-      return [];
-    }
-    conditions.push(eq(participantTable.category, categoryRow.id));
-  }
-
-  if (ticketClass && ticketClass !== "all") {
-    conditions.push(eq(participantTable.ticketClass, ticketClass));
+  if (category !== null) {
+    conditions.push(eq(participantTable.category, category));
   }
 
   if (cancel === "cancelled") {
