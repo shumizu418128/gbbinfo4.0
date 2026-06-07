@@ -342,7 +342,7 @@ export const ParticipantWorldMap = ({
   return (
     <section className="relative z-0 mt-16 w-full px-4">
       <div
-        className="participant-world-map mx-auto w-full max-w-5xl overflow-hidden rounded-lg border isolate [&_.leaflet-pane]:z-1 [&_.leaflet-top]:z-1 [&_.leaflet-bottom]:z-1 [&_.leaflet-control]:z-1 [&_.leaflet-marker-pane]:z-2 [&_.leaflet-popup-pane]:z-8"
+        className="participant-world-map mx-auto w-full max-w-5xl overflow-hidden border isolate [&_.leaflet-pane]:z-1 [&_.leaflet-top]:z-1 [&_.leaflet-bottom]:z-1 [&_.leaflet-control]:z-1 [&_.leaflet-marker-pane]:z-2 [&_.leaflet-popup-pane]:z-8"
         style={{
           height: MAP_HEIGHT_PX,
           borderColor: "var(--button-border-color)",
