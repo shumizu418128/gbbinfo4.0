@@ -12,7 +12,6 @@ import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
 import * as m from '../../../paraglide/messages.js';
 import { cache } from "~/constants/cache.js";
-import type { Category } from "~/constants/participantLabels.js";
 import { findParticipants } from "~/db/participant.js";
 import { findCategoriesByIds } from "~/db/category.js";
 
@@ -20,7 +19,7 @@ const YEAR = 2026;
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
-  const category: Category | null = url.searchParams.get("category") as Category | null;
+  const categoryParam = url.searchParams.get("category");
 
   const env = envCheck();
 
@@ -30,15 +29,16 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const yearWithCountry = await findYearWithCountry(YEAR);
   const validCategories = await findCategoriesByIds(yearWithCountry.categories ?? []);
 
+  const selectedCategory = validCategories.find((c) => c.name === categoryParam);
+
   // カテゴリが存在しない場合、デフォルト値を付与してリダイレクト
-  if (!validCategories.some(c => c.name === category)) {
+  if (!selectedCategory) {
     return redirect(`${url.pathname}?category=${validCategories[0].name}`);
   }
 
-  const selectedCategory = validCategories.find(c => c.name === category)!.name;
-  const validCategoryNames = validCategories.map(c => c.name);
+  const validCategoryNames = validCategories.map((c) => c.name);
 
-  const participants = await findParticipants(YEAR, selectedCategory, null, null);
+  const participants = await findParticipants(YEAR, selectedCategory.name, null, null);
 
   const returnData = { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory };
 

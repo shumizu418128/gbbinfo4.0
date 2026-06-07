@@ -6,12 +6,13 @@ import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
 import { ParticipantWorldMap } from "~/components/ParticipantWorldMap.js";
 import { useLocation } from "react-router";
+import type { Category } from "~/db/tables.js";
 
 type ParticipantsContentProps = {
   participants: ParticipantWithRelations[];
   locale: SupportedLanguage;
   categoryNames: string[];
-  selectedCategory: string;
+  selectedCategory: Category;
 };
 
 export const ParticipantsContent = ({ participants, locale, categoryNames, selectedCategory }: ParticipantsContentProps) => {
@@ -21,18 +22,18 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
     key: name,
     href: `${location.pathname}?category=${encodeURIComponent(name)}`,
     label: name,
-    isActive: name === selectedCategory,
+    isActive: name === selectedCategory.name,
   }));
 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-10 flex justify-center">
-          <SelectMenu label={selectedCategory} items={categoryItems} />
+          <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
 
         <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
-          {selectedCategory}: {participants.filter((p) => !p.isCancelled).length} beatboxers
+          {selectedCategory.name}: {participants.filter((p) => !p.isCancelled).length} beatboxers
         </div>
 
         <div className="space-y-6">
@@ -62,7 +63,7 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
         </div>
 
         <div className="mt-10 flex justify-center">
-          <SelectMenu label={selectedCategory} items={categoryItems} />
+          <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
       </div>
       <ParticipantWorldMap participants={participants} locale={locale} />
