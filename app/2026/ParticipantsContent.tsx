@@ -31,7 +31,7 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
         </div>
 
         <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
-          {selectedCategory}: {participants.length} beatboxers
+          {selectedCategory}: {participants.filter((p) => !p.isCancelled).length} beatboxers
         </div>
 
         <div className="space-y-6">
