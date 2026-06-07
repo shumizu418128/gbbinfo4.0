@@ -12,17 +12,13 @@ import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
 import * as m from '../../../paraglide/messages';
 import { cache } from "~/constants/cache.js";
-import type { Category, TicketClass, CancelFilter } from "~/constants/participantLabels.js";
+import type { Category } from "~/constants/participantLabels.js";
 import { findParticipants } from "~/db/participant.js";
+import { findCategoriesByIds } from "~/db/category.js";
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
   const category: Category | null = url.searchParams.get("category") as Category | null;
-
-  // 値がない場合、デフォルト値を付与してリダイレクト
-  if (!category) {
-    return redirect(`${url.pathname}?category=Loopstation`);
-  }
 
   const env = envCheck();
 
@@ -31,9 +27,19 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const latestYear = new Date().getFullYear();
 
   const yearWithCountry = await findYearWithCountry(year);
-  const participants = await findParticipants(year, category, null, null);
+  const validCategories = await findCategoriesByIds(yearWithCountry.categories ?? []);
 
-  const returnData = { env, locale, yearWithCountry, participants };
+  // カテゴリが存在しない場合、デフォルト値を付与してリダイレクト
+  if (!validCategories.some(c => c.name === category)) {
+    return redirect(`${url.pathname}?category=${validCategories[0].name}`);
+  }
+
+  const selectedCategory = validCategories.find(c => c.name === category)!.name;
+  const validCategoryNames = validCategories.map(c => c.name);
+
+  const participants = await findParticipants(year, selectedCategory, null, null);
+
+  const returnData = { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory };
 
   // 最新年以外を取得する場合は、最新年のデータも取得する
   if (year !== latestYear) {
@@ -57,7 +63,7 @@ export const meta = ({ data }: Route.MetaArgs) => {
 }
 
 export const Participants = () => {
-  const { env, locale, yearWithCountry, participants, latestYearWithCountry } = useLoaderData<typeof loader>();
+  const { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory, latestYearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
@@ -65,7 +71,7 @@ export const Participants = () => {
       <Dev env={env} />
       <HeaderMenu yearWithCountry={yearWithCountry} />
       <HeroImage yearWithCountry={yearWithCountry} subtitle={m.wildcard_result_and_participants({ Wildcard: "Wildcard" })} />
-      <ParticipantsContent participants={participants} locale={locale} />
+      <ParticipantsContent participants={participants} locale={locale} categoryNames={validCategoryNames} selectedCategory={selectedCategory} />
       <FooterMenu latestYearWithCountry={latestYearWithCountry} />
     </>
   );

@@ -4,12 +4,32 @@ import { getCountryName } from "~/util/country.js";
 import { Flag } from "~/components/Flag.js";
 import * as m from '../../paraglide/messages';
 import { ParticipantAvatar } from "~/components/ParticipantAvatar.js";
+import { SelectMenu } from "~/components/SelectMenu.js";
+import { useLocation } from "react-router";
 
-export const ParticipantsContent = ({ participants, locale }: { participants: ParticipantWithRelations[], locale: SupportedLanguage }) => {
+type ParticipantsContentProps = {
+  participants: ParticipantWithRelations[];
+  locale: SupportedLanguage;
+  categoryNames: string[];
+  selectedCategory: string;
+};
+
+export const ParticipantsContent = ({ participants, locale, categoryNames, selectedCategory }: ParticipantsContentProps) => {
+  const location = useLocation();
+
+  const categoryItems = categoryNames.map((name) => ({
+    key: name,
+    href: `${location.pathname}?category=${encodeURIComponent(name)}`,
+    label: name,
+    isActive: name === selectedCategory,
+  }));
+
   return (
-    // 仮設：とりあえず表示しただけ
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <div className="mb-8 flex justify-end">
+          <SelectMenu label={selectedCategory} items={categoryItems} />
+        </div>
         <div className="space-y-4">
           {participants.map((participant) => (
             <div
