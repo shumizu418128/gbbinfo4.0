@@ -42,8 +42,11 @@ export const FLAG_ICON_SIZE: [number, number] = [48, 48];
 /** 国旗マーカーアイコンのアンカー位置 [x, y]。 */
 export const FLAG_ICON_ANCHOR: [number, number] = [24, 48];
 
-/** ポップアップ内 Flag コンポーネントの高さ (px)。FlagCDN の h 指定は 20 など対応値のみ。 */
+/** ポップアップ内国旗の表示高さ (px)。FlagCDN の h 指定は 20 など対応値のみ。 */
 export const POPUP_FLAG_HEIGHT = 20;
+
+/** ポップアップ内国旗スロットの予約幅 (px)。FlagCDN の実幅差を Leaflet 計測前に吸収する。 */
+export const POPUP_FLAG_RESERVED_WIDTH = 48;
 
 /** ポップアップの最大幅 (px)。 */
 export const POPUP_MAX_WIDTH = 320;

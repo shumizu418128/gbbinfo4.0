@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useRef } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
 import type { Map as LeafletMap, LayerGroup } from "leaflet";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
@@ -21,12 +20,12 @@ import {
   NASA_GIBS_SUBDOMAINS,
   NASA_GIBS_TILES,
   POPUP_FLAG_HEIGHT,
+  POPUP_FLAG_RESERVED_WIDTH,
   POPUP_MAX_HEIGHT_PX,
   POPUP_MAX_WIDTH,
   POPUP_SCROLL_THRESHOLD,
 } from "~/constants/worldMap.js";
 import { getCountryName } from "~/util/country.js";
-import { Flag } from "./Flag.js";
 type ParticipantWorldMapProps = {
   participants: ParticipantWithRelations[];
   locale: SupportedLanguage;
@@ -71,29 +70,25 @@ const getLocalFlagImageUrl = (countryEnName: string): string =>
   `${FLAG_IMAGE_PATH_PREFIX}/${encodeURIComponent(countryEnName)}.webp`;
 
 /**
- * Flag コンポーネントを静的 HTML に変換する。
+ * ポップアップ用の国旗 img タグを生成する。
+ *
+ * FlagCDN は国旗ごとに横幅が異なるため、Leaflet の位置計算用に幅を大目に確保する。
  *
  * Args:
  *   isoAlpha2: ISO 3166-1 alpha-2 国コード。
- *   height: 国旗の高さ (px)。
  *
  * Returns:
- *   Flag コンポーネントの HTML 文字列。isoAlpha2 が無い場合は空文字。
+ *   国旗 img の HTML 文字列。isoAlpha2 が無い場合は空文字。
  */
-const renderFlagMarkup = (isoAlpha2: string | null, height: number): string => {
+const renderFlagMarkup = (isoAlpha2: string | null): string => {
   if (!isoAlpha2) {
     return "";
   }
 
-  return renderToStaticMarkup(
-    <Flag
-      isoAlpha2={isoAlpha2.toLowerCase()}
-      height={height}
-      className=""
-      loading="eager"
-    />,
-  );
+  const code = isoAlpha2.toLowerCase();
+  return `<img src="https://flagcdn.com/h${POPUP_FLAG_HEIGHT}/${code}.png" height="${POPUP_FLAG_HEIGHT}" alt="" loading="eager">`;
 };
+
 /**
  * 参加者に紐づく国一覧（座標付き）を取得する。
  *
@@ -220,7 +215,7 @@ const buildPopupHtml = (marker: MapMarker): string => {
       ? " participant-popup--scrollable"
       : "";
 
-  const flagHtml = renderFlagMarkup(marker.isoAlpha2, POPUP_FLAG_HEIGHT);
+  const flagHtml = renderFlagMarkup(marker.isoAlpha2);
 
   const countryHeader = `<div class="participant-popup__header"><span class="participant-popup__flag">${flagHtml}</span><span class="participant-popup__country">${escapeHtml(marker.countryName)}</span></div>`;
 
@@ -347,6 +342,7 @@ export const ParticipantWorldMap = ({
           backgroundColor: "var(--section-color)",
           ["--popup-max-width" as string]: `${POPUP_MAX_WIDTH}px`,
           ["--popup-max-height" as string]: `${POPUP_MAX_HEIGHT_PX}px`,
+          ["--popup-flag-width" as string]: `${POPUP_FLAG_RESERVED_WIDTH}px`,
         }}
       >
         <div ref={containerRef} className="h-full w-full" />

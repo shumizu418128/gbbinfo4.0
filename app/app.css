@@ -34,17 +34,12 @@ body {
 
 .participant-world-map .leaflet-popup-content-wrapper {
   border-radius: 0;
-  display: table;
-  box-sizing: border-box;
 }
 
 .participant-world-map .leaflet-popup-content {
   margin: 0;
   padding: 16px;
   line-height: 1.5;
-  width: auto !important;
-  white-space: normal !important;
-  box-sizing: border-box;
 }
 
 .participant-world-map a.leaflet-popup-close-button {
@@ -61,7 +56,6 @@ body {
 
 .participant-world-map .participant-popup {
   display: block;
-  width: max-content;
   max-width: var(--popup-max-width);
   font-family: 'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
   font-size: 14px;
@@ -77,18 +71,19 @@ body {
 
 .participant-world-map .participant-popup__flag {
   display: inline-block;
+  width: var(--popup-flag-width);
+  min-width: var(--popup-flag-width);
   margin-right: 8px;
   vertical-align: middle;
   line-height: 0;
 }
 
-.participant-world-map .participant-popup__flag picture {
-  display: inline-block;
-  line-height: 0;
-}
-
 .participant-world-map .participant-popup__flag img {
   display: block;
+  width: auto;
+  max-width: 100%;
+  height: 20px;
+  object-fit: contain;
   padding-bottom: 0 !important;
 }
 
