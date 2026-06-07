@@ -69,18 +69,19 @@ export const SelectMenu = ({ label, items }: SelectMenuProps) => {
     <div ref={containerRef} className="relative">
       <button
         type="button"
-        className="flex min-h-10 w-full min-w-40 cursor-pointer items-center justify-between gap-2 rounded-lg border border-(--gbb-color) px-4 py-2 text-white"
+        className="flex min-h-10 w-full min-w-40 cursor-pointer items-center justify-between gap-2 border border-(--button-border-color) px-4 py-2 text-white"
         aria-expanded={isOpen}
         aria-haspopup="listbox"
         onClick={() => setIsOpen((prev) => !prev)}
       >
-        <span className="truncate">{label}</span>
+        <span className="truncate text-2xl md:text-3xl lg:text-4xl">{label}</span>
+
         <ChevronIcon isOpen={isOpen} />
       </button>
 
       {isOpen && (
         <div
-          className="absolute top-full right-0 z-20 mt-2 min-w-full overflow-hidden rounded-lg bg-zinc-800/80 shadow-lg backdrop-blur-md"
+          className="absolute top-full left-0 z-20 mt-2 min-w-full overflow-hidden bg-zinc-800/80 shadow-lg backdrop-blur-md"
           role="listbox"
         >
           {items.map((item) => (

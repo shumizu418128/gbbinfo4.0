@@ -27,7 +27,7 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <div className="mb-8 flex justify-end">
+        <div className="mb-10 flex justify-center">
           <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>
         <div className="space-y-4">
@@ -58,6 +58,9 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
               </div>
             </div>
           ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>
       </div>
     </main>
