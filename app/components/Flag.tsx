@@ -5,6 +5,7 @@ type FlagProps = {
   height?: number; // デフォルトは20
   alt?: string;
   className?: string;
+  loading?: "lazy" | "eager";
 };
 
 const buildFlagSrcSet = (
@@ -21,6 +22,7 @@ export const Flag: React.FC<FlagProps> = ({
   height = 20,
   alt = "",
   className = "",
+  loading = "lazy",
 }) => {
   if (!isoAlpha2) {
     return null;
@@ -40,7 +42,7 @@ export const Flag: React.FC<FlagProps> = ({
         height={height}
         alt={alt}
         className={className}
-        loading="lazy"
+        loading={loading}
         style={{ display: "inline-block", verticalAlign: "middle", paddingBottom: "2px" }}
       />
     </picture>

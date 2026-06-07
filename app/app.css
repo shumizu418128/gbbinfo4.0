@@ -31,3 +31,7 @@ body {
   --gbb-color: rgb(255, 100, 20);
   --secondary-text-color: rgba(255,255,255,0.8);
 }
+
+.participant-world-map .leaflet-popup-content-wrapper {
+  border-radius: 0;
+}

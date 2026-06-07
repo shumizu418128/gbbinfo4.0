@@ -4,6 +4,7 @@ import { resolveParticipantCountries } from "~/util/country.js";
 import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
+import { ParticipantWorldMap } from "~/components/ParticipantWorldMap.js";
 import { useLocation } from "react-router";
 
 type ParticipantsContentProps = {
@@ -64,6 +65,7 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
           <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>
       </div>
+      <ParticipantWorldMap participants={participants} locale={locale} />
     </main>
   );
 }
