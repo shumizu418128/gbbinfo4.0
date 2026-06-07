@@ -1,5 +1,5 @@
 import type { Route } from "./+types/participants.js";
-import { ParticipantsContent } from "../../2026/ParticipantsContent.js";
+import { ParticipantsContent } from "../../pages/2026/ParticipantsContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";

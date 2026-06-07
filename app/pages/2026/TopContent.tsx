@@ -1,7 +1,7 @@
 import { LinkCard } from "~/components/LinkCard";
 import { Table } from "~/components/Table";
-import * as m from '../../paraglide/messages';
-import type { YearWithCountry } from "../db/year";
+import * as m from "../../../paraglide/messages.js";
+import type { YearWithCountry } from "~/db/year.js";
 
 type TopContentProps = {
   locale: string;

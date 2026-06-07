@@ -1,5 +1,5 @@
 import type { Route } from "./+types/top.js";
-import { TopContent } from "../../2026/TopContent.js";
+import { TopContent } from "../../pages/2026/TopContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
 import { FooterMenu } from "../../components/FooterMenu.js";
