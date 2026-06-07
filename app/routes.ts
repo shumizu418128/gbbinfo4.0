@@ -11,6 +11,7 @@ export default [
   // 2026
   route("/:lang/2026/top", "routes/2026/top.tsx"),
   route("/:lang/2026/participants", "routes/2026/participants.tsx"),
+  route("/:lang/2026/rule", "routes/2026/rule.tsx"),
 
   // 2025
   route("/:lang/2025/top", "routes/2025/top.tsx"),

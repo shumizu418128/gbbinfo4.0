@@ -8,6 +8,9 @@ type TopContentProps = {
   yearWithCountry: YearWithCountry;
 };
 
+const anchorClass =
+  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
+
 export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
   const { year } = yearWithCountry;
   return (
@@ -19,7 +22,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
             image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
-          <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href="#" />
+          <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href={`/${locale}/${year}/rule`} />
           <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href="#" disabled />
           <LinkCard text={m.team_japan()} image="/images/team_japan.webp" href="#" />
         </div>
@@ -36,7 +39,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <li>
             <a
               href="#"
-              className="underline transition-colors duration-150 hover:text-(--gbb-color)"
+              className={anchorClass}
             >
               {m.site_url_notice()}
             </a>
@@ -44,7 +47,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <li>
             <a
               href="#"
-              className="underline transition-colors duration-150 hover:text-(--gbb-color)"
+              className={anchorClass}
             >
               {m.wildcard_stream({ Wildcard: "Wildcard" })}
             </a>
@@ -52,7 +55,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <li>
             <a
               href="#"
-              className="underline transition-colors duration-150 hover:text-(--gbb-color)"
+              className={anchorClass}
             >
               {m.wildcard_list({ Wildcard: "Wildcard" })}
             </a>

@@ -8,6 +8,7 @@ module.exports = {
         'button-background-color': 'var(--button-background-color)',
         'hover-background-color': 'var(--hover-background-color)',
         'secondary-text-color': 'var(--secondary-text-color)',
+        'post-it-color': 'var(--post-it-color)',
       }
     }
   }
