@@ -11,7 +11,7 @@ export const Table: React.FC<TableProps> = ({ data, textCenter = false }) => {
   return (
     <table className="mx-auto w-[95%] border-collapse">
       <thead>
-        <tr className="border-b border-white/20 bg-(--section-color)">
+        <tr className="border-b border-(--table-border-color) bg-(--section-color)">
           {data[0].map((cell, j) => (
             <th key={j} style={{ padding: 8, fontWeight: "bold" }}>
               {cell}

@@ -31,6 +31,8 @@ body {
   --gbb-color: rgb(255, 100, 20);
   --secondary-text-color: rgba(255,255,255,0.8);
   --post-it-color: rgba(255, 255, 255, 0.15);
+  --rule-hover-text: #fff;
+  --table-border-color: rgba(255, 255, 255, 0.2);
 }
 
 .participant-world-map .leaflet-popup-content-wrapper {

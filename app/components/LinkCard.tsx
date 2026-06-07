@@ -7,12 +7,14 @@ export const LinkCard = ({
   href,
   disabled = false,
   unavailable = false,
+  fullWidth = false,
 }: {
   text: string | React.ReactNode;
   image?: string;
   href: string;
   disabled?: boolean;
   unavailable?: boolean;
+  fullWidth?: boolean;
 }) => {
   const comingSoonMessage = "Coming soon...";
   const unavailableMessage = m.unavailable();
@@ -141,8 +143,13 @@ export const LinkCard = ({
       style={{
         position: "relative",
         fontSize,
-        width: cardWidth,
-        height: "48px",
+        width: fullWidth ? "100%" : cardWidth,
+        minHeight: "48px",
+        height: "auto",
+        padding: "8px 16px",
+        boxSizing: "border-box",
+        textAlign: "center",
+        lineHeight: 1.333,
         background: "var(--button-background-color)",
         textDecorationColor: "var(--gbb-color)",
         cursor: disabled || unavailable ? "not-allowed" : "pointer",

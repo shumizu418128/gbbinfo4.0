@@ -23,13 +23,34 @@ const WILDCARD = "Wildcard";
 const SHOWCASE = "SHOWCASE";
 const SWISSBEATBOX = "Swissbeatbox";
 
-const sectionClass = "mt-40 mb-4 text-2xl font-bold";
-const tocSectionClass = "mt-12 mb-4 text-2xl font-bold";
-const paragraphClass = "mb-4 text-secondary-text-color leading-relaxed";
+type RuleSectionVariant = "dark" | "light";
+
+const sectionClass = "mb-4 text-2xl font-bold";
+const tocSectionClass = "mb-4 text-2xl font-bold";
+const paragraphClass = "mb-4 text-(--secondary-text-color) leading-relaxed";
 const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
-const subSectionClass = "my-4 font-bold";
+  "text-(--gbb-color) underline transition-colors duration-150 hover:text-(--rule-hover-text)";
+const subSectionClass = "mb-4 font-bold";
+const ruleSubSectionClass = "mt-8 bg-(--section-color) p-8";
 const postItClass = "my-4 border-l-4 border-(--gbb-color) bg-(--post-it-color) p-4";
+
+const ruleSectionVariantClass: Record<RuleSectionVariant, string> = {
+  dark: "bg-(--background-color) py-16 text-white [--section-color:rgba(255,255,255,0.03)] [--rule-hover-text:#fff] [--table-border-color:rgba(255,255,255,0.2)]",
+  light:
+    "bg-gray-50 py-16 text-black [--section-color:rgba(0,0,0,0.03)] [--secondary-text-color:rgba(0,0,0,0.8)] [--post-it-color:rgba(0,0,0,0.08)] [--button-background-color:rgba(0,0,0,0.85)] [--rule-hover-text:#000] [--table-border-color:rgba(0,0,0,0.2)]",
+};
+
+const RuleSection = ({
+  variant,
+  children,
+}: {
+  variant: RuleSectionVariant;
+  children: ReactNode;
+}) => (
+  <section className={ruleSectionVariantClass[variant]}>
+    <div className="mx-auto w-full max-w-2xl px-4">{children}</div>
+  </section>
+);
 
 const RuleSectionHeading = ({
   id,
@@ -43,6 +64,10 @@ const RuleSectionHeading = ({
   <h2 id={id} className={className}>
     {children}
   </h2>
+);
+
+const RuleSubSection = ({ children }: { children: ReactNode }) => (
+  <div className={ruleSubSectionClass}>{children}</div>
 );
 
 const RuleSubHeading = ({ children }: { children: ReactNode }) => (
@@ -64,7 +89,7 @@ const RuleSeedTable = ({
 }) => {
   if (participants.length === 0) {
     return (
-      <p className="mb-4 text-secondary-text-color italic">
+      <p className="mb-4 text-(--secondary-text-color) italic">
         {m.rule_update_pending()}
       </p>
     );
@@ -73,7 +98,7 @@ const RuleSeedTable = ({
   return (
     <table className="mx-auto mb-8 w-[95%] border-collapse text-sm">
       <thead>
-        <tr className="border-b border-white/20 bg-(--section-color)">
+        <tr className="border-b border-(--table-border-color) bg-(--section-color)">
           <th className="p-2 font-bold">{m.rule_col_category()}</th>
           <th className="p-2 font-bold">{m.rule_col_name()}</th>
           <th className="p-2 font-bold">{m.rule_col_ticket()}</th>
@@ -130,13 +155,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
   const participantsPath = `/${locale}/${year}/participants`;
 
   return (
-    <main className="bg-(--background-color) pb-8 pt-16 text-white">
-      <div className="mx-auto w-full max-w-2xl px-4">
-        <div className="bg-(--section-color) p-1">
-          <RuleSectionHeading id="toc-section" className={tocSectionClass}>
-            {m.rule_toc()}
-          </RuleSectionHeading>
-          <ol className="mb-8 list-decimal space-y-2 pl-8 text-(--secondary-text-color)">
+    <main className="pt-16">
+      <RuleSection variant="dark">
+        <RuleSectionHeading id="toc-section" className={tocSectionClass}>
+          {m.rule_toc()}
+        </RuleSectionHeading>
+        <ol className="mb-8 list-decimal space-y-2 pl-8 text-(--secondary-text-color)">
             <li>
               <a href="#notices-section" className={anchorClass}>
                 {m.rule_toc_notices()}
@@ -183,8 +207,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </a>
             </li>
           </ol>
-        </div>
+      </RuleSection>
 
+      <RuleSection variant="light">
         <RuleSectionHeading id="notices-section">
           {m.rule_toc_notices()}
         </RuleSectionHeading>
@@ -200,7 +225,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_notices_p2_prefix({ Wildcard: WILDCARD })}
           <strong className="text-red-500">{m.rule_notices_p2_strong()}</strong>
         </p>
+      </RuleSection>
 
+      <RuleSection variant="dark">
         <RuleSectionHeading id="category-section">
           {m.rule_toc_categories()}
         </RuleSectionHeading>
@@ -264,8 +291,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
         <p className={paragraphClass}>{m.rule_category_note()}</p>
 
-
-        <div className="bg-(--section-color) p-8 mt-8">
+        <RuleSubSection>
           <RuleSubHeading>
             {m.rule_solo_final_title({ Solo: "Solo" })}
           </RuleSubHeading>
@@ -274,8 +300,10 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             <br />
             {m.rule_solo_final_p2()}
           </p>
-        </div>
+        </RuleSubSection>
+      </RuleSection>
 
+      <RuleSection variant="light">
         <RuleSectionHeading id="showcase-detail-section">
           {m.rule_showcase_title({ SHOWCASE })}
         </RuleSectionHeading>
@@ -303,9 +331,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </span>
             }
             href={participantsPath}
+            fullWidth
           />
         </div>
+      </RuleSection>
 
+      <RuleSection variant="dark">
         <RuleSectionHeading id="comeback-wildcard-section">
           COMEBACK Wildcard
         </RuleSectionHeading>
@@ -316,12 +347,15 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             Beatboxer: "Beatboxer",
           })}
         </p>
-        <RuleSubHeading>{m.rule_target()}</RuleSubHeading>
-        <p className={paragraphClass}>
-          {m.rule_comeback_target({ year: String(year) })}
-        </p>
-        <RuleSubHeading>{m.rule_selection_flow()}</RuleSubHeading>
-        <ol className="mb-8 list-decimal space-y-4 pl-8 text-secondary-text-color">
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_target()}</RuleSubHeading>
+          <p className={paragraphClass}>
+            {m.rule_comeback_target({ year: String(year) })}
+          </p>
+        </RuleSubSection>
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_selection_flow()}</RuleSubHeading>
+          <ol className="mb-8 list-decimal space-y-4 pl-8 text-(--secondary-text-color)">
           <li>
             <strong>{m.rule_judge_nomination()}</strong>
             <br />
@@ -356,13 +390,16 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               YouTube: "YouTube",
             })}
           </li>
-        </ol>
+          </ol>
+        </RuleSubSection>
+      </RuleSection>
 
+      <RuleSection variant="light">
         <RuleSectionHeading id="seeds-section">
           {m.rule_seeds_title()}
         </RuleSectionHeading>
         <p className={paragraphClass}>{m.rule_seeds_intro()}</p>
-        <ul className="mb-8 list-disc space-y-2 pl-8 text-secondary-text-color">
+        <ul className="mb-8 list-disc space-y-2 pl-8 text-(--secondary-text-color)">
           <li>
             GBB {prevYear} {m.rule_top_winners()}
           </li>
@@ -372,23 +409,29 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           <li>Wildcard</li>
         </ul>
 
-        <RuleSubHeading>
-          {m.rule_seeds_gbb_title({ prevYear: String(prevYear) })}
-        </RuleSubHeading>
-        <RuleSeedTable participants={seedData.gbbSeed} />
+        <RuleSubSection>
+          <RuleSubHeading>
+            {m.rule_seeds_gbb_title({ prevYear: String(prevYear) })}
+          </RuleSubHeading>
+          <RuleSeedTable participants={seedData.gbbSeed} />
+        </RuleSubSection>
 
-        <RuleSubHeading>{m.rule_seeds_cs_title()}</RuleSubHeading>
-        <RuleSeedTable participants={seedData.otherSeed} />
-        <PostIt>
-          <p>
-            {m.rule_seeds_cs_note()}
-            <br />
-            {m.rule_seeds_cs_example({ Wildcard: WILDCARD })}
-          </p>
-        </PostIt>
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_seeds_cs_title()}</RuleSubHeading>
+          <RuleSeedTable participants={seedData.otherSeed} />
+          <PostIt>
+            <p>
+              {m.rule_seeds_cs_note()}
+              <br />
+              {m.rule_seeds_cs_example({ Wildcard: WILDCARD })}
+            </p>
+          </PostIt>
+        </RuleSubSection>
 
-        <RuleSubHeading>{m.rule_seeds_cancelled()}</RuleSubHeading>
-        <RuleSeedTable participants={seedData.cancelled} cancelled />
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_seeds_cancelled()}</RuleSubHeading>
+          <RuleSeedTable participants={seedData.cancelled} cancelled />
+        </RuleSubSection>
 
         <div className="mb-8 flex justify-center">
           <LinkCard
@@ -398,9 +441,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </span>
             }
             href={participantsPath}
+            fullWidth
           />
         </div>
+      </RuleSection>
 
+      <RuleSection variant="dark">
         <RuleSectionHeading id="replacement-section">
           {m.rule_replacement_title()}
         </RuleSectionHeading>
@@ -408,90 +454,99 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_replacement_intro({ Wildcard: WILDCARD })}
         </p>
 
-        <RuleSubHeading>{m.rule_replacement_deadline()}</RuleSubHeading>
-        <Table
-          data={[
-            [m.rule_deadline(), m.rule_response()],
-            [m.rule_before_aug1(), m.rule_before_aug1_detail({ Wildcard: WILDCARD })],
-            [m.rule_after_aug1(), m.rule_after_aug1_detail({ Swissbeatbox: SWISSBEATBOX })],
-          ]}
-          textCenter
-        />
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_replacement_deadline()}</RuleSubHeading>
+          <Table
+            data={[
+              [m.rule_deadline(), m.rule_response()],
+              [m.rule_before_aug1(), m.rule_before_aug1_detail({ Wildcard: WILDCARD })],
+              [m.rule_after_aug1(), m.rule_after_aug1_detail({ Swissbeatbox: SWISSBEATBOX })],
+            ]}
+            textCenter
+          />
+        </RuleSubSection>
 
-        <RuleSubHeading>{m.rule_replacement_target()}</RuleSubHeading>
-        <p className={paragraphClass}>
-          {m.rule_replacement_target_p1({ Wildcard: WILDCARD })}
-          <br />
-          {m.rule_replacement_target_p2()}
-        </p>
-        <Table
-          data={[
-            [m.rule_col_category(), m.rule_col_target(), ""],
-            [
-              "Solo",
-              m.rule_rank_until({ rank: "15" }),
-              m.rule_rank_no_replacement({ rank: "16" }),
-            ],
-            [
-              "Loopstation",
-              m.rule_rank_until({ rank: "20" }),
-              m.rule_rank_swiss_decision({ rank: "21", Swissbeatbox: SWISSBEATBOX }),
-            ],
-            [
-              "Tag Team",
-              m.rule_rank_until({ rank: "10" }),
-              m.rule_rank_no_replacement({ rank: "11" }),
-            ],
-            [
-              "Crew",
-              m.rule_rank_until({ rank: "5" }),
-              m.rule_rank_no_replacement({ rank: "6" }),
-            ],
-          ]}
-          textCenter
-        />
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_replacement_target()}</RuleSubHeading>
+          <p className={paragraphClass}>
+            {m.rule_replacement_target_p1({ Wildcard: WILDCARD })}
+            <br />
+            {m.rule_replacement_target_p2()}
+          </p>
+          <Table
+            data={[
+              [m.rule_col_category(), m.rule_col_target(), ""],
+              [
+                "Solo",
+                m.rule_rank_until({ rank: "15" }),
+                m.rule_rank_no_replacement({ rank: "16" }),
+              ],
+              [
+                "Loopstation",
+                m.rule_rank_until({ rank: "20" }),
+                m.rule_rank_swiss_decision({ rank: "21", Swissbeatbox: SWISSBEATBOX }),
+              ],
+              [
+                "Tag Team",
+                m.rule_rank_until({ rank: "10" }),
+                m.rule_rank_no_replacement({ rank: "11" }),
+              ],
+              [
+                "Crew",
+                m.rule_rank_until({ rank: "5" }),
+                m.rule_rank_no_replacement({ rank: "6" }),
+              ],
+            ]}
+            textCenter
+          />
+        </RuleSubSection>
 
-        <RuleSubHeading>{m.rule_special_cases()}</RuleSubHeading>
-        <Table
-          data={[
-            [m.rule_col_item(), m.rule_col_description()],
-            [
-              <strong key="solo">Solo</strong>,
-              <ul key="solo-ul" className="list-disc space-y-2 pl-8 text-left">
-                <li>
-                  {m.rule_special_solo_1({
-                    prevYear: String(prevYear),
-                    Wildcard: WILDCARD,
-                  })}
-                </li>
-                <li>{m.rule_special_solo_2({ Wildcard: WILDCARD })}</li>
-                <li>
-                  {m.rule_special_solo_3({
-                    prevYear: String(prevYear),
-                    SevenToSmoke: "7toSmoke",
-                  })}
-                </li>
-              </ul>,
-            ],
-            [
-              <strong key="loop">Loopstation</strong>,
-              <ul key="loop-ul" className="list-disc space-y-2 pl-8 text-left">
-                <li>
-                  {m.rule_special_loop_1({
-                    prevYear: String(prevYear),
-                    Loopstation: "Loopstation",
-                  })}
-                </li>
-                <li>{m.rule_special_loop_2({ Wildcard: WILDCARD })}</li>
-              </ul>,
-            ],
-            [
-              <strong key="crew">Crew</strong>,
-              m.rule_special_crew({ Showcase: SHOWCASE }),
-            ],
-          ]}
-        />
+        <RuleSubSection>
+          <RuleSubHeading>{m.rule_special_cases()}</RuleSubHeading>
+          <Table
+            data={[
+              [m.rule_col_item(), m.rule_col_description()],
+              [
+                <strong key="solo">Solo</strong>,
+                <ul key="solo-ul" className="list-disc space-y-2 pl-8 text-left">
+                  <li>
+                    {m.rule_special_solo_1({
+                      prevYear: String(prevYear),
+                      Wildcard: WILDCARD,
+                    })}
+                  </li>
+                  <li>{m.rule_special_solo_2({ Wildcard: WILDCARD })}</li>
+                  <li>
+                    {m.rule_special_solo_3({
+                      prevYear: String(prevYear),
+                      SevenToSmoke: "7toSmoke",
+                    })}
+                  </li>
+                </ul>,
+              ],
+              [
+                <strong key="loop">Loopstation</strong>,
+                <ul key="loop-ul" className="list-disc space-y-2 pl-8 text-left">
+                  <li>
+                    {m.rule_special_loop_1({
+                      prevYear: String(prevYear),
+                      Loopstation: "Loopstation",
+                    })}
+                  </li>
+                  <li>{m.rule_special_loop_2({ Wildcard: WILDCARD })}</li>
+                </ul>,
+              ],
+              [
+                <strong key="crew">Crew</strong>,
+                m.rule_special_crew({ Showcase: SHOWCASE }),
+              ],
+            ]}
+          />
+        </RuleSubSection>
 
+      </RuleSection>
+
+      <RuleSection variant="light">
         <RuleSectionHeading id="wildcard-rules-section">
           {m.rule_wildcard_deadline_title({
             deadline: m.rule_wildcard_deadline(),
@@ -599,62 +654,68 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           ]}
         />
 
-        <RuleSubHeading>
-          Solo
-          <br />
-          Loopstation
-          <br />
-          {m.rule_special_rules()}
-        </RuleSubHeading>
-        <p className={paragraphClass}>{m.rule_special_scoring()}</p>
+        <RuleSubSection>
+          <RuleSubHeading>
+            Solo
+            <br />
+            Loopstation
+            <br />
+            {m.rule_special_rules()}
+          </RuleSubHeading>
+          <p className={paragraphClass}>{m.rule_special_scoring()}</p>
+        </RuleSubSection>
 
-        <RuleSubHeading>
-          SHOWCASE (loopstation)
-          <br />
-          SHOWCASE (solo)
-          <br />
-          {m.rule_showcase_eligibility()}
-        </RuleSubHeading>
-        <p className={paragraphClass}>{m.rule_showcase_eligibility_intro()}</p>
-        <Table
-          data={[
-            [m.rule_eligibility_condition(), m.rule_eligibility_detail()],
-            [
-              m.rule_eligibility_past_gbb(),
-              <ul key="past" className="list-disc space-y-2 pl-8 text-left">
-                <li>{m.rule_eligibility_gbb2019()}</li>
-                <li>{m.rule_eligibility_7tosmoke({ SevenToSmoke: "7toSmoke" })}</li>
-              </ul>,
-            ],
-            [
-              `${WILDCARD} ${m.rule_eligibility_wildcard_rank()}`,
-              <ul key="wc" className="list-disc space-y-2 pl-8 text-left">
-                <li>Solo: {m.rule_eligibility_solo_top30()}</li>
-                <li>Loopstation: {m.rule_eligibility_loop_top20()}</li>
-              </ul>,
-            ],
-            [
-              m.rule_eligibility_pro(),
-              <ul key="pro" className="list-disc space-y-2 pl-8 text-left">
-                <li>{m.rule_eligibility_pro_show()}</li>
-                <li>{m.rule_eligibility_pro_performed()}</li>
-              </ul>,
-            ],
-            [
-              <>
-                {m.rule_eligibility_main_judge({ year: String(year) })}
-                <br />({m.rule_eligibility_main_judge_note()})
-              </>,
-              m.rule_eligibility_judge_ok(),
-            ],
-          ]}
-        />
-        <p className={paragraphClass}>
-          {m.rule_showcase_cannot_apply({ year: String(year) })}
-          <br />
-          {m.rule_showcase_age_limit({ year: String(year) })}
-        </p>
+        <RuleSubSection>
+          <RuleSubHeading>
+            SHOWCASE (loopstation)
+            <br />
+            SHOWCASE (solo)
+            <br />
+            {m.rule_showcase_eligibility()}
+          </RuleSubHeading>
+          <p className={paragraphClass}>{m.rule_showcase_eligibility_intro()}</p>
+          <Table
+            data={[
+              [m.rule_eligibility_condition(), m.rule_eligibility_detail()],
+              [
+                m.rule_eligibility_past_gbb(),
+                <ul key="past" className="list-disc space-y-2 pl-8 text-left">
+                  <li>{m.rule_eligibility_gbb2019()}</li>
+                  <li>{m.rule_eligibility_7tosmoke({ SevenToSmoke: "7toSmoke" })}</li>
+                </ul>,
+              ],
+              [
+                `${WILDCARD} ${m.rule_eligibility_wildcard_rank()}`,
+                <ul key="wc" className="list-disc space-y-2 pl-8 text-left">
+                  <li>Solo: {m.rule_eligibility_solo_top30()}</li>
+                  <li>Loopstation: {m.rule_eligibility_loop_top20()}</li>
+                </ul>,
+              ],
+              [
+                m.rule_eligibility_pro(),
+                <ul key="pro" className="list-disc space-y-2 pl-8 text-left">
+                  <li>{m.rule_eligibility_pro_show()}</li>
+                  <li>{m.rule_eligibility_pro_performed()}</li>
+                </ul>,
+              ],
+              [
+                <>
+                  {m.rule_eligibility_main_judge({ year: String(year) })}
+                  <br />({m.rule_eligibility_main_judge_note()})
+                </>,
+                m.rule_eligibility_judge_ok(),
+              ],
+            ]}
+          />
+          <p className={paragraphClass}>
+            {m.rule_showcase_cannot_apply({ year: String(year) })}
+            <br />
+            {m.rule_showcase_age_limit({ year: String(year) })}
+          </p>
+        </RuleSubSection>
+      </RuleSection>
 
+      <RuleSection variant="dark">
         <RuleSectionHeading id="main-judges-section">
           {m.rule_main_judges()}
         </RuleSectionHeading>
@@ -692,7 +753,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             {m.rule_referee_detail()}
           </p>
         </PostIt>
+      </RuleSection>
 
+      <RuleSection variant="light">
         <RuleSectionHeading id="wildcard-judges-section">
           {m.rule_wildcard_judges({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
@@ -781,30 +844,36 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             {m.rule_main_judges_link({ year: String(year) })}
           </a>
         </p>
+      </RuleSection>
 
+      <RuleSection variant="dark">
         <RuleSectionHeading id="second-league-section">
           {m.rule_second_league()}
         </RuleSectionHeading>
-        <RuleSubHeading>
-          {m.rule_official_name()}：Off The Lips Beatbox Battle
-        </RuleSubHeading>
-        <p className={paragraphClass}>
-          {m.rule_second_league_p1({ year: String(year), Solo: "Solo" })}
-          <br />
-          {m.rule_second_league_p2({ nextYear: String(nextYear), Solo: "Solo" })}
-        </p>
-        <PostIt>
-          <p>
-            {m.rule_runners_up({ Wildcard: WILDCARD })}
+        <RuleSubSection>
+          <RuleSubHeading>
+            {m.rule_official_name()}：Off The Lips Beatbox Battle
+          </RuleSubHeading>
+          <p className={paragraphClass}>
+            {m.rule_second_league_p1({ year: String(year), Solo: "Solo" })}
             <br />
-            {m.rule_runners_up_example({ Wildcard: WILDCARD })}
+            {m.rule_second_league_p2({ nextYear: String(nextYear), Solo: "Solo" })}
           </p>
-        </PostIt>
-        <p className={paragraphClass}>{m.rule_second_league_policy()}</p>
-        <p className={paragraphClass}>
-          {m.rule_second_league_replacement({ year: String(year), Solo: "Solo" })}
-        </p>
+          <PostIt>
+            <p>
+              {m.rule_runners_up({ Wildcard: WILDCARD })}
+              <br />
+              {m.rule_runners_up_example({ Wildcard: WILDCARD })}
+            </p>
+          </PostIt>
+          <p className={paragraphClass}>{m.rule_second_league_policy()}</p>
+          <p className={paragraphClass}>
+            {m.rule_second_league_replacement({ year: String(year), Solo: "Solo" })}
+          </p>
+        </RuleSubSection>
+      </RuleSection>
 
+      <RuleSection variant="light">
         <RuleSectionHeading id="thanks-section">
           {m.rule_thanks_title()}
         </RuleSectionHeading>
@@ -824,7 +893,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </a>
         </p>
         <p className={paragraphClass}>{m.rule_thanks_use()}</p>
-      </div>
+      </RuleSection>
     </main>
   );
 };
