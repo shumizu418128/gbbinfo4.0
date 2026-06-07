@@ -25,7 +25,7 @@ import {
   POPUP_HEADER_COLOR,
   POPUP_MAX_HEIGHT_PX,
   POPUP_SCROLL_THRESHOLD,
-  POPUP_WIDTH,
+  POPUP_MAX_WIDTH,
 } from "~/constants/worldMap.js";
 import { getCountryName } from "~/util/country.js";
 import { Flag } from "./Flag.js";
@@ -233,7 +233,7 @@ const buildPopupHtml = (marker: MapMarker): string => {
     )
     .join("");
 
-  return `<div style="width: ${POPUP_WIDTH}px; font-family: ${POPUP_FONT_FAMILY}; font-size: 14px;${scrollStyle}">${countryHeader}${participantsHtml}</div>`;
+  return `<div style="width: max-content; max-width: ${POPUP_MAX_WIDTH}px; font-family: ${POPUP_FONT_FAMILY}; font-size: 14px;${scrollStyle}">${countryHeader}${participantsHtml}</div>`;
 };
 
 /**
@@ -258,7 +258,7 @@ const createFlagMarker = (
 
   return L.marker([marker.lat, marker.lng], { icon: flagIcon }).bindPopup(
     buildPopupHtml(marker),
-    { minWidth: POPUP_WIDTH, maxWidth: POPUP_WIDTH },
+    { maxWidth: POPUP_MAX_WIDTH },
   );
 };
 
@@ -347,6 +347,7 @@ export const ParticipantWorldMap = ({
           height: MAP_HEIGHT_PX,
           borderColor: "var(--button-border-color)",
           backgroundColor: "var(--section-color)",
+          ["--popup-max-width" as string]: `${POPUP_MAX_WIDTH}px`,
         }}
       >
         <div ref={containerRef} className="h-full w-full" />

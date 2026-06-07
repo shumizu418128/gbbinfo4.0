@@ -34,4 +34,10 @@ body {
 
 .participant-world-map .leaflet-popup-content-wrapper {
   border-radius: 0;
+  width: max-content;
+}
+
+.participant-world-map .leaflet-popup-content {
+  width: max-content;
+  max-width: var(--popup-max-width);
 }

@@ -45,8 +45,8 @@ export const FLAG_ICON_ANCHOR: [number, number] = [24, 48];
 /** ポップアップ内 Flag コンポーネントの高さ (px)。FlagCDN の h 指定は 20 など対応値のみ。 */
 export const POPUP_FLAG_HEIGHT = 20;
 
-/** ポップアップの幅 (px)。 */
-export const POPUP_WIDTH = 150;
+/** ポップアップの最大幅 (px)。 */
+export const POPUP_MAX_WIDTH = 320;
 
 /** ポップアップをスクロール表示に切り替える参加者数の閾値。 */
 export const POPUP_SCROLL_THRESHOLD = 7;
