@@ -40,12 +40,12 @@ export const Dropdown = ({ trigger, items }: DropdownProps) => {
       </button>
 
       {isOpen && (
-        <div className="absolute z-20 min-w-24 bg-black right-0">
+        <div className="absolute top-full right-0 z-20 mt-2 min-w-24 overflow-hidden bg-zinc-800/80 shadow-lg backdrop-blur-md">
           {items.map((item) => (
             <a
               key={item.key}
               href={item.href}
-              className={`block text-center bg-(--button-background-color) ${
+              className={`block cursor-pointer p-2 text-center hover:bg-(--hover-background-color) ${
                 item.isActive ? "font-bold text-(--gbb-color)" : "font-bold text-white"
               }`}
               onClick={() => setIsOpen(false)}

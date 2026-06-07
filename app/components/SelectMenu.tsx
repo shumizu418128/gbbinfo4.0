@@ -90,7 +90,7 @@ export const SelectMenu = ({ label, items }: SelectMenuProps) => {
               href={item.href}
               role="option"
               aria-selected={item.isActive}
-              className="flex cursor-pointer items-center gap-2 p-2 text-white hover:bg-white/10"
+              className="flex cursor-pointer items-center gap-2 p-2 text-white hover:bg-(--hover-background-color)"
               onClick={() => setIsOpen(false)}
             >
               <span className="h-2 w-2 shrink-0 bg-(--gbb-color)" aria-hidden="true" />

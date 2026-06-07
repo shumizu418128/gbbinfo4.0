@@ -30,24 +30,31 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
           <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>
         <div className="space-y-4">
-          {participants.map((participant) => {
-            const countries = resolveParticipantCountries(participant);
+          {participants.length === 0 ? (
+            <div className="text-center text-2xl text-(--secondary-text-color) py-40">
+              coming soon...
+            </div>
+          ) : (
+            participants.map((participant) => {
+              const countries = resolveParticipantCountries(participant);
 
-            return (
-              <ParticipantCard
-                key={participant.id}
-                name={participant.name}
-                isCancelled={participant.isCancelled}
-                primaryInfo={
-                  countries.length > 0 ? (
-                    <ParticipantCountries countries={countries} locale={locale} />
-                  ) : undefined
-                }
-                secondaryInfo={<span>{participant.ticketClass}</span>}
-              />
-            );
-          })}
+              return (
+                <ParticipantCard
+                  key={participant.id}
+                  name={participant.name}
+                  isCancelled={participant.isCancelled}
+                  primaryInfo={
+                    countries.length > 0 ? (
+                      <ParticipantCountries countries={countries} locale={locale} />
+                    ) : undefined
+                  }
+                  secondaryInfo={<span>{participant.ticketClass}</span>}
+                />
+              );
+            })
+          )}
         </div>
+
         <div className="mt-10 flex justify-center">
           <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>

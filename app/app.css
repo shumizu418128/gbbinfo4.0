@@ -26,6 +26,7 @@ body {
   --background-color: rgb(5, 5, 5);
   --section-color: rgba(255,255,255,0.03);
   --button-background-color: rgba(255,255,255,0.08);
+  --hover-background-color: rgba(255,255,255,0.1);
   --button-border-color: rgba(255,255,255,0.12);
   --gbb-color: rgb(255, 100, 20);
   --secondary-text-color: rgba(255,255,255,0.8);
