@@ -16,7 +16,7 @@ export const ParticipantCard = ({
   isCancelled = false,
 }: ParticipantCardProps) => (
   <div
-    className="px-1 py-2 bg-opacity-10"
+    className="px-1 py-2 bg-opacity-10 max-w-lg mx-auto"
     style={{ backgroundColor: "var(--section-color)" }}
   >
     <div className="flex gap-2">
