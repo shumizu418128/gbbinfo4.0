@@ -1,4 +1,6 @@
 import { and, eq } from "drizzle-orm";
+import { MULTI_NATIONAL_ISO_CODE } from "~/constants/country.js";
+import { resolveParticipantCountries } from "~/util/country.js";
 import { sortParticipants } from "~/util/participant.js";
 import { getDb } from "./client.js";
 import { categoryTable, participantTable } from "./tables.js";
@@ -71,6 +73,20 @@ export const findParticipants = async (
     if (!row.country || !row.categoryInfo) {
       throw new Error(`Participant relations missing: id=${row.id}`);
     }
+
+    if (row.isoCode === MULTI_NATIONAL_ISO_CODE) {
+      const countries = resolveParticipantCountries({
+        country: row.country,
+        isoCode: row.isoCode,
+        members: row.members,
+      });
+      if (countries.length < 2) {
+        throw new Error(
+          `Multi-national participant requires at least 2 countries: id=${row.id}`,
+        );
+      }
+    }
+
     return row as WithRequired<typeof row, "country" | "categoryInfo">;
   });
 };

@@ -1,9 +1,8 @@
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { getCountryName } from "~/util/country.js";
-import { Flag } from "~/components/Flag.js";
-import * as m from '../../paraglide/messages';
-import { ParticipantAvatar } from "~/components/ParticipantAvatar.js";
+import { resolveParticipantCountries } from "~/util/country.js";
+import { ParticipantCountries } from "~/components/ParticipantCountries.js";
+import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
 import { useLocation } from "react-router";
 
@@ -31,33 +30,23 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
           <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>
         <div className="space-y-4">
-          {participants.map((participant) => (
-            <div
-              key={participant.id}
-              className="px-1 py-2 bg-opacity-10"
-              style={{ backgroundColor: "var(--section-color)" }}
-            >
-              <div className="flex gap-2">
-                <ParticipantAvatar src={`/images/${participant.name.toLowerCase()}.webp`} />
-                <div className="min-w-0 flex-1">
-                  <div className="font-semibold text-xl">
-                    {participant.isCancelled && (
-                      <span className="text-red-400">{m.cancelled()} - </span>
-                    )}
-                    {participant.name}
-                  </div>
-                  <div className="pt-2">
-                    {participant.country && (
-                      <span><Flag isoAlpha2={participant.country.isoAlpha2} /> {getCountryName(participant.country, locale)}</span>
-                    )}
-                  </div>
-                  <div className="text-sm pt-2 text-(--secondary-text-color)">
-                    <span>{participant.ticketClass}</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
+          {participants.map((participant) => {
+            const countries = resolveParticipantCountries(participant);
+
+            return (
+              <ParticipantCard
+                key={participant.id}
+                name={participant.name}
+                isCancelled={participant.isCancelled}
+                primaryInfo={
+                  countries.length > 0 ? (
+                    <ParticipantCountries countries={countries} locale={locale} />
+                  ) : undefined
+                }
+                secondaryInfo={<span>{participant.ticketClass}</span>}
+              />
+            );
+          })}
         </div>
         <div className="mt-10 flex justify-center">
           <SelectMenu label={selectedCategory} items={categoryItems} />
