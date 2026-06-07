@@ -93,7 +93,7 @@ export const SelectMenu = ({ label, items }: SelectMenuProps) => {
               className="flex cursor-pointer items-center gap-2 p-2 text-white hover:bg-white/10"
               onClick={() => setIsOpen(false)}
             >
-              <span className="h-2 w-2 shrink-0 rounded-full bg-(--gbb-color)" aria-hidden="true" />
+              <span className="h-2 w-2 shrink-0 bg-(--gbb-color)" aria-hidden="true" />
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
               {item.isActive && <CheckIcon />}
             </a>

@@ -20,11 +20,14 @@ export const ParticipantCard = ({
     style={{ backgroundColor: "var(--section-color)" }}
   >
     <div className="flex gap-2">
-      <ParticipantAvatar src={`/images/${name.toLowerCase()}.webp`} />
+      <ParticipantAvatar name={name} />
       <div className="min-w-0 flex-1">
         <div className="font-semibold text-xl">
           {isCancelled && (
-            <span className="text-red-400">{m.cancelled()} - </span>
+            <>
+              <span className="text-red-400">{m.cancelled()}</span>
+              <br />
+            </>
           )}
           {name}
         </div>
