@@ -3,6 +3,7 @@ import orderBy from "lodash/orderBy.js";
 /** 参加者一覧ソートに必要な最小フィールド。 */
 export type ParticipantSortable = {
   id: number;
+  category: number;
   isCancelled: boolean;
   ticketClass: string;
   country?: { isoCode: number } | null;
@@ -37,11 +38,12 @@ const getWildcardRank = (
  *
  * 優先順位:
  *   1. 未キャンセルを上
- *   2. 出場者未定 (iso_codeが0) は下
- *   3. GBB Seed を上
- *   4. Wildcard 通過者を下
- *   5. Wildcard 同士は年・順位昇順
- *   6. それ以外は id 昇順
+ *   2. カテゴリ ID 昇順
+ *   3. 出場者未定 (iso_codeが0) は下
+ *   4. GBB Seed を上
+ *   5. Wildcard 通過者を下
+ *   6. Wildcard 同士は年・順位昇順
+ *   7. それ以外は id 昇順
  *
  * Args:
  *   rows: ソート対象の参加者一覧。
@@ -56,6 +58,7 @@ export const sortParticipants = <T extends ParticipantSortable>(
     rows,
     [
       (participant) => Number(participant.isCancelled),
+      (participant) => participant.category,
       (participant) => Number(participant.country?.isoCode === 0),
       (participant) => Number(!participant.ticketClass.includes("GBB")),
       (participant) => Number(participant.ticketClass.includes("Wildcard")),
@@ -63,5 +66,5 @@ export const sortParticipants = <T extends ParticipantSortable>(
       (participant) => getWildcardRank(participant)[1],
       (participant) => participant.id,
     ],
-    ["asc", "asc", "asc", "asc", "asc", "asc", "asc"],
+    ["asc", "asc", "asc", "asc", "asc", "asc", "asc", "asc"],
   );
