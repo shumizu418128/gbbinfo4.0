@@ -1,4 +1,4 @@
-import type { Route } from "../common/+types/top.js";
+import type { Route } from "./+types/top.js";
 import { TopContent } from "../../2026/TopContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
@@ -12,19 +12,20 @@ import { Dev } from "~/components/Dev.js";
 import { createMeta } from "~/util/meta.js";
 import { cache } from "~/constants/cache.js";
 
+const YEAR = 2026;
+
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();
 
   const locale = requireLocale(params.lang);
-  const year = Number(params.year);
   const latestYear = new Date().getFullYear();
 
-  const yearWithCountry = await findYearWithCountry(year);
+  const yearWithCountry = await findYearWithCountry(YEAR);
 
   const returnData = { env, locale, yearWithCountry };
 
   // 最新年以外を取得する場合は、最新年のデータも取得する
-  if (year !== latestYear) {
+  if (YEAR !== latestYear) {
     const latestYearWithCountry = await findYearWithCountry(latestYear);
     return { ...returnData, latestYearWithCountry };
   }
@@ -38,9 +39,8 @@ export const headers: Route.HeadersFunction = () => {
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const env = data?.env;
-  const yearWithCountry = data?.yearWithCountry;
 
-  const title = `GBB ${yearWithCountry.year}`;
+  const title = `GBB ${YEAR}`;
   return createMeta(env, title);
 }
 

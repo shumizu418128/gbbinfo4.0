@@ -1,4 +1,4 @@
-import type { Route } from "../common/+types/participants.js";
+import type { Route } from "./+types/participants.js";
 import { ParticipantsContent } from "../../2026/ParticipantsContent.js";
 import { HeaderMenu } from "../../components/HeaderMenu.js";
 import { HeroImage } from "../../components/HeroImage.js";
@@ -10,11 +10,13 @@ import { findYearWithCountry } from "../../db/year.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
-import * as m from '../../../paraglide/messages';
+import * as m from '../../../paraglide/messages.js';
 import { cache } from "~/constants/cache.js";
 import type { Category } from "~/constants/participantLabels.js";
 import { findParticipants } from "~/db/participant.js";
 import { findCategoriesByIds } from "~/db/category.js";
+
+const YEAR = 2026;
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const url = new URL(request.url);
@@ -23,10 +25,9 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const env = envCheck();
 
   const locale = requireLocale(params.lang);
-  const year = Number(params.year);
   const latestYear = new Date().getFullYear();
 
-  const yearWithCountry = await findYearWithCountry(year);
+  const yearWithCountry = await findYearWithCountry(YEAR);
   const validCategories = await findCategoriesByIds(yearWithCountry.categories ?? []);
 
   // カテゴリが存在しない場合、デフォルト値を付与してリダイレクト
@@ -37,12 +38,12 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const selectedCategory = validCategories.find(c => c.name === category)!.name;
   const validCategoryNames = validCategories.map(c => c.name);
 
-  const participants = await findParticipants(year, selectedCategory, null, null);
+  const participants = await findParticipants(YEAR, selectedCategory, null, null);
 
   const returnData = { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory };
 
   // 最新年以外を取得する場合は、最新年のデータも取得する
-  if (year !== latestYear) {
+  if (YEAR !== latestYear) {
     const latestYearWithCountry = await findYearWithCountry(latestYear);
     return { ...returnData, latestYearWithCountry };
   }
@@ -56,9 +57,8 @@ export const headers: Route.HeadersFunction = () => {
 
 export const meta = ({ data }: Route.MetaArgs) => {
   const env = data?.env;
-  const yearWithCountry = data?.yearWithCountry;
 
-  const title = `GBB ${yearWithCountry.year} ${m.wildcard_result_and_participants({ Wildcard: "Wildcard" })}`;
+  const title = `GBB ${YEAR} ${m.wildcard_result_and_participants({ Wildcard: "Wildcard" })}`;
   return createMeta(env, title);
 }
 
