@@ -41,7 +41,7 @@ export const Flag: React.FC<FlagProps> = ({
         alt={alt}
         className={className}
         loading="lazy"
-        style={{ display: "inline-block", verticalAlign: "middle" }}
+        style={{ display: "inline-block", verticalAlign: "middle", paddingBottom: "2px" }}
       />
     </picture>
   );
