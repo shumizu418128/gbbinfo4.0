@@ -54,14 +54,17 @@ const RuleSection = ({
 
 const RuleSectionHeading = ({
   id,
+  scrollKey,
   children,
   className = sectionClass,
 }: {
   id: string;
+  /** 3.0 互換の ?scroll= 値。id と異なるときのみ指定する。 */
+  scrollKey?: string;
   children: ReactNode;
   className?: string;
 }) => (
-  <h2 id={id} className={className}>
+  <h2 id={id} data-scroll-key={scrollKey} className={className}>
     {children}
   </h2>
 );
@@ -371,7 +374,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           <RuleSeedTable participants={seedData.cancelled} cancelled />
         </RuleSubSection>
 
-        <div className="mb-8 flex justify-center">
+        <div className="mb-8 flex justify-center pt-8">
           <LinkCard
             text={
               <span>
@@ -485,7 +488,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
       </RuleSection>
 
       <RuleSection variant="light">
-        <RuleSectionHeading id="wildcard-rules-section">
+        <RuleSectionHeading id="wildcard-rules-section" scrollKey="result_date">
           {m.rule_wildcard_deadline_title({
             deadline: m.rule_wildcard_deadline(),
           })}
@@ -654,7 +657,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
       </RuleSection>
 
       <RuleSection variant="dark">
-        <RuleSectionHeading id="main-judges-section">
+        <RuleSectionHeading id="main-judges-section" scrollKey="judges">
           {m.rule_main_judges()}
         </RuleSectionHeading>
         <p className="mb-4 text-center">

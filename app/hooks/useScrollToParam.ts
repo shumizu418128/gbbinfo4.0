@@ -1,15 +1,7 @@
 import { useEffect, useLayoutEffect, useRef } from "react";
 import { useLocation, useSearchParams } from "react-router";
 
-/** ?scroll= クエリとセクション id の対応（3.0 互換）。 */
-const SCROLL_TARGETS: Record<string, string> = {
-  category: "category-section",
-  "comeback-wildcard": "comeback-wildcard-section",
-  seeds: "seeds-section",
-  result_date: "wildcard-rules-section",
-  judges: "main-judges-section",
-  "second-league": "second-league-section",
-};
+const SECTION_ID_SUFFIX = "-section";
 
 const HEADER_OFFSET = 50;
 
@@ -20,6 +12,10 @@ if (typeof window !== "undefined" && "scrollRestoration" in history) {
 /**
  * scroll クエリまたは hash からスクロール先のセクション id を解決する。
  *
+ * `?scroll=` は次の順で解決する。
+ * 1. `data-scroll-key` が一致する要素の id（3.0 互換の別名）
+ * 2. `{scrollTarget}-section` が DOM に存在する id
+ *
  * @param scrollTarget `?scroll=` の値。
  * @param hash 現在の location.hash（先頭 `#` 付き）。
  * @returns スクロール先 id。該当なしのとき null。
@@ -28,8 +24,18 @@ const resolveSectionId = (
   scrollTarget: string | null,
   hash: string,
 ): string | null => {
-  if (scrollTarget && SCROLL_TARGETS[scrollTarget]) {
-    return SCROLL_TARGETS[scrollTarget];
+  if (scrollTarget) {
+    const byScrollKey = document.querySelector(
+      `[data-scroll-key="${CSS.escape(scrollTarget)}"]`,
+    );
+    if (byScrollKey instanceof HTMLElement && byScrollKey.id) {
+      return byScrollKey.id;
+    }
+
+    const conventionalId = `${scrollTarget}${SECTION_ID_SUFFIX}`;
+    if (document.getElementById(conventionalId)) {
+      return conventionalId;
+    }
   }
 
   if (hash.length > 1) {
