@@ -22,6 +22,13 @@ export const LinkCard = ({
   const cardWidth = "calc((100% - 16px) / 2)";
   const disabledBackgroundColor = "rgba(0, 0, 0, 0.6)";
   const unavailableBackgroundColor = "rgba(0, 0, 0, 0.8)";
+  const isInteractive = !disabled && !unavailable;
+  const hoverBackgroundClass = isInteractive
+    ? "transition-colors duration-150 hover:bg-(--gbb-color)"
+    : "";
+  const groupHoverBackgroundClass = isInteractive
+    ? "transition-colors duration-150 group-hover:bg-(--gbb-color)"
+    : "";
 
   const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (disabled) {
@@ -46,7 +53,7 @@ export const LinkCard = ({
 
     return (
       <a
-        className="inline-flex flex-col items-stretch justify-start font-bold text-white"
+        className={`inline-flex flex-col items-stretch justify-start font-bold text-white ${isInteractive ? "group" : ""}`}
         style={{
           position: "relative",
           fontSize,
@@ -107,6 +114,7 @@ export const LinkCard = ({
           ) : null}
         </div>
         <div
+          className={`bg-(--button-background-color) ${groupHoverBackgroundClass}`}
           style={{
             position: "relative",
             width: "100%",
@@ -117,7 +125,6 @@ export const LinkCard = ({
             alignItems: "center",
             justifyContent: "center",
             textAlign: "center",
-            background: "var(--button-background-color)",
             fontSize: fontSizePx,
           }}
         >
@@ -139,7 +146,7 @@ export const LinkCard = ({
 
   return (
     <a
-      className="inline-flex items-center justify-center font-bold text-white"
+      className={`inline-flex items-center justify-center font-bold text-white bg-(--button-background-color) ${hoverBackgroundClass}`}
       style={{
         position: "relative",
         fontSize,
@@ -150,7 +157,6 @@ export const LinkCard = ({
         boxSizing: "border-box",
         textAlign: "center",
         lineHeight: 1.333,
-        background: "var(--button-background-color)",
         textDecorationColor: "var(--gbb-color)",
         cursor: disabled || unavailable ? "not-allowed" : "pointer",
       }}

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { LinkCard } from "~/components/LinkCard.js";
+import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
-import { Flag } from "~/components/Flag.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { useScrollToParam } from "~/hooks/useScrollToParam.js";
@@ -27,7 +27,7 @@ type RuleSectionVariant = "dark" | "light";
 
 const sectionClass = "mb-4 text-2xl font-bold";
 const tocSectionClass = "mb-4 text-2xl font-bold";
-const paragraphClass = "mb-4 text-(--secondary-text-color) leading-relaxed";
+const paragraphClass = "mb-4 leading-relaxed";
 const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-(--rule-hover-text)";
 const subSectionClass = "mb-4 font-bold";
@@ -37,7 +37,7 @@ const postItClass = "my-4 border-l-4 border-(--gbb-color) bg-(--post-it-color) p
 const ruleSectionVariantClass: Record<RuleSectionVariant, string> = {
   dark: "bg-(--background-color) py-16 text-white [--section-color:rgba(255,255,255,0.03)] [--rule-hover-text:#fff] [--table-border-color:rgba(255,255,255,0.2)]",
   light:
-    "bg-gray-50 py-16 text-black [--section-color:rgba(0,0,0,0.03)] [--secondary-text-color:rgba(0,0,0,0.8)] [--post-it-color:rgba(0,0,0,0.08)] [--button-background-color:rgba(0,0,0,0.85)] [--rule-hover-text:#000] [--table-border-color:rgba(0,0,0,0.2)]",
+    "bg-gray-100 py-16 text-black [--section-color:rgba(0,0,0,0.03)] [--post-it-color:rgba(0,0,0,0.08)] [--button-background-color:rgba(0,0,0,0.85)] [--rule-hover-text:#000] [--table-border-color:rgba(0,0,0,0.2)]",
 };
 
 const RuleSection = ({
@@ -80,73 +80,6 @@ const PostIt = ({ children }: { children: ReactNode }) => (
   </div>
 );
 
-const RuleSeedTable = ({
-  participants,
-  cancelled = false,
-}: {
-  participants: ParticipantWithRelations[];
-  cancelled?: boolean;
-}) => {
-  if (participants.length === 0) {
-    return (
-      <p className="mb-4 text-(--secondary-text-color) italic">
-        {m.rule_update_pending()}
-      </p>
-    );
-  }
-
-  return (
-    <table className="mx-auto mb-8 w-[95%] border-collapse text-sm">
-      <thead>
-        <tr className="border-b border-(--table-border-color) bg-(--section-color)">
-          <th className="p-2 font-bold">{m.rule_col_category()}</th>
-          <th className="p-2 font-bold">{m.rule_col_name()}</th>
-          <th className="p-2 font-bold">{m.rule_col_ticket()}</th>
-        </tr>
-      </thead>
-      <tbody>
-        {participants.map((participant, index) => {
-          const isoAlpha2 = participant.country.isoAlpha2?.toLowerCase() ?? null;
-          const showFlag =
-            participant.name !== "???" && isoAlpha2 !== null && !cancelled;
-
-          return (
-            <tr
-              key={participant.id}
-              className={index % 2 === 1 ? "bg-(--section-color)" : undefined}
-            >
-              <td className={`p-2 ${cancelled ? "line-through" : ""}`}>
-                {participant.categoryInfo.name}
-              </td>
-              <td className="p-2">
-                {cancelled ? (
-                  <>
-                    <span className="block">【{m.cancelled()}】</span>
-                    {isoAlpha2 ? (
-                      <Flag isoAlpha2={isoAlpha2} className="mr-1" />
-                    ) : null}
-                    <span className="line-through">{participant.name}</span>
-                  </>
-                ) : (
-                  <>
-                    {showFlag ? (
-                      <Flag isoAlpha2={isoAlpha2} className="mr-1" />
-                    ) : null}
-                    {participant.name}
-                  </>
-                )}
-              </td>
-              <td className={`p-2 ${cancelled ? "line-through" : ""}`}>
-                {participant.ticketClass}
-              </td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  );
-};
-
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
   useScrollToParam();
 
@@ -155,58 +88,63 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
   const participantsPath = `/${locale}/${year}/participants`;
 
   return (
-    <main className="pt-16">
+    <main className="bg-(--background-color) pt-16">
       <RuleSection variant="dark">
         <RuleSectionHeading id="toc-section" className={tocSectionClass}>
           {m.rule_toc()}
         </RuleSectionHeading>
-        <ol className="mb-8 list-decimal space-y-2 pl-8 text-(--secondary-text-color)">
-            <li>
-              <a href="#notices-section" className={anchorClass}>
-                {m.rule_toc_notices()}
-              </a>
-            </li>
-            <li>
-              <a href="#category-section" className={anchorClass}>
-                {m.rule_toc_categories()}
-              </a>
-            </li>
-            <li>
-              <a href="#comeback-wildcard-section" className={anchorClass}>
-                COMEBACK Wildcard
-              </a>
-            </li>
-            <li>
-              <a href="#seeds-section" className={anchorClass}>
-                {m.rule_toc_challenger()}
-              </a>
-            </li>
-            <li>
-              <a href="#replacement-section" className={anchorClass}>
-                {m.rule_toc_replacement()}
-              </a>
-            </li>
-            <li>
-              <a href="#wildcard-rules-section" className={anchorClass}>
-                Wildcard {m.rule_wildcard_deadline()}
-              </a>
-            </li>
-            <li>
-              <a href="#main-judges-section" className={anchorClass}>
-                GBB {year} {m.rule_main_judges()}
-              </a>
-            </li>
-            <li>
-              <a href="#wildcard-judges-section" className={anchorClass}>
-                {m.rule_wildcard_judges({ Wildcard: WILDCARD })}
-              </a>
-            </li>
-            <li>
-              <a href="#second-league-section" className={anchorClass}>
-                {m.rule_second_league()}
-              </a>
-            </li>
-          </ol>
+        <ol className="mb-8 list-decimal space-y-2 pl-8">
+          <li>
+            <a href="#notices-section" className={anchorClass}>
+              {m.rule_toc_notices()}
+            </a>
+          </li>
+          <li>
+            <a href="#category-section" className={anchorClass}>
+              {m.rule_toc_categories()}
+            </a>
+          </li>
+          <li>
+            <a href="#showcase-detail-section" className={anchorClass}>
+              {m.rule_showcase_title({ SHOWCASE })}
+            </a>
+          </li>
+          <li>
+            <a href="#comeback-wildcard-section" className={anchorClass}>
+              COMEBACK Wildcard
+            </a>
+          </li>
+          <li>
+            <a href="#seeds-section" className={anchorClass}>
+              {m.rule_toc_challenger()}
+            </a>
+          </li>
+          <li>
+            <a href="#replacement-section" className={anchorClass}>
+              {m.rule_toc_replacement()}
+            </a>
+          </li>
+          <li>
+            <a href="#wildcard-rules-section" className={anchorClass}>
+              Wildcard {m.rule_wildcard_deadline()}
+            </a>
+          </li>
+          <li>
+            <a href="#main-judges-section" className={anchorClass}>
+              GBB {year} {m.rule_main_judges()}
+            </a>
+          </li>
+          <li>
+            <a href="#wildcard-judges-section" className={anchorClass}>
+              {m.rule_wildcard_judges({ Wildcard: WILDCARD })}
+            </a>
+          </li>
+          <li>
+            <a href="#second-league-section" className={anchorClass}>
+              {m.rule_second_league()}
+            </a>
+          </li>
+        </ol>
       </RuleSection>
 
       <RuleSection variant="light">
@@ -355,7 +293,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
         <RuleSubSection>
           <RuleSubHeading>{m.rule_selection_flow()}</RuleSubHeading>
-          <ol className="mb-8 list-decimal space-y-4 pl-8 text-(--secondary-text-color)">
+          <ol className="mb-8 list-decimal space-y-4 pl-8">
           <li>
             <strong>{m.rule_judge_nomination()}</strong>
             <br />
@@ -399,7 +337,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_seeds_title()}
         </RuleSectionHeading>
         <p className={paragraphClass}>{m.rule_seeds_intro()}</p>
-        <ul className="mb-8 list-disc space-y-2 pl-8 text-(--secondary-text-color)">
+        <ul className="mb-8 list-disc space-y-2 pl-8">
           <li>
             GBB {prevYear} {m.rule_top_winners()}
           </li>
