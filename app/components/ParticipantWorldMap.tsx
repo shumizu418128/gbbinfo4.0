@@ -21,11 +21,9 @@ import {
   NASA_GIBS_SUBDOMAINS,
   NASA_GIBS_TILES,
   POPUP_FLAG_HEIGHT,
-  POPUP_FONT_FAMILY,
-  POPUP_HEADER_COLOR,
   POPUP_MAX_HEIGHT_PX,
-  POPUP_SCROLL_THRESHOLD,
   POPUP_MAX_WIDTH,
+  POPUP_SCROLL_THRESHOLD,
 } from "~/constants/worldMap.js";
 import { getCountryName } from "~/util/country.js";
 import { Flag } from "./Flag.js";
@@ -91,7 +89,7 @@ const renderFlagMarkup = (isoAlpha2: string | null, height: number): string => {
     <Flag
       isoAlpha2={isoAlpha2.toLowerCase()}
       height={height}
-      className="mr-2"
+      className=""
       loading="eager"
     />,
   );
@@ -217,23 +215,23 @@ const buildMapMarkers = (
  *   Leaflet Popup 用 HTML 文字列。
  */
 const buildPopupHtml = (marker: MapMarker): string => {
-  const scrollStyle =
+  const scrollableClass =
     marker.participants.length > POPUP_SCROLL_THRESHOLD
-      ? ` max-height: ${POPUP_MAX_HEIGHT_PX}px; overflow-y: scroll;`
+      ? " participant-popup--scrollable"
       : "";
 
   const flagHtml = renderFlagMarkup(marker.isoAlpha2, POPUP_FLAG_HEIGHT);
 
-  const countryHeader = `<h3 style="margin: 0; color: ${POPUP_HEADER_COLOR}; font-weight: bold;">${flagHtml}${escapeHtml(marker.countryName)}</h3>`;
+  const countryHeader = `<div class="participant-popup__header"><span class="participant-popup__flag">${flagHtml}</span><span class="participant-popup__country">${escapeHtml(marker.countryName)}</span></div>`;
 
   const participantsHtml = marker.participants
     .map(
       (participant) =>
-        `<p style="margin: 0;">${escapeHtml(participant.name)}</p>`,
+        `<p class="participant-popup__name">${escapeHtml(participant.name)}</p>`,
     )
     .join("");
 
-  return `<div style="width: max-content; max-width: ${POPUP_MAX_WIDTH}px; font-family: ${POPUP_FONT_FAMILY}; font-size: 14px;${scrollStyle}">${countryHeader}${participantsHtml}</div>`;
+  return `<div class="participant-popup${scrollableClass}">${countryHeader}<div class="participant-popup__names">${participantsHtml}</div></div>`;
 };
 
 /**
@@ -348,6 +346,7 @@ export const ParticipantWorldMap = ({
           borderColor: "var(--button-border-color)",
           backgroundColor: "var(--section-color)",
           ["--popup-max-width" as string]: `${POPUP_MAX_WIDTH}px`,
+          ["--popup-max-height" as string]: `${POPUP_MAX_HEIGHT_PX}px`,
         }}
       >
         <div ref={containerRef} className="h-full w-full" />
