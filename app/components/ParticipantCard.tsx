@@ -25,7 +25,7 @@ export const ParticipantCard = ({
         <div className="font-semibold text-xl">
           {isCancelled && (
             <>
-              <span className="text-red-400">{m.cancelled()}</span>
+              <span className="text-(--gbb-color)">{m.cancelled()}</span>
               <br />
             </>
           )}

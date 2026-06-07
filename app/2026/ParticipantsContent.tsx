@@ -29,7 +29,12 @@ export const ParticipantsContent = ({ participants, locale, categoryNames, selec
         <div className="mb-10 flex justify-center">
           <SelectMenu label={selectedCategory} items={categoryItems} />
         </div>
-        <div className="space-y-4">
+
+        <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
+          {selectedCategory}: {participants.length} beatboxers
+        </div>
+
+        <div className="space-y-6">
           {participants.length === 0 ? (
             <div className="text-center text-2xl text-(--secondary-text-color) py-40">
               coming soon...
