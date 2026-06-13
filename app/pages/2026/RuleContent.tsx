@@ -584,22 +584,14 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
         <RuleSubSection>
           <RuleSubHeading>
-            Solo
-            <br />
-            Loopstation
-            <br />
-            {m.rule_special_rules()}
+            Solo / Loopstation {m.rule_special_rules()}
           </RuleSubHeading>
           <p className={paragraphClass}>{m.rule_special_scoring()}</p>
         </RuleSubSection>
 
         <RuleSubSection>
           <RuleSubHeading>
-            SHOWCASE (loopstation)
-            <br />
-            SHOWCASE (solo)
-            <br />
-            {m.rule_showcase_eligibility()}
+            SHOWCASE (loopstation) / SHOWCASE (solo) {m.rule_showcase_eligibility()}
           </RuleSubHeading>
           <p className={paragraphClass}>{m.rule_showcase_eligibility_intro()}</p>
           <Table

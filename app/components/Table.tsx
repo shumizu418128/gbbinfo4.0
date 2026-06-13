@@ -9,7 +9,7 @@ export const Table: React.FC<TableProps> = ({ data, textCenter = false }) => {
   if (!data || data.length === 0) return null;
 
   return (
-    <table className="mx-auto w-[95%] border-collapse">
+    <table className="mx-auto w-[95%] border-collapse my-4">
       <thead>
         <tr className="border-b border-(--table-border-color) bg-(--section-color)">
           {data[0].map((cell, j) => (
