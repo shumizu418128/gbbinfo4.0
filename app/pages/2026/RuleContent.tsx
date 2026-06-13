@@ -23,31 +23,18 @@ const WILDCARD = "Wildcard";
 const SHOWCASE = "SHOWCASE";
 const SWISSBEATBOX = "Swissbeatbox";
 
-type RuleSectionVariant = "dark" | "light";
-
 const sectionClass = "mb-4 text-2xl font-bold";
 const tocSectionClass = "mb-4 text-2xl font-bold";
 const paragraphClass = "mb-4 leading-relaxed";
 const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-(--rule-hover-text)";
 const subSectionClass = "mb-4 font-bold";
-const ruleSubSectionClass = "mt-8 bg-(--section-color) p-8";
+const ruleSubSectionClass = "mt-8 bg-(--section-color) px-4 py-8";
 const postItClass = "my-4 border-l-4 border-(--gbb-color) bg-(--post-it-color) p-4";
+const ruleSectionClass = "bg-(--background-color) py-16 text-white";
 
-const ruleSectionVariantClass: Record<RuleSectionVariant, string> = {
-  dark: "bg-(--background-color) py-16 text-white [--section-color:rgba(255,255,255,0.03)] [--rule-hover-text:#fff] [--table-border-color:rgba(255,255,255,0.2)]",
-  light:
-    "bg-gray-100 py-16 text-black [--section-color:rgba(0,0,0,0.03)] [--post-it-color:rgba(0,0,0,0.08)] [--button-background-color:rgba(0,0,0,0.85)] [--rule-hover-text:#000] [--table-border-color:rgba(0,0,0,0.2)]",
-};
-
-const RuleSection = ({
-  variant,
-  children,
-}: {
-  variant: RuleSectionVariant;
-  children: ReactNode;
-}) => (
-  <section className={ruleSectionVariantClass[variant]}>
+const RuleSection = ({ children }: { children: ReactNode }) => (
+  <section className={ruleSectionClass}>
     <div className="mx-auto w-full max-w-2xl px-4">{children}</div>
   </section>
 );
@@ -92,7 +79,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
   return (
     <main className="bg-(--background-color) pt-16">
-      <RuleSection variant="dark">
+      <RuleSection>
         <RuleSectionHeading id="toc-section" className={tocSectionClass}>
           {m.rule_toc()}
         </RuleSectionHeading>
@@ -150,7 +137,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </ol>
       </RuleSection>
 
-      <RuleSection variant="light">
+      <RuleSection>
         <RuleSectionHeading id="notices-section">
           {m.rule_toc_notices()}
         </RuleSectionHeading>
@@ -168,7 +155,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
       </RuleSection>
 
-      <RuleSection variant="dark">
+      <RuleSection>
         <RuleSectionHeading id="category-section">
           {m.rule_toc_categories()}
         </RuleSectionHeading>
@@ -244,7 +231,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
       </RuleSection>
 
-      <RuleSection variant="light">
+      <RuleSection>
         <RuleSectionHeading id="showcase-detail-section">
           {m.rule_showcase_title({ SHOWCASE })}
         </RuleSectionHeading>
@@ -277,7 +264,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </div>
       </RuleSection>
 
-      <RuleSection variant="dark">
+      <RuleSection>
         <RuleSectionHeading id="comeback-wildcard-section">
           COMEBACK Wildcard
         </RuleSectionHeading>
@@ -335,7 +322,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
       </RuleSection>
 
-      <RuleSection variant="light">
+      <RuleSection>
         <RuleSectionHeading id="seeds-section">
           {m.rule_seeds_title()}
         </RuleSectionHeading>
@@ -387,7 +374,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </div>
       </RuleSection>
 
-      <RuleSection variant="dark">
+      <RuleSection>
         <RuleSectionHeading id="replacement-section">
           {m.rule_replacement_title()}
         </RuleSectionHeading>
@@ -487,7 +474,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
       </RuleSection>
 
-      <RuleSection variant="light">
+      <RuleSection>
         <RuleSectionHeading id="wildcard-rules-section" scrollKey="result_date">
           {m.rule_wildcard_deadline_title({
             deadline: m.rule_wildcard_deadline(),
@@ -656,7 +643,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
       </RuleSection>
 
-      <RuleSection variant="dark">
+      <RuleSection>
         <RuleSectionHeading id="main-judges-section" scrollKey="judges">
           {m.rule_main_judges()}
         </RuleSectionHeading>
@@ -696,7 +683,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </PostIt>
       </RuleSection>
 
-      <RuleSection variant="light">
+      <RuleSection>
         <RuleSectionHeading id="wildcard-judges-section">
           {m.rule_wildcard_judges({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
@@ -787,7 +774,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
       </RuleSection>
 
-      <RuleSection variant="dark">
+      <RuleSection>
         <RuleSectionHeading id="second-league-section">
           {m.rule_second_league()}
         </RuleSectionHeading>
@@ -814,7 +801,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
       </RuleSection>
 
-      <RuleSection variant="light">
+      <RuleSection>
         <RuleSectionHeading id="thanks-section">
           {m.rule_thanks_title()}
         </RuleSectionHeading>
