@@ -12,4 +12,5 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 COPY --from=build /app/build ./build
+COPY font ./font
 CMD ["npm", "run", "start"]

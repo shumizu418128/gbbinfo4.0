@@ -10,12 +10,12 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { getLocale } from "../paraglide/runtime";
-import { staticAssetUrl } from "~/util/staticAsset.js";
+import { fontAssetUrl } from "~/util/fontAsset.js";
 
 const avertaFontFace = `
 @font-face {
   font-family: "Averta ExtraBold";
-  src: url("${staticAssetUrl("/fonts/Averta-ExtraBold.woff2")}") format("woff2");
+  src: url("${fontAssetUrl("Averta-ExtraBold.woff2")}") format("woff2");
   font-weight: 800;
   font-style: normal;
   font-display: swap;
