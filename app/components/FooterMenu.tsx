@@ -1,5 +1,6 @@
 import type { YearWithCountry } from "../db/year";
 import { GbbCountdown } from "./GbbCountdown.js";
+import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type FooterMenuProps = {
   latestYearWithCountry: YearWithCountry;
@@ -26,7 +27,7 @@ export const FooterMenu = ({ latestYearWithCountry }: FooterMenuProps) => {
         <div className="flex flex-col items-center justify-center">
           <a href="#" className="flex flex-col items-center pb-36">
             <img
-              src="/images/background.webp"
+              src={staticAssetUrl("/images/background.webp")}
               alt=""
               width={1280}
               height={720}

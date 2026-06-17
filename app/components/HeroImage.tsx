@@ -1,5 +1,6 @@
 import type { YearWithCountry } from "../db/year";
 import { Flag } from "./Flag";
+import { staticAssetUrl } from "~/util/staticAsset.js";
 
 export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { yearWithCountry: YearWithCountry, subtitle?: string }) => {
   const { year, city } = yearWithCountry;
@@ -9,7 +10,7 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { y
       <div className="relative w-full h-screen">
 
         <img
-          src="/images/background.webp"
+          src={staticAssetUrl("/images/background.webp")}
           alt="Grand Beatbox Battle"
           width={1920}
           height={1080}

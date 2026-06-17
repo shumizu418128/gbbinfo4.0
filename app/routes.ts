@@ -1,8 +1,7 @@
 import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 export default [
-  // public/images に無い画像に対し、明示的に 404 を返す
-  // 将来的にR2に接続したら不要になる見込み
+  // アプリサーバーへ到達した /images/* を 404 で返す（実体は R2 から取得）
   route("/images/*", "routes/images.tsx"),
 
   // ルートパスでは常に現在の年度のトップページにリダイレクトする

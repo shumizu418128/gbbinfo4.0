@@ -1,5 +1,6 @@
 import type { MouseEvent } from "react";
 import * as m from "../../paraglide/messages";
+import { staticAssetUrl } from "~/util/staticAsset.js";
 
 export const LinkCard = ({
   text,
@@ -79,7 +80,7 @@ export const LinkCard = ({
           }}
         >
           <img
-            src={image}
+            src={staticAssetUrl(image)}
             alt=""
             width={imageWidth}
             height={imageHeight}

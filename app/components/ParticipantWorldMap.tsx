@@ -26,6 +26,7 @@ import {
   POPUP_SCROLL_THRESHOLD,
 } from "~/constants/worldMap.js";
 import { getCountryName } from "~/util/country.js";
+import { staticAssetUrl } from "~/util/staticAsset.js";
 type ParticipantWorldMapProps = {
   participants: ParticipantWithRelations[];
   locale: SupportedLanguage;
@@ -67,7 +68,7 @@ const escapeHtml = (value: string): string =>
  *   /images/flags/{enName}.webp 形式の URL。
  */
 const getLocalFlagImageUrl = (countryEnName: string): string =>
-  `${FLAG_IMAGE_PATH_PREFIX}/${encodeURIComponent(countryEnName)}.webp`;
+  staticAssetUrl(`${FLAG_IMAGE_PATH_PREFIX}/${encodeURIComponent(countryEnName)}.webp`);
 
 /**
  * ポップアップ用の国旗 img タグを生成する。

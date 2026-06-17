@@ -1,4 +1,5 @@
 import { useCallback, useState } from "react";
+import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type ParticipantAvatarProps = {
   name: string;
@@ -27,10 +28,10 @@ const escapePathSegment = (segment: string): string =>
  *   name: 出場者名。
  *
  * Returns:
- *   public/images 配下の webp 画像 URL。
+ *   R2 または public/images 配下の webp 画像 URL。
  */
 const toParticipantImageSrc = (name: string): string =>
-  `/images/${escapePathSegment(name.toLowerCase())}.webp`;
+  staticAssetUrl(`/images/${escapePathSegment(name.toLowerCase())}.webp`);
 
 const ParticipantAvatarInner = ({
   name,
