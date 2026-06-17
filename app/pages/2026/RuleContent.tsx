@@ -251,16 +251,18 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           })}
         </p>
 
-        <div className="mb-8 flex justify-center">
-          <LinkCard
-            text={
-              <span>
-                {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
-              </span>
-            }
-            href={participantsPath}
-            fullWidth
-          />
+        <div className="mb-8 bg-white p-4">
+          <div className="bg-(--background-color)">
+            <LinkCard
+              text={
+                <span>
+                  {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
+                </span>
+              }
+              href={participantsPath}
+              fullWidth
+            />
+          </div>
         </div>
       </RuleSection>
 
@@ -361,16 +363,18 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           <RuleSeedTable participants={seedData.cancelled} cancelled />
         </RuleSubSection>
 
-        <div className="mb-8 flex justify-center pt-8">
-          <LinkCard
-            text={
-              <span>
-                {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
-              </span>
-            }
-            href={participantsPath}
-            fullWidth
-          />
+        <div className="mb-8 mt-8 bg-white p-4">
+          <div className="bg-(--background-color)">
+            <LinkCard
+              text={
+                <span>
+                  {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
+                </span>
+              }
+              href={participantsPath}
+              fullWidth
+            />
+          </div>
         </div>
       </RuleSection>
 
