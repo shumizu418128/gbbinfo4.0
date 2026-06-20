@@ -18,7 +18,15 @@ export default [
   // ルートパスでは常に現在の年度のトップページにリダイレクトする
   index("routes/_index.tsx"),
 
-  // ! MARK: 2026
+  // ! MARK: - participants
+  // route("/:lang/participants/team/:id", "routes/participants_team.tsx"),
+  // route("/:lang/participants/single/:id", "routes/participants_single.tsx"),
+  // route("/:lang/participants/member/:id", "routes/participants_member.tsx"),
+  comingSoon("/:lang/participants/team/:id"),
+  comingSoon("/:lang/participants/single/:id"),
+  comingSoon("/:lang/participants/member/:id"),
+
+  // ! MARK: - 2026
   route("/:lang/2026/top", "routes/2026/top.tsx"),
   route("/:lang/2026/participants", "routes/2026/participants.tsx"),
   route("/:lang/2026/rule", "routes/2026/rule.tsx"),
@@ -33,7 +41,7 @@ export default [
   comingSoon("/:lang/2026/top_7tosmoke"),
   comingSoon("/:lang/2026/studio_competition"),
 
-  // ! MARK: 2025
+  // ! MARK: - 2025
   route("/:lang/2025/top", "routes/2025/top.tsx"),
   route("/:lang/2025/participants", "routes/2025/participants.tsx"),
 
@@ -48,7 +56,7 @@ export default [
   comingSoon("/:lang/2025/top_7tosmoke"),
   comingSoon("/:lang/2025/wildcard_regulation"),
 
-  // ! MARK: 2024
+  // ! MARK: - 2024
   comingSoon("/:lang/2024/participants"),
   comingSoon("/:lang/2024/cancel"),
   comingSoon("/:lang/2024/japan"),
@@ -61,7 +69,7 @@ export default [
   comingSoon("/:lang/2024/stream"),
   comingSoon("/:lang/2024/top_7tosmoke"),
 
-  // ! MARK: 2023
+  // ! MARK: - 2023
   comingSoon("/:lang/2023/participants"),
   comingSoon("/:lang/2023/cancel"),
   comingSoon("/:lang/2023/japan"),
@@ -152,7 +160,7 @@ export default [
   comingSoon("/:lang/2013/korea"),
   comingSoon("/:lang/2013/top"),
 
-  // ! MARK: others
+  // ! MARK: - others
   comingSoon("/:lang/others/about"),
   comingSoon("/:lang/others/7tosmoke"),
   comingSoon("/:lang/others/how_to_plan"),
@@ -161,7 +169,7 @@ export default [
   comingSoon("/:lang/others/translation"),
   comingSoon("/:lang/others/url_change"),
 
-  // ! MARK: travel
+  // ! MARK: - travel
   comingSoon("/:lang/travel/top"),
   comingSoon("/:lang/travel/links"),
   comingSoon("/:lang/travel/v1_flight"),
