@@ -19,9 +19,9 @@ export default [
   index("routes/_index.tsx"),
 
   // ! MARK: - participants
-  // route("/:lang/participants/team/:id", "routes/participants_team.tsx"),
-  // route("/:lang/participants/single/:id", "routes/participants_single.tsx"),
-  // route("/:lang/participants/member/:id", "routes/participants_member.tsx"),
+  // route("/:lang/participants/team/:id", "routes/participants/team.tsx"),
+  // route("/:lang/participants/single/:id", "routes/participants/single.tsx"),
+  // route("/:lang/participants/member/:id", "routes/participants/member.tsx"),
   comingSoon("/:lang/participants/team/:id"),
   comingSoon("/:lang/participants/single/:id"),
   comingSoon("/:lang/participants/member/:id"),
