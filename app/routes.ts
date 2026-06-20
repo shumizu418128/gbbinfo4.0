@@ -24,6 +24,7 @@ export default [
   route("/:lang/2026/rule", "routes/2026/rule.tsx"),
 
   comingSoon("/:lang/2026/participants"),
+  comingSoon("/:lang/2026/cancel"),
   comingSoon("/:lang/2026/japan"),
   comingSoon("/:lang/2026/korea"),
   comingSoon("/:lang/2026/stream"),
@@ -38,6 +39,7 @@ export default [
   route("/:lang/2025/participants", "routes/2025/participants.tsx"),
 
   comingSoon("/:lang/2025/participants"),
+  comingSoon("/:lang/2025/cancel"),
   comingSoon("/:lang/2025/japan"),
   comingSoon("/:lang/2025/korea"),
   comingSoon("/:lang/2025/rule"),
@@ -50,6 +52,7 @@ export default [
 
   // ! MARK: 2024
   comingSoon("/:lang/2024/participants"),
+  comingSoon("/:lang/2024/cancel"),
   comingSoon("/:lang/2024/japan"),
   comingSoon("/:lang/2024/korea"),
   comingSoon("/:lang/2024/top"),
@@ -62,6 +65,7 @@ export default [
 
   // ! MARK: 2023
   comingSoon("/:lang/2023/participants"),
+  comingSoon("/:lang/2023/cancel"),
   comingSoon("/:lang/2023/japan"),
   comingSoon("/:lang/2023/korea"),
   comingSoon("/:lang/2023/top"),
@@ -78,6 +82,7 @@ export default [
 
   // 2021
   comingSoon("/:lang/2021/participants"),
+  comingSoon("/:lang/2021/cancel"),
   comingSoon("/:lang/2021/japan"),
   comingSoon("/:lang/2021/korea"),
   comingSoon("/:lang/2021/top"),
@@ -87,6 +92,7 @@ export default [
 
   // 2020
   comingSoon("/:lang/2020/participants"),
+  comingSoon("/:lang/2020/cancel"),
   comingSoon("/:lang/2020/japan"),
   comingSoon("/:lang/2020/korea"),
   comingSoon("/:lang/2020/top"),
@@ -95,6 +101,7 @@ export default [
 
   // 2019
   comingSoon("/:lang/2019/participants"),
+  comingSoon("/:lang/2019/cancel"),
   comingSoon("/:lang/2019/japan"),
   comingSoon("/:lang/2019/korea"),
   comingSoon("/:lang/2019/top"),
@@ -103,6 +110,7 @@ export default [
 
   // 2018
   comingSoon("/:lang/2018/participants"),
+  comingSoon("/:lang/2018/cancel"),
   comingSoon("/:lang/2018/japan"),
   comingSoon("/:lang/2018/korea"),
   comingSoon("/:lang/2018/top"),
@@ -111,6 +119,7 @@ export default [
 
   // 2017
   comingSoon("/:lang/2017/participants"),
+  comingSoon("/:lang/2017/cancel"),
   comingSoon("/:lang/2017/japan"),
   comingSoon("/:lang/2017/korea"),
   comingSoon("/:lang/2017/top"),
@@ -119,24 +128,28 @@ export default [
 
   // 2016
   comingSoon("/:lang/2016/participants"),
+  comingSoon("/:lang/2016/cancel"),
   comingSoon("/:lang/2016/japan"),
   comingSoon("/:lang/2016/korea"),
   comingSoon("/:lang/2016/top"),
 
   // 2015
   comingSoon("/:lang/2015/participants"),
+  comingSoon("/:lang/2015/cancel"),
   comingSoon("/:lang/2015/japan"),
   comingSoon("/:lang/2015/korea"),
   comingSoon("/:lang/2015/top"),
 
   // 2014
   comingSoon("/:lang/2014/participants"),
+  comingSoon("/:lang/2014/cancel"),
   comingSoon("/:lang/2014/japan"),
   comingSoon("/:lang/2014/korea"),
   comingSoon("/:lang/2014/top"),
 
   // 2013
   comingSoon("/:lang/2013/participants"),
+  comingSoon("/:lang/2013/cancel"),
   comingSoon("/:lang/2013/japan"),
   comingSoon("/:lang/2013/korea"),
   comingSoon("/:lang/2013/top"),
