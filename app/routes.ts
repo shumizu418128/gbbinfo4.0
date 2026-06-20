@@ -23,6 +23,9 @@ export default [
   route("/:lang/2026/participants", "routes/2026/participants.tsx"),
   route("/:lang/2026/rule", "routes/2026/rule.tsx"),
 
+  comingSoon("/:lang/2026/participants"),
+  comingSoon("/:lang/2026/japan"),
+  comingSoon("/:lang/2026/korea"),
   comingSoon("/:lang/2026/stream"),
   comingSoon("/:lang/2026/ticket"),
   comingSoon("/:lang/2026/timetable"),
@@ -34,6 +37,9 @@ export default [
   route("/:lang/2025/top", "routes/2025/top.tsx"),
   route("/:lang/2025/participants", "routes/2025/participants.tsx"),
 
+  comingSoon("/:lang/2025/participants"),
+  comingSoon("/:lang/2025/japan"),
+  comingSoon("/:lang/2025/korea"),
   comingSoon("/:lang/2025/rule"),
   comingSoon("/:lang/2025/ticket"),
   comingSoon("/:lang/2025/timetable"),
@@ -43,6 +49,9 @@ export default [
   comingSoon("/:lang/2025/wildcard_regulation"),
 
   // ! MARK: 2024
+  comingSoon("/:lang/2024/participants"),
+  comingSoon("/:lang/2024/japan"),
+  comingSoon("/:lang/2024/korea"),
   comingSoon("/:lang/2024/top"),
   comingSoon("/:lang/2024/rule"),
   comingSoon("/:lang/2024/ticket"),
@@ -52,6 +61,9 @@ export default [
   comingSoon("/:lang/2024/top_7tosmoke"),
 
   // ! MARK: 2023
+  comingSoon("/:lang/2023/participants"),
+  comingSoon("/:lang/2023/japan"),
+  comingSoon("/:lang/2023/korea"),
   comingSoon("/:lang/2023/top"),
   comingSoon("/:lang/2023/rule"),
   comingSoon("/:lang/2023/ticket"),
@@ -65,41 +77,68 @@ export default [
   comingSoon("/:lang/2022/top"),
 
   // 2021
+  comingSoon("/:lang/2021/participants"),
+  comingSoon("/:lang/2021/japan"),
+  comingSoon("/:lang/2021/korea"),
   comingSoon("/:lang/2021/top"),
   comingSoon("/:lang/2021/timetable"),
   comingSoon("/:lang/2021/ticket"),
   comingSoon("/:lang/2021/rule"),
 
   // 2020
+  comingSoon("/:lang/2020/participants"),
+  comingSoon("/:lang/2020/japan"),
+  comingSoon("/:lang/2020/korea"),
   comingSoon("/:lang/2020/top"),
   comingSoon("/:lang/2020/ticket"),
   comingSoon("/:lang/2020/rule"),
 
   // 2019
+  comingSoon("/:lang/2019/participants"),
+  comingSoon("/:lang/2019/japan"),
+  comingSoon("/:lang/2019/korea"),
   comingSoon("/:lang/2019/top"),
   comingSoon("/:lang/2019/ticket"),
   comingSoon("/:lang/2019/rule"),
 
   // 2018
+  comingSoon("/:lang/2018/participants"),
+  comingSoon("/:lang/2018/japan"),
+  comingSoon("/:lang/2018/korea"),
   comingSoon("/:lang/2018/top"),
   comingSoon("/:lang/2018/ticket"),
   comingSoon("/:lang/2018/rule"),
 
   // 2017
+  comingSoon("/:lang/2017/participants"),
+  comingSoon("/:lang/2017/japan"),
+  comingSoon("/:lang/2017/korea"),
   comingSoon("/:lang/2017/top"),
   comingSoon("/:lang/2017/ticket"),
   comingSoon("/:lang/2017/rule"),
 
   // 2016
+  comingSoon("/:lang/2016/participants"),
+  comingSoon("/:lang/2016/japan"),
+  comingSoon("/:lang/2016/korea"),
   comingSoon("/:lang/2016/top"),
 
   // 2015
+  comingSoon("/:lang/2015/participants"),
+  comingSoon("/:lang/2015/japan"),
+  comingSoon("/:lang/2015/korea"),
   comingSoon("/:lang/2015/top"),
 
   // 2014
+  comingSoon("/:lang/2014/participants"),
+  comingSoon("/:lang/2014/japan"),
+  comingSoon("/:lang/2014/korea"),
   comingSoon("/:lang/2014/top"),
 
   // 2013
+  comingSoon("/:lang/2013/participants"),
+  comingSoon("/:lang/2013/japan"),
+  comingSoon("/:lang/2013/korea"),
   comingSoon("/:lang/2013/top"),
 
   // ! MARK: others
