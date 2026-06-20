@@ -19,15 +19,15 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
             image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
-          <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href="#" />
-          <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href="#" disabled />
-          <LinkCard text={m.team_japan()} image="/images/team_japan.webp" href="#" />
+          <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href={`/${locale}/${year}/rule`} />
+          <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href={`/${locale}/${year}/timetable`} />
+          <LinkCard text={m.team_japan()} image="/images/team_japan.webp" href={`/${locale}/${year}/japan`} />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
-          <LinkCard text={m.withdrawn_list()} image="/images/b4start.webp" href="#" />
-          <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href="#" />
-          <LinkCard text={m.livestream()} image="/images/sinjo.webp" href="#" disabled />
-          <LinkCard text={m.result()} image="/images/winner.webp" href="#" disabled />
+          <LinkCard text={m.withdrawn_list()} image="/images/b4start.webp" href={`/${locale}/${year}/cancel`} />
+          <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href={`/${locale}/${year}/ticket`} />
+          <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} />
+          <LinkCard text={m.result()} image="/images/winner.webp" href={`/${locale}/${year}/result`} />
         </div>
       </div>
 
