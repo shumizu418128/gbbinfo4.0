@@ -23,7 +23,6 @@ export default [
   route("/:lang/2026/participants", "routes/2026/participants.tsx"),
   route("/:lang/2026/rule", "routes/2026/rule.tsx"),
 
-  comingSoon("/:lang/2026/participants"),
   comingSoon("/:lang/2026/cancel"),
   comingSoon("/:lang/2026/japan"),
   comingSoon("/:lang/2026/korea"),
@@ -38,7 +37,6 @@ export default [
   route("/:lang/2025/top", "routes/2025/top.tsx"),
   route("/:lang/2025/participants", "routes/2025/participants.tsx"),
 
-  comingSoon("/:lang/2025/participants"),
   comingSoon("/:lang/2025/cancel"),
   comingSoon("/:lang/2025/japan"),
   comingSoon("/:lang/2025/korea"),
