@@ -2,6 +2,12 @@ import { type RouteConfig, index, route } from "@react-router/dev/routes";
 
 const COMING_SOON = "routes/comingsoon.tsx";
 
+/** 同一モジュールを複数 URL に割り当てるため、ルーター内部 ID のみユニーク化する */
+const comingSoon = (path: string) =>
+  route(path, COMING_SOON, {
+    id: `comingsoon/${path.slice(1).replace(/:/g, "")}`,
+  });
+
 export default [
   // フォントはアプリサーバーから配信
   route("/font/*", "routes/font.tsx"),
@@ -17,83 +23,99 @@ export default [
   route("/:lang/2026/participants", "routes/2026/participants.tsx"),
   route("/:lang/2026/rule", "routes/2026/rule.tsx"),
 
-  route("/:lang/2026/stream", COMING_SOON),
-  route("/:lang/2026/ticket", COMING_SOON),
-  route("/:lang/2026/timetable", COMING_SOON),
-  route("/:lang/2026/wildcards", COMING_SOON),
-  route("/:lang/2026/top_7tosmoke", COMING_SOON),
-  route("/:lang/2026/studio_competition", COMING_SOON),
+  comingSoon("/:lang/2026/stream"),
+  comingSoon("/:lang/2026/ticket"),
+  comingSoon("/:lang/2026/timetable"),
+  comingSoon("/:lang/2026/wildcards"),
+  comingSoon("/:lang/2026/top_7tosmoke"),
+  comingSoon("/:lang/2026/studio_competition"),
 
   // ! MARK: 2025
   route("/:lang/2025/top", "routes/2025/top.tsx"),
   route("/:lang/2025/participants", "routes/2025/participants.tsx"),
 
-  route("/:lang/2025/rule", COMING_SOON),
-  route("/:lang/2025/ticket", COMING_SOON),
-  route("/:lang/2025/timetable", COMING_SOON),
-  route("/:lang/2025/wildcards", COMING_SOON),
-  route("/:lang/2025/stream", COMING_SOON),
-  route("/:lang/2025/top_7tosmoke", COMING_SOON),
-  route("/:lang/2025/wildcard_regulation", COMING_SOON),
+  comingSoon("/:lang/2025/rule"),
+  comingSoon("/:lang/2025/ticket"),
+  comingSoon("/:lang/2025/timetable"),
+  comingSoon("/:lang/2025/wildcards"),
+  comingSoon("/:lang/2025/stream"),
+  comingSoon("/:lang/2025/top_7tosmoke"),
+  comingSoon("/:lang/2025/wildcard_regulation"),
 
   // ! MARK: 2024
-  route("/:lang/2024/top", COMING_SOON),
-  route("/:lang/2024/rule", COMING_SOON),
-  route("/:lang/2024/ticket", COMING_SOON),
-  route("/:lang/2024/timetable", COMING_SOON),
-  route("/:lang/2024/wildcards", COMING_SOON),
-  route("/:lang/2024/stream", COMING_SOON),
-  route("/:lang/2024/top_7tosmoke", COMING_SOON),
+  comingSoon("/:lang/2024/top"),
+  comingSoon("/:lang/2024/rule"),
+  comingSoon("/:lang/2024/ticket"),
+  comingSoon("/:lang/2024/timetable"),
+  comingSoon("/:lang/2024/wildcards"),
+  comingSoon("/:lang/2024/stream"),
+  comingSoon("/:lang/2024/top_7tosmoke"),
 
   // ! MARK: 2023
-  route("/:lang/2023/top", COMING_SOON),
-  route("/:lang/2023/rule", COMING_SOON),
-  route("/:lang/2023/ticket", COMING_SOON),
-  route("/:lang/2023/timetable", COMING_SOON),
-  route("/:lang/2023/wildcards", COMING_SOON),
-  route("/:lang/2023/stream", COMING_SOON),
-  route("/:lang/2023/top_7tosmoke", COMING_SOON),
+  comingSoon("/:lang/2023/top"),
+  comingSoon("/:lang/2023/rule"),
+  comingSoon("/:lang/2023/ticket"),
+  comingSoon("/:lang/2023/timetable"),
+  comingSoon("/:lang/2023/wildcards"),
+  comingSoon("/:lang/2023/stream"),
+  comingSoon("/:lang/2023/top_7tosmoke"),
 
-  // ! MARK: 2022
+  // 2022
   // 中止したのでtopのみ
-  route("/:lang/2022/top", COMING_SOON),
+  comingSoon("/:lang/2022/top"),
 
-  // ! MARK: 2021
-  route("/:lang/2021/top", COMING_SOON),
-  route("/:lang/2021/timetable", COMING_SOON),
-  route("/:lang/2021/ticket", COMING_SOON),
-  route("/:lang/2021/rule", COMING_SOON),
+  // 2021
+  comingSoon("/:lang/2021/top"),
+  comingSoon("/:lang/2021/timetable"),
+  comingSoon("/:lang/2021/ticket"),
+  comingSoon("/:lang/2021/rule"),
 
-  // ! MARK: 2020
-  route("/:lang/2020/top", COMING_SOON),
-  route("/:lang/2020/ticket", COMING_SOON),
-  route("/:lang/2020/rule", COMING_SOON),
+  // 2020
+  comingSoon("/:lang/2020/top"),
+  comingSoon("/:lang/2020/ticket"),
+  comingSoon("/:lang/2020/rule"),
 
-  // ! MARK: 2019
-  route("/:lang/2019/top", COMING_SOON),
-  route("/:lang/2019/ticket", COMING_SOON),
-  route("/:lang/2019/rule", COMING_SOON),
+  // 2019
+  comingSoon("/:lang/2019/top"),
+  comingSoon("/:lang/2019/ticket"),
+  comingSoon("/:lang/2019/rule"),
 
-  // ! MARK: 2018
-  route("/:lang/2018/top", COMING_SOON),
-  route("/:lang/2018/ticket", COMING_SOON),
-  route("/:lang/2018/rule", COMING_SOON),
+  // 2018
+  comingSoon("/:lang/2018/top"),
+  comingSoon("/:lang/2018/ticket"),
+  comingSoon("/:lang/2018/rule"),
 
-  // ! MARK: 2017
-  route("/:lang/2017/top", COMING_SOON),
-  route("/:lang/2017/ticket", COMING_SOON),
-  route("/:lang/2017/rule", COMING_SOON),
+  // 2017
+  comingSoon("/:lang/2017/top"),
+  comingSoon("/:lang/2017/ticket"),
+  comingSoon("/:lang/2017/rule"),
 
-  // ! MARK: 2016
-  route("/:lang/2016/top", COMING_SOON),
+  // 2016
+  comingSoon("/:lang/2016/top"),
 
-  // ! MARK: 2015
-  route("/:lang/2015/top", COMING_SOON),
+  // 2015
+  comingSoon("/:lang/2015/top"),
 
-  // ! MARK: 2014
-  route("/:lang/2014/top", COMING_SOON),
+  // 2014
+  comingSoon("/:lang/2014/top"),
 
-  // ! MARK: 2013
-  route("/:lang/2013/top", COMING_SOON),
+  // 2013
+  comingSoon("/:lang/2013/top"),
+
+  // ! MARK: others
+  comingSoon("/:lang/others/about"),
+  comingSoon("/:lang/others/7tosmoke"),
+  comingSoon("/:lang/others/how_to_plan"),
+  comingSoon("/:lang/others/past_info"),
+  comingSoon("/:lang/others/result_stream"),
+  comingSoon("/:lang/others/translation"),
+  comingSoon("/:lang/others/url_change"),
+
+  // ! MARK: travel
+  comingSoon("/:lang/travel/top"),
+  comingSoon("/:lang/travel/links"),
+  comingSoon("/:lang/travel/v1_flight"),
+  comingSoon("/:lang/travel/v1_journey"),
+  comingSoon("/:lang/travel/v1_reservation"),
 
 ] satisfies RouteConfig;
