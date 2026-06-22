@@ -49,7 +49,7 @@ export const HeaderMenu = ({ yearWithCountry, years }: HeaderMenuProps) => {
       <div className="bg-black flex items-center justify-center p-4 space-x-4 h-16">
         <a href={`/${lang}/${year}/top`} className="text-white font-bold text-2xl">Home</a>
         <Dropdown
-          trigger={<p className="text-white font-bold text-xl">年度選択</p>}
+          trigger={<span className="text-white font-bold text-2xl">年度選択</span>}
           items={yearItems}
         />
         <Dropdown

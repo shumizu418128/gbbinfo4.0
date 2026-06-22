@@ -30,7 +30,7 @@ export const Dropdown = ({ trigger, items }: DropdownProps) => {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-6">
+    <div ref={containerRef} className="relative flex items-center">
       <button
         type="button"
         className="cursor-pointer text-white"
