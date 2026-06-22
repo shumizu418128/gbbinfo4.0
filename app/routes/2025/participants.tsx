@@ -6,7 +6,7 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { redirect, useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
-import { findYearWithCountry } from "../../db/year.js";
+import { findYearResources, findYearWithCountry } from "../../db/year.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "../../components/Dev.js";
 import { createMeta } from "~/util/meta.js";
@@ -26,7 +26,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const locale = requireLocale(params.lang);
   const latestYear = new Date().getFullYear();
 
-  const yearWithCountry = await findYearWithCountry(YEAR);
+  const { yearWithCountry, years } = await findYearResources(YEAR);
   const validCategories = await findCategoriesByIds(yearWithCountry.categories ?? []);
 
   const selectedCategory = validCategories.find((c) => c.name === categoryParam);
@@ -40,7 +40,7 @@ export const loader = async ({ params, request }: Route.LoaderArgs) => {
 
   const participants = await findParticipants(YEAR, selectedCategory.id, null);
 
-  const returnData = { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory };
+  const returnData = { env, locale, yearWithCountry, years, participants, validCategoryNames, selectedCategory };
 
   // 最新年以外を取得する場合は、最新年のデータも取得する
   if (YEAR !== latestYear) {
@@ -63,13 +63,13 @@ export const meta = ({ data }: Route.MetaArgs) => {
 }
 
 export const Participants = () => {
-  const { env, locale, yearWithCountry, participants, validCategoryNames, selectedCategory, latestYearWithCountry } = useLoaderData<typeof loader>();
+  const { env, locale, yearWithCountry, years, participants, validCategoryNames, selectedCategory, latestYearWithCountry } = useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
     <>
       <Dev env={env} />
-      <HeaderMenu yearWithCountry={yearWithCountry} />
+      <HeaderMenu yearWithCountry={yearWithCountry} years={years} />
       <HeroImage yearWithCountry={yearWithCountry} subtitle={m.wildcard_result_and_participants({ Wildcard: "Wildcard" })} />
       <ParticipantsContent participants={participants} locale={locale} categoryNames={validCategoryNames} selectedCategory={selectedCategory} />
       <FooterMenu latestYearWithCountry={latestYearWithCountry} />

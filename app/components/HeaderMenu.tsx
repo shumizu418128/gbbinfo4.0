@@ -5,7 +5,12 @@ import type { YearWithCountry } from "../db/year";
 
 const supportedLanguages = Object.keys(languageLabels) as SupportedLanguage[];
 
-export const HeaderMenu = ({ yearWithCountry }: { yearWithCountry: YearWithCountry }) => {
+type HeaderMenuProps = {
+  yearWithCountry: YearWithCountry;
+  years: number[];
+};
+
+export const HeaderMenu = ({ yearWithCountry, years }: HeaderMenuProps) => {
   const location = useLocation();
   const { lang } = useParams();
   const currentLanguage = lang as SupportedLanguage;
@@ -32,11 +37,21 @@ export const HeaderMenu = ({ yearWithCountry }: { yearWithCountry: YearWithCount
     isActive: language === currentLanguage,
   }));
 
+  const yearItems = years.map((y) => ({
+    key: String(y),
+    href: `/${lang}/${y}/top`,
+    label: String(y),
+    isActive: y === year,
+  }));
+
   return (
     <>
       <div className="bg-black flex items-center justify-center p-4 space-x-4 h-16">
         <a href={`/${lang}/${year}/top`} className="text-white font-bold text-2xl">Home</a>
-        <a href="" className="text-white font-bold text-2xl">年度選択</a>
+        <Dropdown
+          trigger={<p className="text-white font-bold text-xl">年度選択</p>}
+          items={yearItems}
+        />
         <Dropdown
           trigger={(
             <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">

@@ -6,7 +6,7 @@ import { FooterMenu } from "../../components/FooterMenu.js";
 import { useLoaderData } from "react-router";
 import { requireLocale } from "../../util/locale.js";
 import { setLocale } from "../../../paraglide/runtime.js";
-import { findYearWithCountry } from "../../db/year.js";
+import { findYearResources, findYearWithCountry } from "../../db/year.js";
 import { envCheck } from "~/util/dev.js";
 import { Dev } from "~/components/Dev.js";
 import { createMeta } from "~/util/meta.js";
@@ -56,7 +56,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   const locale = requireLocale(params.lang);
   const latestYear = new Date().getFullYear();
 
-  const yearWithCountry = await findYearWithCountry(YEAR);
+  const { yearWithCountry, years } = await findYearResources(YEAR);
 
   let seedData = emptySeedData();
   try {
@@ -66,7 +66,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
     seedData = emptySeedData();
   }
 
-  const returnData = { env, locale, yearWithCountry, seedData };
+  const returnData = { env, locale, yearWithCountry, years, seedData };
 
   if (YEAR !== latestYear) {
     const latestYearWithCountry = await findYearWithCountry(latestYear);
@@ -87,14 +87,14 @@ export const meta = ({ data }: Route.MetaArgs) => {
 };
 
 export const Rule = () => {
-  const { env, locale, yearWithCountry, seedData, latestYearWithCountry } =
+  const { env, locale, yearWithCountry, years, seedData, latestYearWithCountry } =
     useLoaderData<typeof loader>();
   setLocale(locale, { reload: false });
 
   return (
     <>
       <Dev env={env} />
-      <HeaderMenu yearWithCountry={yearWithCountry} />
+      <HeaderMenu yearWithCountry={yearWithCountry} years={years} />
       <HeroImage yearWithCountry={yearWithCountry} subtitle={m.rules()} />
       <RuleContent locale={locale} year={YEAR} seedData={seedData} />
       <FooterMenu latestYearWithCountry={latestYearWithCountry} />

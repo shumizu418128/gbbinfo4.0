@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { asc, eq } from "drizzle-orm";
 import { getDb } from "./client.js";
 import { yearTable } from "./tables.js";
 import type { WithRequired } from "./utils.js";
@@ -28,3 +28,35 @@ export const findYearWithCountry = async (year: number) => {
 
 // YearWithCountry 型のエイリアス
 export type YearWithCountry = Awaited<ReturnType<typeof findYearWithCountry>>;
+
+/**
+ * 全ての開催年を昇順で取得する。
+ *
+ * Returns:
+ *   年の数値配列。
+ */
+const findAllYears = async (): Promise<number[]> => {
+  const rows = await getDb()
+    .select({ year: yearTable.year })
+    .from(yearTable)
+    .orderBy(asc(yearTable.year));
+  return rows.map((r) => r.year);
+};
+
+/**
+ * 指定年の詳細情報と全開催年一覧を並列取得する。
+ *
+ * Args:
+ *   year: 詳細を取得する開催年。
+ *
+ * Returns:
+ *   yearWithCountry: 指定年の Country 付き Year 情報。
+ *   years: 全開催年の数値配列（昇順）。
+ */
+export const findYearResources = async (year: number) => {
+  const [yearWithCountry, years] = await Promise.all([
+    findYearWithCountry(year),
+    findAllYears(),
+  ]);
+  return { yearWithCountry, years };
+};
