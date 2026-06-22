@@ -156,6 +156,7 @@
   "rule_winner_decision": "勝者の決定",
   "rule_winner_decision_detail": "審査員5名 + {Swissbeatbox} {YouTube}メンバーシップ会員（計6つのランキング）をポイント化して合計し、合計スコアが最も高い1名がGBB {year}に出場権を獲得します。",
   "rules": "ルール",
+  "select_year": "年度選択",
   "site_url_notice": "当サイトURL変更のお知らせ",
   "team_japan": "日本代表",
   "time_table": "タイムテーブル",
