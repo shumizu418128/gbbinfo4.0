@@ -150,7 +150,7 @@
   "rule_unknown": "Unknown",
   "rule_update_pending": "To be updated upon announcement",
   "rule_wildcard_deadline": "Deadlines & rules",
-  "rule_wildcard_deadline_title": "Wildcard {deadline}",
+  "rule_wildcard_deadline_title": "{Wildcard} Deadlines & rules",
   "rule_wildcard_judges": "{Wildcard} judges",
   "rule_wildcard_judges_link": "{Wildcard} judges list here",
   "rule_winner_decision": "Determining the winner",

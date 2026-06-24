@@ -251,18 +251,17 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           })}
         </p>
 
-        <div className="mb-8 bg-white p-4">
-          <div className="bg-(--background-color)">
-            <LinkCard
-              text={
-                <span>
-                  {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
-                </span>
-              }
-              href={participantsPath}
-              fullWidth
-            />
-          </div>
+        <div className="mb-8">
+          <LinkCard
+            text={
+              <span>
+                {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
+              </span>
+            }
+            href={participantsPath}
+            fullWidth
+
+          />
         </div>
       </RuleSection>
 
@@ -363,18 +362,17 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           <RuleSeedTable participants={seedData.cancelled} cancelled />
         </RuleSubSection>
 
-        <div className="mb-8 mt-8 bg-white p-4">
-          <div className="bg-(--background-color)">
-            <LinkCard
-              text={
-                <span>
-                  {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
-                </span>
-              }
-              href={participantsPath}
-              fullWidth
-            />
-          </div>
+        <div className="mb-8 mt-8">
+          <LinkCard
+            text={
+              <span>
+                {m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
+              </span>
+            }
+            href={participantsPath}
+            fullWidth
+
+          />
         </div>
       </RuleSection>
 
@@ -480,9 +478,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
       <RuleSection>
         <RuleSectionHeading id="wildcard-rules-section" scrollKey="result_date">
-          {m.rule_wildcard_deadline_title({
-            deadline: m.rule_wildcard_deadline(),
-          })}
+          {m.rule_wildcard_deadline_title({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
         <Table
           data={[
@@ -584,6 +580,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
           ]}
+          textCenter
         />
 
         <RuleSubSection>
@@ -806,16 +803,13 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <p className={paragraphClass}>
           {m.rule_thanks_chat({ year: String(year) })}
         </p>
-        <p className="mb-4 text-center">
-          <a
+        <div className="mb-4">
+          <LinkCard
+            text={`GBB ${year} ${m.rule_chat_button()}`}
             href="https://notebooklm.google.com/notebook/7b384060-d2cd-4064-a57e-8b2b7d41571e"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={`inline-block rounded bg-button-background-color px-8 py-4 font-bold ${anchorClass}`}
-          >
-            GBB {year} {m.rule_chat_button()}
-          </a>
-        </p>
+            fullWidth
+          />
+        </div>
         <p className={paragraphClass}>{m.rule_thanks_use()}</p>
       </RuleSection>
     </main>

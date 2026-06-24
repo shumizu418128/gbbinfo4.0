@@ -24,6 +24,7 @@ export const LinkCard = ({
   const disabledBackgroundColor = "rgba(0, 0, 0, 0.6)";
   const unavailableBackgroundColor = "rgba(0, 0, 0, 0.8)";
   const isInteractive = !disabled && !unavailable;
+  const isLight = !image;
   const hoverBackgroundClass = isInteractive
     ? "transition-colors duration-150 hover:bg-(--gbb-color)"
     : "";
@@ -147,12 +148,12 @@ export const LinkCard = ({
 
   return (
     <a
-      className={`inline-flex items-center justify-center font-bold text-white bg-(--button-background-color) ${hoverBackgroundClass}`}
+      className={`inline-flex items-center justify-center font-bold ${isLight ? "bg-white text-black hover:text-white" : "text-white bg-(--button-background-color)"} ${hoverBackgroundClass}`}
       style={{
         position: "relative",
         fontSize,
         width: fullWidth ? "100%" : cardWidth,
-        minHeight: "48px",
+        minHeight: "80px",
         height: "auto",
         padding: "8px 16px",
         boxSizing: "border-box",

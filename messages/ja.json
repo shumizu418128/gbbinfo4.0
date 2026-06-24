@@ -150,7 +150,7 @@
   "rule_unknown": "不明",
   "rule_update_pending": "発表次第更新",
   "rule_wildcard_deadline": "締め切り・ルール",
-  "rule_wildcard_deadline_title": "Wildcard {deadline}",
+  "rule_wildcard_deadline_title": "{Wildcard} 締め切り・ルール",
   "rule_wildcard_judges": "{Wildcard}審査員一覧",
   "rule_wildcard_judges_link": "{Wildcard}審査員一覧はこちら",
   "rule_winner_decision": "勝者の決定",
