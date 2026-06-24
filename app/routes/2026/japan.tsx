@@ -16,6 +16,7 @@ import { findParticipants } from "~/db/participant.js";
 import { getYearFromDir } from "../../util/year.js";
 
 const YEAR = getYearFromDir(import.meta.url);
+const JAPAN_ISO_CODE = 392;
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();
@@ -23,8 +24,7 @@ export const loader = async ({ params }: Route.LoaderArgs) => {
   const latestYear = new Date().getFullYear();
 
   const { yearWithCountry, years } = await findYearResources(YEAR);
-  const allParticipants = await findParticipants(YEAR, null, null);
-  const participants = allParticipants.filter((p) => p.country.isoAlpha2 === "JP");
+  const participants = await findParticipants(YEAR, null, null, JAPAN_ISO_CODE);
 
   const returnData = { env, locale, yearWithCountry, years, participants };
 

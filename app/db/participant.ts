@@ -12,10 +12,10 @@ import type { WithRequired } from "./utils.js";
  * Args:
  *   year: 取得対象の開催年。
  *   category: カテゴリ ID による絞り込み。null の場合は全カテゴリ。
- *   ticketClass: 出場権種別による絞り込み。"all" または null の場合は全種別。
  *   cancel: キャンセル状態による絞り込み。
  *     "cancelled" のときキャンセル済みのみ、"active" のとき未キャンセルのみ、
  *     "all" または null のときは状態で絞り込まない。
+ *   isoCode: ISO 3166-1 数値コードによる絞り込み。null の場合は全国。
  *
  * Returns:
  *   Country・Category・メンバー情報を含む Participant 一覧。
@@ -27,6 +27,7 @@ export const findParticipants = async (
   year: number,
   category: number | null,
   cancel: string | null,
+  isoCode: number | null = null,
 ) => {
   const conditions = [eq(participantTable.year, year)];
 
@@ -38,6 +39,10 @@ export const findParticipants = async (
     conditions.push(eq(participantTable.isCancelled, true));
   } else if (cancel === "active") {
     conditions.push(eq(participantTable.isCancelled, false));
+  }
+
+  if (isoCode !== null) {
+    conditions.push(eq(participantTable.isoCode, isoCode));
   }
 
   let rows = await getDb().query.participantTable.findMany({
