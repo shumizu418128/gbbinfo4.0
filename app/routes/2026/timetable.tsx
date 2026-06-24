@@ -50,7 +50,7 @@ export const Timetable = () => {
       <Dev env={env} />
       <HeaderMenu yearWithCountry={yearWithCountry} years={years} />
       <HeroImage yearWithCountry={yearWithCountry} subtitle={m.time_table()} />
-      <TimetableContent locale={locale} year={YEAR} yearWithCountry={yearWithCountry} />
+      <TimetableContent locale={locale} year={YEAR} />
       <FooterMenu latestYearWithCountry={latestYearWithCountry} />
     </>
   );
