@@ -28,15 +28,6 @@ export const StreamContent = ({ locale, year }: StreamContentProps) => {
           </div>
         </section>
 
-        <div className="mb-8 flex flex-wrap gap-4">
-          <a href={`/${locale}/${year}/timetable`} className={anchorClass}>
-            {m.time_table()}
-          </a>
-          <a href={`/${locale}/${year}/ticket`} className={anchorClass}>
-            {m.venue_tickets()}
-          </a>
-        </div>
-
       </div>
     </main>
   );

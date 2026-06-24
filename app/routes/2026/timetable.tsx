@@ -12,8 +12,9 @@ import { Dev } from "~/components/Dev.js";
 import { createMeta } from "~/util/meta.js";
 import * as m from "../../../paraglide/messages.js";
 import { cache } from "~/constants/cache.js";
+import { getYearFromDir } from "../../util/year.js";
 
-const YEAR = 2026;
+const YEAR = getYearFromDir(import.meta.url);
 
 export const loader = async ({ params }: Route.LoaderArgs) => {
   const env = envCheck();

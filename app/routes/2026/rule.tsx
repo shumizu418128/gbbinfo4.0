@@ -13,8 +13,9 @@ import { createMeta } from "~/util/meta.js";
 import * as m from "../../../paraglide/messages.js";
 import { cache } from "~/constants/cache.js";
 import { findParticipants, type ParticipantWithRelations } from "~/db/participant.js";
+import { getYearFromDir } from "../../util/year.js";
 
-const YEAR = 2026;
+const YEAR = getYearFromDir(import.meta.url);
 
 type RuleSeedData = {
   gbbSeed: ParticipantWithRelations[];

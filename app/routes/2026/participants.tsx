@@ -14,8 +14,9 @@ import * as m from '../../../paraglide/messages.js';
 import { cache } from "~/constants/cache.js";
 import { findParticipants } from "~/db/participant.js";
 import { findCategoriesByIds } from "~/db/category.js";
+import { getYearFromDir } from "../../util/year.js";
 
-const YEAR = 2026;
+const YEAR = getYearFromDir(import.meta.url);
 
 export const loader = async ({ params, request }: Route.LoaderArgs) => {
   const url = new URL(request.url);

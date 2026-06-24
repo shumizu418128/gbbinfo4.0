@@ -1,56 +1,52 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import type { YearWithCountry } from "~/db/year.js";
 import { Table } from "~/components/Table.js";
 import * as m from "../../../paraglide/messages.js";
 
 type TicketContentProps = {
   locale: SupportedLanguage;
   year: number;
-  yearWithCountry: YearWithCountry;
 };
+
+const VENUE_NAME = "COS Torwar";
+const VENUE_MAP_URL = "https://maps.app.goo.gl/L9S927kARXL9dKJ78";
+const TICKET_URL = "https://gbb.swissbeatbox.com";
+const MAPS_EMBED_SRC =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d6121.336627009248!2d21.047471084987986!3d52.21967533280484!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x471ecd02df99729d%3A0x120bb57e07d1fd45!2sArena%20COS%20Torwar!5e0!3m2!1sen!2sjp!4v1776728225542!5m2!1sen!2sjp";
 
 const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
+const buttonClass =
+  "inline-block rounded bg-(--gbb-color) px-4 py-2 text-sm font-bold text-white transition-opacity duration-150 hover:opacity-80";
 
-export const TicketContent = ({ locale, year, yearWithCountry }: TicketContentProps) => {
-  const city = yearWithCountry.city ?? "-";
-  const countryName =
-    yearWithCountry.country.names?.[locale as keyof typeof yearWithCountry.country.names] ??
-    yearWithCountry.country.enName ??
-    "-";
-
+export const TicketContent = ({ locale, year }: TicketContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
 
-        <div className="mb-16 bg-(--section-color) p-8">
+        <div className="mb-8 bg-(--section-color) p-8">
           <h2 className="mb-4 text-xl font-bold text-center">{m.venue_tickets()}</h2>
           <Table
             data={[
               ["", ""],
-              ["City", city],
-              ["Country", countryName],
+              ["", m.ticket_city()],
+              [m.ticket_venue(), <a key="venue" href={VENUE_MAP_URL} target="_blank" rel="noopener noreferrer" className={anchorClass}>{VENUE_NAME}</a>],
+              ["", <a key="ticket" href={TICKET_URL} target="_blank" rel="noopener noreferrer" className={anchorClass}>{m.ticket_sales_page()}</a>],
             ]}
           />
         </div>
 
-        <div className="mb-16 text-center text-xl text-(--secondary-text-color) py-16">
-          coming soon...
-        </div>
-
-        <div className="mb-16 bg-(--section-color) p-8">
-          <h2 className="mb-2 text-2xl font-bold text-center">{m.inquiry()}</h2>
-          <hr className="border-(--gbb-color) mb-4" />
-          <Table
-            data={[
-              ["", "email"],
-              [m.inquiry_ticket(), <a key="ticket" href="mailto:gbb@swissbeatbox.com" className={anchorClass}>gbb@swissbeatbox.com</a>],
-              [m.inquiry_event(), <a key="event" href="mailto:tickets@weeztix.com" className={anchorClass}>tickets@weeztix.com</a>],
-            ]}
-            textCenter
+        <div className="mb-8 flex justify-center">
+          <iframe
+            src={MAPS_EMBED_SRC}
+            width="400"
+            height="300"
+            style={{ border: 0, maxWidth: "100%" }}
+            allowFullScreen
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+            title={VENUE_NAME}
           />
         </div>
-
       </div>
     </main>
   );
