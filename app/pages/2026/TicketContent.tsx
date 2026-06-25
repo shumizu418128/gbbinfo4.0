@@ -22,20 +22,32 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <ul className="list-disc pl-8 space-y-2 text-base">
+          <li>{m.ticket_city()}</li>
+          <li>
+            {m.ticket_venue()}：
+            <a
+              href={VENUE_MAP_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={anchorClass}
+            >
+              {VENUE_NAME}
+            </a>
+          </li>
+          <li>
+            <a
+              href={TICKET_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={anchorClass}
+            >
+              {m.ticket_sales_page()}
+            </a>
+          </li>
+        </ul>
 
-        <div className="mb-8 bg-(--section-color) p-8">
-          <h2 className="mb-4 text-xl font-bold text-center">{m.venue_tickets()}</h2>
-          <Table
-            data={[
-              ["", ""],
-              ["", m.ticket_city()],
-              [m.ticket_venue(), <a key="venue" href={VENUE_MAP_URL} target="_blank" rel="noopener noreferrer" className={anchorClass}>{VENUE_NAME}</a>],
-              ["", <a key="ticket" href={TICKET_URL} target="_blank" rel="noopener noreferrer" className={anchorClass}>{m.ticket_sales_page()}</a>],
-            ]}
-          />
-        </div>
-
-        <div className="mb-8 flex justify-center">
+        <div className="my-8 flex justify-center">
           <iframe
             src={MAPS_EMBED_SRC}
             width="400"

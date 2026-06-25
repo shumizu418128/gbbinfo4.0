@@ -17,7 +17,7 @@ export const CancelContent = ({ participants, locale }: CancelContentProps) => {
         <h1 className="mb-8 text-2xl font-bold">{m.withdrawn_list()}</h1>
 
         <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
-          {participants.length} {m.cancelled()}
+          {participants.length} beatboxers
         </div>
 
         <div className="space-y-6">

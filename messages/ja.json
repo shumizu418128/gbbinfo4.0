@@ -179,6 +179,7 @@
   "wildcard_result": "{Wildcard}結果",
   "wildcard_result_and_participants": "{Wildcard}結果 & 出場者一覧",
   "wildcard_stream": "{Wildcard}結果発表配信",
+  "wildcard_unofficial_notice": "※ 非公式リストです。重複・欠落がある場合があります。",
   "withdrawn_list": "辞退者一覧",
   "$schema": "https://inlang.com/schema/inlang-message-format"
 }

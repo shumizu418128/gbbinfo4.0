@@ -179,6 +179,7 @@
   "wildcard_result": "{Wildcard} result",
   "wildcard_result_and_participants": "{Wildcard} result & participants",
   "wildcard_stream": "{Wildcard} result announcement broadcast",
+  "wildcard_unofficial_notice": "※ This is an unofficial list. Duplicates or omissions may exist.",
   "withdrawn_list": "Withdrawn list",
   "$schema": "https://inlang.com/schema/inlang-message-format"
 }

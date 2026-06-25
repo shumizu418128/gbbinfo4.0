@@ -38,10 +38,10 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
         <ul className="w-full max-w-md list-disc text-left px-12 gap-6 mb-18">
           <li>
             <a
-              href="#"
+              href={`/${locale}/${year}/studio_competition`}
               className={anchorClass}
             >
-              {m.site_url_notice()}
+              Studio Competition
             </a>
           </li>
           <li>
@@ -54,7 +54,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           </li>
           <li>
             <a
-              href="#"
+              href={`/${locale}/${year}/wildcards`}
               className={anchorClass}
             >
               {m.wildcard_list({ Wildcard: "Wildcard" })}
