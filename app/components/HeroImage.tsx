@@ -2,7 +2,12 @@ import type { YearWithCountry } from "../db/year";
 import { Flag } from "./Flag";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
-export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { yearWithCountry: YearWithCountry, subtitle?: string }) => {
+type HeroImageProps = {
+  yearWithCountry: YearWithCountry;
+  subtitle?: string;
+}
+
+export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: HeroImageProps) => {
   const { year, city, startsAt, endsAt, country } = yearWithCountry;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
   const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate() - 1)).toLocaleDateString() : "";

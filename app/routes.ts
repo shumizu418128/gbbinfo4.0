@@ -9,9 +9,6 @@ const comingSoon = (path: string) =>
   });
 
 export default [
-  // フォントはアプリサーバーから配信
-  route("/font/*", "routes/font.tsx"),
-
   // アプリサーバーへ到達した /images/* を 404 で返す（実体は R2 から取得）
   route("/images/*", "routes/images.tsx"),
 
