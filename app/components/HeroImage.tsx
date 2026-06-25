@@ -3,8 +3,10 @@ import { Flag } from "./Flag";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { yearWithCountry: YearWithCountry, subtitle?: string }) => {
-  const { year, city } = yearWithCountry;
-  const { isoAlpha2 } = yearWithCountry.country;
+  const { year, city, startsAt, endsAt, country } = yearWithCountry;
+  const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
+  const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate() - 1)).toLocaleDateString() : "";
+
   return (
     <>
       <div className="relative w-full h-screen">
@@ -26,14 +28,22 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { y
           }}
         />
 
-        <div className="relative flex flex-col items-center justify-center h-full w-full">
+        <div className="relative flex flex-col items-center justify-center h-full w-full gap-6">
           <h1
             className="text-white z-10 w-full text-center"
             style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
           >
             GBB {year}
           </h1>
-          <div className="z-10 w-80% text-center">
+          {startDate && endDate && (
+            <div className="z-10 w-full text-center">
+              <span className="text-white font-bold" style={{ fontSize: "clamp(16px, 3vw, 32px)" }}>
+                {startDate} - {endDate}
+              </span>
+            </div>
+          )}
+          <div className="z-10 w-full text-center flex items-center justify-center gap-2">
+            <Flag isoAlpha2={country.isoAlpha2} height={24} />
             <span
               className="text-white font-bold"
               style={{ fontSize: "clamp(16px, 3vw, 32px)" }}
@@ -41,7 +51,7 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: { y
               {city}
             </span>
           </div>
-          <div className="mt-6 z-10 w-80% text-center">
+          <div className="mt-16 z-10 w-full text-center">
             <span
               className="text-white font-bold"
               style={{ fontSize: "clamp(24px, 4vw, 48px)" }}
