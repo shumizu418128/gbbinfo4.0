@@ -10,17 +10,6 @@ import {
 import type { Route } from "./+types/root";
 import "./app.css";
 import { getLocale } from "../paraglide/runtime";
-import { fontAssetUrl } from "~/util/fontAsset.js";
-
-const avertaFontFace = `
-@font-face {
-  font-family: "Averta ExtraBold";
-  src: url("${fontAssetUrl("Averta-ExtraBold.woff2")}") format("woff2");
-  font-weight: 800;
-  font-style: normal;
-  font-display: swap;
-}
-`;
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const locale = getLocale();
@@ -30,7 +19,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <style dangerouslySetInnerHTML={{ __html: avertaFontFace }} />
+        <link rel="stylesheet" href="https://db.onlinewebfonts.com/c/efc5d27fcf85239bbfee077b689e3ac9?family=Averta+ExtraBold" />
         <Meta />
         <Links />
       </head>

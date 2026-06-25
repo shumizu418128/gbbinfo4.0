@@ -46,14 +46,6 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           </li>
           <li>
             <a
-              href="#"
-              className={anchorClass}
-            >
-              {m.wildcard_stream({ Wildcard: "Wildcard" })}
-            </a>
-          </li>
-          <li>
-            <a
               href={`/${locale}/${year}/wildcards`}
               className={anchorClass}
             >
@@ -65,7 +57,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
 
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
-          <LinkCard text={m.go_to_poland()} image="/images/zenhit.webp" href="#" />
+          <LinkCard text={m.go_to_poland()} image="/images/zenhit.webp" href={`/${locale}/travel/top`} />
           <LinkCard text="7toSmoke" image="/images/afterparty.webp" href={`/${locale}/${year}/top_7tosmoke`} />
         </div>
       </div>

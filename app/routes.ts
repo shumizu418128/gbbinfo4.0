@@ -169,10 +169,10 @@ export default [
   comingSoon("/:lang/others/url_change"),
 
   // ! MARK: - travel
-  comingSoon("/:lang/travel/top"),
-  comingSoon("/:lang/travel/links"),
-  comingSoon("/:lang/travel/v1_flight"),
-  comingSoon("/:lang/travel/v1_journey"),
-  comingSoon("/:lang/travel/v1_reservation"),
+  route("/:lang/travel/top", "routes/travel/top.tsx"),
+  route("/:lang/travel/links", "routes/travel/links.tsx"),
+  route("/:lang/travel/v1_flight", "routes/travel/v1_flight.tsx"),
+  route("/:lang/travel/v1_journey", "routes/travel/v1_journey.tsx"),
+  route("/:lang/travel/v1_reservation", "routes/travel/v1_reservation.tsx"),
 
 ] satisfies RouteConfig;
