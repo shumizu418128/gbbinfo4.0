@@ -1,0 +1,30 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { V1JourneyContent } from "~/views/travel/V1JourneyContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+
+export async function getStaticPaths() {
+  const YEAR = new Date().getFullYear();
+  const common = await getCommonYearData(YEAR);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const subtitle = "2. 旅程・荷物編";
+const title = "2. 旅程・荷物編 | ワルシャワへ行こう";
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <V1JourneyContent locale={locale} />
+</SiteFrame>

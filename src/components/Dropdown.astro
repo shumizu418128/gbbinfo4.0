@@ -1,0 +1,41 @@
+---
+interface DropdownItem {
+  key: string;
+  href: string;
+  label: string;
+  isActive?: boolean;
+}
+
+interface Props {
+  items: DropdownItem[];
+  align?: "left" | "right";
+}
+
+const { items, align = "right" } = Astro.props;
+---
+
+<details class="relative flex items-center">
+  <summary
+    class="cursor-pointer list-none text-white [&::-webkit-details-marker]:hidden"
+  >
+    <slot />
+  </summary>
+  <div
+    class={`absolute top-full ${align === "right" ? "right-0" : "left-0"} z-20 mt-2 min-w-24 overflow-hidden bg-zinc-800/80 shadow-lg backdrop-blur-md`}
+  >
+    {
+      items.map((item) => (
+        <a
+          href={item.href}
+          class={`block cursor-pointer p-2 text-center hover:bg-(--hover-background-color) ${
+            item.isActive
+              ? "font-bold text-(--gbb-color)"
+              : "font-bold text-white"
+          }`}
+        >
+          {item.label}
+        </a>
+      ))
+    }
+  </div>
+</details>

@@ -2,7 +2,14 @@
 .env
 /node_modules/
 
-# React Router
+# Astro
+/dist/
+/.astro/
+
+# Paraglide (generated)
+/paraglide/
+
+# React Router (legacy)
 /.react-router/
 /build/
 /public/

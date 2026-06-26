@@ -1,4 +1,3 @@
-import { useCallback, useState } from "react";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type ParticipantAvatarProps = {
@@ -33,51 +32,30 @@ const escapePathSegment = (segment: string): string =>
 const toParticipantImageSrc = (name: string): string =>
   staticAssetUrl(`/images/${escapePathSegment(name.toLowerCase())}.webp`);
 
-const ParticipantAvatarInner = ({
+/**
+ * 出場者アバター。
+ *
+ * SSG 配信のため JS なしで成立する。読み込み失敗時は Layout のグローバル
+ * エラーハンドラ（`img.js-avatar`）が画像を非表示にし、黒背景のみを残す。
+ */
+export const ParticipantAvatar = ({
   name,
-  size,
-}: Required<ParticipantAvatarProps>) => {
+  size = 120,
+}: ParticipantAvatarProps) => {
   const src = toParticipantImageSrc(name);
-  const [loaded, setLoaded] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  const handleImgRef = useCallback((img: HTMLImageElement | null) => {
-    if (img?.complete && img.naturalWidth > 0) {
-      setLoaded(true);
-    }
-  }, []);
-
-  const showImage = !failed;
 
   return (
     <div
       className="shrink-0"
-      style={{
-        width: size,
-        height: size,
-        backgroundColor: showImage && loaded ? undefined : "#000000",
-      }}
+      style={{ width: size, height: size, backgroundColor: "#000000" }}
     >
-      {showImage ? (
-        <img
-          ref={handleImgRef}
-          src={src}
-          alt=""
-          decoding="async"
-          className="size-full object-contain"
-          style={{ opacity: loaded ? 1 : 0 }}
-          onLoad={() => setLoaded(true)}
-          onError={() => {
-            setLoaded(false);
-            setFailed(true);
-          }}
-        />
-      ) : null}
+      <img
+        src={src}
+        alt=""
+        decoding="async"
+        loading="lazy"
+        className="js-avatar size-full object-contain"
+      />
     </div>
   );
 };
-
-/** 404 時は同サイズの空白を保ち、壊れた画像アイコンを出さない。 */
-export const ParticipantAvatar = ({ name, size = 120 }: ParticipantAvatarProps) => (
-  <ParticipantAvatarInner key={name} name={name} size={size} />
-);

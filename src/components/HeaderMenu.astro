@@ -1,0 +1,61 @@
+---
+import Dropdown from "./Dropdown.astro";
+import {
+  languageLabels,
+  type SupportedLanguage,
+} from "~/constants/languageLabels";
+import * as m from "../../paraglide/messages";
+
+interface Props {
+  lang: SupportedLanguage;
+  currentPath: string;
+  year: number;
+  years: number[];
+}
+
+const { lang, currentPath, year, years } = Astro.props;
+
+const supportedLanguages = Object.keys(languageLabels) as SupportedLanguage[];
+
+const buildLanguagePath = (targetLanguage: SupportedLanguage): string => {
+  const segments = currentPath.split("/").filter(Boolean);
+  if (segments.length === 0) {
+    return `/${targetLanguage}`;
+  }
+  segments[0] = targetLanguage;
+  return `/${segments.join("/")}`;
+};
+
+const languageItems = supportedLanguages.map((language) => ({
+  key: language,
+  href: buildLanguagePath(language),
+  label: languageLabels[language],
+  isActive: language === lang,
+}));
+
+const yearItems = years.map((y) => ({
+  key: String(y),
+  href: `/${lang}/${y}/top`,
+  label: String(y),
+  isActive: y === year,
+}));
+---
+
+<div class="bg-black flex items-center justify-center p-4 space-x-4 h-16">
+  <a href={`/${lang}/${year}/top`} class="text-white font-bold text-2xl">Home</a>
+  <Dropdown items={yearItems}>
+    <span class="text-white font-bold text-2xl">{m.select_year()}</span>
+  </Dropdown>
+  <Dropdown items={languageItems}>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      height="24px"
+      viewBox="0 -960 960 960"
+      width="24px"
+      fill="#FFFFFF"
+      ><path
+        d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"
+      ></path></svg
+    >
+  </Dropdown>
+</div>

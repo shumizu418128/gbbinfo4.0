@@ -1,0 +1,151 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { ComingSoonContent } from "~/views/ComingSoonContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+
+export async function getStaticPaths() {
+  // ヘッダー / ヒーロー / フッターは常に現在の開催年を表示する（3.0 と同様）。
+  const YEAR = new Date().getFullYear();
+  const common = await getCommonYearData(YEAR);
+
+  // routes.ts の comingSoon(...) 一覧を移植（:id を含む動的ルートは SSG 非対応のため除外）。
+  const comingSoonSlugs = [
+    // 2025
+    "2025/cancel",
+    "2025/japan",
+    "2025/korea",
+    "2025/rule",
+    "2025/ticket",
+    "2025/timetable",
+    "2025/wildcards",
+    "2025/stream",
+    "2025/top_7tosmoke",
+    "2025/wildcard_regulation",
+    // 2024
+    "2024/participants",
+    "2024/cancel",
+    "2024/japan",
+    "2024/korea",
+    "2024/top",
+    "2024/rule",
+    "2024/ticket",
+    "2024/timetable",
+    "2024/wildcards",
+    "2024/stream",
+    "2024/top_7tosmoke",
+    // 2023
+    "2023/participants",
+    "2023/cancel",
+    "2023/japan",
+    "2023/korea",
+    "2023/top",
+    "2023/rule",
+    "2023/ticket",
+    "2023/timetable",
+    "2023/wildcards",
+    "2023/stream",
+    "2023/top_7tosmoke",
+    // 2022
+    "2022/top",
+    // 2021
+    "2021/participants",
+    "2021/cancel",
+    "2021/japan",
+    "2021/korea",
+    "2021/top",
+    "2021/timetable",
+    "2021/ticket",
+    "2021/rule",
+    // 2020
+    "2020/participants",
+    "2020/cancel",
+    "2020/japan",
+    "2020/korea",
+    "2020/top",
+    "2020/ticket",
+    "2020/rule",
+    // 2019
+    "2019/participants",
+    "2019/cancel",
+    "2019/japan",
+    "2019/korea",
+    "2019/top",
+    "2019/ticket",
+    "2019/rule",
+    // 2018
+    "2018/participants",
+    "2018/cancel",
+    "2018/japan",
+    "2018/korea",
+    "2018/top",
+    "2018/ticket",
+    "2018/rule",
+    // 2017
+    "2017/participants",
+    "2017/cancel",
+    "2017/japan",
+    "2017/korea",
+    "2017/top",
+    "2017/ticket",
+    "2017/rule",
+    // 2016
+    "2016/participants",
+    "2016/cancel",
+    "2016/japan",
+    "2016/korea",
+    "2016/top",
+    // 2015
+    "2015/participants",
+    "2015/cancel",
+    "2015/japan",
+    "2015/korea",
+    "2015/top",
+    // 2014
+    "2014/participants",
+    "2014/cancel",
+    "2014/japan",
+    "2014/korea",
+    "2014/top",
+    // 2013
+    "2013/participants",
+    "2013/cancel",
+    "2013/japan",
+    "2013/korea",
+    "2013/top",
+    // others
+    "others/about",
+    "others/7tosmoke",
+    "others/how_to_plan",
+    "others/past_info",
+    "others/result_stream",
+    "others/translation",
+    "others/url_change",
+  ];
+
+  const paths = [];
+  for (const slug of comingSoonSlugs) {
+    for (const locale of locales) {
+      paths.push({
+        params: { lang: locale, slug },
+        props: { locale, ...common },
+      });
+    }
+  }
+  return paths;
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const title = `GBB ${yearWithCountry.year}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle="Coming soon..."
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <ComingSoonContent />
+</SiteFrame>

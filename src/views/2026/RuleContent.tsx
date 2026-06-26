@@ -4,7 +4,6 @@ import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { useScrollToParam } from "~/hooks/useScrollToParam.js";
 import * as m from "../../../paraglide/messages.js";
 
 type RuleSeedData = {
@@ -71,8 +70,6 @@ const PostIt = ({ children }: { children: ReactNode }) => (
 );
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
-  useScrollToParam();
-
   const prevYear = year - 1;
   const nextYear = year + 1;
   const participantsPath = `/${locale}/${year}/participants`;

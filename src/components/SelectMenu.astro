@@ -1,0 +1,84 @@
+---
+interface SelectMenuItem {
+  key: string;
+  href: string;
+  label: string;
+  isActive?: boolean;
+}
+
+interface Props {
+  label: string;
+  items: SelectMenuItem[];
+}
+
+const { label, items } = Astro.props;
+---
+
+<details class="select-menu relative">
+  <summary
+    class="flex min-h-10 w-full min-w-40 cursor-pointer list-none items-center justify-between gap-2 border border-(--button-border-color) px-4 py-2 text-white [&::-webkit-details-marker]:hidden"
+  >
+    <span class="truncate text-2xl md:text-3xl lg:text-4xl">{label}</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="select-menu__chevron shrink-0 transition-transform"
+      aria-hidden="true"
+    >
+      <path d="m18 15-6-6-6 6"></path>
+    </svg>
+  </summary>
+
+  <div
+    class="absolute top-full left-0 z-20 mt-2 min-w-full overflow-hidden bg-zinc-800/80 shadow-lg backdrop-blur-md"
+    role="listbox"
+  >
+    {
+      items.map((item) => (
+        <a
+          href={item.href}
+          role="option"
+          aria-selected={item.isActive}
+          class="flex cursor-pointer items-center gap-2 p-2 text-white hover:bg-(--hover-background-color)"
+        >
+          <span
+            class="h-2 w-2 shrink-0 bg-(--gbb-color)"
+            aria-hidden="true"
+          />
+          <span class="min-w-0 flex-1 truncate">{item.label}</span>
+          {item.isActive && (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="shrink-0 text-(--gbb-color)"
+              aria-hidden="true"
+            >
+              <path d="M20 6 9 17l-5-5" />
+            </svg>
+          )}
+        </a>
+      ))
+    }
+  </div>
+</details>
+
+<style>
+  /* 閉じているときシェブロンを反転（開いているとき上向き） */
+  .select-menu:not([open]) .select-menu__chevron {
+    transform: rotate(180deg);
+  }
+</style>
