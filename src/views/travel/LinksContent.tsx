@@ -107,7 +107,7 @@ export const LinksContent = ({ locale }: LinksContentProps) => {
           <LinkCard
             text={
               <span>
-                ワルシャワへ行こう<br />
+                ポーランドへ行こう<br />
                 トップページへ戻る
               </span>
             }

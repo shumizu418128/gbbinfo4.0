@@ -245,7 +245,7 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
           <LinkCard
             text={
               <span>
-                ワルシャワへ行こう<br />トップページへ戻る
+                ポーランドへ行こう<br />トップページへ戻る
               </span>
             }
             href={`/${locale}/travel/top`}
