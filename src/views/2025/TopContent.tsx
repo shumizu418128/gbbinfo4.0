@@ -35,7 +35,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
         <ul className="w-full max-w-md list-disc text-left px-12 gap-6 mb-18">
           <li>
             <a
-              href="#"
+              href={`/${locale}/others/url_change`}
               className="underline transition-colors duration-150 hover:text-(--gbb-color)"
             >
               {m.site_url_notice()}
@@ -43,7 +43,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           </li>
           <li>
             <a
-              href="#"
+              href={`/${locale}/others/result_stream`}
               className="underline transition-colors duration-150 hover:text-(--gbb-color)"
             >
               {m.wildcard_stream({ Wildcard: "Wildcard" })}
@@ -51,7 +51,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           </li>
           <li>
             <a
-              href="#"
+              href={`/${locale}/${year}/wildcards`}
               className="underline transition-colors duration-150 hover:text-(--gbb-color)"
             >
               {m.wildcard_list({ Wildcard: "Wildcard" })}

@@ -2,12 +2,18 @@
 import { GbbCountdown } from "./GbbCountdown";
 import { staticAssetUrl } from "~/util/staticAsset";
 import type { YearWithCountry } from "~/db/year";
+import type { SupportedLanguage } from "~/constants/languageLabels";
+import * as m from "../../paraglide/messages";
 
 interface Props {
+  locale: SupportedLanguage;
   latestYearWithCountry: YearWithCountry;
 }
 
-const { latestYearWithCountry } = Astro.props;
+const { locale, latestYearWithCountry } = Astro.props;
+
+const footerLinkClass =
+  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 ---
 
 <div class="bg-(--background-color) h-100"></div>
@@ -29,10 +35,28 @@ const { latestYearWithCountry } = Astro.props;
     NOT affiliated with swissbeatbox
   </p>
 
+  <div class="mt-8 space-y-2 text-white">
+    <p>
+      <a href={`/${locale}/others/about`} class={footerLinkClass}>
+        about this site
+      </a>
+    </p>
+    <p>
+      <a href={`/${locale}/others/translation`} class={footerLinkClass}>
+        {m.others_translation_title()}
+      </a>
+    </p>
+    <p>
+      <a href={`/${locale}/others/past_info`} class={footerLinkClass}>
+        過去のGBB情報対応状況
+      </a>
+    </p>
+  </div>
+
   <div class="h-100"></div>
 
   <div class="flex flex-col items-center justify-center">
-    <a href="#" class="flex flex-col items-center pb-36">
+    <a href={`/${locale}/travel/top`} class="flex flex-col items-center pb-36">
       <img
         src={staticAssetUrl("/images/background.webp")}
         alt=""

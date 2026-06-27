@@ -36,5 +36,5 @@ const currentPath = Astro.url.pathname;
   />
   <HeroImage yearWithCountry={yearWithCountry} subtitle={subtitle} />
   <slot />
-  <FooterMenu latestYearWithCountry={latestYearWithCountry} />
+  <FooterMenu locale={locale} latestYearWithCountry={latestYearWithCountry} />
 </Layout>

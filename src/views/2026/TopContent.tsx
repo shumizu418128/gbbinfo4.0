@@ -37,19 +37,26 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
       <div className="flex justify-center w-full">
         <ul className="w-full max-w-md list-disc text-left px-12 gap-6 mb-18">
           <li>
+            <a href={`/${locale}/others/url_change`} className={anchorClass}>
+              {m.site_url_notice()}
+            </a>
+          </li>
+          <li>
+            <a href={`/${locale}/others/result_stream`} className={anchorClass}>
+              {m.wildcard_stream({ Wildcard: "Wildcard" })}
+            </a>
+          </li>
+          <li>
+            <a href={`/${locale}/${year}/wildcards`} className={anchorClass}>
+              {m.wildcard_list({ Wildcard: "Wildcard" })}
+            </a>
+          </li>
+          <li>
             <a
               href={`/${locale}/${year}/studio_competition`}
               className={anchorClass}
             >
               Studio Competition
-            </a>
-          </li>
-          <li>
-            <a
-              href={`/${locale}/${year}/wildcards`}
-              className={anchorClass}
-            >
-              {m.wildcard_list({ Wildcard: "Wildcard" })}
             </a>
           </li>
         </ul>
