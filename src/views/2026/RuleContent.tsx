@@ -333,12 +333,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           <RuleSubHeading>
             {m.rule_seeds_gbb_title({ prevYear: String(prevYear) })}
           </RuleSubHeading>
-          <RuleSeedTable participants={seedData.gbbSeed} />
+          <RuleSeedTable participants={seedData.gbbSeed} locale={locale} />
         </RuleSubSection>
 
         <RuleSubSection>
           <RuleSubHeading>{m.rule_seeds_cs_title()}</RuleSubHeading>
-          <RuleSeedTable participants={seedData.otherSeed} />
+          <RuleSeedTable participants={seedData.otherSeed} locale={locale} />
           <PostIt>
             <p>
               {m.rule_seeds_cs_note()}
@@ -350,7 +350,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
         <RuleSubSection>
           <RuleSubHeading>{m.rule_seeds_cancelled()}</RuleSubHeading>
-          <RuleSeedTable participants={seedData.cancelled} cancelled />
+          <RuleSeedTable participants={seedData.cancelled} cancelled locale={locale} />
         </RuleSubSection>
 
         <div className="mb-8 mt-8">

@@ -1,4 +1,9 @@
 import orderBy from "lodash/orderBy.js";
+import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  typeFromIsTeam,
+  type ParticipantDetailPath,
+} from "~/constants/participantType.js";
 
 /** 参加者一覧ソートに必要な最小フィールド。 */
 export type ParticipantSortable = {
@@ -7,6 +12,11 @@ export type ParticipantSortable = {
   isCancelled: boolean;
   ticketClass: string;
   country?: { isoCode: number } | null;
+};
+
+type ParticipantUrlSource = {
+  id: number;
+  categoryInfo: { isTeam: boolean };
 };
 
 /**
@@ -68,3 +78,88 @@ export const sortParticipants = <T extends ParticipantSortable>(
     ],
     ["asc", "asc", "asc", "asc", "asc", "asc", "asc", "asc"],
   );
+
+/**
+ * Participant 行から詳細ページ path を組み立てる。
+ *
+ * Args:
+ *   participant: Participant ID と Category.isTeam。
+ *
+ * Returns:
+ *   single または team の path。
+ */
+export const participantDetailPathFromParticipant = (
+  participant: ParticipantUrlSource,
+): ParticipantDetailPath => ({
+  id: participant.id,
+  type: typeFromIsTeam(participant.categoryInfo.isTeam),
+});
+
+/**
+ * ParticipantMember 行から詳細ページ path を組み立てる。
+ *
+ * Args:
+ *   memberId: ParticipantMember の ID。
+ *
+ * Returns:
+ *   member の path。
+ */
+export const participantDetailPathFromMember = (
+  memberId: number,
+): ParticipantDetailPath => ({
+  id: memberId,
+  type: "member",
+});
+
+/**
+ * 詳細ページ path から URL を生成する。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   path: type と id が対応した path。
+ *
+ * Returns:
+ *   詳細ページのパス。
+ */
+export const toParticipantDetailUrl = (
+  locale: SupportedLanguage,
+  path: ParticipantDetailPath,
+): string => `/${locale}/participant/${path.type}/${path.id}`;
+
+/**
+ * Participant 詳細ページの URL を生成する。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   participant: 出場者 ID とチーム部門かどうか。
+ *
+ * Returns:
+ *   `/{locale}/participant/{single|team}/{id}` 形式のパス。
+ */
+export const toParticipantUrl = (
+  locale: SupportedLanguage,
+  participant: { id: number; isTeam: boolean },
+): string =>
+  toParticipantDetailUrl(
+    locale,
+    participantDetailPathFromParticipant({
+      id: participant.id,
+      categoryInfo: { isTeam: participant.isTeam },
+    }),
+  );
+
+/**
+ * ParticipantMember 詳細ページの URL を生成する。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   memberId: ParticipantMember の ID。
+ *
+ * Returns:
+ *   `/{locale}/participant/member/{id}` 形式のパス。
+ */
+export const toMemberUrl = (
+  locale: SupportedLanguage,
+  memberId: number,
+): string =>
+  toParticipantDetailUrl(locale, participantDetailPathFromMember(memberId));

@@ -7,6 +7,7 @@ type ParticipantCardProps = {
   primaryInfo?: ReactNode;
   secondaryInfo?: ReactNode;
   isCancelled?: boolean;
+  href?: string;
 };
 
 export const ParticipantCard = ({
@@ -14,7 +15,17 @@ export const ParticipantCard = ({
   primaryInfo,
   secondaryInfo,
   isCancelled = false,
-}: ParticipantCardProps) => (
+  href,
+}: ParticipantCardProps) => {
+  const nameContent = href ? (
+    <a href={href} className="text-(--gbb-color) hover:underline">
+      {name}
+    </a>
+  ) : (
+    name
+  );
+
+  return (
   <div
     className="px-1 py-2 bg-opacity-10 max-w-lg mx-auto"
     style={{ backgroundColor: "var(--section-color)" }}
@@ -29,7 +40,7 @@ export const ParticipantCard = ({
               <br />
             </>
           )}
-          {name}
+          {nameContent}
         </div>
         {primaryInfo && <div className="pt-2">{primaryInfo}</div>}
         {secondaryInfo && (
@@ -40,4 +51,5 @@ export const ParticipantCard = ({
       </div>
     </div>
   </div>
-);
+  );
+};

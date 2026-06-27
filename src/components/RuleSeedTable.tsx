@@ -1,15 +1,19 @@
+import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { Flag } from "~/components/Flag.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
+import { toParticipantUrl } from "~/util/participant.js";
 import * as m from "../../paraglide/messages.js";
 
 type RuleSeedTableProps = {
   participants: ParticipantWithRelations[];
   cancelled?: boolean;
+  locale: SupportedLanguage;
 };
 
 export const RuleSeedTable = ({
   participants,
   cancelled = false,
+  locale,
 }: RuleSeedTableProps) => {
   if (participants.length === 0) {
     return (
@@ -56,7 +60,15 @@ export const RuleSeedTable = ({
                     {showFlag ? (
                       <Flag isoAlpha2={isoAlpha2} className="mr-1" />
                     ) : null}
-                    {participant.name}
+                    <a
+                      href={toParticipantUrl(locale, {
+                        id: participant.id,
+                        isTeam: participant.categoryInfo.isTeam,
+                      })}
+                      className="text-(--gbb-color) hover:underline"
+                    >
+                      {participant.name}
+                    </a>
                   </>
                 )}
               </td>

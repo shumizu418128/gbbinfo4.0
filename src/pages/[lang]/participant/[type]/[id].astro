@@ -1,0 +1,42 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { ParticipantMemberDetailContent } from "~/views/participantDetail/ParticipantMemberDetailContent";
+import { ParticipantSingleDetailContent } from "~/views/participantDetail/ParticipantSingleDetailContent";
+import { ParticipantTeamDetailContent } from "~/views/participantDetail/ParticipantTeamDetailContent";
+import {
+  getParticipantDetailStaticPaths,
+  participantDetailFrameProps,
+  participantMemberDetailContentProps,
+  participantSingleDetailContentProps,
+  participantTeamDetailContentProps,
+  resolveParticipantDetailPage,
+} from "~/util/participantDetail";
+
+export const getStaticPaths = getParticipantDetailStaticPaths;
+
+const resolution = await resolveParticipantDetailPage(Astro.params);
+if ("redirect" in resolution) {
+  return Astro.redirect(resolution.redirect);
+}
+
+const pageData = resolution.pageData;
+const frameProps = participantDetailFrameProps(pageData);
+---
+
+<SiteFrame {...frameProps}>
+  {
+    pageData.type === "single" ? (
+      <ParticipantSingleDetailContent
+        {...participantSingleDetailContentProps(pageData)}
+      />
+    ) : pageData.type === "team" ? (
+      <ParticipantTeamDetailContent
+        {...participantTeamDetailContentProps(pageData)}
+      />
+    ) : (
+      <ParticipantMemberDetailContent
+        {...participantMemberDetailContentProps(pageData)}
+      />
+    )
+  }
+</SiteFrame>
