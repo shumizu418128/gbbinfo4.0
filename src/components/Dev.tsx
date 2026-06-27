@@ -6,8 +6,7 @@ type DevProps = {
 
 const envColors: Record<string, string> = {
   "dev": "bg-red-600",
-  "deploy-preview": "bg-blue-600",
-  "branch-deploy": "bg-gray-600",
+  "preview": "bg-blue-600",
 }
 
 export const Dev = ({ env }: DevProps) => {
