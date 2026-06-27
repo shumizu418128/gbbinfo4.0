@@ -208,19 +208,12 @@ export const SevenToSmokeContent = ({ locale, year }: SevenToSmokeContentProps) 
         <p className={paragraphClass}>
           当サイト内の
           <a href={`/${locale}/${year}/top_7tosmoke`} className={anchorClass}>
-            「7toSmokeこれだけガイド」
+            「7toSmoke」
           </a>
           をご確認ください。
         </p>
         <div className="mb-8 flex flex-wrap gap-4">
-          <LinkCard
-            text={
-              <span>
-                7toSmoke
-                <br />
-                これだけガイド
-              </span>
-            }
+          <LinkCard text="7toSmoke"
             href={`/${locale}/${year}/top_7tosmoke`}
             fullWidth
           />

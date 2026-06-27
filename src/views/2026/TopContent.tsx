@@ -22,7 +22,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           />
           <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href={`/${locale}/${year}/rule`} />
           <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href={`/${locale}/${year}/timetable`} />
-          <LinkCard text={m.team_japan()} image="/images/team_japan.webp" href={`/${locale}/${year}/japan`} />
+          <LinkCard text={m.team_japan()} image="/images/mokbay.webp" href={`/${locale}/${year}/japan`} />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
           <LinkCard text={m.withdrawn_list()} image="/images/b4start.webp" href={`/${locale}/${year}/cancel`} />

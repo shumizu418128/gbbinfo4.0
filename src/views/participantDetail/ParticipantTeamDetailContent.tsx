@@ -89,7 +89,7 @@ export const ParticipantTeamDetailContent = ({
   const countries = resolveParticipantCountries(participant);
 
   const memberRows: ReactNode[][] = [
-    [m.participant_team_members(), m.participant_col_country()],
+    ["TEAM MEMBERS", m.participant_col_country()],
     ...participant.members.map((teamMember) => {
       const memberHref = getMemberDetailHref(locale, teamMember);
       const memberName = memberHref ? (
@@ -199,7 +199,7 @@ export const ParticipantTeamDetailContent = ({
   }
 
   const accountUrlRows: ReactNode[][] = [
-    ["", m.participant_sns()],
+    ["", "SNS"],
     ...tavily.accountUrls.map((item) => [
       item.favicon ? (
         <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />
@@ -219,7 +219,7 @@ export const ParticipantTeamDetailContent = ({
   ];
 
   const finalUrlRows: ReactNode[][] = [
-    ["", m.participant_web()],
+    ["", "WEB"],
     ...tavily.finalUrls.map((item) => [
       item.favicon ? (
         <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />

@@ -113,7 +113,7 @@ export const LinksContent = ({ locale }: LinksContentProps) => {
             }
             href={`/${locale}/travel/top`}
           />
-          <LinkCard text="これだけガイド" href="/" />
+          <LinkCard text="Home" href="/" />
         </div>
       </div>
     </main>

@@ -134,7 +134,7 @@ export const ParticipantSingleDetailContent = ({
   }
 
   const accountUrlRows: ReactNode[][] = [
-    ["", m.participant_sns()],
+    ["", "SNS"],
     ...tavily.accountUrls.map((item) => [
       item.favicon ? (
         <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />
@@ -154,7 +154,7 @@ export const ParticipantSingleDetailContent = ({
   ];
 
   const finalUrlRows: ReactNode[][] = [
-    ["", m.participant_web()],
+    ["", "WEB"],
     ...tavily.finalUrls.map((item) => [
       item.favicon ? (
         <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />

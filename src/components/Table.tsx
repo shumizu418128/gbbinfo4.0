@@ -1,19 +1,72 @@
-import type { ReactNode } from "react";
+import type { CSSProperties, ReactNode } from "react";
 
 type TableProps = {
   data: (string | number | ReactNode)[][];
   textCenter?: boolean;
+  /** 列幅の比率（例: [5, 1, 4] → 50% : 10% : 40%）。 */
+  columnWidths?: number[];
+  className?: string;
 };
 
-export const Table: React.FC<TableProps> = ({ data, textCenter = false }) => {
+/**
+ * 列幅比率からパーセンテージ文字列を返す。
+ *
+ * Args:
+ *   weights: 列幅の比率配列。
+ *   index: 対象列のインデックス。
+ *
+ * Returns:
+ *   幅のパーセンテージ文字列。未定義の列は undefined。
+ */
+const toColumnWidthPercent = (
+  weights: number[],
+  index: number,
+): string | undefined => {
+  if (index >= weights.length) return undefined;
+  const total = weights.reduce((sum, weight) => sum + weight, 0);
+  return `${(weights[index] / total) * 100}%`;
+};
+
+/**
+ * 列幅比率に基づく style を返す。
+ *
+ * Args:
+ *   columnWidths: 列幅の比率配列。
+ *   index: 対象列のインデックス。
+ *
+ * Returns:
+ *   width を含む style オブジェクト。比率未定義時は padding のみ。
+ */
+const getCellStyle = (
+  columnWidths: number[] | undefined,
+  index: number,
+): CSSProperties => {
+  const width = columnWidths
+    ? toColumnWidthPercent(columnWidths, index)
+    : undefined;
+  return width ? { padding: 8, width } : { padding: 8 };
+};
+
+export const Table = ({
+  data,
+  textCenter = false,
+  columnWidths,
+  className,
+}: TableProps) => {
   if (!data || data.length === 0) return null;
 
   return (
-    <table className="mx-auto w-[95%] border-collapse my-4" style={{ background: "rgba(255,255,255,0.05)" }}>
+    <table
+      className={className ?? "mx-auto my-4 w-[95%] border-collapse"}
+      style={{ background: "rgba(255,255,255,0.05)" }}
+    >
       <thead>
         <tr className="border-b border-(--table-border-color) bg-(--section-color)">
           {data[0].map((cell, j) => (
-            <th key={j} style={{ padding: 8, fontWeight: "bold" }}>
+            <th
+              key={j}
+              style={{ ...getCellStyle(columnWidths, j), fontWeight: "bold" }}
+            >
               {cell}
             </th>
           ))}
@@ -24,10 +77,14 @@ export const Table: React.FC<TableProps> = ({ data, textCenter = false }) => {
           {data.slice(1).map((row, i) => (
             <tr
               key={i + 1}
-              className={((i + 1) % 2 === 0) ? "bg-(--section-color)" : undefined}
+              className={(i + 1) % 2 === 0 ? "bg-(--section-color)" : undefined}
             >
               {row.map((cell, j) => (
-                <td key={j} style={{ padding: 8 }} className={textCenter ? "text-center" : undefined}>
+                <td
+                  key={j}
+                  style={getCellStyle(columnWidths, j)}
+                  className={textCenter ? "text-center" : undefined}
+                >
                   {cell}
                 </td>
               ))}

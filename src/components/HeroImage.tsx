@@ -10,7 +10,7 @@ type HeroImageProps = {
 export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: HeroImageProps) => {
   const { year, city, startsAt, endsAt, country } = yearWithCountry;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
-  const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate() - 1)).toLocaleDateString() : "";
+  const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate())).toLocaleDateString() : "";
 
   return (
     <>
