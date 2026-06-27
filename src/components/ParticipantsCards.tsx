@@ -14,7 +14,7 @@ type ParticipantsCardsProps = {
 /**
  * 出場者カード一覧（件数表示 + カード）。
  *
- * SelectMenu やワールドマップは含まず、Astro 側で前後に配置する。
+ * SelectMenu やワールドマップは含まず、ParticipantsContent 側で前後に配置する。
  */
 export const ParticipantsCards = ({
   participants,

@@ -1,8 +1,6 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
-import SelectMenu from "~/components/SelectMenu.astro";
-import { ParticipantsCards } from "~/views/ParticipantsCards";
-import { ParticipantWorldMap } from "~/components/ParticipantWorldMap";
+import { ParticipantsContent } from "~/views/ParticipantsContent";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findParticipants } from "~/db/participant";
 import { findCategoriesByIds } from "~/db/category";
@@ -49,13 +47,6 @@ const {
 
 const subtitle = m.wildcard_result_and_participants({ Wildcard: "Wildcard" });
 const title = `GBB ${yearWithCountry.year} ${subtitle}`;
-const basePath = `/${locale}/${yearWithCountry.year}/participants`;
-const categoryItems = categoryNames.map((name) => ({
-  key: name,
-  href: `${basePath}/${categorySlug(name)}`,
-  label: name,
-  isActive: name === selectedCategory.name,
-}));
 ---
 
 <SiteFrame
@@ -66,30 +57,12 @@ const categoryItems = categoryNames.map((name) => ({
   years={years}
   latestYearWithCountry={latestYearWithCountry}
 >
-  <main
-    class="pt-16 pb-8 text-white"
-    style="background-color: var(--background-color)"
-  >
-    <div class="mx-auto w-full max-w-2xl px-4">
-      <div class="mb-10 flex justify-center">
-        <SelectMenu label={selectedCategory.name} items={categoryItems} />
-      </div>
-
-      <ParticipantsCards
-        participants={participants}
-        locale={locale}
-        label={selectedCategory.name}
-      />
-
-      <div class="mt-10 flex justify-center">
-        <SelectMenu label={selectedCategory.name} items={categoryItems} />
-      </div>
-    </div>
-
-    <ParticipantWorldMap
-      client:visible
-      participants={participants}
-      locale={locale}
-    />
-  </main>
+  <ParticipantsContent
+    client:visible
+    participants={participants}
+    locale={locale}
+    selectedCategory={selectedCategory}
+    year={yearWithCountry.year}
+    categoryNames={categoryNames}
+  />
 </SiteFrame>
