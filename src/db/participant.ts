@@ -1,4 +1,5 @@
 import { and, eq, ne, sql } from "drizzle-orm";
+import orderBy from "lodash/orderBy.js";
 import { MULTI_NATIONAL_ISO_CODE } from "~/constants/country.js";
 import {
   type ParticipantDetailPath,
@@ -147,6 +148,7 @@ export type ParticipantDetailMember = {
 
 export type PastParticipationEntry = ParticipantDetailPath & {
   year: number;
+  /** 表示名。single/team は出場者名、member は所属チーム名。 */
   name: string;
   category: string;
   categoryId: number;
@@ -337,21 +339,14 @@ export const findPastParticipation = async (
     pastData.push({
       ...participantDetailPathFromMember(row.id),
       year: row.participantInfo.year,
-      name: normalizeParticipantName(row.name),
+      name: normalizeParticipantName(row.participantInfo.name),
       category: row.participantInfo.categoryInfo.name,
       categoryId: row.participantInfo.category,
       isCancelled: row.participantInfo.isCancelled,
     });
   }
 
-  pastData.sort((a, b) => {
-    if (a.year !== b.year) {
-      return a.year - b.year;
-    }
-    return a.categoryId - b.categoryId;
-  });
-
-  return pastData;
+  return orderBy(pastData, ["year", "categoryId"], ["asc", "asc"]);
 };
 
 /**
@@ -379,8 +374,7 @@ export const computePastYearParticipation = (
     years.delete(currentYear);
   }
 
-  const sorted = [...years].sort((a, b) => b - a);
-  return sorted.slice(0, 4);
+  return orderBy([...years], [], ["desc"]).slice(0, 4);
 };
 
 /**

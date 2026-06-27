@@ -1,4 +1,5 @@
 import { inArray } from "drizzle-orm";
+import orderBy from "lodash/orderBy.js";
 import { getDb } from "./client.js";
 import { categoryTable } from "./tables.js";
 
@@ -21,9 +22,7 @@ export const findCategoriesByIds = async (ids: number[]) => {
   });
 
   const orderMap = new Map(ids.map((id, index) => [id, index]));
-  return rows.sort(
-    (a, b) => (orderMap.get(a.id) ?? 0) - (orderMap.get(b.id) ?? 0),
-  );
+  return orderBy(rows, (row) => orderMap.get(row.id) ?? 0);
 };
 
 export type Categories = Awaited<ReturnType<typeof findCategoriesByIds>>;

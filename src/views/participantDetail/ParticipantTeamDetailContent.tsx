@@ -298,7 +298,7 @@ export const ParticipantTeamDetailContent = ({
         <h2 className="mb-4 text-center text-xl font-bold pt-36">
           {displayName} {m.participant_past_history()}
         </h2>
-        {pastParticipation.length > 0 ? <Table data={pastRows} textCenter /> : null}
+        {pastParticipation.length > 0 ? <Table data={pastRows} /> : null}
 
         {pastYearButtonRows.map((row, index) => (
           <div key={index} className="mt-8 flex flex-wrap justify-center gap-2">
