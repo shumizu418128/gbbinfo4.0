@@ -111,7 +111,7 @@ export const GbbCountdown = ({ latestYearWithCountry, targetIso = NEXT_GBB }: Gb
   return (
     <div className="mt-8 z-10 w-full max-w-2xl px-4" aria-live="polite">
       <p className="mb-4 text-center text-white text-[24px]">
-        GBB {NEXT_GBB_YEAR}<br /><Flag isoAlpha2={isoAlpha2} /> {city}
+        GBB {NEXT_GBB_YEAR}<br /><Flag isoAlpha2={isoAlpha2} paddingBottom={5} /> {city}
       </p>
       <div
         className="flex flex-wrap justify-center"
