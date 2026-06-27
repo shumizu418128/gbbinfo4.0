@@ -5,11 +5,12 @@ import { SelectMenu } from "~/components/SelectMenu.js";
 import { ParticipantsCards } from "~/components/ParticipantsCards.js";
 import { ParticipantWorldMap } from "~/components/ParticipantWorldMap.js";
 
+const YEAR = 2026;
+
 type ParticipantsContentProps = {
   participants: ParticipantWithRelations[];
   locale: SupportedLanguage;
   selectedCategory: { name: string };
-  year: number;
   categoryNames: string[];
 };
 
@@ -17,10 +18,9 @@ export const ParticipantsContent = ({
   participants,
   locale,
   selectedCategory,
-  year,
   categoryNames,
 }: ParticipantsContentProps) => {
-  const basePath = `/${locale}/${year}/participants`;
+  const basePath = `/${locale}/${YEAR}/participants`;
   const categoryItems = categoryNames.map((name) => ({
     key: name,
     href: `${basePath}/${categorySlug(name)}`,

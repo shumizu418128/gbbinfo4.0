@@ -18,6 +18,7 @@ import {
   buildProcessedBeatboxerSearch,
   type ProcessedBeatboxerSearch,
 } from "~/util/beatboxerSearchResults.js";
+import { isUnknownParticipantName } from "~/util/participant.js";
 import { toTavilyCacheKey } from "~/util/tavily.js";
 
 export type ParticipantDetailPageData = {
@@ -99,6 +100,10 @@ export const loadParticipantDetailPageData = async (
     participantId = participant.id;
     isCancelled = participant.isCancelled;
     ticketClass = participant.ticketClass;
+  }
+
+  if (isUnknownParticipantName(displayName)) {
+    throw new Error(`Participant name is unknown: id=${id}`);
   }
 
   const [pastParticipation, sameYearCategoryPeers, tavilyRow, common] =

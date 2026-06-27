@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { TAVILY_EXCLUDE_DOMAINS } from "../src/constants/beatboxerSearch.ts";
 import { findUniqueBeatboxerNames } from "../src/db/participant.ts";
+import { UNKNOWN_PARTICIPANT_NAME } from "../src/util/participant.ts";
 import {
   findTavilyByCacheKey,
   upsertTavilyRow,
@@ -35,7 +36,7 @@ const DEEPL_CUSTOM_INSTRUCTIONS =
 const TRANSLATION_LOCALES = ["ja", "ko"] as const;
 
 /** Tavily 同期対象外の Beatboxer 名（出場者未定など）。 */
-const TAVILY_SYNC_SKIP_NAMES = new Set(["???"]);
+const TAVILY_SYNC_SKIP_NAMES = new Set([UNKNOWN_PARTICIPANT_NAME]);
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 

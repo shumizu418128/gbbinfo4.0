@@ -3,7 +3,23 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
   typeFromIsTeam,
   type ParticipantDetailPath,
+  type ParticipantType,
 } from "~/constants/participantType.js";
+
+/** 出場者未定を表す表示名（詳細ページ・外部連携の対象外）。 */
+export const UNKNOWN_PARTICIPANT_NAME = "???";
+
+/**
+ * 出場者未定の表示名かどうかを判定する。
+ *
+ * Args:
+ *   name: 出場者名。
+ *
+ * Returns:
+ *   未定の場合は true。
+ */
+export const isUnknownParticipantName = (name: string): boolean =>
+  name === UNKNOWN_PARTICIPANT_NAME;
 
 /** 参加者一覧ソートに必要な最小フィールド。 */
 export type ParticipantSortable = {
@@ -163,3 +179,66 @@ export const toMemberUrl = (
   memberId: number,
 ): string =>
   toParticipantDetailUrl(locale, participantDetailPathFromMember(memberId));
+
+/**
+ * Participant 詳細ページへのリンクを返す。未定の出場者は undefined。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   participant: 出場者 ID・名前・チーム部門かどうか。
+ *
+ * Returns:
+ *   詳細ページ URL。未定の場合は undefined。
+ */
+export const getParticipantDetailHref = (
+  locale: SupportedLanguage,
+  participant: { id: number; name: string; categoryInfo: { isTeam: boolean } },
+): string | undefined => {
+  if (isUnknownParticipantName(participant.name)) {
+    return undefined;
+  }
+  return toParticipantUrl(locale, {
+    id: participant.id,
+    isTeam: participant.categoryInfo.isTeam,
+  });
+};
+
+/**
+ * ParticipantMember 詳細ページへのリンクを返す。未定のメンバーは undefined。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   member: メンバー ID と名前。
+ *
+ * Returns:
+ *   詳細ページ URL。未定の場合は undefined。
+ */
+export const getMemberDetailHref = (
+  locale: SupportedLanguage,
+  member: { id: number; name: string },
+): string | undefined => {
+  if (isUnknownParticipantName(member.name)) {
+    return undefined;
+  }
+  return toMemberUrl(locale, member.id);
+};
+
+/**
+ * 過去出場履歴エントリの詳細ページへのリンクを返す。未定の出場者は undefined。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   entry: 過去出場履歴（名前・type・id）。
+ *
+ * Returns:
+ *   詳細ページ URL。未定の場合は undefined。
+ */
+export const getPastParticipationDetailHref = (
+  locale: SupportedLanguage,
+  entry: { name: string; id: number; type: ParticipantType },
+): string | undefined => {
+  if (isUnknownParticipantName(entry.name)) {
+    return undefined;
+  }
+  return toParticipantDetailUrl(locale, entry);
+};

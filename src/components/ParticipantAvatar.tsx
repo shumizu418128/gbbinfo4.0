@@ -1,3 +1,4 @@
+import { isUnknownParticipantName } from "~/util/participant.js";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type ParticipantAvatarProps = {
@@ -42,6 +43,15 @@ export const ParticipantAvatar = ({
   name,
   size = 120,
 }: ParticipantAvatarProps) => {
+  if (isUnknownParticipantName(name)) {
+    return (
+      <div
+        className="shrink-0"
+        style={{ width: size, height: size, backgroundColor: "#000000" }}
+      />
+    );
+  }
+
   const src = toParticipantImageSrc(name);
 
   return (

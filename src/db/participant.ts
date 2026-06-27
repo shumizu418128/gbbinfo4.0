@@ -6,6 +6,7 @@ import {
   type ParticipantType,
 } from "~/constants/participantType.js";
 import {
+  isUnknownParticipantName,
   participantDetailPathFromMember,
   participantDetailPathFromParticipant,
 } from "~/util/participant.js";
@@ -173,7 +174,7 @@ export const findAllParticipantDetailPaths =
         with: { categoryInfo: true },
       }),
       getDb().query.participantMemberTable.findMany({
-        columns: { id: true },
+        columns: { id: true, name: true },
       }),
     ]);
 
@@ -183,10 +184,16 @@ export const findAllParticipantDetailPaths =
       if (!participant.categoryInfo) {
         throw new Error(`Participant category missing: id=${participant.id}`);
       }
+      if (isUnknownParticipantName(participant.name)) {
+        continue;
+      }
       paths.push(participantDetailPathFromParticipant(participant));
     }
 
     for (const member of members) {
+      if (isUnknownParticipantName(member.name)) {
+        continue;
+      }
       paths.push(participantDetailPathFromMember(member.id));
     }
 
@@ -224,6 +231,10 @@ export const findParticipantDetail = async (
     }
 
     row.name = normalizeParticipantName(row.name);
+
+    if (isUnknownParticipantName(row.name)) {
+      throw new Error(`ParticipantMember name is unknown: id=${id}`);
+    }
     row.participantInfo.name = normalizeParticipantName(row.participantInfo.name);
     for (const member of row.participantInfo.members) {
       member.name = normalizeParticipantName(member.name);
@@ -248,6 +259,12 @@ export const findParticipantDetail = async (
     throw new Error(`Participant iso_code is unknown: id=${id}`);
   }
 
+  row.name = normalizeParticipantName(row.name);
+
+  if (isUnknownParticipantName(row.name)) {
+    throw new Error(`Participant name is unknown: id=${id}`);
+  }
+
   const expectedPath = participantDetailPathFromParticipant(row);
   if (expectedPath.type !== type) {
     throw new Error(
@@ -255,7 +272,6 @@ export const findParticipantDetail = async (
     );
   }
 
-  row.name = normalizeParticipantName(row.name);
   for (const member of row.members) {
     member.name = normalizeParticipantName(member.name);
   }
@@ -291,6 +307,10 @@ export const findParticipantDetail = async (
 export const findPastParticipation = async (
   name: string,
 ): Promise<PastParticipationEntry[]> => {
+  if (isUnknownParticipantName(name)) {
+    return [];
+  }
+
   const normalizedName = normalizeParticipantName(name);
 
   const [participantRows, memberRows] = await Promise.all([
@@ -315,6 +335,7 @@ export const findPastParticipation = async (
   for (const row of participantRows) {
     if (
       normalizeParticipantName(row.name) !== normalizedName ||
+      isUnknownParticipantName(row.name) ||
       !row.categoryInfo
     ) {
       continue;
@@ -332,6 +353,8 @@ export const findPastParticipation = async (
   for (const row of memberRows) {
     if (
       normalizeParticipantName(row.name) !== normalizedName ||
+      isUnknownParticipantName(row.name) ||
+      isUnknownParticipantName(row.participantInfo?.name ?? "") ||
       !row.participantInfo?.categoryInfo
     ) {
       continue;
@@ -415,8 +438,9 @@ export const findUniqueBeatboxerNames = async (): Promise<string[]> => {
 
   const names = new Set<string>();
   for (const row of [...participants, ...members]) {
-    if (row.name?.trim()) {
-      names.add(normalizeParticipantName(row.name.trim()));
+    const trimmed = row.name?.trim();
+    if (trimmed && !isUnknownParticipantName(trimmed)) {
+      names.add(normalizeParticipantName(trimmed));
     }
   }
   return [...names].sort();

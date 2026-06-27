@@ -1,6 +1,6 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
-import { ParticipantsContent } from "~/views/ParticipantsContent";
+import { ParticipantsContent } from "~/views/2026/ParticipantsContent";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findParticipants } from "~/db/participant";
 import { findCategoriesByIds } from "~/db/category";
@@ -62,7 +62,6 @@ const title = `GBB ${yearWithCountry.year} ${subtitle}`;
     participants={participants}
     locale={locale}
     selectedCategory={selectedCategory}
-    year={yearWithCountry.year}
     categoryNames={categoryNames}
   />
 </SiteFrame>

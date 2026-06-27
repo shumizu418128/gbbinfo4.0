@@ -3,7 +3,7 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { ParticipantCard } from "~/components/ParticipantCard.js";
-import { toParticipantUrl } from "~/util/participant.js";
+import { getParticipantDetailHref } from "~/util/participant.js";
 
 type ParticipantsCardsProps = {
   participants: ParticipantWithRelations[];
@@ -40,10 +40,7 @@ export const ParticipantsCards = ({
               key={participant.id}
               name={participant.name}
               isCancelled={participant.isCancelled}
-              href={toParticipantUrl(locale, {
-                id: participant.id,
-                isTeam: participant.categoryInfo.isTeam,
-              })}
+              href={getParticipantDetailHref(locale, participant)}
               primaryInfo={
                 countries.length > 0 ? (
                   <ParticipantCountries countries={countries} locale={locale} />

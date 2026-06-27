@@ -31,9 +31,13 @@ export async function getStaticPaths() {
     const participants = await findParticipants(YEAR, null, null);
     seedData = emptySeedData();
     for (const participant of participants) {
-      if (participant.ticketClass.includes("Wildcard")) {
+      if (
+        participant.ticketClass.includes("Wildcard") ||
+        participant.ticketClass === "-"
+      ) {
         continue;
       }
+
       if (participant.isCancelled) {
         seedData.cancelled.push(participant);
       } else if (participant.ticketClass.includes("GBB")) {

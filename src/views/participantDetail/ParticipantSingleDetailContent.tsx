@@ -14,7 +14,10 @@ import type {
 } from "~/db/participant.js";
 import { getCountryName, resolveParticipantCountries } from "~/util/country.js";
 import type { ProcessedBeatboxerSearch } from "~/util/beatboxerSearchResults.js";
-import { toParticipantDetailUrl, toParticipantUrl } from "~/util/participant.js";
+import {
+  getParticipantDetailHref,
+  getPastParticipationDetailHref,
+} from "~/util/participant.js";
 import * as m from "../../../paraglide/messages.js";
 
 export type ParticipantSingleDetailContentProps = {
@@ -57,13 +60,13 @@ export const ParticipantSingleDetailContent = ({
   const pastRows: ReactNode[][] = [
     ["", m.rule_col_name(), m.rule_col_category()],
     ...pastParticipation.map((entry) => {
-      const link = (
-        <a
-          href={toParticipantDetailUrl(locale, entry)}
-          className={anchorClass}
-        >
+      const href = getPastParticipationDetailHref(locale, entry);
+      const nameContent = href ? (
+        <a href={href} className={anchorClass}>
           {entry.name}
         </a>
+      ) : (
+        entry.name
       );
 
       if (entry.isCancelled) {
@@ -72,13 +75,13 @@ export const ParticipantSingleDetailContent = ({
           <>
             <span className="text-white">{m.cancelled()}</span>
             <br />
-            {link}
+            {nameContent}
           </>,
           <span className="line-through">{entry.category}</span>,
         ];
       }
 
-      return [entry.year, link, entry.category];
+      return [entry.year, nameContent, entry.category];
     }),
   ];
 
@@ -91,24 +94,20 @@ export const ParticipantSingleDetailContent = ({
           ? countries.map((c) => getCountryName(c, locale)).join(" / ")
           : getCountryName(peer.country, locale);
       const isoAlpha2 = peer.country.isoAlpha2?.toLowerCase() ?? null;
-      const peerHref = toParticipantUrl(locale, {
-        id: peer.id,
-        isTeam: peer.categoryInfo.isTeam,
-      });
+      const peerHref = getParticipantDetailHref(locale, peer);
 
-      const nameCell =
-        peer.name === "???" ? (
-          peer.name
-        ) : (
-          <>
-            {isoAlpha2 && !peer.isCancelled ? (
-              <Flag isoAlpha2={isoAlpha2} className="mr-1" />
-            ) : null}
-            <a href={peerHref} className={anchorClass}>
-              {peer.name}
-            </a>
-          </>
-        );
+      const nameCell = peerHref ? (
+        <>
+          {isoAlpha2 && !peer.isCancelled ? (
+            <Flag isoAlpha2={isoAlpha2} className="mr-1" />
+          ) : null}
+          <a href={peerHref} className={anchorClass}>
+            {peer.name}
+          </a>
+        </>
+      ) : (
+        peer.name
+      );
 
       if (peer.isCancelled) {
         return [

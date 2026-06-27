@@ -2,7 +2,7 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { Flag } from "~/components/Flag.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import { anchorClass } from "~/constants/linkStyle.js";
-import { toParticipantUrl } from "~/util/participant.js";
+import { toParticipantUrl, isUnknownParticipantName } from "~/util/participant.js";
 import * as m from "../../paraglide/messages.js";
 
 type RuleSeedTableProps = {
@@ -37,7 +37,9 @@ export const RuleSeedTable = ({
         {participants.map((participant, index) => {
           const isoAlpha2 = participant.country.isoAlpha2?.toLowerCase() ?? null;
           const showFlag =
-            participant.name !== "???" && isoAlpha2 !== null && !cancelled;
+            !isUnknownParticipantName(participant.name) &&
+            isoAlpha2 !== null &&
+            !cancelled;
 
           return (
             <tr
@@ -56,6 +58,8 @@ export const RuleSeedTable = ({
                     ) : null}
                     <span className="line-through">{participant.name}</span>
                   </>
+                ) : isUnknownParticipantName(participant.name) ? (
+                  participant.name
                 ) : (
                   <>
                     {showFlag ? (
