@@ -1,0 +1,353 @@
+import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
+import { SocialEmbed } from "~/components/SocialEmbed.js";
+import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
+import type { ReactNode } from "react";
+
+type HowToPlanContentProps = {
+  locale: SupportedLanguage;
+};
+
+const paragraphClass = "mb-8 leading-relaxed";
+const sectionClass = "mt-16 mb-8 text-2xl font-bold";
+const subSectionClass = "mt-8 mb-8 text-lg font-bold";
+const tocClass = "mb-8 list-decimal pl-8 space-y-2";
+const listClass = "mb-4 list-disc pl-8 space-y-4";
+const episodeClass = "mb-8 border border-(--gbb-color) bg-(--section-color) p-4";
+
+const EpisodeBox = ({ children }: { children: ReactNode }) => (
+  <div className={episodeClass}>{children}</div>
+);
+
+export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => {
+  return (
+    <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
+      <div className="mx-auto w-full max-w-2xl px-4">
+        <p className={paragraphClass}>
+          GBB21を現地観戦した管理人が、GBBに向けて計画を立てる上で知っておくべきことを解説します。
+        </p>
+        <p className={paragraphClass}>
+          過去日本で開催されたBeatboxイベントとGBBは、規模が桁違いです。これまで何度もイベントに参加したことがある方でも、ぜひ&quot;GBB対策&quot;を考えてみてください。
+        </p>
+        <p className={paragraphClass}>
+          ※今回はGBB23を前提に解説していますが、いつのGBBであっても基本的に気を付けるべきことは変わりません。
+        </p>
+        <PostIt>
+          <p>
+            2024/1/10追記
+            <br />
+            今後、このページの更新は行いません。
+            <br />
+            古い情報が含まれる可能性があるため、必ず最新情報をご確認ください。
+          </p>
+        </PostIt>
+
+        <h2 className={sectionClass}>目次</h2>
+        <ol className={tocClass}>
+          <li><a href="#p01" className={anchorClass}>はじめに</a></li>
+          <li><a href="#p02" className={anchorClass}>交通手段</a></li>
+          <li><a href="#p03" className={anchorClass}>ホテル</a></li>
+          <li><a href="#p04" className={anchorClass}>当日の行動</a></li>
+          <li><a href="#p05" className={anchorClass}>持ち物</a></li>
+        </ol>
+
+        <h2 id="p01" className={sectionClass}>はじめに</h2>
+        <p className={paragraphClass}>
+          この記事で示す情報は、以下のように区分けをして「正確な情報」「個人的意見」がはっきりわかるよう示します。
+        </p>
+        <ul className={listClass}>
+          <li>GBB21での、管理人の実際の経験</li>
+          <li>100%事実と言い切れるもの（Swissbeatboxからの公式情報など）</li>
+          <li>管理人の経験に基づく考察</li>
+        </ul>
+        <p className={paragraphClass}>
+          誰かに情報を伝える際、不正確な情報をあたかも正しい情報であるかのように伝える行為は、デマを生む原因になるのでおやめください。
+        </p>
+        <p className={paragraphClass}>また、この記事の読者は、日本国内に居住する人を前提としています。</p>
+
+        <h2 id="p02" className={sectionClass}>交通手段</h2>
+        <h3 className={subSectionClass}>GBB21での経験</h3>
+        <p className={paragraphClass}>
+          私はポーランド到着日がGBB21 Day1当日だったため、空港からホテルへ向かい荷物を置いた後、すぐ会場に向かわなければなりませんでした。
+          そのため十分な休憩をとれなかった上、GBB21会場では食べ物の持ち込みは禁止、会場内での食べ物の販売はほぼ無し（ポテトチップスなどのスナックのみ販売）だったため、体力的に厳しい状況でした。
+        </p>
+        <h3 className={subSectionClass}>管理人の考察</h3>
+        <p className={paragraphClass}>
+          遠方の方は飛行機、関東の方は電車やバスで会場へ向かうことになると思います。移動手段によっては会場到着前に体力を消耗することが考えられます。
+          可能であれば前日、もしくは当日午前中に会場付近に到着し、どこかで休憩をとることをおすすめします。
+        </p>
+        <h3 className={subSectionClass}>フライトの予約</h3>
+        <p className={paragraphClass}>
+          （ステマじゃないよ）
+          <br />
+          格安航空会社が毎月のように国内線セールを行っています。
+          <br />
+          遠方から来場される方は、各社ホームページを確認するなど、ぜひ活用してみてください。
+        </p>
+        <div className="mb-8 flex flex-wrap gap-4">
+          <LinkCard text="Peach ホームページ" href="https://www.flypeach.com/" />
+          <LinkCard text="Jetstar Japan ホームページ" href="https://www.jetstar.com/jp/ja/home" />
+          <LinkCard text="Spring Japan ホームページ" href="https://jp.ch.com/" />
+        </div>
+
+        <h2 id="p03" className={sectionClass}>ホテル</h2>
+        <h3 className={subSectionClass}>GBB21の時のswissbeatboxの対応</h3>
+        <p className={paragraphClass}>
+          swissbeatboxは、GBB21のチケットを持っている方に対し、GBB21オフィシャルホテルである&quot;The Westin Warsaw&quot;の予約を特別価格で受け付けました。
+          <br />
+          <a
+            href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1613047055411&key=GRP&app=resvlink"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={anchorClass}
+          >
+            詳細はこちら
+          </a>
+          （当然ですが現在は受付終了しています）
+        </p>
+        <h3 className={subSectionClass}>GBB23の場合</h3>
+        <p className={paragraphClass}>
+          7月15日にそれっぽい情報が出ました。
+          <a href="#p03-2" className={anchorClass}>詳細はこちら</a>
+        </p>
+        <h3 className={subSectionClass}>管理人の考察</h3>
+        <p className={paragraphClass}>
+          今後オフィシャルホテルの情報が公開された場合は利用するのも１つの選択肢です。
+          利用しない場合、ご自身でホテルを選ぶことになります。
+          その際注意するべきなのは、終電時間です。
+        </p>
+
+        <p className="mb-4">
+          <a
+            href="https://drive.google.com/file/d/1b8VgRrqR--ePsVqJxva0jWMMvNcNGByy/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={anchorClass}
+          >
+            GBB21 タイムテーブル
+          </a>
+        </p>
+        <p className={paragraphClass}>
+          都心で移動する場合、目的地によりますが0時～1時には電車に乗らないと終電に間に合わない可能性があります。
+        </p>
+        <p className={paragraphClass}>
+          しかしながら、GBB21のタイムテーブルを確認すると、すべて深夜か早朝に終了しており、終電に間に合わない可能性があります。
+        </p>
+        <ol className="list-decimal pl-8 space-y-2 my-4">
+          <li>会場から徒歩圏内、なるべく近いホテルを選ぶ</li>
+          <li>終電時刻を事前に調べて、それまでに会場を出る</li>
+          <li>タクシーを使う</li>
+          </ol>
+        <p className={paragraphClass}>
+          が選択肢になりますが、そもそも会場付近のホテルが非常に少なく高価なため、1を選ぶことは非常に困難です。
+        </p>
+        <p className={paragraphClass}>
+          3はお金がかかってしまうのは当然ですが、時間を忘れて楽しんだあまり終電を逃してしまった... なんてことも起こりかねません。
+        </p>
+        <p className={paragraphClass}>
+          時間の管理が必要であること、これが事前に計画を立てることをおすすめする理由の一つです。
+        </p>
+
+        <h2 id="p04" className={sectionClass}>当日の行動</h2>
+        <p className={paragraphClass}>以下はすべて管理人の考察です。</p>
+        <h3 className={subSectionClass}>GBBは「海外の大会」</h3>
+        <p className={paragraphClass}>
+          いくらGBB23が日本開催とはいえど、GBBは海外から多くのBeatboxファンが来場する国際大会です。実際、海外限定チケットの販売が行われており、日本人が大多数になるとは考えにくいです。
+        </p>
+
+        <EpisodeBox>
+          <p className="mb-4">GBB21 Day1開始前</p>
+          <p className="mb-4">管理人がGBB21会場の入り口にて、入場待ちをしていた時のことです。</p>
+          <p className="mb-4">D-low・その友達と思われる方々が入り口まで歩いてきたと思ったら、突然D-lowが</p>
+          <p className="mb-4 text-center font-bold">「イェーーーーーーーーイ！！！！！！！！！」</p>
+          <p className="mb-4">と雄叫びを上げ始めました。サンシャイン池崎みたいな...</p>
+          <p className="mb-4">それを見ていた周りの方も呼応するかのように、大声で叫び始めました。</p>
+          <p>こんなこと日本でやる人、私は見たことないです。</p>
+        </EpisodeBox>
+
+        <p className={paragraphClass}>
+          以上のように、海外の方がいる会場内は、日本の常識が通用しない場所になるかもしれない、という考えを持っておいたほうがいいと思います。
+        </p>
+        <p className={paragraphClass}>
+          もちろん日本のイベントと同様ルール・マナーを守ることは大切ですが、海外から来場した方が意図せず日本における「マナー違反」をしてしまう、などということは起こりうる話です。
+        </p>
+        <p className={paragraphClass}>
+          逆もまた然りで、自分が知らず知らずのうちに、海外の方々にとって失礼なジェスチャーをとってしまった、失礼な言動をしてしまった、というエピソードは、グローバルな場所ではよくある話です。
+          <br />
+          <br />
+          例：ギリシャにおいて、相手に手のひらを見せる行為は、日本における中指を立てる行為と同等で、極めて失礼な行為とされています。日本国内でこのようなことを気にする必要はありませんが、何も知らない日本人がギリシャでこの行為を行いトラブルが発生する、という状況は容易に想像できます。
+        </p>
+        <p className={paragraphClass}>
+          もしあなたに海外渡航経験がないなら、「カルチャーショック」（文化の違いに驚くこと）に遭うかもしれません。
+        </p>
+        <p className={paragraphClass}>
+          海外旅行に行く、と考えても差し支えないです。「海外旅行に行く際に気を付けなければならないこと」を事前に調べておくことをおすすめします。
+        </p>
+        <p className={paragraphClass}>
+          また、あなたの近くにいる人が仮に外国人のような見た目や肌の色をしていても、実は日本語を話す方である可能性や、日本人に見える人が実は外国人だった、ということも起こり得ます。見た目で人を判断してはいけないとはよく言いますが、あくまでもグローバルな場所に行くという意識を忘れてはいけません。
+        </p>
+
+        <h3 className={subSectionClass}>
+          そもそも最初から最後まで会場に居ることは
+          <span className="text-red-500">不可能</span>
+        </h3>
+        <p className={paragraphClass}>GBB21の、実際のタイムテーブルを再掲します。</p>
+
+        <p className="mb-4">
+          <a
+            href="https://drive.google.com/file/d/1b8VgRrqR--ePsVqJxva0jWMMvNcNGByy/view"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={anchorClass}
+          >
+            GBB21 タイムテーブル
+          </a>
+        </p>
+        <p className={paragraphClass}>
+          これを見るとわかりますが、1日あたり、なんと７時間もの間ずっと開催されています。
+        </p>
+        <p className={paragraphClass}>（参考：Beat X Fes 2022は４時間）</p>
+        <p className={paragraphClass}>そしてこれを4日間も開催します。</p>
+        <p className={paragraphClass}>
+          ７時間ずっと立ちっぱなしで大騒ぎできる人はなかなかいません。
+          <strong className="text-red-500">すべての発表を見るのは不可能です。</strong>
+        </p>
+        <p className={paragraphClass}>
+          6つあるカテゴリーのうち、どれを見るのか？どれを諦めるのか？事前に決めておく必要があります。
+        </p>
+
+        <EpisodeBox>
+          <p className="mb-4">「目の前の発表に見とれて体力を使い果たし、お目当てのアーティストを見逃してしまった...」</p>
+          <p className="mb-4">
+            残念ながらこのような経験をしてしまう人が
+            <strong className="text-red-500">必ず現れてしまいます。</strong>
+          </p>
+          <p className="mb-4">無理をしすぎて体調を崩してしまい、1日丸ごと見逃してしまう。</p>
+          <p>これは誰にとっても絶対に避けたい最悪のシナリオです。</p>
+        </EpisodeBox>
+
+        <p className={paragraphClass}>
+          管理人はGBB21の際、Day1のSolo eliminationを一切見ずにホテルへ帰り、翌日以降すべての発表を楽しむことができました。
+        </p>
+        <p className={paragraphClass}>あらかじめどのカテゴリーを観るのか、よく考えておいたほうが良いと思います。</p>
+
+        <h3 className={subSectionClass}>開場も遅れるかも</h3>
+        <p className={paragraphClass}>
+          一度始まったら７時間ぶっ通しで開催されますが、実は開場するまでが非常に長いです。
+          GBB21の場合、開場時間が事前にアナウンスされていましたが、それも２時間遅れました。
+          つまり、もし最初から最後まで会場で観る場合は、1日に９時間もの間会場にいる可能性があります。
+          それを４日間連続で行います。
+        </p>
+        <h3 className={subSectionClass}>7toSmokeについて</h3>
+        <p className={paragraphClass}>
+          GBBの現地観戦は非常にハードであることをすでに説明しましたが、これに加え7toSmokeも開催されます。
+          7toSmokeの前、GBB本戦終了時点で、すでに体力が限界を迎えていてもおかしくありません。
+          両方見に行くんだ！という方、本当にそれができるか、やるなら体力管理をどうするか、非常に難しい判断を迫られます。
+          両方見に行くことを諦めて、インターネットで他人にチケットを譲渡する人も見たことがあります。これも手段の一つだと思います。
+        </p>
+
+        <h2 className={sectionClass}>全て観るのは、不可能です。</h2>
+
+        <EpisodeBox>
+          <p className="mb-4">
+            ここでお伝えしたいことは、GBBは誰も経験したことのない、
+            <strong>まったく別次元のイベント</strong>
+            であるということです。普段のイベントで、1日限りのイベントであれば、体力を考えて行動する人はまずいないでしょう。
+          </p>
+          <p className="mb-4">しかし、4日も開催されるBeatboxイベントは世界の中でも稀です。</p>
+          <p className="mb-4">
+            GBBを最大限楽しむために、その場で行動を決めるのではなく、ぜひあらかじめ計画を立てておいてください。今までイベントに行ったことのない方にとっては、体力的に非常に厳しいイベントになります。
+          </p>
+          <p className="mb-4">おそらく、体調を崩す人が出てきます。</p>
+          <p className="text-center font-bold">
+            GBBは、誰でも行けるイベントですが、気軽に行けるイベントではありません。
+          </p>
+        </EpisodeBox>
+
+        <h2 id="p05" className={sectionClass}>持ち物</h2>
+        <p className={paragraphClass}>
+          ここでいう持ち物は、GBB21の際に管理人が持って行ってよかったと思ったもの、絶対に必要だと思ったものをピックアップしています。
+        </p>
+        <p className={paragraphClass}>
+          GBB23、そのほかのGBBにおいて、これらが必ず役に立つとは限りません。
+        </p>
+        <ol className="mb-8 list-decimal pl-8 space-y-2">
+          <li>リストバンド</li>
+          <li>ペットボトルキャップ</li>
+          <li>モバイルバッテリー</li>
+          <li>小さめのバッグで行く（大きいリュック等はあまりおすすめできません）</li>
+        </ol>
+
+        <h3 className={subSectionClass}>リストバンドについて</h3>
+        <p className={paragraphClass}>
+          これは初回入場時に、係員から配られるものです。
+          GBB21で配られたものはこちらです。（管理人の私物です）
+        </p>
+
+        <img
+          alt="GBBリストバンド"
+          src="https://live.staticflickr.com/65535/53462881404_d7cc317ac7_o.jpg"
+          className="mx-auto mb-8 block w-full"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <p className={paragraphClass}>なお、以下のツイートからわかるように、リストバンドは毎年違うデザインになっているようです。</p>
+
+        <SocialEmbed type="twitter">
+          <blockquote className="twitter-tweet">
+            <p lang="ja" dir="ltr">
+              懐かしい <a href="https://t.co/Z8moH4Rs5L">pic.twitter.com/Z8moH4Rs5L</a>
+            </p>
+            — T2 (@T2BBX){" "}
+            <a href="https://twitter.com/T2BBX/status/1515212160523448322?ref_src=twsrc%5Etfw">
+              April 16, 2022
+            </a>
+          </blockquote>
+        </SocialEmbed>
+
+        <p className={paragraphClass}>
+          初回入場時に渡されるこのリストバンドは、毎日
+          <strong className="text-red-500">入場する際に必ず必要</strong>
+          になります。
+        </p>
+        <p className={paragraphClass}>
+          GBB21で、管理人の知り合いがリストバンドをホテルに忘れた際、係員に伝えたところ「ホテルに戻って取ってきなさい」と言われました。紛失した場合の対応はわかりませんが、
+          <strong>最悪の場合入場を拒否される可能性があります。</strong>
+        </p>
+        <p className={paragraphClass}>
+          紛失を許すと不正入場できてしまうので、仕方ない措置でしょう。
+        </p>
+
+        <SocialEmbed type="twitter">
+          <blockquote className="twitter-tweet">
+            <p lang="ja" dir="ltr">
+              GBB21 2日目のとき、さくらがリストバンドをホテルに忘れて、入口にいた係員に言ったら「リストバンド無いと入場はできない。ホテルに行ってとってきて」って言われたのを思い出した
+              <br />
+              <br />
+              たしかに忘れた～を許すと不正入場まかり通っちゃうから理にかなってるけど、結構罠だなあれ
+            </p>
+            — tari3210.srt (@TARI55956986){" "}
+            <a href="https://twitter.com/TARI55956986/status/1700023328902377752?ref_src=twsrc%5Etfw">
+              September 8, 2023
+            </a>
+          </blockquote>
+        </SocialEmbed>
+
+        <h3 className={subSectionClass}>ペットボトルのキャップについて</h3>
+        <p className={paragraphClass}>
+          実はGBB21では、会場内に飲食物の持ち込みは一切禁止で、ペットボトルの水を会場内売店で購入してもキャップを取られた状態で渡されました。
+          対策として、多くの人がペットボトルキャップを持ち込んでいました。
+          GBB23では飲食物の持ち込みが禁止されるかはわかりませんが、持っていく価値はあると思います。
+          なお衛生面には注意が必要です。
+        </p>
+        <h3 className={subSectionClass}>小さめのバッグについて</h3>
+        <p className={paragraphClass}>
+          GBBが体力戦になることは、ご説明したとおりです。少しでも荷物を軽くすることも、体力を節約する方法の一つです。
+          また、有料ですがコインロッカーを活用するとより良いと思います。
+        </p>
+      </div>
+    </main>
+  );
+};

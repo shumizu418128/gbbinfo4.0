@@ -1,0 +1,67 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { ParticipantsContent } from "~/views/2025/ParticipantsContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { findParticipants } from "~/db/participant";
+import { findCategoriesByIds } from "~/db/category";
+import { categorySlug } from "~/util/category";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2025;
+  const common = await getCommonYearData(YEAR);
+  const validCategories = await findCategoriesByIds(
+    common.yearWithCountry.categories ?? [],
+  );
+  const categoryNames = validCategories.map((c) => c.name);
+
+  const paths = [];
+  for (const category of validCategories) {
+    const participants = await findParticipants(YEAR, category.id, null);
+    for (const locale of locales) {
+      paths.push({
+        params: { lang: locale, category: categorySlug(category.name) },
+        props: {
+          locale,
+          participants,
+          selectedCategory: category,
+          categoryNames,
+          ...common,
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const {
+  locale,
+  participants,
+  selectedCategory,
+  categoryNames,
+  yearWithCountry,
+  years,
+  latestYearWithCountry,
+} = Astro.props;
+
+const subtitle = m.wildcard_result_and_participants({ Wildcard: "Wildcard" });
+const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <ParticipantsContent
+    client:visible
+    participants={participants}
+    locale={locale}
+    selectedCategory={selectedCategory}
+    categoryNames={categoryNames}
+  />
+</SiteFrame>

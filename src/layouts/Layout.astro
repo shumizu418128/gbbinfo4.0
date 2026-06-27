@@ -1,0 +1,154 @@
+---
+import "../app.css";
+import { createMeta } from "~/util/meta";
+import { envCheck } from "~/util/dev";
+
+interface Props {
+  locale: string;
+  title: string;
+}
+
+const { locale, title } = Astro.props;
+const env = envCheck();
+const meta = createMeta(env, title);
+const metaTitle = (meta[0] as { title: string }).title;
+const description = (meta[1] as { content: string }).content;
+
+const envColors: Record<string, string> = {
+  dev: "bg-red-600",
+  "deploy-preview": "bg-blue-600",
+  "branch-deploy": "bg-gray-600",
+};
+const showDevBanner = env && env !== "production";
+---
+
+<!doctype html>
+<html lang={locale}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://db.onlinewebfonts.com/c/efc5d27fcf85239bbfee077b689e3ac9?family=Averta+ExtraBold"
+    />
+    <title>{metaTitle}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <main>
+      {
+        showDevBanner && (
+          <div
+            role="status"
+            aria-live="polite"
+            class={`fixed top-0 left-0 z-50 flex h-[20px] w-full items-center justify-center text-xs font-bold text-white ${envColors[env]}`}
+          >
+            {env}
+          </div>
+        )
+      }
+      <slot />
+    </main>
+
+    <script>
+      const SECTION_ID_SUFFIX = "-section";
+      const HEADER_OFFSET = 64;
+
+      if ("scrollRestoration" in history) {
+        history.scrollRestoration = "manual";
+      }
+
+      const resolveSectionId = (
+        scrollTarget: string | null,
+        hash: string,
+      ): string | null => {
+        if (scrollTarget) {
+          const byScrollKey = document.querySelector(
+            `[data-scroll-key="${CSS.escape(scrollTarget)}"]`,
+          );
+          if (byScrollKey instanceof HTMLElement && byScrollKey.id) {
+            return byScrollKey.id;
+          }
+          const conventionalId = `${scrollTarget}${SECTION_ID_SUFFIX}`;
+          if (document.getElementById(conventionalId)) {
+            return conventionalId;
+          }
+        }
+        if (hash.length > 1) {
+          return decodeURIComponent(hash.slice(1));
+        }
+        return null;
+      };
+
+      const scrollToSection = (sectionId: string): boolean => {
+        const element = document.getElementById(sectionId);
+        if (!element) {
+          return false;
+        }
+        const y =
+          element.getBoundingClientRect().top + window.scrollY - HEADER_OFFSET;
+        window.scrollTo({ top: y, behavior: "smooth" });
+        return true;
+      };
+
+      const runInitialScroll = () => {
+        const params = new URLSearchParams(window.location.search);
+        const sectionId = resolveSectionId(
+          params.get("scroll"),
+          window.location.hash,
+        );
+        if (!sectionId) {
+          return;
+        }
+        window.scrollTo({ top: 0, behavior: "auto" });
+        requestAnimationFrame(() => {
+          scrollToSection(sectionId);
+        });
+      };
+
+      // 同一ページ内 #section リンクをブラウザ標準ジャンプの代わりにスムーズスクロールへ
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) {
+          return;
+        }
+        const anchor = target.closest('a[href^="#"]');
+        if (!(anchor instanceof HTMLAnchorElement)) {
+          return;
+        }
+        const href = anchor.getAttribute("href");
+        if (!href || href === "#") {
+          return;
+        }
+        const sectionId = decodeURIComponent(href.slice(1));
+        if (!document.getElementById(sectionId)) {
+          return;
+        }
+        event.preventDefault();
+        scrollToSection(sectionId);
+        window.history.pushState(
+          null,
+          "",
+          `${window.location.pathname}${window.location.search}#${sectionId}`,
+        );
+      });
+
+      // 出場者アバター画像の読み込み失敗時は要素を隠す（壊れた画像アイコンを出さない）
+      document.addEventListener(
+        "error",
+        (event) => {
+          const target = event.target;
+          if (
+            target instanceof HTMLImageElement &&
+            target.classList.contains("js-avatar")
+          ) {
+            target.style.display = "none";
+          }
+        },
+        true,
+      );
+
+      runInitialScroll();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,30 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { StudioCompetitionContent } from "~/views/2026/StudioCompetitionContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2026;
+  const common = await getCommonYearData(YEAR);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const subtitle = "Studio Competition";
+const title = `GBB ${yearWithCountry.year} Studio Competition`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <StudioCompetitionContent locale={locale} year={yearWithCountry.year} />
+</SiteFrame>

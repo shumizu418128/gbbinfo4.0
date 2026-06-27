@@ -1,0 +1,47 @@
+---
+import Layout from "./Layout.astro";
+import HeaderMenu from "~/components/HeaderMenu.astro";
+import HamburgerMenu from "~/components/HamburgerMenu.astro";
+import { HeroImage } from "~/components/HeroImage";
+import FooterMenu from "~/components/FooterMenu.astro";
+import type { SupportedLanguage } from "~/constants/languageLabels";
+import type { YearWithCountry } from "~/db/year";
+
+interface Props {
+  locale: SupportedLanguage;
+  title: string;
+  yearWithCountry: YearWithCountry;
+  years: number[];
+  latestYearWithCountry: YearWithCountry;
+  subtitle?: string;
+}
+
+const {
+  locale,
+  title,
+  yearWithCountry,
+  years,
+  latestYearWithCountry,
+  subtitle,
+} = Astro.props;
+
+const currentPath = Astro.url.pathname;
+---
+
+<Layout locale={locale} title={title}>
+  <HeaderMenu
+    lang={locale}
+    currentPath={currentPath}
+    year={yearWithCountry.year}
+    years={years}
+  />
+  <HeroImage yearWithCountry={yearWithCountry} subtitle={subtitle} />
+  <slot />
+  <FooterMenu locale={locale} latestYearWithCountry={latestYearWithCountry} />
+  <HamburgerMenu
+    lang={locale}
+    currentPath={currentPath}
+    year={yearWithCountry.year}
+    years={years}
+  />
+</Layout>

@@ -1,0 +1,30 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { UrlChangeContent } from "~/views/others/UrlChangeContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+
+export async function getStaticPaths() {
+  const YEAR = new Date().getFullYear();
+  const common = await getCommonYearData(YEAR);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const subtitle = "URL変更のお知らせ";
+const title = "当サイトURL変更のお知らせ - GBBinfo";
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <UrlChangeContent locale={locale} />
+</SiteFrame>

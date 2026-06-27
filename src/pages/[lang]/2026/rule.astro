@@ -1,0 +1,78 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { RuleContent } from "~/views/2026/RuleContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import {
+  findParticipants,
+  type ParticipantWithRelations,
+} from "~/db/participant";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+type RuleSeedData = {
+  gbbSeed: ParticipantWithRelations[];
+  otherSeed: ParticipantWithRelations[];
+  cancelled: ParticipantWithRelations[];
+};
+
+export async function getStaticPaths() {
+  const YEAR = 2026;
+  const common = await getCommonYearData(YEAR);
+
+  const emptySeedData = (): RuleSeedData => ({
+    gbbSeed: [],
+    otherSeed: [],
+    cancelled: [],
+  });
+
+  // Wildcard 以外の Participant を seed 種別へ分類する。
+  let seedData = emptySeedData();
+  try {
+    const participants = await findParticipants(YEAR, null, null);
+    seedData = emptySeedData();
+    for (const participant of participants) {
+      if (
+        participant.ticketClass.includes("Wildcard") ||
+        participant.ticketClass === "-"
+      ) {
+        continue;
+      }
+
+      if (participant.isCancelled) {
+        seedData.cancelled.push(participant);
+      } else if (participant.ticketClass.includes("GBB")) {
+        seedData.gbbSeed.push(participant);
+      } else {
+        seedData.otherSeed.push(participant);
+      }
+    }
+  } catch {
+    seedData = emptySeedData();
+  }
+
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, seedData, ...common },
+  }));
+}
+
+const { locale, seedData, yearWithCountry, years, latestYearWithCountry } =
+  Astro.props;
+const subtitle = m.rules();
+const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <RuleContent
+    locale={locale}
+    year={yearWithCountry.year}
+    seedData={seedData}
+  />
+</SiteFrame>

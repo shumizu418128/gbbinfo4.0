@@ -1,0 +1,76 @@
+---
+import { GbbCountdown } from "./GbbCountdown";
+import { LinkCard } from "./LinkCard";
+import { staticAssetUrl } from "~/util/staticAsset";
+import type { YearWithCountry } from "~/db/year";
+import type { SupportedLanguage } from "~/constants/languageLabels";
+import * as m from "../../paraglide/messages";
+
+interface Props {
+  locale: SupportedLanguage;
+  latestYearWithCountry: YearWithCountry;
+}
+
+const { locale, latestYearWithCountry } = Astro.props;
+
+const footerLinkClass =
+  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
+---
+
+<div class="flex justify-center bg-(--background-color) pt-60 pb-36">
+  <GbbCountdown client:idle latestYearWithCountry={latestYearWithCountry} />
+</div>
+
+<footer class="bg-black text-center pt-16">
+  <p class="text-white">
+    GBBinfo<br />
+    Unofficial website developed by <a
+      href="https://twitter.com/tari_3210_"
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "var(--gbb-color)", textDecoration: "underline" }}
+      >tari3210</a
+    ><br />
+    NOT affiliated with swissbeatbox
+  </p>
+
+  <div class="mt-8 space-y-2 text-white">
+    <p>
+      <a href={`/${locale}/others/about`} class={footerLinkClass}>
+        about this site
+      </a>
+    </p>
+    <p>
+      <a href={`/${locale}/others/translation`} class={footerLinkClass}>
+        {m.others_translation_title()}
+      </a>
+    </p>
+    <p>
+      <a href={`/${locale}/others/past_info`} class={footerLinkClass}>
+        過去のGBB情報対応状況
+      </a>
+    </p>
+  </div>
+
+  <div class="h-100"></div>
+
+  <div class="flex flex-col items-center justify-center pb-36">
+    <img
+      src={staticAssetUrl("/images/background.webp")}
+      alt=""
+      width={1280}
+      height={720}
+      loading="lazy"
+      decoding="async"
+      class="w-[90%] max-w-5xl mx-auto pb-6"
+    />
+    <div class="w-[90%] max-w-5xl mx-auto">
+      <LinkCard
+        text={m.footer_nice_view()}
+        href={`/${locale}/travel/top`}
+        fullWidth
+        client:visible
+      />
+    </div>
+  </div>
+</footer>

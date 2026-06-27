@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+}
+
+html,
+body {
+  @apply bg-white dark:bg-gray-950;
+
+  @media (prefers-color-scheme: dark) {
+    color-scheme: dark;
+  }
+}
+
+/* TODO: 色を追加したら、tailwind.config.js にも追加する */
+:root {
+  --background-color: rgb(5, 5, 5);
+  --section-color: rgba(255,255,255,0.03);
+  --button-background-color: rgba(255,255,255,0.08);
+  --hover-background-color: rgba(255,255,255,0.1);
+  --button-border-color: rgba(255,255,255,0.12);
+  --gbb-color: rgb(255, 100, 20);
+  --secondary-text-color: rgba(255,255,255,0.8);
+  --post-it-color: rgba(255, 255, 255, 0.15);
+  --rule-hover-text: #fff;
+  --table-border-color: rgba(255, 255, 255, 0.2);
+}
+
+.participant-world-map .leaflet-popup-content-wrapper {
+  border-radius: 0;
+}
+
+.participant-world-map .leaflet-popup-content {
+  margin: 0;
+  padding: 16px;
+  line-height: 1.5;
+}
+
+.participant-world-map a.leaflet-popup-close-button {
+  top: 8px;
+  right: 8px;
+  width: 16px;
+  height: 16px;
+  font: 16px/16px Tahoma, Verdana, sans-serif;
+}
+
+.participant-world-map .leaflet-popup-content p {
+  margin: 0;
+}
+
+.participant-world-map .participant-popup {
+  display: block;
+  max-width: var(--popup-max-width);
+  font-family: 'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+  font-size: 14px;
+}
+
+.participant-world-map .participant-popup__header {
+  display: block;
+  padding-right: 8px;
+  white-space: nowrap;
+  font-weight: bold;
+}
+
+.participant-world-map .participant-popup__flag {
+  display: inline-block;
+  width: var(--popup-flag-width);
+  min-width: var(--popup-flag-width);
+  margin-right: 8px;
+  vertical-align: middle;
+  line-height: 0;
+}
+
+.participant-world-map .participant-popup__flag img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: 20px;
+  object-fit: contain;
+  padding-bottom: 0 !important;
+}
+
+.participant-world-map .participant-popup__country {
+  display: inline-block;
+  vertical-align: middle;
+  color: #000;
+}
+
+.participant-world-map .participant-popup__names {
+  margin-top: 8px;
+}
+
+.participant-world-map .participant-popup__name {
+  white-space: nowrap;
+}
+
+.participant-world-map .participant-popup__link {
+  color: var(--gbb-color);
+  text-decoration: underline;
+  transition: color 150ms;
+}
+
+.participant-world-map .participant-popup__link:hover {
+  color: #2563eb;
+}
+
+.participant-world-map .participant-popup__name + .participant-popup__name {
+  margin-top: 4px;
+}
+
+.participant-world-map .participant-popup--scrollable .participant-popup__names {
+  max-height: var(--popup-max-height);
+  overflow-y: auto;
+}

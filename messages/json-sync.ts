@@ -1,13 +1,14 @@
 /*
  * このファイルは、pucelle.run-on-save で実行されるスクリプトです。
  * 各言語の JSON ファイルのキーを同期し、ソートして保存します。
- * baseLocale（project.inlang/settings.json）のキーを正とし、
+ * baseLocale（src/constants/languageLabels.ts）のキーを正とし、
  * 他言語に足りないキーは空文字で追加し、base に無いキーは削除します。
  */
 
 import * as fs from "node:fs";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
+import { baseLocale } from "../src/constants/languageLabels.js";
 
 const folderPath = path.dirname(fileURLToPath(import.meta.url));
 const files = fs.readdirSync(folderPath).filter((f) => f.endsWith(".json"));
@@ -25,32 +26,6 @@ for (const file of files) {
   }
 }
 
-/**
- * inlang の設定から baseLocale を読み取る。
- *
- * Returns:
- *     設定の baseLocale。読めない場合は "ja"。
- */
-function loadBaseLocale(): string {
-  const settingsPath = path.join(
-    folderPath,
-    "..",
-    "project.inlang",
-    "settings.json",
-  );
-  try {
-    const raw = fs.readFileSync(settingsPath, "utf-8");
-    const settings = JSON.parse(raw) as { baseLocale?: string };
-    if (typeof settings.baseLocale === "string" && settings.baseLocale) {
-      return settings.baseLocale;
-    }
-  } catch {
-    /* 設定が無い・壊れている場合はフォールバック */
-  }
-  return "ja";
-}
-
-const baseLocale = loadBaseLocale();
 const baseFile = jsonFiles.find((j) => j.name === `${baseLocale}.json`);
 if (!baseFile) {
   console.error(

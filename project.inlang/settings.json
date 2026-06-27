@@ -3,6 +3,7 @@
   "baseLocale": "ja",
   "locales": [
     "ja",
+    "ko",
     "en",
     "de"
   ],
