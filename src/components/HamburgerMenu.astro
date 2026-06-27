@@ -1,0 +1,207 @@
+---
+import {
+  languageLabels,
+  supportedLanguages,
+  type SupportedLanguage,
+} from "~/constants/languageLabels";
+import * as m from "../../paraglide/messages";
+
+interface Props {
+  lang: SupportedLanguage;
+  currentPath: string;
+  year: number;
+  years: number[];
+}
+
+const { lang, currentPath, year, years } = Astro.props;
+
+const buildLanguagePath = (targetLanguage: SupportedLanguage): string => {
+  const segments = currentPath.split("/").filter(Boolean);
+  if (segments.length === 0) {
+    return `/${targetLanguage}`;
+  }
+  segments[0] = targetLanguage;
+  return `/${segments.join("/")}`;
+};
+
+const languageItems = supportedLanguages.map((language) => ({
+  key: language,
+  href: buildLanguagePath(language),
+  label: languageLabels[language],
+  isActive: language === lang,
+}));
+
+const yearItems = years.map((y) => ({
+  key: String(y),
+  href: `/${lang}/${y}/top`,
+  label: String(y),
+  isActive: y === year,
+}));
+---
+
+<div class="fixed bottom-8 right-8 z-50">
+  <details class="hamburger-menu relative">
+    <summary
+      class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-black px-2 py-2 [&::-webkit-details-marker]:hidden"
+    >
+      <span class="hamburger-icon-open">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#FFFFFF"
+        >
+          <path d="M120-240v-80h720v80H120Zm0-200v-80h720v80H120Zm0-200v-80h720v80H120Z"
+          ></path>
+        </svg>
+      </span>
+      <span class="hamburger-icon-close hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#FFFFFF"
+        >
+          <path
+            d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+          ></path>
+        </svg>
+      </span>
+      <span class="text-xs font-bold text-white">MENU</span>
+    </summary>
+
+    <div
+      class="absolute right-0 bottom-full mb-2 w-48 overflow-x-hidden bg-zinc-800/80 shadow-lg backdrop-blur-md"
+    >
+      <a
+        href={`/${lang}/${year}/top`}
+        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--hover-background-color)"
+      >
+        Home
+      </a>
+
+      <a
+        href={`/${lang}/${year}/participants`}
+        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--hover-background-color)"
+      >
+        {m.participant_participants_list_year()}
+      </a>
+
+      <details class="hamburger-submenu border-b border-(--button-border-color)">
+        <summary
+          class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--hover-background-color) [&::-webkit-details-marker]:hidden"
+        >
+          <span>{m.select_year()}</span>
+          <span class="submenu-chevron text-xs">▾</span>
+        </summary>
+        <div class="max-h-40 overflow-y-auto bg-black/30">
+          {
+            yearItems.map((item) => (
+              <a
+                href={item.href}
+                class={`block px-6 py-2 font-bold hover:bg-(--hover-background-color) ${
+                  item.isActive ? "text-(--gbb-color)" : "text-white"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+      </details>
+
+      <details class="hamburger-submenu">
+        <summary
+          class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--hover-background-color) [&::-webkit-details-marker]:hidden"
+        >
+          <span class="flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="18px"
+              viewBox="0 -960 960 960"
+              width="18px"
+              fill="currentColor"
+            >
+              <path
+                d="m476-80 182-480h84L924-80h-84l-43-122H603L560-80h-84ZM160-200l-56-56 202-202q-35-35-63.5-80T190-640h84q20 39 40 68t48 58q33-33 68.5-92.5T484-720H40v-80h280v-80h80v80h280v80H564q-21 72-63 148t-83 116l96 98-30 82-122-125-202 201Zm468-72h144l-72-204-72 204Z"
+              ></path>
+            </svg>
+            {languageLabels[lang]}
+          </span>
+          <span class="submenu-chevron text-xs">▾</span>
+        </summary>
+        <div class="bg-black/30">
+          {
+            languageItems.map((item) => (
+              <a
+                href={item.href}
+                class={`block px-6 py-2 font-bold hover:bg-(--hover-background-color) ${
+                  item.isActive ? "text-(--gbb-color)" : "text-white"
+                }`}
+              >
+                {item.label}
+              </a>
+            ))
+          }
+        </div>
+      </details>
+    </div>
+  </details>
+</div>
+
+<style>
+  details.hamburger-menu[open] .hamburger-icon-open {
+    display: none;
+  }
+  details.hamburger-menu[open] .hamburger-icon-close {
+    display: block;
+  }
+  details.hamburger-submenu[open] .submenu-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  // 外側クリックでメインメニューを閉じる
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+
+    document
+      .querySelectorAll("details.hamburger-menu[open]")
+      .forEach((details) => {
+        if (
+          details instanceof HTMLDetailsElement &&
+          !details.contains(target)
+        ) {
+          details.open = false;
+        }
+      });
+  });
+
+  // サブメニューのアコーディオン制御（片方を開いたらもう片方を閉じる）
+  document.querySelectorAll("details.hamburger-submenu").forEach((submenu) => {
+    submenu.addEventListener("toggle", () => {
+      if (!(submenu instanceof HTMLDetailsElement) || !submenu.open) return;
+      const menu = submenu.closest("details.hamburger-menu");
+      if (!menu) return;
+      menu.querySelectorAll("details.hamburger-submenu").forEach((other) => {
+        if (other !== submenu && other instanceof HTMLDetailsElement) {
+          other.open = false;
+        }
+      });
+    });
+  });
+
+  // メインメニューが閉じたときにサブメニューをすべてリセット
+  document.querySelectorAll("details.hamburger-menu").forEach((menu) => {
+    menu.addEventListener("toggle", () => {
+      if (!(menu instanceof HTMLDetailsElement) || menu.open) return;
+      menu.querySelectorAll("details.hamburger-submenu").forEach((sub) => {
+        if (sub instanceof HTMLDetailsElement) sub.open = false;
+      });
+    });
+  });
+</script>

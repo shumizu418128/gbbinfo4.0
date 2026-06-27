@@ -26,6 +26,7 @@ import {
   POPUP_SCROLL_THRESHOLD,
 } from "~/constants/worldMap.js";
 import { getCountryName } from "~/util/country.js";
+import { getParticipantDetailHref } from "~/util/participant.js";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 type ParticipantWorldMapProps = {
   participants: ParticipantWithRelations[];
@@ -39,7 +40,11 @@ type MapMarker = {
   countryName: string;
   countryEnName: string;
   isoAlpha2: string | null;
-  participants: Array<{ name: string }>;
+  participants: Array<{
+    id: number;
+    name: string;
+    categoryInfo: { isTeam: boolean };
+  }>;
 };
 
 /**
@@ -181,8 +186,14 @@ const buildMapMarkers = (
 
       const existingMarker = markerMap.get(country.isoCode);
 
+      const participantEntry = {
+        id: participant.id,
+        name: participant.name,
+        categoryInfo: participant.categoryInfo,
+      };
+
       if (existingMarker) {
-        existingMarker.participants.push({ name: participant.name });
+        existingMarker.participants.push(participantEntry);
         continue;
       }
 
@@ -193,7 +204,7 @@ const buildMapMarkers = (
         countryName: getCountryName(country, locale),
         countryEnName,
         isoAlpha2: country.isoAlpha2,
-        participants: [{ name: participant.name }],
+        participants: [participantEntry],
       });
     }
   }
@@ -206,11 +217,15 @@ const buildMapMarkers = (
  *
  * Args:
  *   marker: 国別マーカーデータ。
+ *   locale: 表示言語。
  *
  * Returns:
  *   Leaflet Popup 用 HTML 文字列。
  */
-const buildPopupHtml = (marker: MapMarker): string => {
+const buildPopupHtml = (
+  marker: MapMarker,
+  locale: SupportedLanguage,
+): string => {
   const scrollableClass =
     marker.participants.length > POPUP_SCROLL_THRESHOLD
       ? " participant-popup--scrollable"
@@ -221,10 +236,14 @@ const buildPopupHtml = (marker: MapMarker): string => {
   const countryHeader = `<div class="participant-popup__header"><span class="participant-popup__flag">${flagHtml}</span><span class="participant-popup__country">${escapeHtml(marker.countryName)}</span></div>`;
 
   const participantsHtml = marker.participants
-    .map(
-      (participant) =>
-        `<p class="participant-popup__name">${escapeHtml(participant.name)}</p>`,
-    )
+    .map((participant) => {
+      const href = getParticipantDetailHref(locale, participant);
+      const nameHtml = href
+        ? `<a href="${escapeHtml(href)}" class="participant-popup__link">${escapeHtml(participant.name)}</a>`
+        : escapeHtml(participant.name);
+
+      return `<p class="participant-popup__name">${nameHtml}</p>`;
+    })
     .join("");
 
   return `<div class="participant-popup${scrollableClass}">${countryHeader}<div class="participant-popup__names">${participantsHtml}</div></div>`;
@@ -236,6 +255,7 @@ const buildPopupHtml = (marker: MapMarker): string => {
  * Args:
  *   L: Leaflet モジュール。
  *   marker: 国別マーカーデータ。
+ *   locale: 表示言語。
  *
  * Returns:
  *   国旗アイコンを持つ Leaflet Marker。
@@ -243,6 +263,7 @@ const buildPopupHtml = (marker: MapMarker): string => {
 const createFlagMarker = (
   L: typeof import("leaflet"),
   marker: MapMarker,
+  locale: SupportedLanguage,
 ): ReturnType<typeof L.marker> => {
   const flagIcon = L.icon({
     iconUrl: getLocalFlagImageUrl(marker.countryEnName),
@@ -251,7 +272,7 @@ const createFlagMarker = (
   });
 
   return L.marker([marker.lat, marker.lng], { icon: flagIcon }).bindPopup(
-    buildPopupHtml(marker),
+    buildPopupHtml(marker, locale),
     { maxWidth: POPUP_MAX_WIDTH },
   );
 };
@@ -310,7 +331,7 @@ export const ParticipantWorldMap = ({
       markersLayerRef.current?.clearLayers();
 
       for (const marker of markers) {
-        createFlagMarker(L, marker).addTo(markersLayerRef.current!);
+        createFlagMarker(L, marker, locale).addTo(markersLayerRef.current!);
       }
     };
 
@@ -319,7 +340,7 @@ export const ParticipantWorldMap = ({
     return () => {
       cancelled = true;
     };
-  }, [markers]);
+  }, [markers, locale]);
 
   useEffect(() => {
     return () => {

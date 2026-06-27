@@ -60,7 +60,6 @@ body {
   display: block;
   padding-right: 8px;
   white-space: nowrap;
-  color: var(--gbb-color);
   font-weight: bold;
 }
 
@@ -85,6 +84,7 @@ body {
 .participant-world-map .participant-popup__country {
   display: inline-block;
   vertical-align: middle;
+  color: #000;
 }
 
 .participant-world-map .participant-popup__names {
@@ -93,6 +93,16 @@ body {
 
 .participant-world-map .participant-popup__name {
   white-space: nowrap;
+}
+
+.participant-world-map .participant-popup__link {
+  color: var(--gbb-color);
+  text-decoration: underline;
+  transition: color 150ms;
+}
+
+.participant-world-map .participant-popup__link:hover {
+  color: #2563eb;
 }
 
 .participant-world-map .participant-popup__name + .participant-popup__name {

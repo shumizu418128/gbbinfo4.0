@@ -14,7 +14,7 @@ interface Props {
 const { items, align = "right" } = Astro.props;
 ---
 
-<details class="relative flex items-center">
+<details class="header-dropdown relative flex items-center">
   <summary
     class="cursor-pointer list-none text-white [&::-webkit-details-marker]:hidden"
   >
@@ -39,3 +39,21 @@ const { items, align = "right" } = Astro.props;
     }
   </div>
 </details>
+
+<script>
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+
+    document
+      .querySelectorAll("details.header-dropdown[open]")
+      .forEach((details) => {
+        if (
+          details instanceof HTMLDetailsElement &&
+          !details.contains(target)
+        ) {
+          details.open = false;
+        }
+      });
+  });
+</script>

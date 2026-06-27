@@ -1,6 +1,7 @@
 ---
 import Layout from "./Layout.astro";
 import HeaderMenu from "~/components/HeaderMenu.astro";
+import HamburgerMenu from "~/components/HamburgerMenu.astro";
 import { HeroImage } from "~/components/HeroImage";
 import FooterMenu from "~/components/FooterMenu.astro";
 import type { SupportedLanguage } from "~/constants/languageLabels";
@@ -37,4 +38,10 @@ const currentPath = Astro.url.pathname;
   <HeroImage yearWithCountry={yearWithCountry} subtitle={subtitle} />
   <slot />
   <FooterMenu locale={locale} latestYearWithCountry={latestYearWithCountry} />
+  <HamburgerMenu
+    lang={locale}
+    currentPath={currentPath}
+    year={yearWithCountry.year}
+    years={years}
+  />
 </Layout>
