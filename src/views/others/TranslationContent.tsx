@@ -14,7 +14,6 @@ export const TranslationContent = ({ locale: _locale }: TranslationContentProps)
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">{m.others_translation_title()}</h1>
         <p className={paragraphClass}>{m.others_translation_gemini()}</p>
         <p className={paragraphClass}>{m.others_translation_ai_disclaimer()}</p>
         <p className={paragraphClass}>{m.others_translation_pages_intro()}</p>

@@ -33,7 +33,7 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: Her
           }}
         />
 
-        <div className="relative flex flex-col items-center justify-center h-full w-full gap-6">
+        <div className="relative flex flex-col items-center justify-center h-full w-full gap-6 translate-y-8">
           <h1
             className="text-white z-10 w-full text-center"
             style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
