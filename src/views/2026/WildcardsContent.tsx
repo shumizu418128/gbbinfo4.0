@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -25,7 +26,9 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
 
-        <p className="my-12 text-(--secondary-text-color)">{m.wildcard_unofficial_notice()}</p>
+        <PostIt>
+          <p>{m.wildcard_unofficial_notice()}</p>
+        </PostIt>
 
         {PLAYLISTS.map(({ label, playlistId }) => (
           <section key={label} className="mb-16">

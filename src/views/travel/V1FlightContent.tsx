@@ -1,5 +1,6 @@
-import { Table } from "~/components/Table.js";
 import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
+import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 
 type V1FlightContentProps = {
@@ -81,14 +82,14 @@ export const V1FlightContent = ({ locale }: V1FlightContentProps) => {
           <li>預け入れ荷物（スーツケース等）には液体の容量制限はありません。</li>
         </ul>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">意外と忘れがちな液体物</p>
           <ul className="list-disc pl-8 space-y-1">
             <li>ペットボトルの飲み物</li>
             <li>ゼリー状のお菓子（お土産に注意）</li>
             <li>歯磨き粉</li>
           </ul>
-        </div>
+        </PostIt>
 
         <p className="mb-8">
           その他、刃物類や危険物も厳しく制限されています。詳しくは以下のサイトをご覧ください。<br />
@@ -152,13 +153,13 @@ export const V1FlightContent = ({ locale }: V1FlightContentProps) => {
           荷物が出てこない場合や破損している場合は、すぐに航空会社のカウンターに申し出てください。
         </p>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">Visit Japan Webについて</p>
           <p>
             帰国時の入国審査・税関手続きをスムーズにするため、<a href="https://www.vjw.digital.go.jp/" target="_blank" rel="noopener noreferrer" className={anchorClass}>Visit Japan Web</a>での事前登録をおすすめします。<br />
             出発前または現地で登録しておくと、帰国時の手続きが簡素化されます。
           </p>
-        </div>
+        </PostIt>
 
         <h2 id="airport-to-city-section" className="text-xl font-bold mb-4 mt-8">7. 空港からワルシャワ市内への移動</h2>
         <h3 className="text-lg font-bold mb-2 mt-4">電車</h3>

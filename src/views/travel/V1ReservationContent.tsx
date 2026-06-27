@@ -1,5 +1,6 @@
-import { Table } from "~/components/Table.js";
 import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
+import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 
 type V1ReservationContentProps = {
@@ -99,10 +100,10 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
           余裕を持った日程を組むことで、トラブルや体調不良にも対応しやすくなります。
         </p>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">GBB 2021 での管理人の経験</p>
           <p>Day1当日にワルシャワに到着したところ、あまりにも疲れすぎてSolo部門 eliminationを見ず帰りました<br />あーあ</p>
-        </div>
+        </PostIt>
 
         <h2 id="flight-booking-section" className="text-xl font-bold mb-4 mt-8">2. 飛行機の予約</h2>
         <p className="mb-4">
@@ -121,14 +122,14 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
           なお、SARUKANI・ROFUは、GBB 2021 では羽田発・KLMオランダ航空を利用したようですが、出発時間が朝早く、価格的にもおすすめできません。
         </p>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">管理人の私見</p>
           <p className="mb-2">GBB 2021 では、管理人はカタール航空を利用しました。機内食おいしかった</p>
           <p>
             個人的には<a href="https://www.skyscanner.net" target="_blank" rel="noopener noreferrer" className={anchorClass}>skyscanner</a>で予約するのがおすすめです<br />
             ステマじゃないよ
           </p>
-        </div>
+        </PostIt>
 
         <h2 id="accommodation-section" className="text-xl font-bold mb-4 mt-8">3. 宿泊施設の予約</h2>
         <p className="mb-4">基本的には個人の好みで選んでかまいませんが、以下の選択肢があります。</p>
@@ -179,12 +180,12 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
           以降のGBBでは7toSmokeチケットの購入が必要になり、今後もこの運用は続く可能性があります。
         </p>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">GBB 2021 の場合</p>
           <p>
             GBB 2021 では、<a href="https://goout.net/en/" target="_blank" rel="noopener noreferrer" className={anchorClass}>goout</a>という、ヨーロッパのチケット販売会社によって販売されました。
           </p>
-        </div>
+        </PostIt>
 
         <h2 id="passport-section" className="text-xl font-bold mb-4 mt-8">5.【重要】パスポートについて</h2>
         <p className="font-bold mb-2">⚠️ 最重要：パスポートの有効期限</p>
@@ -198,7 +199,7 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
           東京都生活文化局は、パスポートの申請は使用の1か月前を目安に、時間に余裕を持った申請と受け取りをするよう呼びかけています。
         </p>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">「今の時点で有効期限に余裕があるから大丈夫」は間違いです</p>
           <p className="mb-2">
             コロナによる渡航規制が撤廃された2023年以降、この有効期限のルールを知らず、空港で搭乗拒否された方が多くいます。
@@ -207,7 +208,7 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
             救済措置はありません、家に帰らされます。<br />
             パスポートの管理は自己責任なので、旅行代金の返金はありません。
           </p>
-        </div>
+        </PostIt>
 
         <h2 id="visa-section" className="text-xl font-bold mb-4 mt-8">6. ビザについて</h2>
         <p className="mb-4">

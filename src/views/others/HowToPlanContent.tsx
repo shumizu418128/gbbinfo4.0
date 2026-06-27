@@ -1,3 +1,4 @@
+import { PostIt } from "~/components/PostIt.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import type { ReactNode } from "react";
@@ -14,7 +15,6 @@ const sectionClass = "mb-8 text-2xl font-bold";
 const tocClass = "mb-8 list-decimal pl-8 space-y-2";
 const listClass = "mb-4 list-disc pl-8 space-y-4";
 const episodeClass = "mb-8 border border-(--gbb-color) bg-(--section-color) p-4";
-const quoteClass = "border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8";
 
 const EpisodeBox = ({ children }: { children: ReactNode }) => (
   <div className={episodeClass}>{children}</div>
@@ -90,7 +90,7 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
             遠方から来場される方は、各社ホームページを確認するなど、ぜひ活用してみてください。
           </li>
         </ul>
-        <div className={quoteClass}>
+        <PostIt>
           <ul className="list-disc pl-8 space-y-2">
             <li>
               <a href="https://www.flypeach.com/" target="_blank" rel="noopener noreferrer" className={anchorClass}>
@@ -108,7 +108,7 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
               </a>
             </li>
           </ul>
-        </div>
+        </PostIt>
 
         <h2 id="p03" className={sectionClass}>ホテル</h2>
         <ul className={listClass}>
@@ -158,13 +158,13 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
         <p className={paragraphClass}>
           しかしながら、GBB21のタイムテーブルを確認すると、すべて深夜か早朝に終了しており、終電に間に合わない可能性があります。
         </p>
-        <div className={quoteClass}>
+        <PostIt>
           <ol className="list-decimal pl-8 space-y-2">
             <li>会場から徒歩圏内、なるべく近いホテルを選ぶ</li>
             <li>終電時刻を事前に調べて、それまでに会場を出る</li>
             <li>タクシーを使う</li>
           </ol>
-        </div>
+        </PostIt>
         <p className={paragraphClass}>
           が選択肢になりますが、そもそも会場付近のホテルが非常に少なく高価なため、1を選ぶことは非常に困難です。
         </p>

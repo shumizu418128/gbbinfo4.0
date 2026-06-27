@@ -1,5 +1,6 @@
-import { Table } from "~/components/Table.js";
 import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
+import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 
 type V1JourneyContentProps = {
@@ -163,14 +164,14 @@ export const V1JourneyContent = ({ locale }: V1JourneyContentProps) => {
           <li>預け入れ荷物（スーツケース等）には液体の容量制限はありません。</li>
         </ul>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">意外と忘れがちな液体物</p>
           <ul className="list-disc pl-8 space-y-1">
             <li>ペットボトルの飲み物</li>
             <li>ゼリー状のお菓子（お土産に注意）</li>
             <li>歯磨き粉</li>
           </ul>
-        </div>
+        </PostIt>
 
         <h2 id="passport-validity-section" className="text-xl font-bold mb-4 mt-8">6. パスポートの有効期限</h2>
         <p className="mb-4">
@@ -215,14 +216,14 @@ export const V1JourneyContent = ({ locale }: V1JourneyContentProps) => {
           />
         </div>
 
-        <div className="border-l-4 border-(--gbb-color) bg-(--section-color) p-4 my-8">
+        <PostIt>
           <p className="font-bold mb-2">撮影制限について</p>
           <p>
             ポーランドでは、鉄道、橋、政府関連の建物などでの撮影が法律で禁止されています。<br />
             これは、ウクライナでの情勢悪化に伴う安全保障の観点から制定された、スパイ活動を念頭に置いた法律です。<strong>ポーランドは、ウクライナ・ロシアと国境を接しています。</strong><br />
             違反した場合、拘束・法的措置を受ける可能性がありますので、ご注意ください。
           </p>
-        </div>
+        </PostIt>
 
         <div className="flex flex-wrap gap-4 mt-16 mb-4">
           <LinkCard
