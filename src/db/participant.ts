@@ -346,7 +346,7 @@ export const findPastParticipation = async (
     });
   }
 
-  return orderBy(pastData, ["year", "categoryId"], ["asc", "asc"]);
+  return orderBy(pastData, ["year", "categoryId"], ["desc", "asc"]);
 };
 
 /**
