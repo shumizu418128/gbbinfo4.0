@@ -15,7 +15,6 @@ export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">Wildcard結果発表配信</h1>
         <p className={paragraphClass}>
           GBBのWildcard審査結果は、例年、Swissbeatboxの公式YouTubeチャンネルで公開されます。世界中のトップクラスのBeatboxerが、こぞってGBB各部門のWildcardを提出します。しかし、近年Wildcard出場枠が減少傾向にあり、過去にGBB出場経験がある有名なBeatboxerが、出場どころか上位にすら入れないことも当たり前になってきました。
         </p>

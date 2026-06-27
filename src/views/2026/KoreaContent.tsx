@@ -3,7 +3,6 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { ParticipantCard } from "~/components/ParticipantCard.js";
-import * as m from "../../../paraglide/messages.js";
 
 type KoreaContentProps = {
   participants: ParticipantWithRelations[];
@@ -14,8 +13,6 @@ export const KoreaContent = ({ participants, locale }: KoreaContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">{m.team_korea()}</h1>
-
         <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
           {participants.filter((p) => !p.isCancelled).length} beatboxers
         </div>

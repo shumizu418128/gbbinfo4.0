@@ -18,7 +18,6 @@ export const SevenToSmokeContent = ({ locale, year }: SevenToSmokeContentProps) 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">7toSmokeとは</h1>
         <p className={paragraphClass}>
           GBB2023や、日本国内のBeatboxイベントでしばしば目にする「7toSmoke」
           <br />

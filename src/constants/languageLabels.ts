@@ -36,9 +36,9 @@ export type CountryNames = Record<CountryNameLanguage, string>;
  */
 export const languageLabels = {
   ja: "日本語",
+  ko: "한국어",
   en: "English",
   de: "Deutsch",
-  ko: "한국어",
 } as const satisfies Partial<Record<CountryNameLanguage, string>>;
 
 export type SupportedLanguage = keyof typeof languageLabels;

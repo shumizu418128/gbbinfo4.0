@@ -39,7 +39,6 @@ export const PastInfoContent = ({ locale }: PastInfoContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">過去のGBB情報対応状況</h1>
         <p className={paragraphClass}>
           GBBINFO-JPNは、
           <a href={`/${locale}/others/about`} className={anchorClass}>

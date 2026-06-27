@@ -13,7 +13,6 @@ export const AboutContent = ({ locale: _locale }: AboutContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">GBBINFO-JPNについて</h1>
         <p className={paragraphClass}>
           はじめまして、このサイトの管理人です。
           <br />

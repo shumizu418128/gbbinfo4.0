@@ -12,7 +12,6 @@ const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 const paragraphClass = "mb-8 leading-relaxed";
-const titleClass = "mb-16 text-2xl font-bold";
 const sectionClass = "mt-16 mb-8 text-2xl font-bold";
 const subSectionClass = "mt-8 mb-8 text-lg font-bold";
 const tocClass = "mb-8 list-decimal pl-8 space-y-2";
@@ -27,8 +26,6 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className={titleClass}>GBB 現地観戦計画のたてかた</h1>
-
         <p className={paragraphClass}>
           GBB21を現地観戦した管理人が、GBBに向けて計画を立てる上で知っておくべきことを解説します。
         </p>
