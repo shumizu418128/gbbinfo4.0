@@ -43,6 +43,8 @@ export const AboutContent = ({ locale: _locale }: AboutContentProps) => {
           2024/6/23 新サイトへ移行
           <br />
           2024/12/14 株式会社サポーターズ様主催イベント「技育博 Vol.5」オフライン進出作品
+          <br />
+          2026年現在 累計ユーザー数30万人突破
         </p>
         <p className={paragraphClass}>
           <a
