@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
@@ -29,7 +30,6 @@ const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-(--rule-hover-text)";
 const subSectionClass = "mb-4 font-bold";
 const ruleSubSectionClass = "mt-8 bg-(--section-color) px-4 py-8";
-const postItClass = "my-4 border-l-4 border-(--gbb-color) bg-(--post-it-color) p-4";
 const ruleSectionClass = "bg-(--background-color) py-16 text-white";
 
 const RuleSection = ({ children }: { children: ReactNode }) => (
@@ -61,12 +61,6 @@ const RuleSubSection = ({ children }: { children: ReactNode }) => (
 
 const RuleSubHeading = ({ children }: { children: ReactNode }) => (
   <h2 className={subSectionClass}>{children}</h2>
-);
-
-const PostIt = ({ children }: { children: ReactNode }) => (
-  <div className={postItClass}>
-    {children}
-  </div>
 );
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
