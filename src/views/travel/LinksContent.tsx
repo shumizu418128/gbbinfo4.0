@@ -1,12 +1,10 @@
 import { LinkCard } from "~/components/LinkCard.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 
 type LinksContentProps = {
   locale: SupportedLanguage;
 };
-
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 export const LinksContent = ({ locale }: LinksContentProps) => {
   return (

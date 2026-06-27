@@ -1,5 +1,6 @@
 import { LinkCard } from "~/components/LinkCard";
 import { Table } from "~/components/Table";
+import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 import type { YearWithCountry } from "~/db/year.js";
 
@@ -36,7 +37,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <li>
             <a
               href={`/${locale}/others/url_change`}
-              className="underline transition-colors duration-150 hover:text-(--gbb-color)"
+              className={anchorClass}
             >
               {m.site_url_notice()}
             </a>
@@ -44,7 +45,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <li>
             <a
               href={`/${locale}/others/result_stream`}
-              className="underline transition-colors duration-150 hover:text-(--gbb-color)"
+              className={anchorClass}
             >
               {m.wildcard_stream({ Wildcard: "Wildcard" })}
             </a>
@@ -52,7 +53,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <li>
             <a
               href={`/${locale}/${year}/wildcards`}
-              className="underline transition-colors duration-150 hover:text-(--gbb-color)"
+              className={anchorClass}
             >
               {m.wildcard_list({ Wildcard: "Wildcard" })}
             </a>

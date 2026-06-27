@@ -1,5 +1,6 @@
 import { LinkCard } from "~/components/LinkCard.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 
 type ResultStreamContentProps = {
   locale: SupportedLanguage;
@@ -9,9 +10,6 @@ type ResultStreamContentProps = {
 const paragraphClass = "mb-4 leading-relaxed";
 
 export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) => {
-  const anchorClass =
-    "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
-
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">

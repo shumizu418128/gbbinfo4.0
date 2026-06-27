@@ -1,5 +1,6 @@
 import { LinkCard } from "~/components/LinkCard";
 import { Table } from "~/components/Table";
+import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 import type { YearWithCountry } from "~/db/year.js";
 
@@ -7,9 +8,6 @@ type TopContentProps = {
   locale: string;
   yearWithCountry: YearWithCountry;
 };
-
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
   const { year } = yearWithCountry;

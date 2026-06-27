@@ -6,6 +6,7 @@ import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import type {
   ParticipantDetailParticipant,
   ParticipantWithRelations,
@@ -96,7 +97,7 @@ export const ParticipantTeamDetailContent = ({
           <br />
           <a
             href={toMemberUrl(locale, teamMember.id)}
-            className="text-(--gbb-color) hover:underline"
+            className={anchorClass}
           >
             {teamMember.name}
           </a>
@@ -104,7 +105,7 @@ export const ParticipantTeamDetailContent = ({
       ) : (
         <a
           href={toMemberUrl(locale, teamMember.id)}
-          className="text-(--gbb-color) hover:underline"
+          className={anchorClass}
         >
           {teamMember.name}
         </a>
@@ -132,7 +133,7 @@ export const ParticipantTeamDetailContent = ({
       const link = (
         <a
           href={toParticipantDetailUrl(locale, entry)}
-          className="text-(--gbb-color) hover:underline"
+          className={anchorClass}
         >
           {entry.name}
         </a>
@@ -170,7 +171,7 @@ export const ParticipantTeamDetailContent = ({
         ) : (
           <>
             {renderPeerNameFlags(countries)}
-            <a href={peerHref} className="text-(--gbb-color) hover:underline">
+            <a href={peerHref} className={anchorClass}>
               {peer.name}
             </a>
           </>
@@ -213,7 +214,7 @@ export const ParticipantTeamDetailContent = ({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
+        className={anchorClass}
       >
         {item.title}
       </a>,
@@ -233,7 +234,7 @@ export const ParticipantTeamDetailContent = ({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
+        className={anchorClass}
       >
         {item.title}
       </a>,

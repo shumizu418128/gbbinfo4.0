@@ -3,8 +3,9 @@ import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
-import type { ParticipantWithRelations } from "~/db/participant.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
+import type { ParticipantWithRelations } from "~/db/participant.js";
 import * as m from "../../../paraglide/messages.js";
 
 type RuleSeedData = {
@@ -26,8 +27,6 @@ const SWISSBEATBOX = "Swissbeatbox";
 const sectionClass = "mb-4 text-2xl font-bold";
 const tocSectionClass = "mb-4 text-2xl font-bold";
 const paragraphClass = "mb-4 leading-relaxed";
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-(--rule-hover-text)";
 const subSectionClass = "mb-4 font-bold";
 const ruleSubSectionClass = "mt-8 bg-(--section-color) px-4 py-8";
 const ruleSectionClass = "bg-(--background-color) py-16 text-white";

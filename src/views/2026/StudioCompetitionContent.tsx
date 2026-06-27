@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
 type StudioCompetitionContentProps = {
@@ -63,7 +64,7 @@ export const StudioCompetitionContent = ({ locale, year }: StudioCompetitionCont
               href="https://swissbeatbox.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-(--gbb-color) underline transition-colors duration-150 hover:text-white"
+              className={anchorClass}
             >
               {m.rule_showcase_source({ SHOWCASE, Wildcard: WILDCARD })}
             </a>

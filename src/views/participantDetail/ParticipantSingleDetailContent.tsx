@@ -6,6 +6,7 @@ import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import type {
   ParticipantDetailParticipant,
   ParticipantWithRelations,
@@ -59,7 +60,7 @@ export const ParticipantSingleDetailContent = ({
       const link = (
         <a
           href={toParticipantDetailUrl(locale, entry)}
-          className="text-(--gbb-color) hover:underline"
+          className={anchorClass}
         >
           {entry.name}
         </a>
@@ -103,7 +104,7 @@ export const ParticipantSingleDetailContent = ({
             {isoAlpha2 && !peer.isCancelled ? (
               <Flag isoAlpha2={isoAlpha2} className="mr-1" />
             ) : null}
-            <a href={peerHref} className="text-(--gbb-color) hover:underline">
+            <a href={peerHref} className={anchorClass}>
               {peer.name}
             </a>
           </>
@@ -146,7 +147,7 @@ export const ParticipantSingleDetailContent = ({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
+        className={anchorClass}
       >
         {item.title}
       </a>,
@@ -166,7 +167,7 @@ export const ParticipantSingleDetailContent = ({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
+        className={anchorClass}
       >
         {item.title}
       </a>,
@@ -178,20 +179,23 @@ export const ParticipantSingleDetailContent = ({
       className="pt-16 pb-8 text-white"
       style={{ backgroundColor: "var(--background-color)" }}
     >
-      <ParticipantCard
-        name={displayName}
-        isCancelled={isCancelled}
-        primaryInfo={
-          countries.length > 0 ? (
-            <ParticipantCountries countries={countries} locale={locale} />
-          ) : undefined
-        }
-        secondaryInfo={
-          <span>
-            {categoryName} / {ticketClass}
-          </span>
-        }
-      />
+      <div className="mb-8">
+        <ParticipantCard
+          name={displayName}
+          isCancelled={isCancelled}
+          primaryInfo={
+            countries.length > 0 ? (
+              <ParticipantCountries countries={countries} locale={locale} />
+            ) : undefined
+          }
+          secondaryInfo={
+            <span>
+              {categoryName} / {ticketClass}
+            </span>
+          }
+        />
+      </div>
+
 
       <div className="mx-auto w-full max-w-2xl px-4">
         {tavily.youtubeEmbedUrl ? (

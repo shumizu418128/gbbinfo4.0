@@ -2,14 +2,12 @@ import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import type { ReactNode } from "react";
 
 type HowToPlanContentProps = {
   locale: SupportedLanguage;
 };
-
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 const paragraphClass = "mb-8 leading-relaxed";
 const sectionClass = "mt-16 mb-8 text-2xl font-bold";

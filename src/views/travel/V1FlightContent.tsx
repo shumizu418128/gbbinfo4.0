@@ -2,13 +2,11 @@ import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 
 type V1FlightContentProps = {
   locale: SupportedLanguage;
 };
-
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 const DEADLINE_TABLE_DATA = [
   ["手続き", "推奨時間"],

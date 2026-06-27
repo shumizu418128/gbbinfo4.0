@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import { ParticipantAvatar } from "~/components/ParticipantAvatar.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../paraglide/messages";
 
 type ParticipantCardProps = {
@@ -18,7 +19,7 @@ export const ParticipantCard = ({
   href,
 }: ParticipantCardProps) => {
   const nameContent = href ? (
-    <a href={href} className="text-(--gbb-color) hover:underline">
+    <a href={href} className={anchorClass}>
       {name}
     </a>
   ) : (

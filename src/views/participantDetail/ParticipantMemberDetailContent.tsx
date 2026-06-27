@@ -5,6 +5,7 @@ import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import type {
   ParticipantDetailMember,
   ParticipantDetailParticipant,
@@ -59,7 +60,7 @@ export const ParticipantMemberDetailContent = ({
         id: participant.id,
         isTeam: true,
       })}
-      className="text-(--gbb-color) hover:underline"
+      className={anchorClass}
     >
       {participant.name}
     </a>
@@ -86,7 +87,7 @@ export const ParticipantMemberDetailContent = ({
       const link = (
         <a
           href={toParticipantDetailUrl(locale, entry)}
-          className="text-(--gbb-color) hover:underline"
+          className={anchorClass}
         >
           {entry.name}
         </a>
@@ -130,7 +131,7 @@ export const ParticipantMemberDetailContent = ({
             {isoAlpha2 && !peer.isCancelled ? (
               <Flag isoAlpha2={isoAlpha2} className="mr-1" />
             ) : null}
-            <a href={peerHref} className="text-(--gbb-color) hover:underline">
+            <a href={peerHref} className={anchorClass}>
               {peer.name}
             </a>
           </>
@@ -173,7 +174,7 @@ export const ParticipantMemberDetailContent = ({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
+        className={anchorClass}
       >
         {item.title}
       </a>,
@@ -193,7 +194,7 @@ export const ParticipantMemberDetailContent = ({
         href={item.url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
+        className={anchorClass}
       >
         {item.title}
       </a>,

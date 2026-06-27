@@ -1,14 +1,12 @@
 import { LinkCard } from "~/components/LinkCard.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 
 type SevenToSmokeContentProps = {
   locale: SupportedLanguage;
   year: number;
 };
-
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 const paragraphClass = "mb-4 leading-relaxed";
 const sectionClass = "mb-8 text-2xl font-bold";

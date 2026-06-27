@@ -6,9 +6,6 @@ type StreamContentProps = {
   year: number;
 };
 
-const anchorClass =
-  "inline-block rounded bg-(--gbb-color) px-4 py-2 text-sm font-bold text-white transition-opacity duration-150 hover:opacity-80";
-
 export const StreamContent = ({ locale, year }: StreamContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>

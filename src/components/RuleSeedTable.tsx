@@ -1,6 +1,7 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { Flag } from "~/components/Flag.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 import { toParticipantUrl } from "~/util/participant.js";
 import * as m from "../../paraglide/messages.js";
 
@@ -65,7 +66,7 @@ export const RuleSeedTable = ({
                         id: participant.id,
                         isTeam: participant.categoryInfo.isTeam,
                       })}
-                      className="text-(--gbb-color) hover:underline"
+                      className={anchorClass}
                     >
                       {participant.name}
                     </a>

@@ -1,11 +1,9 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { anchorClass } from "~/constants/linkStyle.js";
 
 type AboutContentProps = {
   locale: SupportedLanguage;
 };
-
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
 const paragraphClass = "mb-4 leading-relaxed";
 

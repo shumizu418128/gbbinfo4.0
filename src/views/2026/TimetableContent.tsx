@@ -22,8 +22,6 @@ const DAYS: DaySection[] = [
 
 const sectionClass = "mb-4 text-xl font-bold scroll-mt-16";
 const paragraphClass = "mb-4 leading-relaxed text-(--secondary-text-color)";
-const anchorClass =
-  "inline-block rounded bg-(--gbb-color) px-4 py-2 text-sm font-bold text-white transition-opacity duration-150 hover:opacity-80";
 
 export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
   return (

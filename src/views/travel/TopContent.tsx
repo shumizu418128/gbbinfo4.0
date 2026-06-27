@@ -6,9 +6,6 @@ type TopContentProps = {
   locale: SupportedLanguage;
 };
 
-const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
-
 export const TopContent = ({ locale }: TopContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
