@@ -2,6 +2,7 @@
 import Dropdown from "./Dropdown.astro";
 import {
   languageLabels,
+  supportedLanguages,
   type SupportedLanguage,
 } from "~/constants/languageLabels";
 import * as m from "../../paraglide/messages";
@@ -14,8 +15,6 @@ interface Props {
 }
 
 const { lang, currentPath, year, years } = Astro.props;
-
-const supportedLanguages = Object.keys(languageLabels) as SupportedLanguage[];
 
 const buildLanguagePath = (targetLanguage: SupportedLanguage): string => {
   const segments = currentPath.split("/").filter(Boolean);

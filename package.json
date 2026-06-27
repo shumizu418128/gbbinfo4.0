@@ -5,8 +5,9 @@
   },
   "type": "module",
   "scripts": {
-    "build": "astro build",
-    "dev": "astro dev",
+    "sync:locales": "node --experimental-strip-types scripts/sync-inlang-locales.ts",
+    "build": "npm run sync:locales && astro build",
+    "dev": "npm run sync:locales && astro dev",
     "preview": "astro preview",
     "start": "astro preview",
     "typecheck": "astro check"

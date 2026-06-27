@@ -1,0 +1,29 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { NotFoundContent } from "~/views/NotFoundContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+
+export async function getStaticPaths() {
+  const YEAR = new Date().getFullYear();
+  const common = await getCommonYearData(YEAR);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const title = "404";
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle="Page not found"
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <NotFoundContent locale={locale} year={yearWithCountry.year} />
+</SiteFrame>
