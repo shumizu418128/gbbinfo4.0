@@ -1,3 +1,4 @@
+import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
@@ -10,8 +11,10 @@ type HowToPlanContentProps = {
 const anchorClass =
   "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
 
-const paragraphClass = "mb-4 leading-relaxed";
-const sectionClass = "mb-8 text-2xl font-bold";
+const paragraphClass = "mb-8 leading-relaxed";
+const titleClass = "mb-16 text-2xl font-bold";
+const sectionClass = "mt-16 mb-8 text-2xl font-bold";
+const subSectionClass = "mt-8 mb-8 text-lg font-bold";
 const tocClass = "mb-8 list-decimal pl-8 space-y-2";
 const listClass = "mb-4 list-disc pl-8 space-y-4";
 const episodeClass = "mb-8 border border-(--gbb-color) bg-(--section-color) p-4";
@@ -24,7 +27,7 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-2xl font-bold">GBB 現地観戦計画のたてかた</h1>
+        <h1 className={titleClass}>GBB 現地観戦計画のたてかた</h1>
 
         <p className={paragraphClass}>
           GBB21を現地観戦した管理人が、GBBに向けて計画を立てる上で知っておくべきことを解説します。
@@ -35,13 +38,15 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
         <p className={paragraphClass}>
           ※今回はGBB23を前提に解説していますが、いつのGBBであっても基本的に気を付けるべきことは変わりません。
         </p>
-        <p className="mb-8 text-center font-bold">
-          2024/1/10追記
-          <br />
-          今後、このページの更新は行いません。
-          <br />
-          古い情報が含まれる可能性があるため、必ず最新情報をご確認ください。
-        </p>
+        <PostIt>
+          <p>
+            2024/1/10追記
+            <br />
+            今後、このページの更新は行いません。
+            <br />
+            古い情報が含まれる可能性があるため、必ず最新情報をご確認ください。
+          </p>
+        </PostIt>
 
         <h2 className={sectionClass}>目次</h2>
         <ol className={tocClass}>
@@ -67,80 +72,56 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
         <p className={paragraphClass}>また、この記事の読者は、日本国内に居住する人を前提としています。</p>
 
         <h2 id="p02" className={sectionClass}>交通手段</h2>
-        <ul className={listClass}>
-          <li>
-            <strong>GBB21での経験</strong>
-            <br />
-            私はポーランド到着日がGBB21 Day1当日だったため、空港からホテルへ向かい荷物を置いた後、すぐ会場に向かわなければなりませんでした。
-            そのため十分な休憩をとれなかった上、GBB21会場では食べ物の持ち込みは禁止、会場内での食べ物の販売はほぼ無し（ポテトチップスなどのスナックのみ販売）だったため、体力的に厳しい状況でした。
-          </li>
-          <li>
-            <strong>管理人の考察</strong>
-            <br />
-            遠方の方は飛行機、関東の方は電車やバスで会場へ向かうことになると思います。移動手段によっては会場到着前に体力を消耗することが考えられます。
-            可能であれば前日、もしくは当日午前中に会場付近に到着し、どこかで休憩をとることをおすすめします。
-          </li>
-          <li>
-            <strong>フライトの予約</strong>
-            <br />
-            （ステマじゃないよ）
-            <br />
-            格安航空会社が毎月のように国内線セールを行っています。
-            <br />
-            遠方から来場される方は、各社ホームページを確認するなど、ぜひ活用してみてください。
-          </li>
-        </ul>
-        <PostIt>
-          <ul className="list-disc pl-8 space-y-2">
-            <li>
-              <a href="https://www.flypeach.com/" target="_blank" rel="noopener noreferrer" className={anchorClass}>
-                Peach ホームページ
-              </a>
-            </li>
-            <li>
-              <a href="https://www.jetstar.com/jp/ja/home" target="_blank" rel="noopener noreferrer" className={anchorClass}>
-                Jetstar Japan ホームページ
-              </a>
-            </li>
-            <li>
-              <a href="https://jp.ch.com/" target="_blank" rel="noopener noreferrer" className={anchorClass}>
-                Spring Japan ホームページ
-              </a>
-            </li>
-          </ul>
-        </PostIt>
+        <h3 className={subSectionClass}>GBB21での経験</h3>
+        <p className={paragraphClass}>
+          私はポーランド到着日がGBB21 Day1当日だったため、空港からホテルへ向かい荷物を置いた後、すぐ会場に向かわなければなりませんでした。
+          そのため十分な休憩をとれなかった上、GBB21会場では食べ物の持ち込みは禁止、会場内での食べ物の販売はほぼ無し（ポテトチップスなどのスナックのみ販売）だったため、体力的に厳しい状況でした。
+        </p>
+        <h3 className={subSectionClass}>管理人の考察</h3>
+        <p className={paragraphClass}>
+          遠方の方は飛行機、関東の方は電車やバスで会場へ向かうことになると思います。移動手段によっては会場到着前に体力を消耗することが考えられます。
+          可能であれば前日、もしくは当日午前中に会場付近に到着し、どこかで休憩をとることをおすすめします。
+        </p>
+        <h3 className={subSectionClass}>フライトの予約</h3>
+        <p className={paragraphClass}>
+          （ステマじゃないよ）
+          <br />
+          格安航空会社が毎月のように国内線セールを行っています。
+          <br />
+          遠方から来場される方は、各社ホームページを確認するなど、ぜひ活用してみてください。
+        </p>
+        <div className="mb-8 flex flex-wrap gap-4">
+          <LinkCard text="Peach ホームページ" href="https://www.flypeach.com/" />
+          <LinkCard text="Jetstar Japan ホームページ" href="https://www.jetstar.com/jp/ja/home" />
+          <LinkCard text="Spring Japan ホームページ" href="https://jp.ch.com/" />
+        </div>
 
         <h2 id="p03" className={sectionClass}>ホテル</h2>
-        <ul className={listClass}>
-          <li>
-            <strong>GBB21の時のswissbeatboxの対応</strong>
-            <br />
-            swissbeatboxは、GBB21のチケットを持っている方に対し、GBB21オフィシャルホテルである&quot;The Westin Warsaw&quot;の予約を特別価格で受け付けました。
-            <br />
-            <a
-              href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1613047055411&key=GRP&app=resvlink"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={anchorClass}
-            >
-              詳細はこちら
-            </a>
-            （当然ですが現在は受付終了しています）
-          </li>
-          <li>
-            <strong>GBB23の場合</strong>
-            <br />
-            7月15日にそれっぽい情報が出ました。
-            <a href="#p03-2" className={anchorClass}>詳細はこちら</a>
-          </li>
-          <li>
-            <strong>管理人の考察</strong>
-            <br />
-            今後オフィシャルホテルの情報が公開された場合は利用するのも１つの選択肢です。
-            利用しない場合、ご自身でホテルを選ぶことになります。
-            その際注意するべきなのは、終電時間です。
-          </li>
-        </ul>
+        <h3 className={subSectionClass}>GBB21の時のswissbeatboxの対応</h3>
+        <p className={paragraphClass}>
+          swissbeatboxは、GBB21のチケットを持っている方に対し、GBB21オフィシャルホテルである&quot;The Westin Warsaw&quot;の予約を特別価格で受け付けました。
+          <br />
+          <a
+            href="https://www.marriott.com/event-reservations/reservation-link.mi?id=1613047055411&key=GRP&app=resvlink"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={anchorClass}
+          >
+            詳細はこちら
+          </a>
+          （当然ですが現在は受付終了しています）
+        </p>
+        <h3 className={subSectionClass}>GBB23の場合</h3>
+        <p className={paragraphClass}>
+          7月15日にそれっぽい情報が出ました。
+          <a href="#p03-2" className={anchorClass}>詳細はこちら</a>
+        </p>
+        <h3 className={subSectionClass}>管理人の考察</h3>
+        <p className={paragraphClass}>
+          今後オフィシャルホテルの情報が公開された場合は利用するのも１つの選択肢です。
+          利用しない場合、ご自身でホテルを選ぶことになります。
+          その際注意するべきなのは、終電時間です。
+        </p>
 
         <p className="mb-4">
           <a
@@ -158,13 +139,11 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
         <p className={paragraphClass}>
           しかしながら、GBB21のタイムテーブルを確認すると、すべて深夜か早朝に終了しており、終電に間に合わない可能性があります。
         </p>
-        <PostIt>
-          <ol className="list-decimal pl-8 space-y-2">
-            <li>会場から徒歩圏内、なるべく近いホテルを選ぶ</li>
-            <li>終電時刻を事前に調べて、それまでに会場を出る</li>
-            <li>タクシーを使う</li>
+        <ol className="list-decimal pl-8 space-y-2 my-4">
+          <li>会場から徒歩圏内、なるべく近いホテルを選ぶ</li>
+          <li>終電時刻を事前に調べて、それまでに会場を出る</li>
+          <li>タクシーを使う</li>
           </ol>
-        </PostIt>
         <p className={paragraphClass}>
           が選択肢になりますが、そもそも会場付近のホテルが非常に少なく高価なため、1を選ぶことは非常に困難です。
         </p>
@@ -177,13 +156,10 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
 
         <h2 id="p04" className={sectionClass}>当日の行動</h2>
         <p className={paragraphClass}>以下はすべて管理人の考察です。</p>
-        <ul className={listClass}>
-          <li>
-            <strong>GBBは「海外の大会」</strong>
-            <br />
-            いくらGBB23が日本開催とはいえど、GBBは海外から多くのBeatboxファンが来場する国際大会です。実際、海外限定チケットの販売が行われており、日本人が大多数になるとは考えにくいです。
-          </li>
-        </ul>
+        <h3 className={subSectionClass}>GBBは「海外の大会」</h3>
+        <p className={paragraphClass}>
+          いくらGBB23が日本開催とはいえど、GBBは海外から多くのBeatboxファンが来場する国際大会です。実際、海外限定チケットの販売が行われており、日本人が大多数になるとは考えにくいです。
+        </p>
 
         <EpisodeBox>
           <p className="mb-4">GBB21 Day1開始前</p>
@@ -217,16 +193,11 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
           また、あなたの近くにいる人が仮に外国人のような見た目や肌の色をしていても、実は日本語を話す方である可能性や、日本人に見える人が実は外国人だった、ということも起こり得ます。見た目で人を判断してはいけないとはよく言いますが、あくまでもグローバルな場所に行くという意識を忘れてはいけません。
         </p>
 
-        <ul className={listClass}>
-          <li>
-            <strong>
-              そもそも最初から最後まで会場に居ることは
-              <span className="text-red-500">不可能</span>
-            </strong>
-            <br />
-            GBB21の、実際のタイムテーブルを再掲します。
-          </li>
-        </ul>
+        <h3 className={subSectionClass}>
+          そもそも最初から最後まで会場に居ることは
+          <span className="text-red-500">不可能</span>
+        </h3>
+        <p className={paragraphClass}>GBB21の、実際のタイムテーブルを再掲します。</p>
 
         <p className="mb-4">
           <a
@@ -266,26 +237,22 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
         </p>
         <p className={paragraphClass}>あらかじめどのカテゴリーを観るのか、よく考えておいたほうが良いと思います。</p>
 
-        <ul className={listClass}>
-          <li>
-            <strong>開場も遅れるかも</strong>
-            <br />
-            一度始まったら７時間ぶっ通しで開催されますが、実は開場するまでが非常に長いです。
-            GBB21の場合、開場時間が事前にアナウンスされていましたが、それも２時間遅れました。
-            つまり、もし最初から最後まで会場で観る場合は、1日に９時間もの間会場にいる可能性があります。
-            それを４日間連続で行います。
-          </li>
-          <li>
-            <strong>7toSmokeについて</strong>
-            <br />
-            GBBの現地観戦は非常にハードであることをすでに説明しましたが、これに加え7toSmokeも開催されます。
-            7toSmokeの前、GBB本戦終了時点で、すでに体力が限界を迎えていてもおかしくありません。
-            両方見に行くんだ！という方、本当にそれができるか、やるなら体力管理をどうするか、非常に難しい判断を迫られます。
-            両方見に行くことを諦めて、インターネットで他人にチケットを譲渡する人も見たことがあります。これも手段の一つだと思います。
-          </li>
-        </ul>
+        <h3 className={subSectionClass}>開場も遅れるかも</h3>
+        <p className={paragraphClass}>
+          一度始まったら７時間ぶっ通しで開催されますが、実は開場するまでが非常に長いです。
+          GBB21の場合、開場時間が事前にアナウンスされていましたが、それも２時間遅れました。
+          つまり、もし最初から最後まで会場で観る場合は、1日に９時間もの間会場にいる可能性があります。
+          それを４日間連続で行います。
+        </p>
+        <h3 className={subSectionClass}>7toSmokeについて</h3>
+        <p className={paragraphClass}>
+          GBBの現地観戦は非常にハードであることをすでに説明しましたが、これに加え7toSmokeも開催されます。
+          7toSmokeの前、GBB本戦終了時点で、すでに体力が限界を迎えていてもおかしくありません。
+          両方見に行くんだ！という方、本当にそれができるか、やるなら体力管理をどうするか、非常に難しい判断を迫られます。
+          両方見に行くことを諦めて、インターネットで他人にチケットを譲渡する人も見たことがあります。これも手段の一つだと思います。
+        </p>
 
-        <h2 className="mb-8 text-2xl font-bold">全て観るのは、不可能です。</h2>
+        <h2 className={sectionClass}>全て観るのは、不可能です。</h2>
 
         <EpisodeBox>
           <p className="mb-4">
@@ -317,14 +284,11 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
           <li>小さめのバッグで行く（大きいリュック等はあまりおすすめできません）</li>
         </ol>
 
-        <ul className={listClass}>
-          <li>
-            1. リストバンドについて
-            <br />
-            これは初回入場時に、係員から配られるものです。
-            GBB21で配られたものはこちらです。（管理人の私物です）
-          </li>
-        </ul>
+        <h3 className={subSectionClass}>リストバンドについて</h3>
+        <p className={paragraphClass}>
+          これは初回入場時に、係員から配られるものです。
+          GBB21で配られたものはこちらです。（管理人の私物です）
+        </p>
 
         <img
           alt="GBBリストバンド"
@@ -376,24 +340,18 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
           </blockquote>
         </SocialEmbed>
 
-        <ol className="mb-4 list-decimal pl-8 space-y-4" start={2}>
-          <li>
-            ペットボトルのキャップについて
-            <br />
-            実はGBB21では、会場内に飲食物の持ち込みは一切禁止で、ペットボトルの水を会場内売店で購入してもキャップを取られた状態で渡されました。
-            対策として、多くの人がペットボトルキャップを持ち込んでいました。
-            GBB23では飲食物の持ち込みが禁止されるかはわかりませんが、持っていく価値はあると思います。
-            なお衛生面には注意が必要です。
-          </li>
-        </ol>
-        <ol className="list-decimal pl-8 space-y-4" start={4}>
-          <li>
-            小さめのバッグについて
-            <br />
-            GBBが体力戦になることは、ご説明したとおりです。少しでも荷物を軽くすることも、体力を節約する方法の一つです。
-            また、有料ですがコインロッカーを活用するとより良いと思います。
-          </li>
-        </ol>
+        <h3 className={subSectionClass}>ペットボトルのキャップについて</h3>
+        <p className={paragraphClass}>
+          実はGBB21では、会場内に飲食物の持ち込みは一切禁止で、ペットボトルの水を会場内売店で購入してもキャップを取られた状態で渡されました。
+          対策として、多くの人がペットボトルキャップを持ち込んでいました。
+          GBB23では飲食物の持ち込みが禁止されるかはわかりませんが、持っていく価値はあると思います。
+          なお衛生面には注意が必要です。
+        </p>
+        <h3 className={subSectionClass}>小さめのバッグについて</h3>
+        <p className={paragraphClass}>
+          GBBが体力戦になることは、ご説明したとおりです。少しでも荷物を軽くすることも、体力を節約する方法の一つです。
+          また、有料ですがコインロッカーを活用するとより良いと思います。
+        </p>
       </div>
     </main>
   );
