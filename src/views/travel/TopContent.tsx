@@ -11,7 +11,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className="mb-4">
-          ワルシャワで開催された、GBB 2021 を現地観戦した管理人が、ワルシャワへ行くための情報をまとめたページです。
+          ポーランドで開催された、GBB 2021 を現地観戦した管理人が、ポーランドへ行くための情報をまとめたページです。
         </p>
         <p className="mb-8">
           飛行機やホテルの予約から、現地の交通手段まで、GBBに向けた計画を立てるための情報を、GBB 2021 の実例を参考にまとめています。
@@ -26,7 +26,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
 
         <h2 className="text-xl font-bold mb-4 mt-18">1. 予約編</h2>
         <p className="mb-4">
-          ワルシャワまでの飛行機やホテルの予約を立てるための情報を、GBB 2021 の実例を参考にまとめています。
+          ポーランドまでの飛行機やホテルの予約を立てるための情報を、GBB 2021 の実例を参考にまとめています。
         </p>
         <div className="flex flex-wrap gap-4 mb-8">
           <LinkCard text="予約編" href={`/${locale}/travel/v1_reservation`} fullWidth />
@@ -34,7 +34,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
 
         <h2 className="text-xl font-bold mb-4 mt-18">2. 旅程・荷物編</h2>
         <p className="mb-4">
-          ワルシャワでの旅程や、おすすめの持ち物などを、GBB 2021 の実例を参考にまとめています。
+          ポーランドでの旅程や、おすすめの持ち物などを、GBB 2021 の実例を参考にまとめています。
         </p>
         <div className="flex flex-wrap gap-4 mb-8">
           <LinkCard text="旅程・荷物編" href={`/${locale}/travel/v1_journey`} fullWidth />
@@ -42,7 +42,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
 
         <h2 className="text-xl font-bold mb-4 mt-18">3. 飛行機編</h2>
         <p className="mb-4">
-          ワルシャワまでの飛行機の情報を、GBB 2021 の実例を参考にまとめています。
+          ポーランドまでの飛行機の情報を、GBB 2021 の実例を参考にまとめています。
         </p>
         <div className="flex flex-wrap gap-4 mb-8">
           <LinkCard text="飛行機編" href={`/${locale}/travel/v1_flight`} fullWidth />
@@ -50,7 +50,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
 
         <h2 className="text-xl font-bold mb-4 mt-18">4. 現地観戦編</h2>
         <p className="mb-4">
-          ワルシャワに到着したら、ついに現地観戦です！<br />
+          ポーランドに到着したら、ついに現地観戦です！<br />
           現地観戦のための情報を、GBB 2021 の実例を参考にまとめています。
         </p>
         <div className="flex flex-wrap gap-4 mb-8">
