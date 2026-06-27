@@ -4,6 +4,8 @@ import { categorySlug } from "~/util/category.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
 import { ParticipantsCards } from "~/components/ParticipantsCards.js";
 import { ParticipantWorldMap } from "~/components/ParticipantWorldMap.js";
+import { LinkCard } from "~/components/LinkCard.js";
+import * as m from "../../../paraglide/messages.js";
 
 const YEAR = 2026;
 
@@ -27,6 +29,7 @@ export const ParticipantsContent = ({
     label: name,
     isActive: name === selectedCategory.name,
   }));
+  const isShowcaseCategory = selectedCategory.name.toUpperCase().startsWith("SHOWCASE");
 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
@@ -44,6 +47,15 @@ export const ParticipantsContent = ({
         <div className="mt-10 flex justify-center">
           <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
+
+        {isShowcaseCategory ? (
+          <div className="mt-8 flex flex-wrap justify-center gap-2">
+            <LinkCard
+              text={`SHOWCASE ${m.rules()}`}
+              href={`/${locale}/${YEAR}/rule`}
+            />
+          </div>
+        ) : null}
       </div>
 
       <ParticipantWorldMap participants={participants} locale={locale} />

@@ -20,19 +20,21 @@ export const ParticipantsCards = ({
   participants,
   locale,
   label,
-}: ParticipantsCardsProps) => (
-  <>
-    <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
-      {label}: {participants.filter((p) => !p.isCancelled).length} beatboxers
-    </div>
-
+}: ParticipantsCardsProps) =>
+  participants.length === 0 ? (
     <div className="space-y-6">
-      {participants.length === 0 ? (
-        <div className="text-center text-2xl text-(--secondary-text-color) py-40">
-          coming soon...
-        </div>
-      ) : (
-        participants.map((participant) => {
+      <div className="text-center text-2xl text-(--secondary-text-color) py-40">
+        coming soon...
+      </div>
+    </div>
+  ) : (
+    <>
+      <div className="mb-6 text-center text-xl text-(--secondary-text-color)">
+        {label}: {participants.filter((p) => !p.isCancelled).length} beatboxers
+      </div>
+
+      <div className="space-y-6">
+        {participants.map((participant) => {
           const countries = resolveParticipantCountries(participant);
 
           return (
@@ -49,8 +51,7 @@ export const ParticipantsCards = ({
               secondaryInfo={<span>{participant.ticketClass}</span>}
             />
           );
-        })
-      )}
-    </div>
-  </>
-);
+        })}
+      </div>
+    </>
+  );
