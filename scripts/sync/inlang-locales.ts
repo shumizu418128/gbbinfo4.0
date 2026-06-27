@@ -9,11 +9,11 @@ import path from "node:path";
 import {
   baseLocale,
   supportedLanguages,
-} from "../src/constants/languageLabels.ts";
+} from "../../src/constants/languageLabels.ts";
 
 const settingsPath = path.join(
   path.dirname(fileURLToPath(import.meta.url)),
-  "../project.inlang/settings.json",
+  "../../project.inlang/settings.json",
 );
 
 const settings = JSON.parse(readFileSync(settingsPath, "utf-8")) as {

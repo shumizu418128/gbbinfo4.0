@@ -419,29 +419,3 @@ export const findSameYearCategoryPeers = async (
   const rows = await findParticipants(year, categoryId, null);
   return rows.filter((row) => row.id !== excludeId);
 };
-
-/**
- * Tavily 同期用に、Participant / ParticipantMember から一意の出場者名を収集する。
- *
- * Returns:
- *   大文字正規化済みの一意な名前一覧。
- */
-export const findUniqueBeatboxerNames = async (): Promise<string[]> => {
-  const [participants, members] = await Promise.all([
-    getDb().query.participantTable.findMany({
-      columns: { name: true },
-    }),
-    getDb().query.participantMemberTable.findMany({
-      columns: { name: true },
-    }),
-  ]);
-
-  const names = new Set<string>();
-  for (const row of [...participants, ...members]) {
-    const trimmed = row.name?.trim();
-    if (trimmed && !isUnknownParticipantName(trimmed)) {
-      names.add(normalizeParticipantName(trimmed));
-    }
-  }
-  return [...names].sort();
-};

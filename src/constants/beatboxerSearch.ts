@@ -1,10 +1,3 @@
-export const TAVILY_EXCLUDE_DOMAINS = [
-  "tiktok.com",
-  "reddit.com",
-  "swissbeatbox.com",
-  "gbbinfo-jpn.onrender.com",
-] as const;
-
 export const BAN_WORDS = [
   "HATEN",
   "BEATCITY",

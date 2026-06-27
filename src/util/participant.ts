@@ -5,9 +5,9 @@ import {
   type ParticipantDetailPath,
   type ParticipantType,
 } from "~/constants/participantType.js";
+import { UNKNOWN_PARTICIPANT_NAME } from "@shared/participant/constants.js";
 
-/** 出場者未定を表す表示名（詳細ページ・外部連携の対象外）。 */
-export const UNKNOWN_PARTICIPANT_NAME = "???";
+export { UNKNOWN_PARTICIPANT_NAME };
 
 /**
  * 出場者未定の表示名かどうかを判定する。

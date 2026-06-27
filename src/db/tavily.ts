@@ -1,11 +1,12 @@
 import { eq } from "drizzle-orm";
-import { readLocalTavilyCache } from "~/util/tavily.js";
+import { readLocalTavilyCache } from "@shared/tavily/local-cache-read.js";
+import type { AnswerTranslation } from "@shared/tavily/types.js";
 import { getDb } from "./client.js";
 import { tavilyTable } from "./tables.js";
 
 export type TavilyRow = typeof tavilyTable.$inferSelect;
 
-export type AnswerTranslation = Record<string, string>;
+export type { AnswerTranslation };
 
 /**
  * cache_key で Tavily 行を1件取得する。
@@ -58,55 +59,4 @@ export const findTavilyDataForPage = async (
   }
 
   return findTavilyByCacheKey(cacheKey);
-};
-
-/**
- * Tavily 行を upsert する（sync スクリプト用）。
- *
- * Args:
- *   cacheKey: キャッシュキー。
- *   searchResults: Tavily API レスポンス JSON。
- *   answerTranslation: 翻訳済み answer（省略可）。
- */
-export const upsertTavilyRow = async (
-  cacheKey: string,
-  searchResults: Record<string, unknown>,
-  answerTranslation: AnswerTranslation = {},
-): Promise<void> => {
-  const db = getDb();
-  const existing = await findTavilyByCacheKey(cacheKey);
-
-  if (existing) {
-    await db
-      .update(tavilyTable)
-      .set({
-        searchResults,
-        answerTranslation,
-      })
-      .where(eq(tavilyTable.cacheKey, cacheKey));
-    return;
-  }
-
-  await db.insert(tavilyTable).values({
-    cacheKey,
-    searchResults,
-    answerTranslation,
-  });
-};
-
-/**
- * 既存行の answer_translation のみ更新する。
- *
- * Args:
- *   cacheKey: キャッシュキー。
- *   answerTranslation: 翻訳 JSON。
- */
-export const updateTavilyAnswerTranslation = async (
-  cacheKey: string,
-  answerTranslation: AnswerTranslation,
-): Promise<void> => {
-  await getDb()
-    .update(tavilyTable)
-    .set({ answerTranslation })
-    .where(eq(tavilyTable.cacheKey, cacheKey));
 };

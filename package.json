@@ -5,8 +5,9 @@
   },
   "type": "module",
   "scripts": {
-    "sync:locales": "node --experimental-strip-types scripts/sync-inlang-locales.ts",
-    "sync:tavily": "tsx scripts/sync-tavily-cache.ts",
+    "sync:locales": "tsx scripts/sync/inlang-locales.ts",
+    "sync:tavily": "tsx scripts/sync/tavily-db.ts",
+    "sync:tavily:cache": "tsx scripts/sync/tavily-cache.ts",
     "build": "npm run sync:locales && astro build",
     "dev": "npm run sync:locales && astro dev",
     "preview": "astro preview",
