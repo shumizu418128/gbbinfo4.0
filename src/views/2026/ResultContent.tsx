@@ -10,6 +10,7 @@ import { Table } from "~/components/Table.js";
 import { categorySlug } from "~/util/category.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { toParticipantUrl } from "~/util/participant.js";
+import * as m from "../../../paraglide/messages.js";
 
 const YEAR = 2026;
 
@@ -199,6 +200,9 @@ export const ResultContent = ({
     isActive: name === selectedCategory.name,
   }));
 
+  const isShowcaseCategory = selectedCategory.name
+    .toUpperCase()
+    .startsWith("SHOWCASE");
   const hasTournament = tournamentResults.length > 0;
   const hasRanking = rankingResults.length > 0;
   const hasResults = hasTournament || hasRanking;
@@ -216,7 +220,11 @@ export const ResultContent = ({
           <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
 
-        {!hasResults ? (
+        {isShowcaseCategory ? (
+          <div className="py-40 text-center text-2xl text-(--secondary-text-color)">
+            {m.result_showcase_no_results({ SHOWCASE: "SHOWCASE" })}
+          </div>
+        ) : !hasResults ? (
           <div className="py-40 text-center text-2xl text-(--secondary-text-color)">
             coming soon...
           </div>

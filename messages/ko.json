@@ -29,6 +29,7 @@
   "participant_search_more": "더 조사하기",
   "participants": "참가자",
   "result": "대회 결과",
+  "result_showcase_no_results": "{SHOWCASE} 부문은 배틀을 진행하지 않으므로 결과가 없습니다.",
   "rule_after_aug1": "2026년 8월 1일 이후",
   "rule_after_aug1_detail": "{Swissbeatbox}가 개별적으로 판단합니다. 비자 취득 및 이동 일정 등 상황에 따라 결정됩니다.",
   "rule_all_categories": "전 부문 공통",

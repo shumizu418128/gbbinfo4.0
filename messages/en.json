@@ -29,6 +29,7 @@
   "participant_search_more": "Search more",
   "participants": "Participants",
   "result": "result",
+  "result_showcase_no_results": "{SHOWCASE} categories do not hold battles, so there are no results.",
   "rule_after_aug1": "After August 1, 2026",
   "rule_after_aug1_detail": "{Swissbeatbox} decides case by case, considering visa and travel arrangements.",
   "rule_all_categories": "All categories",
