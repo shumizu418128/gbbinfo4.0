@@ -69,7 +69,7 @@ export const ParticipantSingleDetailContent = ({
         return [
           <span className="line-through">{entry.year}</span>,
           <>
-            <span className="text-(--gbb-color)">{m.cancelled()}</span>
+            <span className="text-white">{m.cancelled()}</span>
             <br />
             {link}
           </>,
@@ -113,7 +113,7 @@ export const ParticipantSingleDetailContent = ({
         return [
           <span className="line-through">{countryLabel}</span>,
           <>
-            <span className="text-(--gbb-color)">{m.cancelled()}</span>
+            <span className="text-white">{m.cancelled()}</span>
             <br />
             {nameCell}
           </>,
@@ -221,7 +221,7 @@ export const ParticipantSingleDetailContent = ({
         {pastParticipation.length > 0 ? <Table data={pastRows} textCenter /> : null}
 
         {pastYearButtonRows.map((row, index) => (
-          <div key={index} className="my-4 flex flex-wrap justify-center gap-2">
+          <div key={index} className="mt-16 flex flex-wrap justify-center gap-2">
             {row.flatMap((pastYear) => [
               <LinkCard
                 key={`${pastYear}-participants`}

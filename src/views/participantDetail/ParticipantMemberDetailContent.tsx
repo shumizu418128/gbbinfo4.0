@@ -128,7 +128,7 @@ export const ParticipantMemberDetailContent = ({
       m.participant_team_label(),
       isCancelled ? (
         <>
-          <span className="text-(--gbb-color)">{m.cancelled()}</span>
+          <span className="text-white">{m.cancelled()}</span>
           <br />
           {teamLink}
         </>
@@ -171,7 +171,7 @@ export const ParticipantMemberDetailContent = ({
         return [
           <span className="line-through">{entry.year}</span>,
           <>
-            <span className="text-(--gbb-color)">{m.cancelled()}</span>
+            <span className="text-white">{m.cancelled()}</span>
             <br />
             {link}
           </>,
@@ -215,7 +215,7 @@ export const ParticipantMemberDetailContent = ({
         return [
           <span className="line-through">{countryLabel}</span>,
           <>
-            <span className="text-(--gbb-color)">{m.cancelled()}</span>
+            <span className="text-white">{m.cancelled()}</span>
             <br />
             {nameCell}
           </>,

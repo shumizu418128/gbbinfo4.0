@@ -400,7 +400,7 @@ export const findSameYearCategoryPeers = async (
   excludeId: number,
 ): Promise<ParticipantWithRelations[]> => {
   const rows = await findParticipants(year, categoryId, null);
-  return rows.filter((row) => row.id !== excludeId).slice(0, 5);
+  return rows.filter((row) => row.id !== excludeId);
 };
 
 /**

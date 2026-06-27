@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Flag } from "~/components/Flag.js";
-import { ParticipantAvatar } from "~/components/ParticipantAvatar.js";
+import { LinkCard } from "~/components/LinkCard.js";
+import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
@@ -33,74 +34,36 @@ export type ParticipantTeamDetailContentProps = {
   tavily: ProcessedBeatboxerSearch;
 };
 
-type NavButtonProps = {
-  href: string;
-  children: ReactNode;
-};
-
-const NavButton = ({ href, children }: NavButtonProps) => (
-  <a
-    href={href}
-    className="inline-flex min-h-16 flex-1 items-center justify-center bg-(--button-background-color) px-4 py-2 text-center text-sm font-bold text-white transition-colors duration-150 hover:bg-(--gbb-color)"
-  >
-    {children}
-  </a>
-);
-
 const strikethrough = (cancelled: boolean, content: ReactNode): ReactNode =>
   cancelled ? <span className="line-through">{content}</span> : content;
 
-const renderCountryCell = (
+const renderCountryLabel = (
   locale: SupportedLanguage,
-  participant: ParticipantDetailParticipant,
+  participant: ParticipantWithRelations,
 ): ReactNode => {
   const countries = resolveParticipantCountries(participant);
   if (countries.length > 1) {
-    return <ParticipantCountries countries={countries} locale={locale} />;
+    return countries.map((c) => getCountryName(c, locale)).join(" / ");
   }
-
-  const isoAlpha2 = participant.country.isoAlpha2?.toLowerCase() ?? null;
-  return (
-    <>
-      {isoAlpha2 ? <Flag isoAlpha2={isoAlpha2} className="mr-1" /> : null}
-      {getCountryName(participant.country, locale)}
-    </>
-  );
+  return getCountryName(participant.country, locale);
 };
 
-const UrlResultTable = ({
-  title,
-  urls,
-}: {
-  title: string;
-  urls: ProcessedBeatboxerSearch["accountUrls"];
-}) => {
-  if (urls.length === 0) {
-    return null;
-  }
-
-  const rows: ReactNode[][] = [
-    ["", title],
-    ...urls.map((item) => [
-      item.favicon ? (
-        <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />
-      ) : (
-        ""
-      ),
-      <a
-        key={item.url}
-        href={item.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="text-(--gbb-color) hover:underline"
-      >
-        {item.title}
-      </a>,
-    ]),
-  ];
-
-  return <Table data={rows} />;
-};
+const renderPeerNameFlags = (
+  countries: ReturnType<typeof resolveParticipantCountries>,
+): ReactNode =>
+  countries
+    .flatMap((country) => {
+      const isoAlpha2 = country.isoAlpha2?.toLowerCase();
+      return isoAlpha2
+        ? [
+            <Flag
+              key={country.isoCode}
+              isoAlpha2={isoAlpha2}
+              className="mr-1"
+            />,
+          ]
+        : [];
+    });
 
 /**
  * チーム部門（team）出場者の詳細ページ。
@@ -122,29 +85,14 @@ export const ParticipantTeamDetailContent = ({
   const searchAboutText = m.participant_search_about({ name: aiSearchQuery });
   const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchAboutText)}&udm=50`;
   const chatGptUrl = `https://chatgpt.com/?q=${encodeURIComponent(searchAboutText)}`;
-  const countryRepHref =
-    locale === "ko" ? `/${locale}/${year}/korea` : `/${locale}/${year}/japan`;
-  const countryRepLabel =
-    locale === "ko" ? m.team_korea() : m.team_japan();
-
-  const nameCell = strikethrough(isCancelled, displayName);
-  const headerLabel = isCancelled ? `【${m.cancelled()}】` : "";
-  const profileRows: ReactNode[][] = [
-    [headerLabel, nameCell],
-    [m.rule_col_category(), strikethrough(isCancelled, categoryName)],
-    [
-      m.participant_col_country(),
-      strikethrough(isCancelled, renderCountryCell(locale, participant)),
-    ],
-    [m.participant_col_ticket(), strikethrough(isCancelled, ticketClass)],
-  ];
+  const countries = resolveParticipantCountries(participant);
 
   const memberRows: ReactNode[][] = [
     [m.participant_team_members(), m.participant_col_country()],
     ...participant.members.map((teamMember) => [
       isCancelled ? (
         <>
-          <span className="text-(--gbb-color)">{m.cancelled()}</span>
+          <span className="text-white">{m.cancelled()}</span>
           <br />
           <a
             href={toMemberUrl(locale, teamMember.id)}
@@ -194,7 +142,7 @@ export const ParticipantTeamDetailContent = ({
         return [
           <span className="line-through">{entry.year}</span>,
           <>
-            <span className="text-(--gbb-color)">{m.cancelled()}</span>
+            <span className="text-white">{m.cancelled()}</span>
             <br />
             {link}
           </>,
@@ -210,11 +158,7 @@ export const ParticipantTeamDetailContent = ({
     [m.participant_col_country(), m.rule_col_name(), m.participant_col_ticket()],
     ...sameYearCategoryPeers.map((peer) => {
       const countries = resolveParticipantCountries(peer);
-      const countryLabel =
-        countries.length > 1
-          ? countries.map((c) => getCountryName(c, locale)).join(" / ")
-          : getCountryName(peer.country, locale);
-      const isoAlpha2 = peer.country.isoAlpha2?.toLowerCase() ?? null;
+      const countryLabel = renderCountryLabel(locale, peer);
       const peerHref = toParticipantUrl(locale, {
         id: peer.id,
         isTeam: peer.categoryInfo.isTeam,
@@ -225,9 +169,7 @@ export const ParticipantTeamDetailContent = ({
           peer.name
         ) : (
           <>
-            {isoAlpha2 && !peer.isCancelled ? (
-              <Flag isoAlpha2={isoAlpha2} className="mr-1" />
-            ) : null}
+            {renderPeerNameFlags(countries)}
             <a href={peerHref} className="text-(--gbb-color) hover:underline">
               {peer.name}
             </a>
@@ -236,9 +178,9 @@ export const ParticipantTeamDetailContent = ({
 
       if (peer.isCancelled) {
         return [
-          <span className="line-through">{countryLabel}</span>,
+          strikethrough(true, countryLabel),
           <>
-            <span className="text-(--gbb-color)">{m.cancelled()}</span>
+            <span className="text-white">{m.cancelled()}</span>
             <br />
             {nameCell}
           </>,
@@ -258,15 +200,69 @@ export const ParticipantTeamDetailContent = ({
     }
   }
 
+  const accountUrlRows: ReactNode[][] = [
+    ["", m.participant_sns()],
+    ...tavily.accountUrls.map((item) => [
+      item.favicon ? (
+        <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />
+      ) : (
+        ""
+      ),
+      <a
+        key={item.url}
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-(--gbb-color) hover:underline"
+      >
+        {item.title}
+      </a>,
+    ]),
+  ];
+
+  const finalUrlRows: ReactNode[][] = [
+    ["", m.participant_web()],
+    ...tavily.finalUrls.map((item) => [
+      item.favicon ? (
+        <img key={item.url} src={item.favicon} alt="" className="h-4 w-4" />
+      ) : (
+        ""
+      ),
+      <a
+        key={item.url}
+        href={item.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-(--gbb-color) hover:underline"
+      >
+        {item.title}
+      </a>,
+    ]),
+  ];
+
   return (
     <main
       className="pt-16 pb-8 text-white"
       style={{ backgroundColor: "var(--background-color)" }}
     >
       <div className="mx-auto w-full max-w-2xl px-4">
-        <h1 className="mb-8 text-center text-2xl font-bold">
-          GBB {year} {displayName}
-        </h1>
+
+        <div className="mb-8">
+          <ParticipantCard
+            name={displayName}
+            isCancelled={isCancelled}
+            primaryInfo={
+              countries.length > 0 ? (
+                <ParticipantCountries countries={countries} locale={locale} />
+              ) : undefined
+            }
+            secondaryInfo={
+              <span>
+                {categoryName} / {ticketClass}
+              </span>
+            }
+          />
+        </div>
 
         {tavily.youtubeEmbedUrl ? (
           <div className="mb-8 flex justify-center">
@@ -289,11 +285,6 @@ export const ParticipantTeamDetailContent = ({
           </PostIt>
         ) : null}
 
-        <div className="mb-8 flex justify-center">
-          <ParticipantAvatar name={displayName} size={120} />
-        </div>
-
-        <Table data={[["", displayName], ...profileRows]} />
         <div className="my-8" />
         <Table data={memberRows} />
         {isCancelled ? (
@@ -304,46 +295,37 @@ export const ParticipantTeamDetailContent = ({
           </PostIt>
         ) : null}
 
-        <div className="my-8 flex flex-wrap justify-center gap-2">
-          <NavButton href={`/${locale}/${year}/participants`}>
-            GBB {year} {m.participant_all_participants()}
-          </NavButton>
-          <NavButton href={`/${locale}/${year}/top`}>
-            GBB {year} {m.participant_guide_only()}
-          </NavButton>
-        </div>
-
-        <h2 className="mb-4 text-center text-xl font-bold">
+        <h2 className="mb-4 text-center text-xl font-bold pt-36">
           {displayName} {m.participant_past_history()}
         </h2>
-        {pastParticipation.length > 0 ? <Table data={pastRows} /> : null}
+        {pastParticipation.length > 0 ? <Table data={pastRows} textCenter /> : null}
 
         {pastYearButtonRows.map((row, index) => (
-          <div key={index} className="my-4 flex flex-wrap justify-center gap-2">
+          <div key={index} className="mt-8 flex flex-wrap justify-center gap-2">
             {row.flatMap((pastYear) => [
-              <NavButton
+              <LinkCard
                 key={`${pastYear}-participants`}
+                text={`GBB ${pastYear} ${m.participant_participants_list_year()}`}
                 href={`/${locale}/${pastYear}/participants`}
-              >
-                GBB {pastYear} {m.participant_participants_list_year()}
-              </NavButton>,
-              <NavButton
+              />,
+              <LinkCard
                 key={`${pastYear}-result`}
+                text={`GBB ${pastYear} ${m.result()}`}
                 href={`/${locale}/${pastYear}/result`}
-              >
-                GBB {pastYear} {m.result()}
-              </NavButton>,
+              />,
             ])}
           </div>
         ))}
 
-        <h2 className="mb-4 mt-8 text-center text-xl font-bold">
+        <h2 className="mb-4 mt-8 text-center text-xl font-bold pt-36">
           {displayName} {m.participant_related_sites()}
         </h2>
 
-        <UrlResultTable title={m.participant_sns()} urls={tavily.accountUrls} />
+        {tavily.accountUrls.length > 0 ? (
+          <Table data={accountUrlRows} textCenter />
+        ) : null}
         {tavily.finalUrls.length > 0 ? (
-          <UrlResultTable title={m.participant_web()} urls={tavily.finalUrls} />
+          <Table data={finalUrlRows} textCenter />
         ) : (
           <p className="my-8 text-center text-(--secondary-text-color)">
             {m.participant_no_related_sites()}
@@ -359,17 +341,21 @@ export const ParticipantTeamDetailContent = ({
         </PostIt>
 
         <div className="my-4 flex flex-wrap justify-center gap-2">
-          <NavButton href={googleSearchUrl}>
-            {m.participant_search_more()} - {displayName}
-          </NavButton>
+          <LinkCard
+            href={googleSearchUrl}
+            text={`${m.participant_search_more()} - ${displayName}`}
+            fullWidth
+          />
         </div>
         <div className="my-4 flex flex-wrap justify-center gap-2">
-          <NavButton href={chatGptUrl}>
-            {m.participant_ask_chatgpt()} - {displayName}
-          </NavButton>
+          <LinkCard
+            href={chatGptUrl}
+            text={`${m.participant_ask_chatgpt()} - ${displayName}`}
+            fullWidth
+          />
         </div>
 
-        <h2 className="mb-4 mt-8 text-center text-xl font-bold">
+        <h2 className="mb-4 mt-8 text-center text-xl font-bold pt-36">
           GBB {year} {categoryName} {m.participant_other_in_category()}
         </h2>
         {sameYearCategoryPeers.length > 0 ? (
@@ -377,15 +363,14 @@ export const ParticipantTeamDetailContent = ({
         ) : null}
 
         <div className="my-8 flex flex-wrap justify-center gap-2">
-          <NavButton href={`/${locale}/${year}/participants`}>
-            GBB {year} {m.participant_all_participants()}
-          </NavButton>
-          <NavButton href={countryRepHref}>
-            GBB {year} {countryRepLabel}
-          </NavButton>
-          <NavButton href={`/${locale}/${year}/result`}>
-            GBB {year} {m.result()}
-          </NavButton>
+          <LinkCard
+            href={`/${locale}/${year}/participants`}
+            text={`GBB ${year} ${m.participant_all_participants()}`}
+          />
+          <LinkCard
+            href={`/${locale}/${year}/result`}
+            text={`GBB ${year} ${m.result()}`}
+          />
         </div>
       </div>
     </main>
