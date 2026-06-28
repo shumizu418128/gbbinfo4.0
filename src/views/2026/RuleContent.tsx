@@ -23,6 +23,9 @@ type RuleContentProps = {
 const WILDCARD = "Wildcard";
 const SHOWCASE = "SHOWCASE";
 const SWISSBEATBOX = "Swissbeatbox";
+const GBB = "GBB";
+const SOLO = "Solo";
+const RC505 = "RC505";
 
 const sectionClass = "mb-4 text-2xl font-bold";
 const tocSectionClass = "mb-4 text-2xl font-bold";
@@ -269,7 +272,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <RuleSubSection>
           <RuleSubHeading>{m.rule_target()}</RuleSubHeading>
           <p className={paragraphClass}>
-            {m.rule_comeback_target({ year: String(year) })}
+            {m.rule_comeback_target({
+              year: String(year),
+              GBB,
+              Solo: SOLO,
+              Wildcard: WILDCARD,
+            })}
           </p>
         </RuleSubSection>
         <RuleSubSection>
@@ -518,7 +526,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                 <br />
                 {m.rule_result_announcement()} {m.rule_march25_27()}
                 <br />
-                {m.rule_rc505_only()}
+                {m.rule_rc505_only({ RC505 })}
               </>,
             ],
             [
@@ -596,7 +604,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                 </ul>,
               ],
               [
-                `${WILDCARD} ${m.rule_eligibility_wildcard_rank()}`,
+                m.rule_eligibility_wildcard_rank({ Wildcard: WILDCARD }),
                 <ul key="wc" className="list-disc space-y-2 pl-8 text-left">
                   <li>Solo: {m.rule_eligibility_solo_top30()}</li>
                   <li>Loopstation: {m.rule_eligibility_loop_top20()}</li>
@@ -612,7 +620,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               [
                 <>
                   {m.rule_eligibility_main_judge({ year: String(year) })}
-                  <br />({m.rule_eligibility_main_judge_note()})
+                  <br />({m.rule_eligibility_main_judge_note({ Wildcard: WILDCARD })})
                 </>,
                 m.rule_eligibility_judge_ok(),
               ],

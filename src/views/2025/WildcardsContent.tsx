@@ -15,6 +15,8 @@ type PlaylistItem = {
   deadline: string;
 };
 
+const WILDCARD = "Wildcard";
+
 const PLAYLISTS: PlaylistItem[] = [
   {
     label: "Loopstation",
@@ -52,14 +54,14 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className="mb-8 text-(--secondary-text-color)">
-          各部門の締め切り期日は、中央ヨーロッパ時刻を基準に表記しています。
+          {m.wildcard_list_cet_note()}
         </p>
 
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
             text={
               <span>
-                {m.wildcard_result({ Wildcard: "Wildcard" })}
+                {m.wildcard_result({ Wildcard: WILDCARD })}
                 <br />
                 {m.participants()}
               </span>
@@ -79,7 +81,7 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
             <h2 className="mb-4 text-xl font-bold">
               {label}
               <span className="ml-2 text-base font-normal text-(--secondary-text-color)">
-                ({deadline} 締め切り)
+                {m.wildcard_list_deadline({ date: deadline })}
               </span>
             </h2>
             <div className="relative mb-4 w-full" style={{ paddingTop: "56.25%" }}>
@@ -102,27 +104,23 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
         <PostIt>
           <p className="mb-4">{m.wildcard_unofficial_notice()}</p>
           <p className="mb-4">
-            今回公開するWildcard一覧は、有志が作成した、非公式のものです。
+            {m.wildcard_list_unofficial_intro({ Wildcard: WILDCARD })}
             <a
               href="https://twitter.com/_NURUYU_"
               target="_blank"
               rel="noopener noreferrer"
               className={`ml-1 ${anchorClass}`}
             >
-              作成者：ぬる湯さん
+              {m.wildcard_list_creator()}
             </a>
           </p>
-          <p className="mb-4">
-            すべて手作業で制作されたものであるため、重複や欠落がある可能性があります。
-          </p>
-          <p>
-            また、この再生リストにある動画が必ずしもWildcardとして申請された動画であるとは限りません（毎年必ず出場者の手続きミスで失格者が出ます）。
-          </p>
+          <p className="mb-4">{m.wildcard_list_manual_warning()}</p>
+          <p>{m.wildcard_list_video_warning({ Wildcard: WILDCARD })}</p>
         </PostIt>
 
         <div className="mt-16 flex flex-wrap gap-4">
           <LinkCard
-            text="現地観戦計画のたてかた"
+            text={m.how_to_plan()}
             image="/images/zenhit.webp"
             href={`/${locale}/others/how_to_plan`}
           />

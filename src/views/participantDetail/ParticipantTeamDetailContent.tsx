@@ -348,7 +348,7 @@ export const ParticipantTeamDetailContent = ({
         <div className="my-4 flex flex-wrap justify-center gap-2">
           <LinkCard
             href={chatGptUrl}
-            text={`${m.participant_ask_chatgpt()} - ${displayName}`}
+            text={`${m.participant_ask_chatgpt({ ChatGPT: "ChatGPT" })} - ${displayName}`}
             fullWidth
           />
         </div>

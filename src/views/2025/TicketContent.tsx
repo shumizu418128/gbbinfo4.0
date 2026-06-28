@@ -29,7 +29,6 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
             text={<span>{m.rules()}<br />{m.judges()}</span>}
-            image="/images/mahiro.webp"
             href={`/${locale}/${year}/rule`}
           />
           <LinkCard
@@ -40,13 +39,11 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
                 {m.participants()}
               </span>
             }
-            image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
-          <LinkCard text={teamLabel} image="/images/team_japan.webp" href={teamHref} />
+          <LinkCard text={teamLabel} href={teamHref} />
           <LinkCard
             text={m.time_table()}
-            image="/images/scott_jackson.webp"
             href={`/${locale}/${year}/timetable`}
           />
         </div>

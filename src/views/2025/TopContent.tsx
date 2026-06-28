@@ -64,7 +64,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
           <LinkCard
-            text="現地観戦計画のたてかた"
+            text={m.how_to_plan()}
             image="/images/zenhit.webp"
             href={`/${locale}/others/how_to_plan`}
           />

@@ -38,7 +38,7 @@ export const CancelContent = ({ participants, locale }: CancelContentProps) => {
                       <ParticipantCountries countries={countries} locale={locale} />
                     ) : undefined
                   }
-                  secondaryInfo={<span>{participant.categoryInfo.name}</span>}
+                  secondaryInfo={<span>{participant.categoryInfo.name} / {participant.ticketClass}</span>}
                 />
               );
             })

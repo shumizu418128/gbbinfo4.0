@@ -7,6 +7,8 @@ type Top7toSmokeContentProps = {
   year: number;
 };
 
+const SEVEN_TO_SMOKE = "7toSmoke";
+
 export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
@@ -14,17 +16,25 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
         <div className="mb-16 text-center">
           <p className="mb-4 text-xl">7toSmoke: 11/3</p>
           <p className="text-(--secondary-text-color)">
-            公式よりもわかりやすい！
+            {m.top7tosmoke_tagline()}
             <br />
-            GBB {year} 7toSmoke 非公式情報サイト
+            {m.top7tosmoke_subtitle({ year: String(year), SevenToSmoke: SEVEN_TO_SMOKE })}
           </p>
         </div>
 
         <div className="mb-16 flex flex-wrap gap-4">
-          <LinkCard text="7toSmokeとは" image="/images/afterparty.webp" href={`/${locale}/others/7tosmoke`} />
-          <LinkCard text="7toSmokeルール & 参加方法" image="/images/afterparty.webp" href={`/${locale}/others/7tosmoke`} />
+          <LinkCard
+            text={m.seven_to_smoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
+            image="/images/afterparty.webp"
+            href={`/${locale}/others/7tosmoke`}
+          />
+          <LinkCard
+            text={m.seven_to_smoke_rules({ SevenToSmoke: SEVEN_TO_SMOKE })}
+            image="/images/afterparty.webp"
+            href={`/${locale}/others/7tosmoke`}
+          />
           <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href={`/${locale}/${year}/ticket`} />
-          <LinkCard text="現地観戦計画のたてかた" image="/images/zenhit.webp" href={`/${locale}/others/how_to_plan`} />
+          <LinkCard text={m.how_to_plan()} image="/images/zenhit.webp" href={`/${locale}/others/how_to_plan`} />
         </div>
 
         <div className="mb-16 flex flex-wrap gap-4">
@@ -37,10 +47,8 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
         </div>
 
         <div className="mb-16 space-y-4 text-(--secondary-text-color)">
-          <p>
-            7toSmokeは、GBB本戦に比べて最新情報の公開が非常に遅い傾向にあり、そもそも情報が発表されないまま本番を迎えてしまったケースもあります。
-          </p>
-          <p>諦めましょう。</p>
+          <p>{m.top7tosmoke_info_delay({ SevenToSmoke: SEVEN_TO_SMOKE })}</p>
+          <p>{m.top7tosmoke_give_up()}</p>
         </div>
       </div>
     </main>

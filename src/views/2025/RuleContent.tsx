@@ -21,6 +21,12 @@ type RuleContentProps = {
 };
 
 const WILDCARD = "Wildcard";
+const PRODUCER = "Producer";
+const LOOPSTATION = "Loopstation";
+const TAG_TEAM = "Tag Team";
+const CREW = "Crew";
+const SWISSBEATBOX = "Swissbeatbox";
+const RC505 = "RC505";
 const SWISSBEATBOX_SOURCE =
   "https://swissbeatbox.com/newsfeed/gbb-2025-wildcard-competition/";
 
@@ -59,6 +65,14 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
   <h3 className={subSectionClass}>{children}</h3>
 );
 
+const wildcardRegulationLinkText = (wildcard: string) => (
+  <span>
+    {m.rule_for_beatboxers({ Beatboxer: "Beatboxer" })}
+    <br />
+    {m.rule_wildcard_regulation_explanation({ Wildcard: wildcard })}
+  </span>
+);
+
 const wildcardRulesTableData: (string | ReactNode)[][] = [
   [m.rule_col_category(), m.rule_col_deadline_rule()],
   [
@@ -68,7 +82,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_penalty_overtime()}
       <br />
-      制限時間を使い切らず余らせた場合、3秒につき最終順位を1つ下げる
+      {m.rule_penalty_undertime()}
     </>,
   ],
   [
@@ -88,7 +102,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_submission_deadline()} 4/5 (23:59 CET)
       <br />
-      {m.rule_result_announcement()} 4/24 時間未定
+      {m.rule_result_announcement()} 4/24 {m.rule_time_undecided()}
     </>,
   ],
   [
@@ -100,7 +114,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_result_announcement()} 4/19 (18:00 JST)
       <br />
-      {m.rule_rc505_only()}
+      {m.rule_rc505_only({ RC505 })}
     </>,
   ],
   [
@@ -110,7 +124,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_submission_deadline()} 3/29 (23:59 CET)
       <br />
-      {m.rule_result_announcement()} 4/22 時間未定
+      {m.rule_result_announcement()} 4/22 {m.rule_time_undecided()}
       <br />
       {m.rule_no_device_limit()}
     </>,
@@ -122,7 +136,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_submission_deadline()} 4/5 (23:59 CET)
       <br />
-      {m.rule_result_announcement()} 4/26 時間未定
+      {m.rule_result_announcement()} 4/26 {m.rule_time_undecided()}
     </>,
   ],
 ];
@@ -157,7 +171,11 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
     <main className="bg-(--background-color) pt-16">
       <RuleSection>
         <p className={paragraphClass}>
-          {m.rule_intro({ year: String(year), Wildcard: WILDCARD })}
+          {m.rule_intro({
+            year: String(year),
+            Wildcard: WILDCARD,
+            Swissbeatbox: SWISSBEATBOX,
+          })}
           <br />
           {m.rule_source_site()}：
           <a
@@ -166,26 +184,23 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB 2025 Wildcard Competition
+            GBB {year} Wildcard Competition
           </a>
         </p>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
+            text={m.how_to_plan()}
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard
             text={m.wildcard_list({ Wildcard: WILDCARD })}
             href={`/${locale}/${year}/wildcards`}
-            fullWidth
           />
         </div>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text={
-              <span>
-                【Beatboxer向け】
-                <br />
-                {WILDCARD}レギュレーション解説
-              </span>
-            }
+            text={wildcardRegulationLinkText(WILDCARD)}
             href={`/${locale}/${year}/wildcard_regulation`}
             fullWidth
           />
@@ -207,12 +222,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </li>
           <li>
             <a href="#seeds-section" className={anchorClass}>
-              出場シード権 獲得条件
+              {m.rule_seeds_title_alt()}
             </a>
           </li>
           <li>
             <a href="#wildcard-rules-section" className={anchorClass}>
-              Wildcard {m.rule_wildcard_deadline()}
+              {m.rule_wildcard_deadline_title({ Wildcard: WILDCARD })}
             </a>
           </li>
           <li>
@@ -246,13 +261,18 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
+            text={m.how_to_plan()}
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard
             text={
               <span>
                 {m.wildcard_result({ Wildcard: WILDCARD })}
+                <br />
+                {m.participants()}
               </span>
             }
             href={participantsPath}
-            fullWidth
           />
         </div>
       </RuleSection>
@@ -263,7 +283,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSectionHeading>
         <Table
           data={[
-            [m.rule_col_category(), "Wildcard", "シード", m.rule_col_total()],
+            [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
             ["Solo", "6", "10", "16"],
             ["Loopstation", "5", "3", "8"],
             ["Crew", "2", "1", "3"],
@@ -279,48 +299,43 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
 
         <RuleSubSection>
-          <RuleSubHeading>Producerとは</RuleSubHeading>
+          <RuleSubHeading>{m.rule_producer_title({ Producer: PRODUCER })}</RuleSubHeading>
           <p className={paragraphClass}>
-            Loopstationのセカンドデバイス（Loopstationに接続する端末）ありの部門で、GBB23で「Producer
-            showcase」として新設されました。その代わり、Loopstation部門においてセカンドデバイスの使用が禁止されます。
+            {m.rule_producer_description({
+              Loopstation: LOOPSTATION,
+              Producer: PRODUCER,
+            })}
           </p>
         </RuleSubSection>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text={
-              <span>
-                【Beatboxer向け】
-                <br />
-                {WILDCARD}レギュレーション解説
-              </span>
-            }
+            text={wildcardRegulationLinkText(WILDCARD)}
             href={`/${locale}/${year}/wildcard_regulation`}
-            fullWidth
           />
         </div>
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="seeds-section">
-          出場シード権 獲得条件
+          {m.rule_seeds_title_alt()}
         </RuleSectionHeading>
         <p className={paragraphClass}>
-          Wildcardを勝ち上がる以外の方法でGBB出場権を得る方法（シード権）と、その該当者は以下の通りです。
+          {m.rule_seeds_intro_alt({ Wildcard: WILDCARD })}
         </p>
 
         <RuleSubSection>
-          <RuleSubHeading>シード権 - GBB</RuleSubHeading>
+          <RuleSubHeading>{m.rule_seeds_section_gbb()}</RuleSubHeading>
           <RuleSeedTable participants={seedData.gbbSeed} locale={locale} />
         </RuleSubSection>
 
         <RuleSubSection>
-          <RuleSubHeading>シード権 - その他</RuleSubHeading>
+          <RuleSubHeading>{m.rule_seeds_section_other()}</RuleSubHeading>
           <RuleSeedTable participants={seedData.otherSeed} locale={locale} />
         </RuleSubSection>
 
         <RuleSubSection>
-          <RuleSubHeading>シード権辞退者一覧</RuleSubHeading>
+          <RuleSubHeading>{m.rule_seeds_cancelled_title()}</RuleSubHeading>
           <RuleSeedTable participants={seedData.cancelled} cancelled locale={locale} />
         </RuleSubSection>
 
@@ -340,40 +355,43 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
         <PostIt>
           <p className="mb-4">
-            <strong>
-              いかなる理由があっても、シード権大会2位以下の人に、出場権は与えられません。
-            </strong>
+            <strong>{m.rule_seeds_tournament_note()}</strong>
             <br />
-            「シード権大会においてGBB出場権が与えられるのは、例外なく、常に優勝者のみである」とルールに明記されています。
+            {m.rule_seeds_tournament_rule()}
           </p>
-          <p>
-            例：シード権大会優勝者が、すでにWildcardで出場権を獲得していた場合、シード権大会2位ではなく、Wildcard下位からの繰り上げが行われます。
-          </p>
+          <p>{m.rule_seeds_tournament_example({ Wildcard: WILDCARD })}</p>
         </PostIt>
 
         <div className="mb-8 flex flex-wrap gap-4">
-          <LinkCard text={teamLabel} href={teamHref} fullWidth />
+          <LinkCard
+            text={m.how_to_plan()}
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard text={teamLabel} href={teamHref} />
         </div>
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="wildcard-rules-section">
-          Wildcard {m.rule_wildcard_deadline()}
+          {m.rule_wildcard_deadline_title({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
         <Table data={wildcardRulesTableData} textCenter />
         <PostIt>
           <p>
-            ※中央ヨーロッパ時間には、サマータイムがあります。2025年のサマータイムは3/30からです。
+            {m.rule_dst_note({ year: String(year) })}
             <br />
-            Tag Team部門・Crew部門参加希望の方はご注意ください。
+            {m.rule_dst_tag_team_crew_note({ TagTeam: TAG_TEAM, Crew: CREW })}
           </p>
         </PostIt>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
+            text={m.how_to_plan()}
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard
             text={m.wildcard_stream({ Wildcard: WILDCARD })}
             href={`/${locale}/others/result_stream`}
-            fullWidth
           />
         </div>
       </RuleSection>
@@ -397,6 +415,10 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </PostIt>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
+            text={m.how_to_plan()}
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard
             text={
               <span>
                 {m.wildcard_result({ Wildcard: WILDCARD })}
@@ -405,7 +427,6 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </span>
             }
             href={participantsPath}
-            fullWidth
           />
         </div>
       </RuleSection>
@@ -422,9 +443,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
+            text={m.how_to_plan()}
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard
             text={m.wildcard_list({ Wildcard: WILDCARD })}
             href={`/${locale}/${year}/wildcards`}
-            fullWidth
           />
         </div>
       </RuleSection>

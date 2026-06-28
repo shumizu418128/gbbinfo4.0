@@ -12,6 +12,8 @@ type WildcardRegulationContentProps = {
 };
 
 const WILDCARD = "Wildcard";
+const SWISSBEATBOX = "Swissbeatbox";
+const RC505 = "RC505";
 const SWISSBEATBOX_SOURCE =
   "https://swissbeatbox.com/newsfeed/gbb-2025-wildcard-competition/";
 
@@ -66,7 +68,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_result_announcement()} 4/19 (18:00 JST)
       <br />
-      {m.rule_rc505_only()}
+      {m.rule_rc505_only({ RC505 })}
     </>,
   ],
   [
@@ -118,7 +120,11 @@ export const WildcardRegulationContent = ({
         <p className="mb-8 text-center text-3xl font-bold">- For Beatboxers -</p>
         <hr className="mb-8 border-(--gbb-color)" />
         <p className={paragraphClass}>
-          {m.rule_intro({ year: String(year), Wildcard: WILDCARD })}
+          {m.rule_intro({
+            year: String(year),
+            Wildcard: WILDCARD,
+            Swissbeatbox: SWISSBEATBOX,
+          })}
           <br />
           {m.rule_source_site()}：
           <a
@@ -127,7 +133,7 @@ export const WildcardRegulationContent = ({
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB 2025 Wildcard Competition
+            GBB {year} Wildcard Competition
           </a>
           <br />
           このページでは、{WILDCARD}提出にあたって重要なルールを解説します。
@@ -138,7 +144,7 @@ export const WildcardRegulationContent = ({
           <LinkCard
             text={
               <span>
-                【Beatboxファン向け】
+                {m.rule_for_fans({ Beatbox: "Beatbox" })}
                 <br />
                 GBB {year} {m.rules()}
               </span>
