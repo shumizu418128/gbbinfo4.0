@@ -1,5 +1,5 @@
 ---
-import { GbbCountdown } from "./GbbCountdown";
+import GbbCountdown from "./GbbCountdown.astro";
 import { LinkCard } from "./LinkCard";
 import { staticAssetUrl } from "~/util/staticAsset";
 import type { YearWithCountry } from "~/db/year";
@@ -18,7 +18,7 @@ const footerLinkClass =
 ---
 
 <div class="flex justify-center bg-(--background-color) pt-60 pb-36">
-  <GbbCountdown client:idle latestYearWithCountry={latestYearWithCountry} />
+  <GbbCountdown latestYearWithCountry={latestYearWithCountry} />
 </div>
 
 <footer class="bg-black text-center pt-16">

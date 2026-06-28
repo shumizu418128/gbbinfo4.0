@@ -3,7 +3,8 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-# SSG ビルドはビルド時に Supabase へ接続し、全ページを静的生成する。
+# SSG ビルドは sync:build-cache で Supabase から一括取得したスナップショットを参照し、
+# 全ページを静的生成する（出場者詳細は astro build 中に DB へアクセスしない）。
 ARG VITE_ASSET_BASE_URL
 ARG DATABASE_URL
 ARG DEPLOY_ENV

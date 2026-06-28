@@ -1,6 +1,7 @@
 import { eq } from "drizzle-orm";
 import { readLocalTavilyCache } from "@shared/tavily/local-cache-read.js";
 import type { AnswerTranslation } from "@shared/tavily/types.js";
+import { findTavilyFromStore, loadBuildCache } from "./buildCache.js";
 import { getDb } from "./client.js";
 import { tavilyTable } from "./tables.js";
 
@@ -29,8 +30,7 @@ export const findTavilyByCacheKey = async (
 /**
  * ページ表示用に Tavily データを取得する。
  *
- * 開発時は `.cache/tavily` のローカルキャッシュのみ参照し、DB にはアクセスしない。
- * 本番ビルド時は Supabase Tavily テーブルを参照する。
+ * 優先順: dev ローカルキャッシュ → ビルドスナップショット → DB。
  *
  * Args:
  *   cacheKey: Tavily.cache_key。
@@ -56,6 +56,11 @@ export const findTavilyDataForPage = async (
       answerTranslation: local.answerTranslation,
       createdAt: new Date(local.updatedAt),
     };
+  }
+
+  const store = loadBuildCache();
+  if (store) {
+    return findTavilyFromStore(store, cacheKey);
   }
 
   return findTavilyByCacheKey(cacheKey);

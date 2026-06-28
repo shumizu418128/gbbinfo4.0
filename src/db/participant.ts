@@ -1,9 +1,9 @@
 import { and, eq, ne, sql } from "drizzle-orm";
 import orderBy from "lodash/orderBy.js";
 import { MULTI_NATIONAL_ISO_CODE } from "~/constants/country.js";
-import {
-  type ParticipantDetailPath,
-  type ParticipantType,
+import type {
+  ParticipantDetailPath,
+  ParticipantType,
 } from "~/constants/participantType.js";
 import {
   isUnknownParticipantName,
@@ -12,12 +12,19 @@ import {
 } from "~/util/participant.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { sortParticipants } from "~/util/participant.js";
+import { findParticipantsFromStore, loadBuildCache } from "./buildCache.js";
 import { getDb } from "./client.js";
 import {
   participantMemberTable,
   participantTable,
 } from "./tables.js";
 import type { WithRequired } from "./utils.js";
+import type {
+  ParticipantDetailMember,
+  ParticipantDetailParticipant,
+  ParticipantWithRelations,
+  PastParticipationEntry,
+} from "./participantTypes.js";
 
 /** 出場者未定を表す iso_code（詳細ページ対象外）。 */
 const UNKNOWN_ISO_CODE = 0;
@@ -58,7 +65,12 @@ export const findParticipants = async (
   category: number | null,
   cancel: string | null,
   isoCode: number | null = null,
-) => {
+): Promise<ParticipantWithRelations[]> => {
+  const store = loadBuildCache();
+  if (store) {
+    return findParticipantsFromStore(store, year, category, cancel, isoCode);
+  }
+
   const conditions = [eq(participantTable.year, year)];
 
   if (category !== null) {
@@ -115,9 +127,12 @@ export const findParticipants = async (
   });
 };
 
-export type ParticipantWithRelations = Awaited<
-  ReturnType<typeof findParticipants>
->[number];
+export type {
+  ParticipantDetailMember,
+  ParticipantDetailParticipant,
+  ParticipantWithRelations,
+  PastParticipationEntry,
+} from "./participantTypes.js";
 
 const participantWithRelationsQuery = {
   country: true,
@@ -135,26 +150,6 @@ const memberWithRelationsQuery = {
     },
   },
 } as const;
-
-export type ParticipantDetailParticipant = ParticipantWithRelations;
-
-export type ParticipantDetailMember = {
-  id: number;
-  participant: number;
-  name: string;
-  isoCode: number;
-  country: ParticipantWithRelations["country"];
-  participantInfo: ParticipantWithRelations;
-};
-
-export type PastParticipationEntry = ParticipantDetailPath & {
-  year: number;
-  /** 表示名。single/team は出場者名、member は所属チーム名。 */
-  name: string;
-  category: string;
-  categoryId: number;
-  isCancelled: boolean;
-};
 
 export type { ParticipantDetailPath };
 

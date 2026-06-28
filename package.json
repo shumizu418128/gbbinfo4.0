@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "sync:locales": "tsx scripts/sync/inlang-locales.ts",
+    "sync:build-cache": "tsx scripts/sync/build-cache.ts",
     "sync:tavily": "tsx scripts/sync/tavily-db.ts",
     "sync:tavily:cache": "tsx scripts/sync/tavily-cache.ts",
-    "build": "npm run sync:locales && astro build",
-    "dev": "npm run sync:locales && astro dev",
+    "build": "npm run sync:locales && npm run sync:build-cache && astro build",
+    "dev": "npm run sync:locales && npm run sync:build-cache -- --skip && astro dev",
     "preview": "astro preview",
     "start": "astro preview",
     "typecheck": "astro check"

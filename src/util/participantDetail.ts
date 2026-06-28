@@ -1,18 +1,26 @@
 import { locales } from "@paraglide/runtime.js";
-import { isSupportedLanguage, type SupportedLanguage } from "~/constants/languageLabels.js";
-import { isParticipantType, type ParticipantType } from "~/constants/participantType.js";
+import {
+  isSupportedLanguage,
+  type SupportedLanguage,
+} from "~/constants/languageLabels.js";
+import {
+  type ParticipantType,
+} from "~/constants/participantType.js";
 import {
   computePastYearParticipation,
-  findAllParticipantDetailPaths,
-  findParticipantDetail,
-  findPastParticipation,
-  findSameYearCategoryPeers,
   type ParticipantDetailMember,
   type ParticipantDetailParticipant,
-  type ParticipantWithRelations,
-  type PastParticipationEntry,
 } from "~/db/participant.js";
-import { findTavilyDataForPage } from "~/db/tavily.js";
+import {
+  findAllParticipantDetailPathsFromStore,
+  findParticipantDetailFromStore,
+  findPastParticipationFromStore,
+  findSameYearCategoryPeersFromStore,
+  findTavilyFromStore,
+  getCommonYearDataFromStore,
+  loadBuildCache,
+  type BuildCacheStore,
+} from "~/db/buildCache.js";
 import { getCommonYearData, type CommonYearData } from "~/util/staticPaths.js";
 import {
   buildProcessedBeatboxerSearch,
@@ -33,27 +41,22 @@ export type ParticipantDetailPageData = {
   participantId: number;
   isCancelled: boolean;
   ticketClass: string;
-  pastParticipation: PastParticipationEntry[];
+  pastParticipation: Awaited<
+    ReturnType<typeof findPastParticipationFromStore>
+  >;
   pastYearParticipation: number[];
-  sameYearCategoryPeers: ParticipantWithRelations[];
+  sameYearCategoryPeers: Awaited<
+    ReturnType<typeof findSameYearCategoryPeersFromStore>
+  >;
   tavily: ProcessedBeatboxerSearch;
   common: CommonYearData;
 };
 
-type ParticipantDetailPageParams = {
-  lang?: string;
-  type?: string;
-  id?: string;
-};
-
-export type ParticipantDetailPageResolution =
-  | { redirect: string }
-  | { pageData: ParticipantDetailPageData };
-
 /**
- * 出場者詳細ページ用のビルド時データをまとめて取得する。
+ * スナップショットから出場者詳細ページ用データを組み立てる。
  *
  * Args:
+ *   store: ビルドキャッシュストア。
  *   locale: 表示言語。
  *   id: Participant または ParticipantMember の ID。
  *   type: single / team / member。
@@ -64,12 +67,13 @@ export type ParticipantDetailPageResolution =
  * Raises:
  *   Error: 出場者が存在しない場合。
  */
-export const loadParticipantDetailPageData = async (
+export const buildPageDataFromStore = (
+  store: BuildCacheStore,
   locale: SupportedLanguage,
   id: number,
   type: ParticipantType,
-): Promise<ParticipantDetailPageData> => {
-  const detailResult = await findParticipantDetail(id, type);
+): ParticipantDetailPageData => {
+  const detailResult = findParticipantDetailFromStore(store, id, type);
 
   let displayName: string;
   let year: number;
@@ -106,19 +110,22 @@ export const loadParticipantDetailPageData = async (
     throw new Error(`Participant name is unknown: id=${id}`);
   }
 
-  const [pastParticipation, sameYearCategoryPeers, tavilyRow, common] =
-    await Promise.all([
-      findPastParticipation(displayName),
-      findSameYearCategoryPeers(year, categoryId, participantId),
-      findTavilyDataForPage(toTavilyCacheKey(displayName)),
-      getCommonYearData(year),
-    ]);
-
+  const pastParticipation = findPastParticipationFromStore(store, displayName);
+  const sameYearCategoryPeers = findSameYearCategoryPeersFromStore(
+    store,
+    year,
+    categoryId,
+    participantId,
+  );
+  const tavilyRow = findTavilyFromStore(
+    store,
+    toTavilyCacheKey(displayName),
+  );
+  const common = getCommonYearDataFromStore(store, year);
   const pastYearParticipation = computePastYearParticipation(
     pastParticipation,
     year,
   );
-
   const tavily = buildProcessedBeatboxerSearch(tavilyRow, locale);
 
   return {
@@ -142,62 +149,171 @@ export const loadParticipantDetailPageData = async (
 };
 
 /**
+ * 出場者詳細ページ用のビルド時データをまとめて取得する。
+ *
+ * ビルドキャッシュが無い場合のみ DB にフォールバックする（dev 用）。
+ *
+ * Args:
+ *   locale: 表示言語。
+ *   id: Participant または ParticipantMember の ID。
+ *   type: single / team / member。
+ *
+ * Returns:
+ *   詳細ページ props。
+ *
+ * Raises:
+ *   Error: 出場者が存在しない場合。
+ */
+export const loadParticipantDetailPageData = async (
+  locale: SupportedLanguage,
+  id: number,
+  type: ParticipantType,
+): Promise<ParticipantDetailPageData> => {
+  const store = loadBuildCache();
+  if (store) {
+    return buildPageDataFromStore(store, locale, id, type);
+  }
+
+  const { findParticipantDetail, findPastParticipation, findSameYearCategoryPeers } =
+    await import("~/db/participant.js");
+  const { findTavilyDataForPage } = await import("~/db/tavily.js");
+
+  const detailResult = await findParticipantDetail(id, type);
+
+  if (detailResult.type === "member") {
+    const memberData = detailResult.data;
+    const participantData = memberData.participantInfo;
+    const displayName = memberData.name;
+
+    if (isUnknownParticipantName(displayName)) {
+      throw new Error(`Participant name is unknown: id=${id}`);
+    }
+
+    const [pastParticipation, sameYearCategoryPeers, tavilyRow, common] =
+      await Promise.all([
+        findPastParticipation(displayName),
+        findSameYearCategoryPeers(
+          participantData.year,
+          participantData.category,
+          participantData.id,
+        ),
+        findTavilyDataForPage(toTavilyCacheKey(displayName)),
+        getCommonYearData(participantData.year),
+      ]);
+
+    return {
+      locale,
+      type,
+      participant: participantData,
+      member: memberData,
+      displayName,
+      year: participantData.year,
+      categoryId: participantData.category,
+      categoryName: participantData.categoryInfo.name,
+      participantId: participantData.id,
+      isCancelled: participantData.isCancelled,
+      ticketClass: participantData.ticketClass,
+      pastParticipation,
+      pastYearParticipation: computePastYearParticipation(
+        pastParticipation,
+        participantData.year,
+      ),
+      sameYearCategoryPeers,
+      tavily: buildProcessedBeatboxerSearch(tavilyRow, locale),
+      common,
+    };
+  }
+
+  const participantData = detailResult.data;
+  const displayName = participantData.name;
+
+  if (isUnknownParticipantName(displayName)) {
+    throw new Error(`Participant name is unknown: id=${id}`);
+  }
+
+  const [pastParticipation, sameYearCategoryPeers, tavilyRow, common] =
+    await Promise.all([
+      findPastParticipation(displayName),
+      findSameYearCategoryPeers(
+        participantData.year,
+        participantData.category,
+        participantData.id,
+      ),
+      findTavilyDataForPage(toTavilyCacheKey(displayName)),
+      getCommonYearData(participantData.year),
+    ]);
+
+  return {
+    locale,
+    type,
+    participant: participantData,
+    member: null,
+    displayName,
+    year: participantData.year,
+    categoryId: participantData.category,
+    categoryName: participantData.categoryInfo.name,
+    participantId: participantData.id,
+    isCancelled: participantData.isCancelled,
+    ticketClass: participantData.ticketClass,
+    pastParticipation,
+    pastYearParticipation: computePastYearParticipation(
+      pastParticipation,
+      participantData.year,
+    ),
+    sameYearCategoryPeers,
+    tavily: buildProcessedBeatboxerSearch(tavilyRow, locale),
+    common,
+  };
+};
+
+/**
  * 出場者詳細ページの getStaticPaths を生成する。
  *
  * Returns:
  *   Astro getStaticPaths 関数。
+ *
+ * Raises:
+ *   Error: 本番ビルドでスナップショットが存在しない場合。
  */
 export const getParticipantDetailStaticPaths = async () => {
-  const paths = await findAllParticipantDetailPaths();
+  const store = loadBuildCache();
+  if (!store) {
+    const isDev =
+      typeof import.meta !== "undefined" && import.meta.env?.DEV === true;
+    if (!isDev) {
+      throw new Error(
+        "Build cache not found. Run npm run sync:build-cache before astro build.",
+      );
+    }
+
+    const { findAllParticipantDetailPaths } = await import("~/db/participant.js");
+    const paths = await findAllParticipantDetailPaths();
+    return paths.flatMap(({ id, type }) =>
+      locales
+        .filter(isSupportedLanguage)
+        .map((locale) => ({
+          params: { lang: locale, type, id: String(id) },
+        })),
+    );
+  }
+
+  const paths = findAllParticipantDetailPathsFromStore(store);
 
   return paths.flatMap(({ id, type }) =>
     locales
       .filter(isSupportedLanguage)
       .map((locale) => ({
         params: { lang: locale, type, id: String(id) },
+        props: {
+          pageData: buildPageDataFromStore(
+            store,
+            locale,
+            id,
+            type,
+          ),
+        },
       })),
   );
-};
-
-/**
- * 出場者詳細ページの params を検証し、表示データまたは 404 リダイレクト先を返す。
- *
- * Args:
- *   params: Astro.params（lang, type, id）。
- *
- * Returns:
- *   pageData または redirect URL。
- */
-export const resolveParticipantDetailPage = async (
-  params: ParticipantDetailPageParams,
-): Promise<ParticipantDetailPageResolution> => {
-  const lang = params.lang ?? "";
-  const typeParam = params.type ?? "";
-  const idParam = params.id ?? "";
-
-  if (!isSupportedLanguage(lang) || !isParticipantType(typeParam)) {
-    return { redirect: `/${lang || "ja"}/404` };
-  }
-
-  const participantId = Number(idParam);
-  if (!Number.isFinite(participantId)) {
-    return { redirect: `/${lang}/404` };
-  }
-
-  try {
-    const pageData = await loadParticipantDetailPageData(
-      lang,
-      participantId,
-      typeParam,
-    );
-    return { pageData };
-  } catch (error) {
-    console.warn(
-      `Participant detail not found: ${lang}/participant/${typeParam}/${participantId}`,
-      error,
-    );
-    return { redirect: `/${lang}/404` };
-  }
 };
 
 /**

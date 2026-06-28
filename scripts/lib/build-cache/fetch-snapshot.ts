@@ -1,0 +1,157 @@
+import { asc } from "drizzle-orm";
+import { BUILD_CACHE_VERSION } from "../../../shared/build-cache/constants.ts";
+import type { BuildCacheSnapshot } from "../../../shared/build-cache/types.ts";
+import { getDb } from "../../../src/db/client.ts";
+import { yearTable } from "../../../src/db/tables.ts";
+
+const participantWithRelationsQuery = {
+  country: true,
+  categoryInfo: true,
+  members: { with: { country: true } },
+} as const;
+
+const memberWithRelationsQuery = {
+  country: true,
+  participantInfo: {
+    with: {
+      country: true,
+      categoryInfo: true,
+      members: { with: { country: true } },
+    },
+  },
+} as const;
+
+/**
+ * Supabase からビルド用スナップショットを一括取得する。
+ *
+ * Returns:
+ *   years / participants / members / tavily を含むスナップショット。
+ *
+ * Raises:
+ *   Error: Year に country が欠けている行がある場合。
+ */
+export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => {
+  const db = getDb();
+
+  const [yearRows, participants, members, tavilyRows] = await Promise.all([
+    db.query.yearTable.findMany({
+      with: { country: true },
+      orderBy: asc(yearTable.year),
+    }),
+    db.query.participantTable.findMany({
+      with: participantWithRelationsQuery,
+    }),
+    db.query.participantMemberTable.findMany({
+      with: memberWithRelationsQuery,
+    }),
+    db.query.tavilyTable.findMany(),
+  ]);
+
+  const years = yearRows.flatMap((row) => {
+    if (!row.country) {
+      console.warn(`Skipping year without country in snapshot: year=${row.year}`);
+      return [];
+    }
+    return [
+      {
+        year: row.year,
+        startsAt: row.startsAt?.toISOString() ?? null,
+        endsAt: row.endsAt?.toISOString() ?? null,
+        categories: row.categories,
+        city: row.city,
+        isoCode: row.isoCode,
+        country: row.country,
+      },
+    ];
+  });
+
+  const snapshotParticipants = participants.map((row) => {
+    if (!row.country || !row.categoryInfo) {
+      throw new Error(`Participant relations missing: id=${row.id}`);
+    }
+    return {
+      id: row.id,
+      name: row.name,
+      year: row.year,
+      isoCode: row.isoCode,
+      isCancelled: row.isCancelled,
+      category: row.category,
+      ticketClass: row.ticketClass,
+      country: row.country,
+      categoryInfo: row.categoryInfo,
+      members: row.members.map((member) => {
+        if (!member.country) {
+          throw new Error(
+            `ParticipantMember country missing: id=${member.id}`,
+          );
+        }
+        return {
+          id: member.id,
+          participant: member.participant,
+          name: member.name,
+          isoCode: member.isoCode,
+          country: member.country,
+        };
+      }),
+    };
+  });
+
+  const snapshotMembers = members.map((row) => {
+    if (
+      !row.country ||
+      !row.participantInfo?.country ||
+      !row.participantInfo.categoryInfo
+    ) {
+      throw new Error(`ParticipantMember relations missing: id=${row.id}`);
+    }
+    const participantInfo = row.participantInfo;
+    return {
+      id: row.id,
+      participant: row.participant,
+      name: row.name,
+      isoCode: row.isoCode,
+      country: row.country,
+      participantInfo: {
+        id: participantInfo.id,
+        name: participantInfo.name,
+        year: participantInfo.year,
+        isoCode: participantInfo.isoCode,
+        isCancelled: participantInfo.isCancelled,
+        category: participantInfo.category,
+        ticketClass: participantInfo.ticketClass,
+        country: participantInfo.country,
+        categoryInfo: participantInfo.categoryInfo,
+        members: participantInfo.members.map((member) => {
+          if (!member.country) {
+            throw new Error(
+              `ParticipantMember country missing: id=${member.id}`,
+            );
+          }
+          return {
+            id: member.id,
+            participant: member.participant,
+            name: member.name,
+            isoCode: member.isoCode,
+            country: member.country,
+          };
+        }),
+      },
+    };
+  });
+
+  return {
+    version: BUILD_CACHE_VERSION,
+    generatedAt: new Date().toISOString(),
+    years,
+    allYears: yearRows.map((row) => row.year),
+    participants: snapshotParticipants,
+    members: snapshotMembers,
+    tavily: tavilyRows.map((row) => ({
+      id: row.id,
+      cacheKey: row.cacheKey,
+      searchResults: row.searchResults,
+      createdAt: row.createdAt.toISOString(),
+      answerTranslation: (row.answerTranslation ?? {}) as BuildCacheSnapshot["tavily"][number]["answerTranslation"],
+    })),
+  };
+};

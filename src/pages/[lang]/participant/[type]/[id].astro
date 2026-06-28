@@ -5,21 +5,57 @@ import { ParticipantSingleDetailContent } from "~/views/participantDetail/Partic
 import { ParticipantTeamDetailContent } from "~/views/participantDetail/ParticipantTeamDetailContent";
 import {
   getParticipantDetailStaticPaths,
+  loadParticipantDetailPageData,
   participantDetailFrameProps,
   participantMemberDetailContentProps,
   participantSingleDetailContentProps,
   participantTeamDetailContentProps,
-  resolveParticipantDetailPage,
+  type ParticipantDetailPageData,
 } from "~/util/participantDetail";
+import { isSupportedLanguage } from "~/constants/languageLabels";
+import { isParticipantType } from "~/constants/participantType";
 
 export const getStaticPaths = getParticipantDetailStaticPaths;
 
-const resolution = await resolveParticipantDetailPage(Astro.params);
-if ("redirect" in resolution) {
-  return Astro.redirect(resolution.redirect);
+interface Props {
+  pageData?: ParticipantDetailPageData;
 }
 
-const pageData = resolution.pageData;
+const propsPageData = Astro.props.pageData;
+
+let pageData: ParticipantDetailPageData;
+
+if (propsPageData) {
+  pageData = propsPageData;
+} else {
+  const lang = Astro.params.lang ?? "";
+  const typeParam = Astro.params.type ?? "";
+  const idParam = Astro.params.id ?? "";
+
+  if (!isSupportedLanguage(lang) || !isParticipantType(typeParam)) {
+    return Astro.redirect(`/${lang || "ja"}/404`);
+  }
+
+  const participantId = Number(idParam);
+  if (!Number.isFinite(participantId)) {
+    return Astro.redirect(`/${lang}/404`);
+  }
+
+  try {
+    pageData = await loadParticipantDetailPageData(
+      lang,
+      participantId,
+      typeParam,
+    );
+  } catch (error) {
+    console.warn(
+      `Participant detail not found: ${lang}/participant/${typeParam}/${participantId}`,
+      error,
+    );
+    return Astro.redirect(`/${lang}/404`);
+  }
+}
+
 const frameProps = participantDetailFrameProps(pageData);
 ---
 

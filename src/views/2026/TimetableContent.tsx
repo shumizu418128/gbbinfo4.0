@@ -7,20 +7,6 @@ type TimetableContentProps = {
   year: number;
 };
 
-type DaySection = {
-  id: string;
-  scrollKey?: string;
-  label: string;
-};
-
-const DAYS: DaySection[] = [
-  { id: "day1", label: "Day1 - 9/24" },
-  { id: "day2", label: "Day2 - 9/25" },
-  { id: "day3", label: "Day3 - 9/26" },
-  { id: "seven-to-smoke", scrollKey: "7tosmoke", label: "7toSmoke - 9/27" },
-];
-
-const sectionClass = "mb-4 text-xl font-bold scroll-mt-16";
 const paragraphClass = "mb-4 leading-relaxed text-(--secondary-text-color)";
 
 export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
@@ -32,7 +18,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <p className={paragraphClass}>{m.timetable_note_delay()}</p>
         <p className={paragraphClass}>{m.timetable_note_past()}</p>
 
-        <div className="mb-4 text-3xl font-bold">Coming soon...</div>
+        <div className="mt-32 mb-4 text-3xl font-bold">Coming soon...</div>
 
       </div>
     </main>

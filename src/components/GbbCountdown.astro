@@ -1,0 +1,152 @@
+---
+import type { YearWithCountry } from "~/db/year";
+import { COUNTDOWN_MESSAGES } from "~/constants/gbbCountdown";
+
+interface Props {
+  latestYearWithCountry: YearWithCountry;
+}
+
+const { latestYearWithCountry } = Astro.props;
+const { isoAlpha2 } = latestYearWithCountry.country;
+const { city, year, startsAt } = latestYearWithCountry;
+const targetIso = startsAt ? new Date(startsAt).toISOString() : null;
+const flagHeight = 20;
+---
+
+{targetIso && (
+<div
+  id="gbb-countdown-root"
+  class="mt-8 z-10 w-full max-w-2xl px-4 hidden"
+  aria-live="polite"
+>
+  <p class="mb-4 text-center text-white text-[24px]">
+    GBB {year}<br />
+    {
+      isoAlpha2 ? (
+        <picture>
+          <source
+            type="image/webp"
+            srcset={`https://flagcdn.com/h${flagHeight}/${isoAlpha2}.webp, https://flagcdn.com/h${flagHeight * 2}/${isoAlpha2}.webp 2x, https://flagcdn.com/h${flagHeight * 3}/${isoAlpha2}.webp 3x`}
+          />
+          <source
+            type="image/png"
+            srcset={`https://flagcdn.com/h${flagHeight}/${isoAlpha2}.png, https://flagcdn.com/h${flagHeight * 2}/${isoAlpha2}.png 2x, https://flagcdn.com/h${flagHeight * 3}/${isoAlpha2}.png 3x`}
+          />
+          <img
+            src={`https://flagcdn.com/h${flagHeight}/${isoAlpha2}.png`}
+            height={flagHeight}
+            alt=""
+            loading="lazy"
+            style="display:inline-block;vertical-align:middle;padding-bottom:5px"
+          />
+        </picture>
+      ) : null
+    }{" "}
+    {city}
+  </p>
+  <div
+    class="flex flex-wrap justify-center"
+    style="gap: 32px"
+    role="timer"
+  >
+    <div class="flex min-w-[32px] flex-col items-center">
+      <span
+        id="gbb-countdown-days"
+        class="font-bold tabular-nums text-(--gbb-color)"
+        style="font-size: clamp(24px, 6vw, 48px)"
+      >0</span>
+      <span class="mt-2 text-[16px] text-(--secondary-text-color)">d</span>
+    </div>
+    <div class="flex min-w-[32px] flex-col items-center">
+      <span
+        id="gbb-countdown-hours"
+        class="font-bold tabular-nums text-(--gbb-color)"
+        style="font-size: clamp(24px, 6vw, 48px)"
+      >00</span>
+      <span class="mt-2 text-[16px] text-(--secondary-text-color)">h</span>
+    </div>
+    <div class="flex min-w-[32px] flex-col items-center">
+      <span
+        id="gbb-countdown-minutes"
+        class="font-bold tabular-nums text-(--gbb-color)"
+        style="font-size: clamp(24px, 6vw, 48px)"
+      >00</span>
+      <span class="mt-2 text-[16px] text-(--secondary-text-color)">m</span>
+    </div>
+    <div class="flex min-w-[32px] flex-col items-center">
+      <span
+        id="gbb-countdown-seconds"
+        class="font-bold tabular-nums text-(--gbb-color)"
+        style="font-size: clamp(24px, 6vw, 48px)"
+      >00</span>
+      <span class="mt-2 text-[16px] text-(--secondary-text-color)">s</span>
+    </div>
+  </div>
+  <p
+    id="gbb-countdown-message"
+    class="mb-4 text-center text-white text-[16px] mt-10"
+  ></p>
+</div>
+)}
+
+{targetIso && (
+<script
+  define:vars={{
+    targetIso,
+    countdownMessages: COUNTDOWN_MESSAGES,
+  }}
+>
+  const root = document.getElementById("gbb-countdown-root");
+  const daysEl = document.getElementById("gbb-countdown-days");
+  const hoursEl = document.getElementById("gbb-countdown-hours");
+  const minutesEl = document.getElementById("gbb-countdown-minutes");
+  const secondsEl = document.getElementById("gbb-countdown-seconds");
+  const messageEl = document.getElementById("gbb-countdown-message");
+
+  if (
+    root instanceof HTMLElement &&
+    daysEl instanceof HTMLElement &&
+    hoursEl instanceof HTMLElement &&
+    minutesEl instanceof HTMLElement &&
+    secondsEl instanceof HTMLElement &&
+    messageEl instanceof HTMLElement
+  ) {
+    const parseRemaining = (targetMs) => {
+      const totalMs = Math.max(0, targetMs - Date.now());
+      const secondsTotal = Math.floor(totalMs / 1000);
+      const days = Math.floor(secondsTotal / 86400);
+      const hours = Math.floor((secondsTotal % 86400) / 3600);
+      const minutes = Math.floor((secondsTotal % 3600) / 60);
+      const seconds = secondsTotal % 60;
+      return { totalMs, days, hours, minutes, seconds };
+    };
+
+    const target = Date.parse(targetIso);
+    if (!Number.isNaN(target)) {
+      messageEl.textContent =
+        countdownMessages[Math.floor(Math.random() * countdownMessages.length)];
+
+      let timeoutId;
+
+      const tick = () => {
+        const next = parseRemaining(target);
+        if (next.totalMs === 0) {
+          root.classList.add("hidden");
+          return;
+        }
+
+        daysEl.textContent = String(next.days);
+        hoursEl.textContent = String(next.hours).padStart(2, "0");
+        minutesEl.textContent = String(next.minutes).padStart(2, "0");
+        secondsEl.textContent = String(next.seconds).padStart(2, "0");
+        root.classList.remove("hidden");
+
+        const delay = 1000 - (Date.now() % 1000);
+        timeoutId = window.setTimeout(tick, delay);
+      };
+
+      tick();
+    }
+  }
+</script>
+)}

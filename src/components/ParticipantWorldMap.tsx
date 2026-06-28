@@ -290,7 +290,8 @@ export const ParticipantWorldMap = ({
   );
 
   useEffect(() => {
-    if (!containerRef.current || markers.length === 0) {
+    const container = containerRef.current;
+    if (!container || markers.length === 0) {
       return;
     }
 
@@ -335,10 +336,22 @@ export const ParticipantWorldMap = ({
       }
     };
 
-    void renderMap();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) {
+          return;
+        }
+        observer.disconnect();
+        void renderMap();
+      },
+      { rootMargin: "200px" },
+    );
+
+    observer.observe(container);
 
     return () => {
       cancelled = true;
+      observer.disconnect();
     };
   }, [markers, locale]);
 
