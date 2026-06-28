@@ -12,6 +12,7 @@ type ParticipantsContentProps = {
   locale: SupportedLanguage;
   selectedCategory: { name: string };
   categoryNames: string[];
+  avatarVideoIds: Record<string, string>;
 };
 
 export const ParticipantsContent = ({
@@ -19,6 +20,7 @@ export const ParticipantsContent = ({
   locale,
   selectedCategory,
   categoryNames,
+  avatarVideoIds,
 }: ParticipantsContentProps) => {
   const basePath = `/${locale}/${YEAR}/participants`;
   const categoryItems = categoryNames.map((name) => ({
@@ -39,6 +41,7 @@ export const ParticipantsContent = ({
           participants={participants}
           locale={locale}
           label={selectedCategory.name}
+          avatarVideoIds={avatarVideoIds}
         />
 
         <div className="mt-10 flex justify-center">

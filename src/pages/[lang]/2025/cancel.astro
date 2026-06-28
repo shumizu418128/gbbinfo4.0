@@ -3,6 +3,7 @@ import SiteFrame from "~/layouts/SiteFrame.astro";
 import { CancelContent } from "~/views/CancelContent";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findParticipants } from "~/db/participant";
+import { buildAvatarVideoIdMap } from "~/util/participantAvatar";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
 
@@ -10,13 +11,16 @@ export async function getStaticPaths() {
   const YEAR = 2025;
   const common = await getCommonYearData(YEAR);
   const participants = await findParticipants(YEAR, null, "cancelled");
+  const avatarVideoIds = await buildAvatarVideoIdMap(
+    participants.map((p) => p.name),
+  );
   return locales.map((locale) => ({
     params: { lang: locale },
-    props: { locale, participants, ...common },
+    props: { locale, participants, avatarVideoIds, ...common },
   }));
 }
 
-const { locale, participants, yearWithCountry, years, latestYearWithCountry } =
+const { locale, participants, avatarVideoIds, yearWithCountry, years, latestYearWithCountry } =
   Astro.props;
 const subtitle = m.withdrawn_list();
 const title = `GBB ${yearWithCountry.year} ${subtitle}`;
@@ -30,5 +34,5 @@ const title = `GBB ${yearWithCountry.year} ${subtitle}`;
   years={years}
   latestYearWithCountry={latestYearWithCountry}
 >
-  <CancelContent participants={participants} locale={locale} />
+  <CancelContent participants={participants} locale={locale} avatarVideoIds={avatarVideoIds} />
 </SiteFrame>

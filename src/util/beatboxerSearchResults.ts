@@ -22,6 +22,7 @@ export type ProcessedBeatboxerSearch = {
   accountUrls: TavilySearchResultItem[];
   finalUrls: TavilySearchResultItem[];
   youtubeEmbedUrl: string;
+  youtubeVideoId: string;
   answer: string;
 };
 
@@ -61,7 +62,7 @@ const getPrimaryDomain = (url: string): string => {
  * Returns:
  *   11 文字の video ID。見つからなければ null。
  */
-const extractYoutubeVideoId = (url: string): string | null => {
+export const extractYoutubeVideoId = (url: string): string | null => {
   try {
     const parsed = new URL(url);
     if (parsed.hostname.includes("youtube")) {
@@ -146,6 +147,7 @@ export const processBeatboxerSearchResults = (
   const accountUrls: TavilySearchResultItem[] = [];
   const finalUrls: TavilySearchResultItem[] = [];
   let youtubeEmbedUrl = "";
+  let youtubeVideoId = "";
   let originalYoutubeUrl = "";
 
   const accountDomainsSeen = new Set<string>();
@@ -168,6 +170,7 @@ export const processBeatboxerSearchResults = (
     ) {
       const videoId = extractYoutubeVideoId(item.url);
       if (videoId) {
+        youtubeVideoId = videoId;
         youtubeEmbedUrl = `https://www.youtube.com/embed/${videoId}?controls=0&hd=1&vq=hd720`;
         originalYoutubeUrl = item.url;
       }
@@ -194,6 +197,7 @@ export const processBeatboxerSearchResults = (
       accountUrls,
       finalUrls: finalUrls.slice(0, 5),
       youtubeEmbedUrl,
+      youtubeVideoId,
     };
   }
 
@@ -215,7 +219,7 @@ export const processBeatboxerSearchResults = (
     }
   }
 
-  return { accountUrls, finalUrls, youtubeEmbedUrl };
+  return { accountUrls, finalUrls, youtubeEmbedUrl, youtubeVideoId };
 };
 
 /**
@@ -262,6 +266,7 @@ export const buildProcessedBeatboxerSearch = (
       accountUrls: [],
       finalUrls: [],
       youtubeEmbedUrl: "",
+      youtubeVideoId: "",
       answer: "",
     };
   }

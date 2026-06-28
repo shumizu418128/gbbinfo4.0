@@ -1,37 +1,11 @@
 import { isUnknownParticipantName } from "~/util/participant.js";
-import { staticAssetUrl } from "~/util/staticAsset.js";
+import { toYoutubeThumbnailUrl } from "~/util/youtubeThumbnail.js";
 
 type ParticipantAvatarProps = {
   name: string;
   size?: number;
+  youtubeVideoId?: string;
 };
-
-/** パスセグメントとして安全な文字（英小文字・数字・アンダースコア・ハイフン）。 */
-const PATH_SAFE_SEGMENT_PATTERN = /[^a-z0-9_-]/g;
-
-/**
- * パスセグメントに使えない文字をアンダースコアに置き換える。
- *
- * Args:
- *   segment: ファイル名などのパスセグメント。
- *
- * Returns:
- *   置換済みの文字列。
- */
-const escapePathSegment = (segment: string): string =>
-  segment.replace(PATH_SAFE_SEGMENT_PATTERN, "_");
-
-/**
- * 出場者名からアバター画像の URL を生成する。
- *
- * Args:
- *   name: 出場者名。
- *
- * Returns:
- *   Cloudflare Pages 上の /images 配下 webp 画像 URL。
- */
-const toParticipantImageSrc = (name: string): string =>
-  staticAssetUrl(`/images/${escapePathSegment(name.toLowerCase())}.webp`);
 
 /**
  * 出場者アバター。
@@ -42,8 +16,9 @@ const toParticipantImageSrc = (name: string): string =>
 export const ParticipantAvatar = ({
   name,
   size = 120,
+  youtubeVideoId,
 }: ParticipantAvatarProps) => {
-  if (isUnknownParticipantName(name)) {
+  if (isUnknownParticipantName(name) || !youtubeVideoId) {
     return (
       <div
         className="shrink-0"
@@ -52,19 +27,17 @@ export const ParticipantAvatar = ({
     );
   }
 
-  const src = toParticipantImageSrc(name);
-
   return (
     <div
       className="shrink-0"
       style={{ width: size, height: size, backgroundColor: "#000000" }}
     >
       <img
-        src={src}
+        src={toYoutubeThumbnailUrl(youtubeVideoId)}
         alt=""
         decoding="async"
         loading="lazy"
-        className="js-avatar size-full object-contain"
+        className="js-avatar size-full object-cover"
       />
     </div>
   );
