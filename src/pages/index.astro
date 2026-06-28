@@ -1,4 +1,5 @@
 ---
+import FaviconLink from "~/components/FaviconLink.astro";
 import {
   baseLocale,
   supportedLanguages,
@@ -13,6 +14,7 @@ const fallback = `/${baseLocale}/${year}/top`;
 <html lang={baseLocale}>
   <head>
     <meta charset="utf-8" />
+    <FaviconLink />
     <meta http-equiv="refresh" content={`0; url=${fallback}`} />
     <link rel="canonical" href={fallback} />
     <script is:inline define:vars={{ year, fallback, supportedLanguages, baseLocale }}>

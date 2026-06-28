@@ -1,4 +1,5 @@
 ---
+import FaviconLink from "~/components/FaviconLink.astro";
 // nginx 等が /404.html を返す際のフォールバック。
 // URL 先頭の言語コードから各言語の 404 へ誘導する。
 const fallback = "/ja/404";
@@ -8,6 +9,7 @@ const fallback = "/ja/404";
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
+    <FaviconLink />
     <meta http-equiv="refresh" content={`0; url=${fallback}`} />
     <script is:inline define:vars={{ fallback }}>
       const supported = ["ja", "en", "de", "ko"];

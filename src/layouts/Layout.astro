@@ -1,5 +1,6 @@
 ---
 import "../app.css";
+import FaviconLink from "~/components/FaviconLink.astro";
 import { createMeta } from "~/util/meta";
 import { envCheck } from "~/util/dev";
 
@@ -27,6 +28,7 @@ const showDevBanner = env && env !== "production";
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <FaviconLink />
     <link
       rel="stylesheet"
       href="https://db.onlinewebfonts.com/c/efc5d27fcf85239bbfee077b689e3ac9?family=Averta+ExtraBold"

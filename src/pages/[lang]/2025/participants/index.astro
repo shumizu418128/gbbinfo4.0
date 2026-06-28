@@ -1,4 +1,5 @@
 ---
+import FaviconLink from "~/components/FaviconLink.astro";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findCategoriesByIds } from "~/db/category";
 import { categorySlug } from "~/util/category";
@@ -24,6 +25,7 @@ const { target } = Astro.props;
 <html>
   <head>
     <meta charset="utf-8" />
+    <FaviconLink />
     <meta http-equiv="refresh" content={`0; url=${target}`} />
     <link rel="canonical" href={target} />
     <script is:inline define:vars={{ target }}>
