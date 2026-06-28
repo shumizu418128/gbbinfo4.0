@@ -63,8 +63,16 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
 
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
-          <LinkCard text={m.go_to_poland()} image="/images/zenhit.webp" href="#" />
-          <LinkCard text="7toSmoke" image="/images/afterparty.webp" href="#" />
+          <LinkCard
+            text="現地観戦計画のたてかた"
+            image="/images/zenhit.webp"
+            href={`/${locale}/others/how_to_plan`}
+          />
+          <LinkCard
+            text="7toSmoke"
+            image="/images/afterparty.webp"
+            href={`/${locale}/${year}/top_7tosmoke`}
+          />
         </div>
       </div>
 

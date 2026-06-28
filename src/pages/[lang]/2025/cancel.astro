@@ -1,0 +1,34 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { CancelContent } from "~/views/2026/CancelContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { findParticipants } from "~/db/participant";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2025;
+  const common = await getCommonYearData(YEAR);
+  const participants = await findParticipants(YEAR, null, "cancelled");
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, participants, ...common },
+  }));
+}
+
+const { locale, participants, yearWithCountry, years, latestYearWithCountry } =
+  Astro.props;
+const subtitle = m.withdrawn_list();
+const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <CancelContent participants={participants} locale={locale} />
+</SiteFrame>
