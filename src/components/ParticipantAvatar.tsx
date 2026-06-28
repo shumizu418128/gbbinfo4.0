@@ -28,7 +28,7 @@ const escapePathSegment = (segment: string): string =>
  *   name: 出場者名。
  *
  * Returns:
- *   R2 または public/images 配下の webp 画像 URL。
+ *   Cloudflare Pages 上の /images 配下 webp 画像 URL。
  */
 const toParticipantImageSrc = (name: string): string =>
   staticAssetUrl(`/images/${escapePathSegment(name.toLowerCase())}.webp`);

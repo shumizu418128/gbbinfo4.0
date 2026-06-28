@@ -13,4 +13,6 @@
 # React Router (legacy)
 /.react-router/
 /build/
-/public/
+
+# Cloudflare Pages assets
+/cloudflare/node_modules/
