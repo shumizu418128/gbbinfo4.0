@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 type SelectMenuItem = {
   key: string;
   href: string;
@@ -12,30 +10,14 @@ type SelectMenuProps = {
   items: SelectMenuItem[];
 };
 
+/**
+ * カテゴリ切り替え用の details メニュー。
+ *
+ * 外側クリックで閉じる処理は Layout.astro のグローバル script が担当する。
+ */
 export const SelectMenu = ({ label, items }: SelectMenuProps) => {
-  const detailsRef = useRef<HTMLDetailsElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target;
-      if (!(target instanceof Node)) return;
-
-      const details = detailsRef.current;
-      if (
-        details instanceof HTMLDetailsElement &&
-        details.open &&
-        !details.contains(target)
-      ) {
-        details.open = false;
-      }
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
-
   return (
-    <details ref={detailsRef} className="select-menu relative">
+    <details className="select-menu relative">
       <summary className="flex min-h-10 w-full min-w-40 cursor-pointer list-none items-center justify-between gap-2 border border-(--button-border-color) px-4 py-2 text-white [&::-webkit-details-marker]:hidden">
         <span className="truncate text-2xl md:text-3xl lg:text-4xl">{label}</span>
         <svg

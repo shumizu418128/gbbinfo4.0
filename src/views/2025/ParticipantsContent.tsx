@@ -3,7 +3,6 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { categorySlug } from "~/util/category.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
 import { ParticipantsCards } from "~/components/ParticipantsCards.js";
-import { ParticipantWorldMap } from "~/components/ParticipantWorldMap.js";
 
 const YEAR = 2025;
 
@@ -12,7 +11,7 @@ type ParticipantsContentProps = {
   locale: SupportedLanguage;
   selectedCategory: { name: string };
   categoryNames: string[];
-  avatarVideoIds: Record<string, string>;
+  avatarImageUrls: Record<string, string>;
 };
 
 export const ParticipantsContent = ({
@@ -20,7 +19,7 @@ export const ParticipantsContent = ({
   locale,
   selectedCategory,
   categoryNames,
-  avatarVideoIds,
+  avatarImageUrls,
 }: ParticipantsContentProps) => {
   const basePath = `/${locale}/${YEAR}/participants`;
   const categoryItems = categoryNames.map((name) => ({
@@ -41,15 +40,13 @@ export const ParticipantsContent = ({
           participants={participants}
           locale={locale}
           label={selectedCategory.name}
-          avatarVideoIds={avatarVideoIds}
+          avatarImageUrls={avatarImageUrls}
         />
 
         <div className="mt-10 flex justify-center">
           <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
       </div>
-
-      <ParticipantWorldMap participants={participants} locale={locale} />
     </main>
   );
 };

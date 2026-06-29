@@ -1,10 +1,9 @@
 import { isUnknownParticipantName } from "~/util/participant.js";
-import { toYoutubeThumbnailUrl } from "~/util/youtubeThumbnail.js";
 
 type ParticipantAvatarProps = {
   name: string;
   size?: number;
-  youtubeVideoId?: string;
+  imageUrl?: string;
 };
 
 /**
@@ -16,9 +15,9 @@ type ParticipantAvatarProps = {
 export const ParticipantAvatar = ({
   name,
   size = 120,
-  youtubeVideoId,
+  imageUrl,
 }: ParticipantAvatarProps) => {
-  if (isUnknownParticipantName(name) || !youtubeVideoId) {
+  if (isUnknownParticipantName(name) || !imageUrl) {
     return (
       <div
         className="shrink-0"
@@ -33,7 +32,7 @@ export const ParticipantAvatar = ({
       style={{ width: size, height: size, backgroundColor: "#000000" }}
     >
       <img
-        src={toYoutubeThumbnailUrl(youtubeVideoId)}
+        src={imageUrl}
         alt=""
         decoding="async"
         loading="lazy"

@@ -27,6 +27,10 @@ body {
   --table-border-color: rgba(255, 255, 255, 0.2);
 }
 
+.participant-world-map .leaflet-container {
+  background: var(--background-color);
+}
+
 .participant-world-map .leaflet-popup-content-wrapper {
   border-radius: 0;
 }

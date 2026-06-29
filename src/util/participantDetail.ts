@@ -67,12 +67,12 @@ export type ParticipantDetailPageData = {
  * Raises:
  *   Error: 出場者が存在しない場合。
  */
-export const buildPageDataFromStore = (
+export const buildPageDataFromStore = async (
   store: BuildCacheStore,
   locale: SupportedLanguage,
   id: number,
   type: ParticipantType,
-): ParticipantDetailPageData => {
+): Promise<ParticipantDetailPageData> => {
   const detailResult = findParticipantDetailFromStore(store, id, type);
 
   let displayName: string;
@@ -126,7 +126,7 @@ export const buildPageDataFromStore = (
     pastParticipation,
     year,
   );
-  const tavily = buildProcessedBeatboxerSearch(tavilyRow, locale);
+  const tavily = await buildProcessedBeatboxerSearch(tavilyRow, locale);
 
   return {
     locale,
@@ -219,7 +219,7 @@ export const loadParticipantDetailPageData = async (
         participantData.year,
       ),
       sameYearCategoryPeers,
-      tavily: buildProcessedBeatboxerSearch(tavilyRow, locale),
+      tavily: await buildProcessedBeatboxerSearch(tavilyRow, locale),
       common,
     };
   }
@@ -261,7 +261,7 @@ export const loadParticipantDetailPageData = async (
       participantData.year,
     ),
     sameYearCategoryPeers,
-    tavily: buildProcessedBeatboxerSearch(tavilyRow, locale),
+    tavily: await buildProcessedBeatboxerSearch(tavilyRow, locale),
     common,
   };
 };
@@ -299,21 +299,25 @@ export const getParticipantDetailStaticPaths = async () => {
 
   const paths = findAllParticipantDetailPathsFromStore(store);
 
-  return paths.flatMap(({ id, type }) =>
-    locales
-      .filter(isSupportedLanguage)
-      .map((locale) => ({
-        params: { lang: locale, type, id: String(id) },
-        props: {
-          pageData: buildPageDataFromStore(
-            store,
-            locale,
-            id,
-            type,
-          ),
-        },
-      })),
+  const pathEntries = await Promise.all(
+    paths.flatMap(({ id, type }) =>
+      locales
+        .filter(isSupportedLanguage)
+        .map(async (locale) => ({
+          params: { lang: locale, type, id: String(id) },
+          props: {
+            pageData: await buildPageDataFromStore(
+              store,
+              locale,
+              id,
+              type,
+            ),
+          },
+        })),
+    ),
   );
+
+  return pathEntries;
 };
 
 /**

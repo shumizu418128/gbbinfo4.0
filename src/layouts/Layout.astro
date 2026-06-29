@@ -135,6 +135,24 @@ const showDevBanner = env && env !== "production";
         );
       });
 
+      // SelectMenu: 外側クリックで details を閉じる
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Node)) {
+          return;
+        }
+        document
+          .querySelectorAll("details.select-menu[open]")
+          .forEach((details) => {
+            if (
+              details instanceof HTMLDetailsElement &&
+              !details.contains(target)
+            ) {
+              details.open = false;
+            }
+          });
+      });
+
       // 出場者アバター画像の読み込み失敗時は要素を隠す（壊れた画像アイコンを出さない）
       document.addEventListener(
         "error",

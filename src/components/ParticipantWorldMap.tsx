@@ -368,13 +368,16 @@ export const ParticipantWorldMap = ({
   }
 
   return (
-    <section className="relative z-0 mt-16 w-full px-4">
+    <section
+      className="relative z-0 w-full px-4 pt-16 pb-8 text-white"
+      style={{ backgroundColor: "var(--background-color)" }}
+    >
       <div
         className="participant-world-map mx-auto w-full max-w-5xl overflow-hidden border isolate [&_.leaflet-pane]:z-1 [&_.leaflet-top]:z-1 [&_.leaflet-bottom]:z-1 [&_.leaflet-control]:z-1 [&_.leaflet-marker-pane]:z-2 [&_.leaflet-popup-pane]:z-8"
         style={{
           height: MAP_HEIGHT_PX,
           borderColor: "var(--button-border-color)",
-          backgroundColor: "var(--section-color)",
+          backgroundColor: "var(--background-color)",
           ["--popup-max-width" as string]: `${POPUP_MAX_WIDTH}px`,
           ["--popup-max-height" as string]: `${POPUP_MAX_HEIGHT_PX}px`,
           ["--popup-flag-width" as string]: `${POPUP_FLAG_RESERVED_WIDTH}px`,

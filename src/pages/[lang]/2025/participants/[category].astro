@@ -1,11 +1,12 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
 import { ParticipantsContent } from "~/views/2025/ParticipantsContent";
+import { ParticipantWorldMap } from "~/components/ParticipantWorldMap";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findParticipants } from "~/db/participant";
 import { findCategoriesByIds } from "~/db/category";
 import { categorySlug } from "~/util/category";
-import { buildAvatarVideoIdMap } from "~/util/participantAvatar";
+import { buildAvatarImageUrlMap } from "~/util/participantAvatar";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
 
@@ -20,7 +21,7 @@ export async function getStaticPaths() {
   const paths = [];
   for (const category of validCategories) {
     const participants = await findParticipants(YEAR, category.id, null);
-    const avatarVideoIds = await buildAvatarVideoIdMap(
+    const avatarImageUrls = await buildAvatarImageUrlMap(
       participants.map((p) => p.name),
     );
     for (const locale of locales) {
@@ -31,7 +32,7 @@ export async function getStaticPaths() {
           participants,
           selectedCategory: category,
           categoryNames,
-          avatarVideoIds,
+          avatarImageUrls,
           ...common,
         },
       });
@@ -45,7 +46,7 @@ const {
   participants,
   selectedCategory,
   categoryNames,
-  avatarVideoIds,
+  avatarImageUrls,
   yearWithCountry,
   years,
   latestYearWithCountry,
@@ -64,11 +65,15 @@ const title = `GBB ${yearWithCountry.year} ${subtitle}`;
   latestYearWithCountry={latestYearWithCountry}
 >
   <ParticipantsContent
-    client:visible
     participants={participants}
     locale={locale}
     selectedCategory={selectedCategory}
     categoryNames={categoryNames}
-    avatarVideoIds={avatarVideoIds}
+    avatarImageUrls={avatarImageUrls}
+  />
+  <ParticipantWorldMap
+    client:visible
+    participants={participants}
+    locale={locale}
   />
 </SiteFrame>

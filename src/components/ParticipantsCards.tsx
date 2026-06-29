@@ -9,7 +9,7 @@ type ParticipantsCardsProps = {
   participants: ParticipantWithRelations[];
   locale: SupportedLanguage;
   label: string;
-  avatarVideoIds: Record<string, string>;
+  avatarImageUrls: Record<string, string>;
 };
 
 /**
@@ -21,7 +21,7 @@ export const ParticipantsCards = ({
   participants,
   locale,
   label,
-  avatarVideoIds,
+  avatarImageUrls,
 }: ParticipantsCardsProps) =>
   participants.length === 0 ? (
     <div className="space-y-6">
@@ -45,7 +45,7 @@ export const ParticipantsCards = ({
               name={participant.name}
               isCancelled={participant.isCancelled}
               href={getParticipantDetailHref(locale, participant)}
-              youtubeVideoId={avatarVideoIds[participant.name]}
+              imageUrl={avatarImageUrls[participant.name]}
               primaryInfo={
                 countries.length > 0 ? (
                   <ParticipantCountries countries={countries} locale={locale} />

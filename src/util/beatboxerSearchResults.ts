@@ -9,6 +9,11 @@ import {
   YOUTUBE_CHANNEL_PATTERN,
 } from "~/constants/beatboxerSearch.js";
 import type { AnswerTranslation, TavilyRow } from "~/db/tavily.js";
+import {
+  fetchSnsAccountAvatarUrl,
+  matchSnsAccountUrl,
+} from "~/util/snsAccountIcon.js";
+import { toYoutubeThumbnailUrl } from "~/util/youtubeThumbnail.js";
 
 export type TavilySearchResultItem = {
   title: string;
@@ -23,6 +28,7 @@ export type ProcessedBeatboxerSearch = {
   finalUrls: TavilySearchResultItem[];
   youtubeEmbedUrl: string;
   youtubeVideoId: string;
+  avatarImageUrl: string;
   answer: string;
 };
 
@@ -98,7 +104,7 @@ export const extractYoutubeVideoId = (url: string): string | null => {
  * Returns:
  *   禁止ワードを含めば true。
  */
-const containsBanWord = (item: TavilySearchResultItem): boolean => {
+export const containsBanWord = (item: TavilySearchResultItem): boolean => {
   const titleUpper = item.title.toUpperCase();
   const urlUpper = item.url.toUpperCase();
   const contentUpper = item.content.toUpperCase();
@@ -108,6 +114,48 @@ const containsBanWord = (item: TavilySearchResultItem): boolean => {
       urlUpper.includes(banWord) ||
       contentUpper.includes(banWord),
   );
+};
+
+/**
+ * Tavily 検索結果を score 順に走査し、アバター画像 URL を解決する。
+ *
+ * 優先順: YouTube / Spotify アカウント（og:image）→ YouTube 動画サムネイル。
+ * Instagram 等は対象外。詳細ページの SNS リンク表示は別途 isAccountUrl が担当。
+ *
+ * Args:
+ *   searchResults: Tavily.search_results JSON。
+ *
+ * Returns:
+ *   画像 URL。見つからなければ null。
+ */
+export const resolveAvatarImageUrlFromSearchResults = async (
+  searchResults: TavilySearchResultsJson,
+): Promise<string | null> => {
+  const items = (searchResults.results ?? []).filter(
+    (item) => !containsBanWord(item),
+  );
+
+  for (const item of items) {
+    const sns = matchSnsAccountUrl(item.url);
+    if (sns) {
+      const avatarUrl = await fetchSnsAccountAvatarUrl(
+        sns.accountUrl,
+        sns.platform,
+      );
+      if (avatarUrl) {
+        return avatarUrl;
+      }
+    }
+  }
+
+  for (const item of items) {
+    const videoId = extractYoutubeVideoId(item.url);
+    if (videoId) {
+      return toYoutubeThumbnailUrl(videoId);
+    }
+  }
+
+  return null;
 };
 
 /**
@@ -140,7 +188,7 @@ const isAccountUrl = (item: TavilySearchResultItem): boolean =>
  */
 export const processBeatboxerSearchResults = (
   searchResults: TavilySearchResultsJson,
-): Omit<ProcessedBeatboxerSearch, "answer"> => {
+): Omit<ProcessedBeatboxerSearch, "answer" | "avatarImageUrl"> => {
   const unfiltered = searchResults.results ?? [];
   const filtered = unfiltered.filter((item) => !containsBanWord(item));
 
@@ -257,16 +305,17 @@ export const resolveTavilyAnswer = (
  * Returns:
  *   加工済み検索結果。
  */
-export const buildProcessedBeatboxerSearch = (
+export const buildProcessedBeatboxerSearch = async (
   row: TavilyRow | null,
   locale: SupportedLanguage,
-): ProcessedBeatboxerSearch => {
+): Promise<ProcessedBeatboxerSearch> => {
   if (!row) {
     return {
       accountUrls: [],
       finalUrls: [],
       youtubeEmbedUrl: "",
       youtubeVideoId: "",
+      avatarImageUrl: "",
       answer: "",
     };
   }
@@ -277,6 +326,8 @@ export const buildProcessedBeatboxerSearch = (
 
   return {
     ...processed,
+    avatarImageUrl:
+      (await resolveAvatarImageUrlFromSearchResults(searchResults)) ?? "",
     answer: resolveTavilyAnswer(searchResults, answerTranslation, locale),
   };
 };

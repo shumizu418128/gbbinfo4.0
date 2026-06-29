@@ -8,13 +8,13 @@ import { ParticipantCard } from "~/components/ParticipantCard.js";
 type CancelContentProps = {
   participants: ParticipantWithRelations[];
   locale: SupportedLanguage;
-  avatarVideoIds: Record<string, string>;
+  avatarImageUrls: Record<string, string>;
 };
 
 export const CancelContent = ({
   participants,
   locale,
-  avatarVideoIds,
+  avatarImageUrls,
 }: CancelContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
@@ -38,7 +38,7 @@ export const CancelContent = ({
                   name={participant.name}
                   isCancelled={participant.isCancelled}
                   href={getParticipantDetailHref(locale, participant)}
-                  youtubeVideoId={avatarVideoIds[participant.name]}
+                  imageUrl={avatarImageUrls[participant.name]}
                   primaryInfo={
                     countries.length > 0 ? (
                       <ParticipantCountries countries={countries} locale={locale} />

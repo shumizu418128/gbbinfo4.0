@@ -207,7 +207,7 @@ export const ParticipantMemberDetailContent = ({
           <ParticipantCard
             name={displayName}
             isCancelled={isCancelled}
-            youtubeVideoId={tavily.youtubeVideoId || undefined}
+            imageUrl={tavily.avatarImageUrl || undefined}
             primaryInfo={
               <>
                 {member.country.isoAlpha2 ? (

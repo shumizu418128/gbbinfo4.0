@@ -182,7 +182,7 @@ export const ParticipantSingleDetailContent = ({
         <ParticipantCard
           name={displayName}
           isCancelled={isCancelled}
-          youtubeVideoId={tavily.youtubeVideoId || undefined}
+          imageUrl={tavily.avatarImageUrl || undefined}
           primaryInfo={
             countries.length > 0 ? (
               <ParticipantCountries countries={countries} locale={locale} />

@@ -9,7 +9,7 @@ type ParticipantCardProps = {
   secondaryInfo?: ReactNode;
   isCancelled?: boolean;
   href?: string;
-  youtubeVideoId?: string;
+  imageUrl?: string;
 };
 
 export const ParticipantCard = ({
@@ -18,7 +18,7 @@ export const ParticipantCard = ({
   secondaryInfo,
   isCancelled = false,
   href,
-  youtubeVideoId,
+  imageUrl,
 }: ParticipantCardProps) => {
   const nameContent = href ? (
     <a href={href} className={anchorClass}>
@@ -34,7 +34,7 @@ export const ParticipantCard = ({
     style={{ backgroundColor: "var(--section-color)" }}
   >
     <div className="flex gap-2">
-      <ParticipantAvatar name={name} youtubeVideoId={youtubeVideoId} />
+      <ParticipantAvatar name={name} imageUrl={imageUrl} />
       <div className="min-w-0 flex-1">
         <div className="font-semibold text-xl">
           {isCancelled && (
