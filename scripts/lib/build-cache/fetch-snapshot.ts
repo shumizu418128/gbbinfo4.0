@@ -1,4 +1,4 @@
-import { asc } from "drizzle-orm";
+import { desc } from "drizzle-orm";
 import { BUILD_CACHE_VERSION } from "../../../shared/build-cache/constants.ts";
 import type { BuildCacheSnapshot } from "../../../shared/build-cache/types.ts";
 import { getDb } from "../../../src/db/client.ts";
@@ -36,7 +36,7 @@ export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => 
   const [yearRows, participants, members, tavilyRows] = await Promise.all([
     db.query.yearTable.findMany({
       with: { country: true },
-      orderBy: asc(yearTable.year),
+      orderBy: desc(yearTable.year),
     }),
     db.query.participantTable.findMany({
       with: participantWithRelationsQuery,

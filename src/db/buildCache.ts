@@ -196,7 +196,7 @@ export const buildStoreFromSnapshot = (
     yearsByYear.set(row.year, toYearWithCountry(row));
   }
 
-  const allYears = orderBy(snapshot.allYears, [], ["asc"]);
+  const allYears = orderBy(snapshot.allYears, [], ["desc"]);
 
   const tavilyByCacheKey = new Map<string, TavilyRow>();
   for (const row of snapshot.tavily) {
