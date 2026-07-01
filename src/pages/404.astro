@@ -1,20 +1,23 @@
 ---
 import FaviconLink from "~/components/FaviconLink.astro";
+import {
+  baseLocale,
+  supportedLanguages,
+} from "~/constants/languageLabels";
 // nginx 等が /404.html を返す際のフォールバック。
 // URL 先頭の言語コードから各言語の 404 へ誘導する。
-const fallback = "/ja/404";
+const fallback = `/${baseLocale}/404`;
 ---
 
 <!doctype html>
-<html lang="ja">
+<html lang={baseLocale}>
   <head>
     <meta charset="utf-8" />
     <FaviconLink />
     <meta http-equiv="refresh" content={`0; url=${fallback}`} />
-    <script is:inline define:vars={{ fallback }}>
-      const supported = ["ja", "en", "de", "ko"];
+    <script is:inline define:vars={{ fallback, supportedLanguages, baseLocale }}>
       const segment = window.location.pathname.split("/")[1];
-      const locale = supported.includes(segment) ? segment : "ja";
+      const locale = supportedLanguages.includes(segment) ? segment : baseLocale;
       window.location.replace(`/${locale}/404`);
     </script>
   </head>
