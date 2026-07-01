@@ -119,8 +119,8 @@ export const containsBanWord = (item: TavilySearchResultItem): boolean => {
 /**
  * Tavily 検索結果を score 順に走査し、アバター画像 URL を解決する。
  *
- * 優先順: YouTube / Spotify アカウント（og:image）→ YouTube 動画サムネイル。
- * Instagram 等は対象外。詳細ページの SNS リンク表示は別途 isAccountUrl が担当。
+ * 優先順: YouTube / Spotify / SoundCloud / X アカウント（og:image）→ YouTube 動画サムネイル。
+ * Instagram / Facebook 等は対象外。詳細ページの SNS リンク表示は別途 isAccountUrl が担当。
  *
  * Args:
  *   searchResults: Tavily.search_results JSON。

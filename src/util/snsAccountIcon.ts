@@ -1,21 +1,25 @@
 import {
+  SOUNDCLOUD_ACCOUNT_PATTERN,
   SPOTIFY_ACCOUNT_PATTERN,
+  TWITTER_ACCOUNT_PATTERN,
   YOUTUBE_CHANNEL_PATTERN,
 } from "~/constants/beatboxerSearch.js";
 
-export type SnsPlatform = "spotify" | "youtube";
+export type SnsIconFetchPlatform = "spotify" | "youtube" | "soundcloud" | "x";
 
 export type SnsAccountMatch = {
-  platform: SnsPlatform;
+  platform: SnsIconFetchPlatform;
   accountUrl: string;
 };
 
 const SNS_PATTERNS: ReadonlyArray<{
-  platform: SnsPlatform;
+  platform: SnsIconFetchPlatform;
   pattern: RegExp;
 }> = [
   { platform: "spotify", pattern: SPOTIFY_ACCOUNT_PATTERN },
   { platform: "youtube", pattern: YOUTUBE_CHANNEL_PATTERN },
+  { platform: "soundcloud", pattern: SOUNDCLOUD_ACCOUNT_PATTERN },
+  { platform: "x", pattern: TWITTER_ACCOUNT_PATTERN },
 ];
 
 const avatarUrlCache = new Map<string, string | null>();
@@ -38,6 +42,15 @@ export const normalizeUrlForSnsMatch = (url: string): string => {
     let hostname = parsed.hostname.toLowerCase();
     if (hostname === "m.youtube.com") {
       hostname = "www.youtube.com";
+    }
+    if (hostname === "twitter.com" || hostname === "www.twitter.com") {
+      hostname = "x.com";
+    }
+    if (hostname === "www.x.com") {
+      hostname = "x.com";
+    }
+    if (hostname === "m.soundcloud.com") {
+      hostname = "soundcloud.com";
     }
 
     let pathname = parsed.pathname.replace(/\/+$/, "");
@@ -99,7 +112,7 @@ const extractOgImageUrl = (html: string): string | null => {
 /**
  * SNS アカウントページからアバター画像 URL を取得する。
  *
- * YouTube / Spotify の og:image をビルド時に取得する。
+ * YouTube / Spotify / SoundCloud / X の og:image をビルド時に取得する。
  *
  * Args:
  *   accountUrl: SNS アカウント URL。
@@ -110,7 +123,7 @@ const extractOgImageUrl = (html: string): string | null => {
  */
 export const fetchSnsAccountAvatarUrl = async (
   accountUrl: string,
-  platform: SnsPlatform,
+  platform: SnsIconFetchPlatform,
 ): Promise<string | null> => {
   const cacheKey = `${platform}:${accountUrl}`;
   if (avatarUrlCache.has(cacheKey)) {
