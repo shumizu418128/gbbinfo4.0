@@ -1,12 +1,10 @@
 /** Country.names JSONB に格納される言語コード */
 export const countryNameLanguages = [
-  "be",
   "cs",
   "da",
   "de",
   "en",
   "es",
-  "et",
   "fr",
   "ga",
   "hi",
@@ -20,6 +18,7 @@ export const countryNameLanguages = [
   "pl",
   "pt",
   "ta",
+  "tr",
   "zh_Hans_CN",
   "zh_Hant_TW",
 ] as const;
