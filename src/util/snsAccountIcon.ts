@@ -1,31 +1,48 @@
 import {
+  FACEBOOK_ACCOUNT_PATTERN,
+  INSTAGRAM_ACCOUNT_PATTERN,
   SOUNDCLOUD_ACCOUNT_PATTERN,
   SPOTIFY_ACCOUNT_PATTERN,
   TWITTER_ACCOUNT_PATTERN,
   YOUTUBE_CHANNEL_PATTERN,
 } from "~/constants/beatboxerSearch.js";
 
-export type SnsIconFetchPlatform = "spotify" | "youtube" | "soundcloud" | "x";
+export type SnsIconFetchPlatform =
+  | "spotify"
+  | "youtube"
+  | "soundcloud"
+  | "x"
+  | "facebook";
+
+export type SnsAvatarFetchMethod = "ogImage" | "unavatar";
 
 export type SnsAccountMatch = {
   platform: SnsIconFetchPlatform;
   accountUrl: string;
+  method: SnsAvatarFetchMethod;
 };
 
 const SNS_PATTERNS: ReadonlyArray<{
   platform: SnsIconFetchPlatform;
   pattern: RegExp;
+  method: SnsAvatarFetchMethod;
 }> = [
-  { platform: "spotify", pattern: SPOTIFY_ACCOUNT_PATTERN },
-  { platform: "youtube", pattern: YOUTUBE_CHANNEL_PATTERN },
-  { platform: "soundcloud", pattern: SOUNDCLOUD_ACCOUNT_PATTERN },
-  { platform: "x", pattern: TWITTER_ACCOUNT_PATTERN },
+  { platform: "spotify", pattern: SPOTIFY_ACCOUNT_PATTERN, method: "ogImage" },
+  { platform: "youtube", pattern: YOUTUBE_CHANNEL_PATTERN, method: "ogImage" },
+  {
+    platform: "soundcloud",
+    pattern: SOUNDCLOUD_ACCOUNT_PATTERN,
+    method: "ogImage",
+  },
+  { platform: "x", pattern: TWITTER_ACCOUNT_PATTERN, method: "unavatar" },
 ];
 
-const avatarUrlCache = new Map<string, string | null>();
+const UNAVATAR_BASE_URL = "https://unavatar.io";
 
 const SNS_FETCH_USER_AGENT =
   "Mozilla/5.0 (compatible; GBBInfoBot/1.0; +https://gbbinfo.com)";
+
+const ogImageAvatarUrlCache = new Map<string, string | null>();
 
 /**
  * SNS パターンマッチ用に URL を正規化する。
@@ -52,6 +69,9 @@ export const normalizeUrlForSnsMatch = (url: string): string => {
     if (hostname === "m.soundcloud.com") {
       hostname = "soundcloud.com";
     }
+    if (hostname === "m.facebook.com") {
+      hostname = "www.facebook.com";
+    }
 
     let pathname = parsed.pathname.replace(/\/+$/, "");
     const youtubeHandleMatch = pathname.match(/^\/(@[a-zA-Z0-9_-]+)/);
@@ -68,17 +88,22 @@ export const normalizeUrlForSnsMatch = (url: string): string => {
 /**
  * URL がアバター取得対象の SNS アカウント URL にマッチするか判定する。
  *
+ * Instagram は対象外。
+ *
  * Args:
  *   url: 対象 URL。
  *
  * Returns:
- *   マッチ時は platform と正規化済み accountUrl。不一致時は null。
+ *   マッチ時は platform・正規化済み accountUrl・method。不一致時は null。
  */
 export const matchSnsAccountUrl = (url: string): SnsAccountMatch | null => {
   const normalized = normalizeUrlForSnsMatch(url);
-  for (const { platform, pattern } of SNS_PATTERNS) {
+  if (INSTAGRAM_ACCOUNT_PATTERN.test(normalized)) {
+    return null;
+  }
+  for (const { platform, pattern, method } of SNS_PATTERNS) {
     if (pattern.test(normalized)) {
-      return { platform, accountUrl: normalized };
+      return { platform, accountUrl: normalized, method };
     }
   }
   return null;
@@ -110,9 +135,7 @@ const extractOgImageUrl = (html: string): string | null => {
 };
 
 /**
- * SNS アカウントページからアバター画像 URL を取得する。
- *
- * YouTube / Spotify / SoundCloud / X の og:image をビルド時に取得する。
+ * SNS アカウントページから og:image を取得する。
  *
  * Args:
  *   accountUrl: SNS アカウント URL。
@@ -121,13 +144,13 @@ const extractOgImageUrl = (html: string): string | null => {
  * Returns:
  *   画像 URL。取得失敗時は null。
  */
-export const fetchSnsAccountAvatarUrl = async (
+const fetchOgImageAvatarUrl = async (
   accountUrl: string,
   platform: SnsIconFetchPlatform,
 ): Promise<string | null> => {
   const cacheKey = `${platform}:${accountUrl}`;
-  if (avatarUrlCache.has(cacheKey)) {
-    return avatarUrlCache.get(cacheKey) ?? null;
+  if (ogImageAvatarUrlCache.has(cacheKey)) {
+    return ogImageAvatarUrlCache.get(cacheKey) ?? null;
   }
 
   try {
@@ -140,16 +163,96 @@ export const fetchSnsAccountAvatarUrl = async (
     });
 
     if (!response.ok) {
-      avatarUrlCache.set(cacheKey, null);
+      ogImageAvatarUrlCache.set(cacheKey, null);
       return null;
     }
 
     const html = await response.text();
     const imageUrl = extractOgImageUrl(html);
-    avatarUrlCache.set(cacheKey, imageUrl);
+    ogImageAvatarUrlCache.set(cacheKey, imageUrl);
     return imageUrl;
   } catch {
-    avatarUrlCache.set(cacheKey, null);
+    ogImageAvatarUrlCache.set(cacheKey, null);
     return null;
   }
+};
+
+/**
+ * SNS アカウント URL から unavatar.io のパスを組み立てる。
+ *
+ * Args:
+ *   platform: SNS プラットフォーム。
+ *   accountUrl: SNS アカウント URL。
+ *
+ * Returns:
+ *   unavatar.io パス。組み立て不可時は null。
+ */
+const buildUnavatarPath = (
+  platform: SnsIconFetchPlatform,
+  accountUrl: string,
+): string | null => {
+  try {
+    const pathname = new URL(accountUrl).pathname.replace(/\/+$/, "");
+
+    switch (platform) {
+      case "x": {
+        const match = pathname.match(/^\/([a-zA-Z0-9_]+)$/);
+        return match ? `x/${match[1]}` : null;
+      }
+      case "facebook": {
+        const match = pathname.match(/^\/([a-zA-Z0-9_.]+)$/);
+        return match ? `facebook/${match[1]}` : null;
+      }
+      default:
+        return null;
+    }
+  } catch {
+    return null;
+  }
+};
+
+/**
+ * unavatar.io のアバター画像 URL を組み立てる。
+ *
+ * 実際の取得はクライアント側の img 読み込みに委ねる。
+ *
+ * Args:
+ *   accountUrl: SNS アカウント URL。
+ *   platform: SNS プラットフォーム。
+ *
+ * Returns:
+ *   画像 URL。組み立て不可時は null。
+ */
+const buildUnavatarAvatarUrl = (
+  accountUrl: string,
+  platform: SnsIconFetchPlatform,
+): string | null => {
+  const unavatarPath = buildUnavatarPath(platform, accountUrl);
+  if (!unavatarPath) {
+    return null;
+  }
+
+  return `${UNAVATAR_BASE_URL}/${unavatarPath}`;
+};
+
+/**
+ * SNS アカウント URL からアバター画像 URL を解決する。
+ *
+ * `method: "ogImage"` はビルド時に og:image を取得する。
+ * `method: "unavatar"` は unavatar.io URL を組み立て、取得はクライアントに委ねる。
+ *
+ * Args:
+ *   sns: マッチ済み SNS アカウント情報。
+ *
+ * Returns:
+ *   画像 URL。解決失敗時は null。
+ */
+export const resolveSnsAccountAvatarUrl = async (
+  sns: SnsAccountMatch,
+): Promise<string | null> => {
+  if (sns.method === "unavatar") {
+    return buildUnavatarAvatarUrl(sns.accountUrl, sns.platform);
+  }
+
+  return fetchOgImageAvatarUrl(sns.accountUrl, sns.platform);
 };

@@ -10,7 +10,7 @@ import {
 } from "~/constants/beatboxerSearch.js";
 import type { AnswerTranslation, TavilyRow } from "~/db/tavily.js";
 import {
-  fetchSnsAccountAvatarUrl,
+  resolveSnsAccountAvatarUrl,
   matchSnsAccountUrl,
 } from "~/util/snsAccountIcon.js";
 import { toYoutubeThumbnailUrl } from "~/util/youtubeThumbnail.js";
@@ -119,8 +119,8 @@ export const containsBanWord = (item: TavilySearchResultItem): boolean => {
 /**
  * Tavily 検索結果を score 順に走査し、アバター画像 URL を解決する。
  *
- * 優先順: YouTube / Spotify / SoundCloud / X アカウント（og:image）→ YouTube 動画サムネイル。
- * Instagram / Facebook 等は対象外。詳細ページの SNS リンク表示は別途 isAccountUrl が担当。
+ * 優先順: YouTube / Spotify / SoundCloud（og:image）/ X / Facebook（unavatar.io）→ YouTube 動画サムネイル。
+ * Instagram のみ対象外。詳細ページの SNS リンク表示は別途 isAccountUrl が担当。
  *
  * Args:
  *   searchResults: Tavily.search_results JSON。
@@ -138,10 +138,7 @@ export const resolveAvatarImageUrlFromSearchResults = async (
   for (const item of items) {
     const sns = matchSnsAccountUrl(item.url);
     if (sns) {
-      const avatarUrl = await fetchSnsAccountAvatarUrl(
-        sns.accountUrl,
-        sns.platform,
-      );
+      const avatarUrl = await resolveSnsAccountAvatarUrl(sns);
       if (avatarUrl) {
         return avatarUrl;
       }
