@@ -34,10 +34,29 @@ Astro 側は `PUBLIC_ASSET_BASE_URL` + `staticAssetUrl()` / `buildAvatarProxyUrl
 5. GitHub リポジトリの **Settings → Secrets and variables → Actions** に登録:
    - `CLOUDFLARE_API_TOKEN`
    - `CLOUDFLARE_ACCOUNT_ID`（Dashboard 右サイドバー）
+   - `R2_ACCESS_KEY_ID`（R2 → Manage R2 API Tokens → Object Read & Write）
+   - `R2_SECRET_ACCESS_KEY`（上記トークン作成時に表示される Secret）
+
+## R2 アバター画像の WebP 日次変換
+
+GitHub Actions が **毎日 JST 03:00** に `gbbinfo-avatar-cache` 内の非 WebP 画像を WebP に変換し、同一キーで上書きする。
+
+- ワークフロー: [.github/workflows/convert-r2-webp.yml](../.github/workflows/convert-r2-webp.yml)
+- 手動実行: GitHub → **Actions** → **Convert R2 images to WebP** → **Run workflow**
+- ローカル実行: `npm run r2:convert-webp`（`.env` に R2 認証情報が必要）
+
+変換対象は R2 バケットのみ。`cloudflare/public/` の静的画像は対象外。
 
 ## アバター proxy（`/avatar`）
 
 ビルド時に Astro が取得元 URL のみを埋め込み、ブラウザが Cloudflare に問い合わせる。
+
+**アクセス制限**: `Origin` / `Referer` が次のホストからのリクエストのみ受け付ける。
+
+- `gbbinfo-jpn.onrender.com`（本番）
+- `localhost` / `127.0.0.1` / `[::1]`（ローカル開発）
+
+それ以外は `403 Forbidden`。
 
 ```
 GET /avatar?name=SHAH&platform=youtube&url=https%3A%2F%2F...&method=ogImage
@@ -50,7 +69,7 @@ GET /avatar?name=SHAH&platform=youtube&url=https%3A%2F%2F...&method=ogImage
 ## 静的画像の追加・更新
 
 1. `cloudflare/public/images/` に webp を配置（パスは `/images/foo.webp` 形式で参照される）
-2. `main` へ push → GitHub Actions が自動デプロイ
+2. `main` へ push → GitHub Actions が `cloudflare/` から自動デプロイ（Functions + R2 binding 込み）
 
 手動デプロイ:
 
@@ -89,3 +108,4 @@ npm run dev
 
 - [README.md](../README.md) — 環境変数・メインサイトのデプロイ
 - [.github/workflows/deploy-assets.yml](../.github/workflows/deploy-assets.yml) — 自動デプロイ
+- [.github/workflows/convert-r2-webp.yml](../.github/workflows/convert-r2-webp.yml) — R2 WebP 日次変換

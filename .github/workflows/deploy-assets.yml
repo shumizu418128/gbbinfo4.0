@@ -28,4 +28,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy cloudflare/public --project-name=gbbinfo-assets
+          # cloudflare/ から実行し functions/ と wrangler.toml（R2 binding）を含める
+          workingDirectory: cloudflare
+          command: pages deploy public --project-name=gbbinfo-assets

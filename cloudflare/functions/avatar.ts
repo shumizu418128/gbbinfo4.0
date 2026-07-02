@@ -1,3 +1,4 @@
+import { isAllowedAvatarRequestOrigin } from "../../shared/avatar/allowed-origins.js";
 import { buildAvatarR2Key } from "../../shared/avatar/r2-key.js";
 import {
   parseAvatarFetchRequest,
@@ -85,6 +86,10 @@ const resolveAvatarResponse = async (
 };
 
 export const onRequestGet: PagesFunction<AvatarEnv> = async (context) => {
+  if (!isAllowedAvatarRequestOrigin(context.request)) {
+    return new Response("Forbidden", { status: 403 });
+  }
+
   const url = new URL(context.request.url);
   const name = parseAvatarName(url.searchParams.get("name"));
 
