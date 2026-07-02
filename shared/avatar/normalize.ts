@@ -35,9 +35,6 @@ export const normalizeUrlForSnsMatch = (url: string): string => {
     if (hostname === "m.soundcloud.com") {
       hostname = "soundcloud.com";
     }
-    if (hostname === "m.facebook.com") {
-      hostname = "www.facebook.com";
-    }
 
     let pathname = parsed.pathname.replace(/\/+$/, "");
     const youtubeHandleMatch = pathname.match(/^\/(@[a-zA-Z0-9_-]+)/);

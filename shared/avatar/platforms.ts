@@ -9,7 +9,6 @@ export type SnsUnavatarConfig = {
 /** SNS プラットフォームごとのアバター取得設定。 */
 export type SnsAvatarPlatformConfig = {
   method: AvatarFetchMethod;
-  detailUsesDirectImage: boolean;
   accountUrlPattern: RegExp;
   allowedHostnames: readonly string[];
   unavatar?: SnsUnavatarConfig;
@@ -17,6 +16,10 @@ export type SnsAvatarPlatformConfig = {
 
 export const INSTAGRAM_ACCOUNT_PATTERN =
   /^(https?:\/\/)?(www\.)?instagram\.com\/[a-zA-Z0-9_.]+\/?$/;
+
+/** Tavily 表示用。アバター取得対象外。 */
+export const FACEBOOK_ACCOUNT_PATTERN =
+  /^(https?:\/\/)?((www|m)\.)?facebook\.com\/[a-zA-Z0-9_.]+\/?$/;
 
 /**
  * SNS プラットフォームごとのアバター取得設定。
@@ -29,45 +32,30 @@ export const SNS_AVATAR_PLATFORM_CONFIG: Record<
 > = {
   spotify: {
     method: "ogImage",
-    detailUsesDirectImage: false,
     accountUrlPattern:
       /^(https?:\/\/)?(open\.)?spotify\.com\/artist\/[a-zA-Z0-9]+\/?$/,
     allowedHostnames: ["open.spotify.com"],
   },
   youtube: {
     method: "ogImage",
-    detailUsesDirectImage: false,
     accountUrlPattern:
       /^(https?:\/\/)?(www\.)?youtube\.com\/(c\/|channel\/|user\/|@)[a-zA-Z0-9_-]+\/?$/,
     allowedHostnames: ["www.youtube.com", "youtube.com"],
   },
   soundcloud: {
     method: "ogImage",
-    detailUsesDirectImage: false,
     accountUrlPattern:
       /^(https?:\/\/)?(www\.)?soundcloud\.com\/[a-zA-Z0-9_-]+\/?$/,
     allowedHostnames: ["soundcloud.com", "www.soundcloud.com"],
   },
   x: {
     method: "unavatar",
-    detailUsesDirectImage: true,
     accountUrlPattern:
       /^(https?:\/\/)?(www\.)?(twitter\.com|x\.com)\/[a-zA-Z0-9_]+\/?$/,
     allowedHostnames: ["x.com", "twitter.com", "www.twitter.com"],
     unavatar: {
       segment: "x",
       pathnamePattern: /^\/([a-zA-Z0-9_]+)$/,
-    },
-  },
-  facebook: {
-    method: "unavatar",
-    detailUsesDirectImage: true,
-    accountUrlPattern:
-      /^(https?:\/\/)?((www|m)\.)?facebook\.com\/[a-zA-Z0-9_.]+\/?$/,
-    allowedHostnames: ["www.facebook.com", "facebook.com", "m.facebook.com"],
-    unavatar: {
-      segment: "facebook",
-      pathnamePattern: /^\/([a-zA-Z0-9_.]+)$/,
     },
   },
 };
@@ -80,8 +68,6 @@ export const SNS_AVATAR_MATCH_ORDER: readonly AvatarSnsPlatform[] = [
   "x",
 ];
 
-export const FACEBOOK_ACCOUNT_PATTERN =
-  SNS_AVATAR_PLATFORM_CONFIG.facebook.accountUrlPattern;
 export const SPOTIFY_ACCOUNT_PATTERN =
   SNS_AVATAR_PLATFORM_CONFIG.spotify.accountUrlPattern;
 export const TWITTER_ACCOUNT_PATTERN =
@@ -103,16 +89,3 @@ export const YOUTUBE_CHANNEL_PATTERN =
 export const getSnsAvatarConfig = (
   platform: AvatarSnsPlatform,
 ): SnsAvatarPlatformConfig => SNS_AVATAR_PLATFORM_CONFIG[platform];
-
-/**
- * 出場者詳細で unavatar.io を直接参照するか判定する。
- *
- * Args:
- *   platform: 対象プラットフォーム。
- *
- * Returns:
- *   直接参照するなら true。
- */
-export const usesSnsDetailDirectImage = (
-  platform: AvatarSnsPlatform,
-): boolean => getSnsAvatarConfig(platform).detailUsesDirectImage;

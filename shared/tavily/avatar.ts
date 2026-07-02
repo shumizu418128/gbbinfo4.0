@@ -4,7 +4,7 @@ import {
   toAvatarSourceFromSnsMatch,
 } from "../avatar/match.js";
 import type { AvatarSource } from "../avatar/types.js";
-import { buildAvatarProxyUrl, buildDetailAvatarImageUrl } from "../avatar/url.js";
+import { buildAvatarProxyUrl } from "../avatar/url.js";
 import { extractYoutubeVideoId } from "../avatar/youtube.js";
 import { containsBanWord } from "./process.js";
 import type { TavilySearchResultsJson } from "./types.js";
@@ -85,26 +85,3 @@ export const buildAvatarProxyUrlFromSearchResults = (
   return buildAvatarProxyUrl(assetBaseUrl, name, source);
 };
 
-/**
- * Tavily 検索結果から出場者詳細用のアバター画像 URL を組み立てる。
- *
- * Args:
- *   assetBaseUrl: PUBLIC_ASSET_BASE_URL。
- *   name: 出場者名。
- *   searchResults: Tavily.search_results JSON。
- *
- * Returns:
- *   画像 URL。取得元が無ければ null。
- */
-export const buildDetailAvatarImageUrlFromSearchResults = (
-  assetBaseUrl: string,
-  name: string,
-  searchResults: TavilySearchResultsJson,
-): string | null => {
-  const source = resolveAvatarSourceFromSearchResults(searchResults);
-  if (!source) {
-    return null;
-  }
-
-  return buildDetailAvatarImageUrl(assetBaseUrl, name, source);
-};

@@ -1,6 +1,6 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import type { AnswerTranslation, TavilyRow } from "~/db/tavily.js";
-import { buildDetailAvatarImageUrlFromSearchResults } from "@shared/tavily/avatar.js";
+import { buildAvatarProxyUrlFromSearchResults } from "@shared/tavily/avatar.js";
 import { processBeatboxerSearchResults } from "@shared/tavily/process.js";
 import type {
   TavilySearchResultItem,
@@ -18,7 +18,6 @@ export { readLocalTavilyCache } from "@shared/tavily/local-cache-read.js";
 export { containsBanWord, processBeatboxerSearchResults } from "@shared/tavily/process.js";
 export {
   buildAvatarProxyUrlFromSearchResults,
-  buildDetailAvatarImageUrlFromSearchResults,
   resolveAvatarSourceFromSearchResults,
 } from "@shared/tavily/avatar.js";
 export { extractYoutubeVideoId } from "@shared/avatar/youtube.js";
@@ -92,8 +91,7 @@ export const buildProcessedBeatboxerSearch = (
   return {
     ...processed,
     avatarImageUrl:
-      buildDetailAvatarImageUrlFromSearchResults(assetBaseUrl, name, searchResults) ??
-      "",
+      buildAvatarProxyUrlFromSearchResults(assetBaseUrl, name, searchResults) ?? "",
     answer: resolveTavilyAnswer(searchResults, answerTranslation, locale),
   };
 };

@@ -12,6 +12,64 @@ type AvatarEnv = {
   AVATAR_CACHE: R2Bucket;
 };
 
+type AvatarErrorContext = {
+  name?: string;
+  platform?: string | null;
+  method?: string | null;
+  sourceUrl?: string | null;
+  videoId?: string | null;
+};
+
+type AvatarErrorPayload = {
+  reason: string;
+  detail: string;
+} & AvatarErrorContext;
+
+/**
+ * アバター取得失敗を Workers ログへ出力する。
+ *
+ * Args:
+ *   payload: エラー内容とリクエスト文脈。
+ */
+const logAvatarError = (payload: AvatarErrorPayload): void => {
+  console.error("[avatar]", payload);
+};
+
+/**
+ * エラーをログ出力し、クライアント向けレスポンスを返す。
+ *
+ * debug=1 のときは JSON、通常時は空 body + 診断ヘッダー。
+ * `<img>` でも DevTools の Network → Headers で確認できる。
+ *
+ * Args:
+ *   payload: エラー内容とリクエスト文脈。
+ *   status: HTTP ステータス。
+ *   debug: debug=1 指定時。
+ *
+ * Returns:
+ *   エラーレスポンス。
+ */
+const toAvatarErrorResponse = (
+  payload: AvatarErrorPayload,
+  status = 404,
+  debug = false,
+): Response => {
+  logAvatarError(payload);
+
+  const headers = new Headers({
+    "Cache-Control": "no-store",
+    "X-Avatar-Error-Reason": payload.reason,
+    "X-Avatar-Error-Detail": payload.detail.slice(0, 512),
+  });
+
+  if (debug) {
+    headers.set("Content-Type", "application/json; charset=utf-8");
+    return new Response(JSON.stringify(payload), { status, headers });
+  }
+
+  return new Response(null, { status, headers });
+};
+
 /**
  * R2 キャッシュから画像 Response を組み立てる。
  *
@@ -41,13 +99,14 @@ const toCachedResponse = (cached: R2ObjectBody): Response => {
  *   videoId: YouTube 動画 ID（任意）。
  *
  * Returns:
- *   画像 Response。取得失敗時は null。
+ *   画像 Response または null（fetch パラメータ不足時）。
  */
 const resolveAvatarResponse = async (
   env: AvatarEnv,
   name: string,
   fetchRequest: NonNullable<ReturnType<typeof parseAvatarFetchRequest>> | null,
   videoId: string | null,
+  debug: boolean,
 ): Promise<Response | null> => {
   const r2Key = buildAvatarR2Key(name);
 
@@ -66,8 +125,20 @@ const resolveAvatarResponse = async (
     fetchRequest.sourceUrl,
     videoId,
   );
-  if (!image) {
-    return null;
+  if (!image.ok) {
+    return toAvatarErrorResponse(
+      {
+        reason: image.reason,
+        detail: image.detail,
+        name,
+        platform: fetchRequest.platform,
+        method: fetchRequest.method,
+        sourceUrl: fetchRequest.sourceUrl,
+        videoId,
+      },
+      404,
+      debug,
+    );
   }
 
   await env.AVATAR_CACHE.put(r2Key, image.bytes, {
@@ -86,32 +157,92 @@ const resolveAvatarResponse = async (
 };
 
 export const onRequestGet: PagesFunction<AvatarEnv> = async (context) => {
-  if (!isAllowedAvatarRequestOrigin(context.request)) {
+  const url = new URL(context.request.url);
+  const debug = url.searchParams.get("debug") === "1";
+
+  if (!debug && !isAllowedAvatarRequestOrigin(context.request)) {
+    console.error("[avatar]", {
+      reason: "forbidden_origin",
+      detail: "Origin/Referer not in allowlist",
+      origin: context.request.headers.get("Origin"),
+      referer: context.request.headers.get("Referer"),
+    });
     return new Response("Forbidden", { status: 403 });
   }
 
-  const url = new URL(context.request.url);
   const name = parseAvatarName(url.searchParams.get("name"));
 
+  const platform = url.searchParams.get("platform");
+  const sourceUrl = url.searchParams.get("url");
+  const method = url.searchParams.get("method");
+  const videoId = url.searchParams.get("videoId");
+
+  console.log("[avatar]", {
+    event: "request",
+    name,
+    platform,
+    method,
+    sourceUrl,
+    videoId,
+    debug,
+  });
+
   if (!name) {
-    return new Response("Bad Request", { status: 400 });
+    return toAvatarErrorResponse(
+      {
+        reason: "invalid_name",
+        detail: "Query parameter name is missing or invalid",
+        platform,
+        method,
+        sourceUrl,
+        videoId,
+      },
+      400,
+      debug,
+    );
   }
 
-  const fetchRequest = parseAvatarFetchRequest(
-    url.searchParams.get("platform"),
-    url.searchParams.get("url"),
-    url.searchParams.get("method"),
-  );
+  const fetchRequest = parseAvatarFetchRequest(platform, sourceUrl, method);
 
   const response = await resolveAvatarResponse(
     context.env,
     name,
     fetchRequest,
-    url.searchParams.get("videoId"),
+    videoId,
+    debug,
   );
 
   if (!response) {
-    return new Response("Not Found", { status: 404 });
+    if (!platform || !sourceUrl || !method) {
+      return toAvatarErrorResponse(
+        {
+          reason: "cache_miss_missing_fetch_params",
+          detail:
+            "R2 cache miss requires platform, url, and method query parameters",
+          name,
+          platform,
+          method,
+          sourceUrl,
+          videoId,
+        },
+        404,
+        debug,
+      );
+    }
+
+    return toAvatarErrorResponse(
+      {
+        reason: "cache_miss_invalid_fetch_params",
+        detail: `Invalid fetch params: platform=${platform} method=${method} url=${sourceUrl}`,
+        name,
+        platform,
+        method,
+        sourceUrl,
+        videoId,
+      },
+      404,
+      debug,
+    );
   }
 
   return response;

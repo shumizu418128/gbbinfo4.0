@@ -1,6 +1,14 @@
 const SNS_FETCH_USER_AGENT =
   "Mozilla/5.0 (compatible; GBBInfoBot/1.0; +https://gbbinfo.com)";
 
+export type ImageFetchResult =
+  | { ok: true; bytes: ArrayBuffer; contentType: string }
+  | { ok: false; reason: string; detail: string };
+
+export type OgImageFetchResult =
+  | { ok: true; imageUrl: string }
+  | { ok: false; reason: string; detail: string };
+
 /**
  * HTML から og:image の URL を抽出する。
  *
@@ -33,11 +41,11 @@ export const extractOgImageUrl = (html: string): string | null => {
  *   accountUrl: SNS アカウント URL。
  *
  * Returns:
- *   画像 URL。取得失敗時は null。
+ *   画像 URL または失敗理由。
  */
 export const fetchOgImageUrl = async (
   accountUrl: string,
-): Promise<string | null> => {
+): Promise<OgImageFetchResult> => {
   try {
     const response = await fetch(accountUrl, {
       headers: {
@@ -48,13 +56,34 @@ export const fetchOgImageUrl = async (
     });
 
     if (!response.ok) {
-      return null;
+      return {
+        ok: false,
+        reason: "og_page_http_error",
+        detail: `GET ${accountUrl} returned HTTP ${response.status}`,
+      };
     }
 
     const html = await response.text();
-    return extractOgImageUrl(html);
-  } catch {
-    return null;
+    const imageUrl = extractOgImageUrl(html);
+    if (!imageUrl) {
+      return {
+        ok: false,
+        reason: "og_image_not_found",
+        detail: `og:image not found in HTML from ${accountUrl}`,
+      };
+    }
+
+    return { ok: true, imageUrl };
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const reason = message.includes("timeout")
+      ? "og_page_fetch_timeout"
+      : "og_page_fetch_failed";
+    return {
+      ok: false,
+      reason,
+      detail: `GET ${accountUrl}: ${message}`,
+    };
   }
 };
 
@@ -65,11 +94,11 @@ export const fetchOgImageUrl = async (
  *   imageUrl: 画像 URL。
  *
  * Returns:
- *   画像データ。取得失敗時は null。
+ *   画像データまたは失敗理由。
  */
 export const fetchImageBytes = async (
   imageUrl: string,
-): Promise<{ bytes: ArrayBuffer; contentType: string } | null> => {
+): Promise<ImageFetchResult> => {
   try {
     const response = await fetch(imageUrl, {
       headers: {
@@ -79,19 +108,36 @@ export const fetchImageBytes = async (
     });
 
     if (!response.ok) {
-      return null;
+      return {
+        ok: false,
+        reason: "upstream_http_error",
+        detail: `GET ${imageUrl} returned HTTP ${response.status}`,
+      };
     }
 
     const contentType = response.headers.get("content-type") ?? "image/jpeg";
     if (!contentType.startsWith("image/")) {
-      return null;
+      return {
+        ok: false,
+        reason: "invalid_content_type",
+        detail: `GET ${imageUrl} returned Content-Type: ${contentType}`,
+      };
     }
 
     return {
+      ok: true,
       bytes: await response.arrayBuffer(),
       contentType,
     };
-  } catch {
-    return null;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    const reason = message.includes("timeout")
+      ? "upstream_fetch_timeout"
+      : "upstream_fetch_failed";
+    return {
+      ok: false,
+      reason,
+      detail: `GET ${imageUrl}: ${message}`,
+    };
   }
 };

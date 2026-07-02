@@ -3,8 +3,7 @@ export type AvatarSnsPlatform =
   | "spotify"
   | "youtube"
   | "soundcloud"
-  | "x"
-  | "facebook";
+  | "x";
 
 /** アバター proxy が受け付けるプラットフォーム。 */
 export type AvatarPlatform = AvatarSnsPlatform | "youtube-video";

@@ -81,6 +81,17 @@ GET /avatar?name=SHAH&platform=youtube&url=https%3A%2F%2F...&method=ogImage
 2. なければクエリの SNS / YouTube 情報から画像を取得して R2 に保存（以降 Tavily が変わっても更新しない）
 3. 失敗時は `404`（サイト側で黒背景）
 
+### 失敗原因の調査
+
+| 方法 | 手順 |
+|------|------|
+| DevTools | Network → `/avatar` → Response Headers の `X-Avatar-Error-Reason` / `X-Avatar-Error-Detail` |
+| debug モード | 同じ URL に `&debug=1` を付けてブラウザで開く → JSON が返る（Origin チェックをスキップ） |
+| CLI tail | `cd cloudflare && npx wrangler pages deployment tail --project-name=gbbinfo-assets --format pretty` を起動してからページを再読み込み |
+| ローカル | `npm run assets:dev` → ターミナルに `[avatar]` ログが出る |
+
+Dashboard の Logs は **Live** タブ（リアルタイムのみ、Pages は保存ログ非対応）。`wrangler pages deployment tail` が確実。
+
 ## 静的画像の追加・更新
 
 1. `cloudflare/public/images/` に webp を配置（パスは `/images/foo.webp` 形式で参照される）
