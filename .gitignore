@@ -16,3 +16,4 @@
 
 # Cloudflare Pages assets
 /cloudflare/node_modules/
+/cloudflare/.wrangler/
