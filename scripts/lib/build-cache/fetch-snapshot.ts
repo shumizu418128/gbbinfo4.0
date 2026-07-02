@@ -1,8 +1,8 @@
 import { desc } from "drizzle-orm";
 import { BUILD_CACHE_VERSION } from "../../../shared/build-cache/constants.ts";
 import type { BuildCacheSnapshot } from "../../../shared/build-cache/types.ts";
-import { getDb } from "../../../src/db/client.ts";
-import { yearTable } from "../../../src/db/tables.ts";
+import { getDb } from "@shared/db/client.js";
+import { yearTable } from "@shared/db/tables.js";
 
 const participantWithRelationsQuery = {
   country: true,

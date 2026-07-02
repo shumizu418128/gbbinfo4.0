@@ -1,16 +1,10 @@
 import { findTavilyFromStore, loadBuildCache } from "~/db/buildCache.js";
 import type { TavilyRow } from "~/db/tavily.js";
 import { findTavilyDataForPage } from "~/db/tavily.js";
-import {
-  buildAvatarProxyUrlFromSearchResults,
-  type TavilySearchResultItem,
-} from "~/util/beatboxerSearchResults.js";
+import { buildAvatarProxyUrlFromSearchResults } from "@shared/tavily/avatar.js";
+import type { TavilySearchResultsJson } from "@shared/tavily/types.js";
+import { getAssetBaseUrl } from "~/util/staticAsset.js";
 import { toTavilyCacheKey } from "~/util/tavily.js";
-
-type TavilySearchResultsJson = {
-  answer?: string | null;
-  results?: TavilySearchResultItem[];
-};
 
 /**
  * Tavily 行からアバター proxy URL を解決する。
@@ -30,7 +24,11 @@ export const resolveAvatarProxyUrlFromTavilyRow = (
     return null;
   }
   const searchResults = row.searchResults as TavilySearchResultsJson;
-  return buildAvatarProxyUrlFromSearchResults(name, searchResults);
+  return buildAvatarProxyUrlFromSearchResults(
+    getAssetBaseUrl(),
+    name,
+    searchResults,
+  );
 };
 
 /**

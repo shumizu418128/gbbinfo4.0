@@ -1,6 +1,6 @@
-import { UNKNOWN_PARTICIPANT_NAME } from "../../../shared/participant/constants.ts";
-import { getDb } from "./client.ts";
-import { participantMemberTable, participantTable } from "./schema.ts";
+import { UNKNOWN_PARTICIPANT_NAME } from "../participant/constants.js";
+import { getDb } from "./client.js";
+import { participantMemberTable, participantTable } from "./tables.js";
 
 const normalizeParticipantName = (name: string): string => name.toUpperCase();
 

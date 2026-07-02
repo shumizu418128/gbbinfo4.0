@@ -8,7 +8,7 @@
  */
 
 import { toTavilyCacheKey } from "../../shared/tavily/cache-key.ts";
-import { upsertTavilyRow } from "../lib/db/tavily.ts";
+import { upsertTavilyRow } from "@shared/db/tavily.js";
 import { loadDotEnv } from "../lib/load-dotenv.ts";
 import { fetchTavilySearch } from "../lib/tavily/api.ts";
 import { buildTranslations } from "../lib/tavily/deepl.ts";

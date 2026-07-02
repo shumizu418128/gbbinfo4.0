@@ -1,7 +1,9 @@
 import { eq } from "drizzle-orm";
-import type { AnswerTranslation } from "../../../shared/tavily/types.ts";
-import { getDb } from "./client.ts";
-import { tavilyTable, type TavilyRow } from "./schema.ts";
+import type { AnswerTranslation } from "../tavily/types.js";
+import { getDb } from "./client.js";
+import { tavilyTable } from "./tables.js";
+
+export type TavilyRow = typeof tavilyTable.$inferSelect;
 
 /**
  * cache_key で Tavily 行を1件取得する。
@@ -15,12 +17,10 @@ import { tavilyTable, type TavilyRow } from "./schema.ts";
 export const findTavilyByCacheKey = async (
   cacheKey: string,
 ): Promise<TavilyRow | null> => {
-  const rows = await getDb()
-    .select()
-    .from(tavilyTable)
-    .where(eq(tavilyTable.cacheKey, cacheKey))
-    .limit(1);
-  return rows[0] ?? null;
+  const row = await getDb().query.tavilyTable.findFirst({
+    where: eq(tavilyTable.cacheKey, cacheKey),
+  });
+  return row ?? null;
 };
 
 /**

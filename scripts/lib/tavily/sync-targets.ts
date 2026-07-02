@@ -1,5 +1,5 @@
 import { UNKNOWN_PARTICIPANT_NAME } from "../../../shared/participant/constants.ts";
-import { findUniqueBeatboxerNames } from "../db/participant-names.ts";
+import { findUniqueBeatboxerNames } from "@shared/db/participant-names.js";
 
 /** Tavily 同期対象外の Beatboxer 名（出場者未定など）。 */
 export const TAVILY_SYNC_SKIP_NAMES = new Set([UNKNOWN_PARTICIPANT_NAME]);

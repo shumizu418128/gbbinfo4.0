@@ -9,5 +9,5 @@
     "skipLibCheck": true,
     "lib": ["ES2022"]
   },
-  "include": ["functions/**/*.ts", "lib/**/*.ts", "../shared/avatar/**/*.ts"]
+  "include": ["functions/**/*.ts", "lib/**/*.ts", "../shared/avatar/**/*.ts", "../shared/types/**/*.ts"]
 }

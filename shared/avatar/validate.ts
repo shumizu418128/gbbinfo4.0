@@ -1,19 +1,11 @@
 import { normalizeBeatboxerNameForAvatar, normalizeUrlForSnsMatch } from "./normalize.js";
-import type { AvatarFetchMethod, AvatarPlatform } from "./types.js";
-
-const ALLOWED_PLATFORMS: ReadonlySet<AvatarPlatform> = new Set([
-  "spotify",
-  "youtube",
-  "soundcloud",
-  "x",
-  "facebook",
-  "youtube-video",
-]);
-
-const ALLOWED_METHODS: ReadonlySet<AvatarFetchMethod> = new Set([
-  "ogImage",
-  "unavatar",
-]);
+import {
+  ALLOWED_AVATAR_METHODS,
+  ALLOWED_AVATAR_PLATFORMS,
+  NON_SNS_AVATAR_PLATFORM_CONFIG,
+} from "./constants.js";
+import { getSnsAvatarConfig } from "./platforms.js";
+import type { AvatarFetchMethod, AvatarPlatform, AvatarSnsPlatform } from "./types.js";
 
 /**
  * platform クエリが許可値か判定する。
@@ -26,7 +18,8 @@ const ALLOWED_METHODS: ReadonlySet<AvatarFetchMethod> = new Set([
  */
 export const isAllowedAvatarPlatform = (
   platform: string,
-): platform is AvatarPlatform => ALLOWED_PLATFORMS.has(platform as AvatarPlatform);
+): platform is AvatarPlatform =>
+  ALLOWED_AVATAR_PLATFORMS.has(platform as AvatarPlatform);
 
 /**
  * method クエリが許可値か判定する。
@@ -39,7 +32,30 @@ export const isAllowedAvatarPlatform = (
  */
 export const isAllowedAvatarMethod = (
   method: string,
-): method is AvatarFetchMethod => ALLOWED_METHODS.has(method as AvatarFetchMethod);
+): method is AvatarFetchMethod =>
+  ALLOWED_AVATAR_METHODS.has(method as AvatarFetchMethod);
+
+/**
+ * SNS プラットフォームと URL の hostname が整合するか判定する。
+ *
+ * Args:
+ *   platform: 対象プラットフォーム。
+ *   url: 取得元 URL。
+ *
+ * Returns:
+ *   整合していれば true。
+ */
+export const isSnsAvatarPlatformUrlConsistent = (
+  platform: AvatarSnsPlatform,
+  url: string,
+): boolean => {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase();
+    return getSnsAvatarConfig(platform).allowedHostnames.includes(hostname);
+  } catch {
+    return false;
+  }
+};
 
 /**
  * platform と URL の hostname が整合するか判定する。
@@ -55,32 +71,11 @@ export const isAvatarPlatformUrlConsistent = (
   platform: AvatarPlatform,
   url: string,
 ): boolean => {
-  try {
-    const hostname = new URL(url).hostname.toLowerCase();
-
-    switch (platform) {
-      case "spotify":
-        return hostname === "open.spotify.com";
-      case "youtube":
-        return hostname === "www.youtube.com" || hostname === "youtube.com";
-      case "soundcloud":
-        return hostname === "soundcloud.com";
-      case "x":
-        return hostname === "x.com";
-      case "facebook":
-        return (
-          hostname === "www.facebook.com" || hostname === "facebook.com"
-        );
-      case "youtube-video":
-        return (
-          hostname.includes("youtube") || hostname.includes("youtu.be")
-        );
-      default:
-        return false;
-    }
-  } catch {
-    return false;
+  if (platform === "youtube-video") {
+    return NON_SNS_AVATAR_PLATFORM_CONFIG["youtube-video"].isUrlConsistent(url);
   }
+
+  return isSnsAvatarPlatformUrlConsistent(platform, url);
 };
 
 /**

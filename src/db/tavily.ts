@@ -9,8 +9,10 @@ export type TavilyRow = typeof tavilyTable.$inferSelect;
 
 export type { AnswerTranslation };
 
+export { findTavilyByCacheKey, upsertTavilyRow } from "@shared/db/tavily.js";
+
 /**
- * cache_key で Tavily 行を1件取得する。
+ * cache_key で Tavily 行を1件取得する（Astro 向け）。
  *
  * Args:
  *   cacheKey: Tavily.cache_key。
@@ -18,7 +20,7 @@ export type { AnswerTranslation };
  * Returns:
  *   該当行。存在しない場合は null。
  */
-export const findTavilyByCacheKey = async (
+export const findTavilyByCacheKeyForPage = async (
   cacheKey: string,
 ): Promise<TavilyRow | null> => {
   const row = await getDb().query.tavilyTable.findFirst({
@@ -63,5 +65,5 @@ export const findTavilyDataForPage = async (
     return findTavilyFromStore(store, cacheKey);
   }
 
-  return findTavilyByCacheKey(cacheKey);
+  return findTavilyByCacheKeyForPage(cacheKey);
 };

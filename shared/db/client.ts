@@ -1,21 +1,9 @@
 import { drizzle, type PostgresJsDatabase } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
-import {
-  participantMemberTable,
-  participantTable,
-  tavilyTable,
-} from "./schema.ts";
-
-const schema = {
-  participantTable,
-  participantMemberTable,
-  tavilyTable,
-};
-
-type ScriptDbSchema = typeof schema;
+import { schema, type Schema } from "./relations.js";
 
 let client: ReturnType<typeof postgres> | null = null;
-let db: PostgresJsDatabase<ScriptDbSchema> | null = null;
+let db: PostgresJsDatabase<Schema> | null = null;
 
 const getClient = () => {
   if (!client) {
@@ -31,7 +19,7 @@ const getClient = () => {
   return client;
 };
 
-export const getDb = (): PostgresJsDatabase<ScriptDbSchema> => {
+export const getDb = (): PostgresJsDatabase<Schema> => {
   if (!db) {
     db = drizzle(getClient(), { schema });
   }

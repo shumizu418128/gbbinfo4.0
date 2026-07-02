@@ -25,7 +25,7 @@ import { getCommonYearData, type CommonYearData } from "~/util/staticPaths.js";
 import {
   buildProcessedBeatboxerSearch,
   type ProcessedBeatboxerSearch,
-} from "~/util/beatboxerSearchResults.js";
+} from "~/util/tavilyDisplay.js";
 import { isUnknownParticipantName } from "~/util/participant.js";
 import { toTavilyCacheKey } from "~/util/tavily.js";
 

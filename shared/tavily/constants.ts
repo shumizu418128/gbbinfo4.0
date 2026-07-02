@@ -1,5 +1,14 @@
 import path from "node:path";
 
+export const BAN_WORDS = [
+  "HATEN",
+  "BEATCITY",
+  "BCJ",
+  "JPN CUP",
+  "WIKI",
+  "/PLAYLIST",
+] as const;
+
 export const TAVILY_EXCLUDE_DOMAINS = [
   "tiktok.com",
   "reddit.com",

@@ -13,7 +13,7 @@ import type {
   PastParticipationEntry,
 } from "~/db/participant.js";
 import { getCountryName, resolveParticipantCountries } from "~/util/country.js";
-import type { ProcessedBeatboxerSearch } from "~/util/beatboxerSearchResults.js";
+import type { ProcessedBeatboxerSearch } from "~/util/tavilyDisplay.js";
 import {
   getMemberDetailHref,
   getParticipantDetailHref,

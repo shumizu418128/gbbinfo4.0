@@ -1,4 +1,6 @@
 import { normalizeBeatboxerNameForAvatar } from "./normalize.js";
+import { buildUnavatarImageUrl } from "./match.js";
+import { usesSnsDetailDirectImage } from "./platforms.js";
 import type { AvatarFetchMethod, AvatarPlatform, AvatarSource } from "./types.js";
 
 /**
@@ -37,6 +39,32 @@ export const avatarSourceUrlFromSource = (source: AvatarSource): string =>
 export const avatarMethodFromSource = (
   source: AvatarSource,
 ): AvatarFetchMethod => (source.kind === "sns" ? source.method : "ogImage");
+
+/**
+ * 出場者詳細ページ用のアバター画像 URL を組み立てる。
+ *
+ * SNS 設定で unavatar が指定されている場合は unavatar.io を直接返し、
+ * それ以外は proxy URL を返す。
+ *
+ * Args:
+ *   baseUrl: PUBLIC_ASSET_BASE_URL（末尾スラッシュなし推奨）。
+ *   name: 出場者名。
+ *   source: アバター取得元。
+ *
+ * Returns:
+ *   画像 URL。取得元が無効なら null。
+ */
+export const buildDetailAvatarImageUrl = (
+  baseUrl: string,
+  name: string,
+  source: AvatarSource,
+): string | null => {
+  if (source.kind === "sns" && usesSnsDetailDirectImage(source.platform)) {
+    return buildUnavatarImageUrl(source.platform, source.accountUrl);
+  }
+
+  return buildAvatarProxyUrl(baseUrl, name, source);
+};
 
 /**
  * Cloudflare avatar proxy の URL を組み立てる。

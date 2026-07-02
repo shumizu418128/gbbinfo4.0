@@ -20,7 +20,22 @@ cloudflare/
     og-image.ts       # og:image 抽出
   package.json
   wrangler.toml
-shared/avatar/        # Astro ビルドと Function で共有する型・URL ビルダー
+shared/
+  avatar/             # Astro ビルドと Function で共有
+    platforms.ts      # SNS プラットフォーム設定
+    constants.ts      # proxy 許可値
+    match.ts          # URL マッチ・unavatar 組み立て
+    url.ts            # proxy / 詳細用 URL ビルダー
+    validate.ts       # クエリ検証
+    youtube.ts        # YouTube video ID
+    normalize.ts
+    types.ts
+    r2-key.ts
+    allowed-origins.ts
+  tavily/             # Tavily キャッシュ・検索結果加工
+  db/                 # Drizzle スキーマ（src / scripts 共通）
+  build-cache/
+  participant/
 ```
 
 Astro 側は `PUBLIC_ASSET_BASE_URL` + `staticAssetUrl()` / `buildAvatarProxyUrl()` で参照する。

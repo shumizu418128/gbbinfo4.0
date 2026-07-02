@@ -1,5 +1,5 @@
 import type { AnswerTranslation } from "../../../shared/tavily/types.ts";
-import { findTavilyByCacheKey } from "../db/tavily.ts";
+import { findTavilyByCacheKey } from "@shared/db/tavily.js";
 import { writeLocalTavilyCache } from "./local-cache-write.ts";
 
 /**
