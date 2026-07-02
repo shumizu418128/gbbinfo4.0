@@ -25,9 +25,9 @@ import { getCommonYearData, type CommonYearData } from "~/util/staticPaths.js";
 import {
   buildProcessedBeatboxerSearch,
   type ProcessedBeatboxerSearch,
-} from "~/util/tavilyDisplay.js";
+  toTavilyCacheKey,
+} from "~/util/tavily.js";
 import { isUnknownParticipantName } from "~/util/participant.js";
-import { toTavilyCacheKey } from "~/util/tavily.js";
 
 export type ParticipantDetailPageData = {
   locale: SupportedLanguage;
