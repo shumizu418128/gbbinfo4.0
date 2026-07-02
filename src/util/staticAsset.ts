@@ -1,4 +1,25 @@
-const assetBaseUrl = (import.meta.env.PUBLIC_ASSET_BASE_URL ?? "").replace(/\/$/, "");
+const assetBaseUrl = (import.meta.env.PUBLIC_ASSET_BASE_URL ?? "").replace(
+  /\/$/,
+  "",
+);
+
+/**
+ * 静的アセット配信のベース URL を返す。
+ *
+ * Returns:
+ *   PUBLIC_ASSET_BASE_URL（末尾スラッシュなし）。
+ *
+ * Raises:
+ *   Error: PUBLIC_ASSET_BASE_URL 未設定時。
+ */
+export const getAssetBaseUrl = (): string => {
+  if (!assetBaseUrl) {
+    throw new Error(
+      "PUBLIC_ASSET_BASE_URL is required. Set it to your Cloudflare Pages URL (e.g. https://gbbinfo-assets.pages.dev).",
+    );
+  }
+  return assetBaseUrl;
+};
 
 /**
  * 静的アセットの公開 URL を返す。
@@ -16,11 +37,6 @@ const assetBaseUrl = (import.meta.env.PUBLIC_ASSET_BASE_URL ?? "").replace(/\/$/
  *   Error: PUBLIC_ASSET_BASE_URL 未設定時。
  */
 export const staticAssetUrl = (path: string): string => {
-  if (!assetBaseUrl) {
-    throw new Error(
-      "PUBLIC_ASSET_BASE_URL is required. Set it to your Cloudflare Pages URL (e.g. https://gbbinfo-assets.pages.dev).",
-    );
-  }
   const normalized = path.startsWith("/") ? path : `/${path}`;
-  return `${assetBaseUrl}${normalized}`;
+  return `${getAssetBaseUrl()}${normalized}`;
 };

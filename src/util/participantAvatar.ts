@@ -2,7 +2,7 @@ import { findTavilyFromStore, loadBuildCache } from "~/db/buildCache.js";
 import type { TavilyRow } from "~/db/tavily.js";
 import { findTavilyDataForPage } from "~/db/tavily.js";
 import {
-  resolveAvatarImageUrlFromSearchResults,
+  buildAvatarProxyUrlFromSearchResults,
   type TavilySearchResultItem,
 } from "~/util/beatboxerSearchResults.js";
 import { toTavilyCacheKey } from "~/util/tavily.js";
@@ -13,26 +13,28 @@ type TavilySearchResultsJson = {
 };
 
 /**
- * Tavily 行からアバター画像 URL を解決する。
+ * Tavily 行からアバター proxy URL を解決する。
  *
  * Args:
+ *   name: 出場者名。
  *   row: Tavily テーブル行。null の場合は null。
  *
  * Returns:
- *   画像 URL。見つからなければ null。
+ *   proxy URL。見つからなければ null。
  */
-export const resolveAvatarImageUrlFromTavilyRow = async (
+export const resolveAvatarProxyUrlFromTavilyRow = (
+  name: string,
   row: TavilyRow | null,
-): Promise<string | null> => {
+): string | null => {
   if (!row) {
     return null;
   }
   const searchResults = row.searchResults as TavilySearchResultsJson;
-  return resolveAvatarImageUrlFromSearchResults(searchResults);
+  return buildAvatarProxyUrlFromSearchResults(name, searchResults);
 };
 
 /**
- * 出場者名からアバター画像 URL を解決する。
+ * 出場者名からアバター proxy URL を解決する。
  *
  * 優先順: ビルドキャッシュ → findTavilyDataForPage（dev 用）。
  *
@@ -40,31 +42,31 @@ export const resolveAvatarImageUrlFromTavilyRow = async (
  *   name: 出場者名。
  *
  * Returns:
- *   画像 URL。見つからなければ null。
+ *   proxy URL。見つからなければ null。
  */
-export const resolveAvatarImageUrl = async (
+export const resolveAvatarProxyUrl = async (
   name: string,
 ): Promise<string | null> => {
   const store = loadBuildCache();
   if (store) {
     const row = findTavilyFromStore(store, toTavilyCacheKey(name));
-    const cached = await resolveAvatarImageUrlFromTavilyRow(row);
+    const cached = resolveAvatarProxyUrlFromTavilyRow(name, row);
     if (cached) {
       return cached;
     }
   }
   const row = await findTavilyDataForPage(toTavilyCacheKey(name));
-  return resolveAvatarImageUrlFromTavilyRow(row);
+  return resolveAvatarProxyUrlFromTavilyRow(name, row);
 };
 
 /**
- * 出場者名の配列からアバター用画像 URL マップを構築する。
+ * 出場者名の配列からアバター用 proxy URL マップを構築する。
  *
  * Args:
  *   names: 出場者名の配列。
  *
  * Returns:
- *   名前をキー、画像 URL を値とするマップ。
+ *   名前をキー、proxy URL を値とするマップ。
  */
 export const buildAvatarImageUrlMap = async (
   names: string[],
@@ -72,7 +74,7 @@ export const buildAvatarImageUrlMap = async (
   const uniqueNames = [...new Set(names)];
   const entries = await Promise.all(
     uniqueNames.map(async (name) => {
-      const imageUrl = await resolveAvatarImageUrl(name);
+      const imageUrl = await resolveAvatarProxyUrl(name);
       return imageUrl ? ([name, imageUrl] as const) : null;
     }),
   );

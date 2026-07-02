@@ -1,3 +1,7 @@
 name = "gbbinfo-assets"
 compatibility_date = "2024-09-23"
 pages_build_output_dir = "public"
+
+[[r2_buckets]]
+binding = "AVATAR_CACHE"
+bucket_name = "gbbinfo-avatar-cache"

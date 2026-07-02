@@ -9,11 +9,13 @@ import {
   YOUTUBE_CHANNEL_PATTERN,
 } from "~/constants/beatboxerSearch.js";
 import type { AnswerTranslation, TavilyRow } from "~/db/tavily.js";
+import type { AvatarSource } from "@shared/avatar/types.js";
+import { buildAvatarProxyUrl } from "@shared/avatar/url.js";
 import {
-  resolveSnsAccountAvatarUrl,
   matchSnsAccountUrl,
+  toAvatarSourceFromSnsMatch,
 } from "~/util/snsAccountIcon.js";
-import { toYoutubeThumbnailUrl } from "~/util/youtubeThumbnail.js";
+import { getAssetBaseUrl } from "~/util/staticAsset.js";
 
 export type TavilySearchResultItem = {
   title: string;
@@ -117,20 +119,20 @@ export const containsBanWord = (item: TavilySearchResultItem): boolean => {
 };
 
 /**
- * Tavily 検索結果を score 順に走査し、アバター画像 URL を解決する。
+ * Tavily 検索結果からアバター取得元を選定する。
  *
- * 優先順: YouTube / Spotify / SoundCloud（og:image）/ X / Facebook（unavatar.io）→ YouTube 動画サムネイル。
- * Instagram のみ対象外。詳細ページの SNS リンク表示は別途 isAccountUrl が担当。
+ * 優先順: YouTube / Spotify / SoundCloud / X → YouTube 動画サムネイル。
+ * Instagram のみ対象外。
  *
  * Args:
  *   searchResults: Tavily.search_results JSON。
  *
  * Returns:
- *   画像 URL。見つからなければ null。
+ *   取得元。見つからなければ null。
  */
-export const resolveAvatarImageUrlFromSearchResults = async (
+export const resolveAvatarSourceFromSearchResults = (
   searchResults: TavilySearchResultsJson,
-): Promise<string | null> => {
+): AvatarSource | null => {
   const items = (searchResults.results ?? []).filter(
     (item) => !containsBanWord(item),
   );
@@ -138,21 +140,44 @@ export const resolveAvatarImageUrlFromSearchResults = async (
   for (const item of items) {
     const sns = matchSnsAccountUrl(item.url);
     if (sns) {
-      const avatarUrl = await resolveSnsAccountAvatarUrl(sns);
-      if (avatarUrl) {
-        return avatarUrl;
-      }
+      return toAvatarSourceFromSnsMatch(sns);
     }
   }
 
   for (const item of items) {
     const videoId = extractYoutubeVideoId(item.url);
     if (videoId) {
-      return toYoutubeThumbnailUrl(videoId);
+      return {
+        kind: "youtubeThumbnail",
+        videoId,
+        sourceUrl: item.url,
+      };
     }
   }
 
   return null;
+};
+
+/**
+ * Tavily 検索結果から Cloudflare avatar proxy URL を組み立てる。
+ *
+ * Args:
+ *   name: 出場者名。
+ *   searchResults: Tavily.search_results JSON。
+ *
+ * Returns:
+ *   proxy URL。取得元が無ければ null。
+ */
+export const buildAvatarProxyUrlFromSearchResults = (
+  name: string,
+  searchResults: TavilySearchResultsJson,
+): string | null => {
+  const source = resolveAvatarSourceFromSearchResults(searchResults);
+  if (!source) {
+    return null;
+  }
+
+  return buildAvatarProxyUrl(getAssetBaseUrl(), name, source);
 };
 
 /**
@@ -298,14 +323,16 @@ export const resolveTavilyAnswer = (
  * Args:
  *   row: Tavily テーブル行。null の場合は空結果。
  *   locale: 表示言語。
+ *   name: 出場者名（avatar proxy 用）。
  *
  * Returns:
  *   加工済み検索結果。
  */
-export const buildProcessedBeatboxerSearch = async (
+export const buildProcessedBeatboxerSearch = (
   row: TavilyRow | null,
   locale: SupportedLanguage,
-): Promise<ProcessedBeatboxerSearch> => {
+  name: string,
+): ProcessedBeatboxerSearch => {
   if (!row) {
     return {
       accountUrls: [],
@@ -324,7 +351,7 @@ export const buildProcessedBeatboxerSearch = async (
   return {
     ...processed,
     avatarImageUrl:
-      (await resolveAvatarImageUrlFromSearchResults(searchResults)) ?? "",
+      buildAvatarProxyUrlFromSearchResults(name, searchResults) ?? "",
     answer: resolveTavilyAnswer(searchResults, answerTranslation, locale),
   };
 };

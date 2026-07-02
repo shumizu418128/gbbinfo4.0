@@ -126,7 +126,7 @@ export const buildPageDataFromStore = async (
     pastParticipation,
     year,
   );
-  const tavily = await buildProcessedBeatboxerSearch(tavilyRow, locale);
+  const tavily = buildProcessedBeatboxerSearch(tavilyRow, locale, displayName);
 
   return {
     locale,
@@ -219,7 +219,7 @@ export const loadParticipantDetailPageData = async (
         participantData.year,
       ),
       sameYearCategoryPeers,
-      tavily: await buildProcessedBeatboxerSearch(tavilyRow, locale),
+      tavily: buildProcessedBeatboxerSearch(tavilyRow, locale, displayName),
       common,
     };
   }
@@ -261,7 +261,7 @@ export const loadParticipantDetailPageData = async (
       participantData.year,
     ),
     sameYearCategoryPeers,
-    tavily: await buildProcessedBeatboxerSearch(tavilyRow, locale),
+    tavily: buildProcessedBeatboxerSearch(tavilyRow, locale, displayName),
     common,
   };
 };

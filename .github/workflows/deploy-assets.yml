@@ -6,6 +6,9 @@ on:
       - main
     paths:
       - "cloudflare/public/**"
+      - "cloudflare/functions/**"
+      - "cloudflare/lib/**"
+      - "shared/avatar/**"
       - "cloudflare/wrangler.toml"
       - "cloudflare/package.json"
       - ".github/workflows/deploy-assets.yml"
