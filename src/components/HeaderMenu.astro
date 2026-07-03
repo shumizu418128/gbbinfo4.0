@@ -45,7 +45,7 @@ const yearItems = years.map((y) => ({
   <Dropdown items={yearItems} scrollable>
     <span class="text-white font-bold text-2xl">{m.select_year()}</span>
   </Dropdown>
-  <Dropdown items={languageItems}>
+  <Dropdown items={languageItems} scrollable={languageItems.length >= 5} compactScroll>
     <span class="flex items-center gap-2 text-white font-bold text-2xl">
       <svg
         xmlns="http://www.w3.org/2000/svg"

@@ -280,7 +280,7 @@ export const ParticipantTeamDetailContent = ({
 
         {tavily.answer ? (
           <PostIt>
-            <p className="whitespace-pre-wrap">{tavily.answer}</p>
+            <p className="whitespace-pre-wrap text-balance">{tavily.answer}</p>
           </PostIt>
         ) : null}
 

@@ -221,9 +221,10 @@ export const ResultContent = ({
         </div>
 
         {isShowcaseCategory ? (
-          <div className="py-40 text-center text-2xl text-(--secondary-text-color)">
+          <div className="py-40 text-center text-2xl text-(--secondary-text-color) text-balance">
             {m.result_showcase_no_results({ SHOWCASE: "SHOWCASE" })}
           </div>
+
         ) : !hasResults ? (
           <div className="py-40 text-center text-2xl text-(--secondary-text-color)">
             coming soon...

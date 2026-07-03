@@ -11,14 +11,19 @@ interface Props {
   align?: "left" | "right";
   /** 項目が多い場合に最大高さと縦スクロールを有効にする */
   scrollable?: boolean;
+  /** scrollable 時に 4 項目分（160px）の高さに制限する */
+  compactScroll?: boolean;
 }
 
-const { items, align = "right", scrollable = false } = Astro.props;
+const { items, align = "right", scrollable = false, compactScroll = false } =
+  Astro.props;
 
 const panelClass = [
   `absolute top-full ${align === "right" ? "right-0" : "left-0"} z-20 mt-2 min-w-24 bg-zinc-800/80 shadow-lg backdrop-blur-md`,
   scrollable
-    ? "max-h-[min(24rem,calc(100dvh-5rem))] overflow-y-auto overscroll-contain"
+    ? compactScroll
+      ? "max-h-40 overflow-y-auto overscroll-contain"
+      : "max-h-[min(24rem,calc(100dvh-5rem))] overflow-y-auto overscroll-contain"
     : "overflow-hidden",
 ].join(" ");
 ---
