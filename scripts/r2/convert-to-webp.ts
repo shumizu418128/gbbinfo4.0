@@ -16,13 +16,13 @@ import {
   PutObjectCommand,
   type S3Client,
 } from "@aws-sdk/client-s3";
+import { AVATAR_CACHE_CONTROL } from "../../shared/avatar/constants.ts";
 import sharp from "sharp";
 import { loadDotEnv } from "../lib/load-dotenv.ts";
 import { loadR2ClientFromEnv } from "../lib/r2/client.ts";
 
 const WEBP_CONTENT_TYPE = "image/webp";
 const WEBP_QUALITY = 80;
-const DEFAULT_CACHE_CONTROL = "public, max-age=31536000, immutable";
 
 type ConvertStats = {
   converted: number;
@@ -157,7 +157,7 @@ const convertObjectToWebp = async (
         Key: key,
         Body: webpBuffer,
         ContentType: WEBP_CONTENT_TYPE,
-        CacheControl: head.CacheControl ?? DEFAULT_CACHE_CONTROL,
+        CacheControl: head.CacheControl ?? AVATAR_CACHE_CONTROL,
       }),
     );
 

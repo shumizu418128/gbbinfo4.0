@@ -1,4 +1,5 @@
 import { isAllowedAvatarRequestOrigin } from "../../shared/avatar/allowed-origins.js";
+import { AVATAR_CACHE_CONTROL } from "../../shared/avatar/constants.js";
 import { buildAvatarR2Key } from "../../shared/avatar/r2-key.js";
 import {
   parseAvatarFetchRequest,
@@ -6,7 +7,16 @@ import {
 } from "../../shared/avatar/validate.js";
 import { fetchAvatarImage } from "../lib/fetch-avatar.js";
 
-const CACHE_CONTROL = "public, max-age=31536000, immutable";
+/**
+ * ブラウザ・Cloudflare エッジ双方向けのキャッシュヘッダーを設定する。
+ *
+ * Args:
+ *   headers: 設定対象 Headers。
+ */
+const setAvatarCacheHeaders = (headers: Headers): void => {
+  headers.set("Cache-Control", AVATAR_CACHE_CONTROL);
+  headers.set("CDN-Cache-Control", AVATAR_CACHE_CONTROL);
+};
 
 type AvatarEnv = {
   AVATAR_CACHE: R2Bucket;
@@ -81,7 +91,7 @@ const toAvatarErrorResponse = (
  */
 const toCachedResponse = (cached: R2ObjectBody): Response => {
   const headers = new Headers();
-  headers.set("Cache-Control", CACHE_CONTROL);
+  setAvatarCacheHeaders(headers);
   cached.writeHttpMetadata(headers);
   headers.set("etag", cached.httpEtag);
   return new Response(cached.body, { headers });
@@ -144,16 +154,16 @@ const resolveAvatarResponse = async (
   await env.AVATAR_CACHE.put(r2Key, image.bytes, {
     httpMetadata: {
       contentType: image.contentType,
-      cacheControl: CACHE_CONTROL,
+      cacheControl: AVATAR_CACHE_CONTROL,
     },
   });
 
-  return new Response(image.bytes, {
-    headers: {
-      "Content-Type": image.contentType,
-      "Cache-Control": CACHE_CONTROL,
-    },
+  const headers = new Headers({
+    "Content-Type": image.contentType,
   });
+  setAvatarCacheHeaders(headers);
+
+  return new Response(image.bytes, { headers });
 };
 
 export const onRequestGet: PagesFunction<AvatarEnv> = async (context) => {
