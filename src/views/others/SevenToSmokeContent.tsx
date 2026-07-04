@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { PostIt } from "~/components/PostIt.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { anchorClass } from "~/constants/linkStyle.js";
@@ -21,13 +22,15 @@ export const SevenToSmokeContent = ({ locale, year }: SevenToSmokeContentProps) 
           <br />
           今回は、7toSmokeのルールについて解説します。
         </p>
-        <p className="mb-8 text-center font-bold">
-          2024/4/7追記
-          <br />
-          今後、このページの更新は行いません。
-          <br />
-          古い情報が含まれる可能性があるため、必ず最新情報をご確認ください。
-        </p>
+        <PostIt>
+          <p>
+            2024/4/7追記
+            <br />
+            今後、このページの更新は行いません。
+            <br />
+            古い情報が含まれる可能性があるため、必ず最新情報をご確認ください。
+          </p>
+        </PostIt>
 
         <h2 className={sectionClass}>目次</h2>
         <ol className={tocClass}>
