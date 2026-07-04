@@ -30,9 +30,16 @@ export const ParticipantCard = ({
 
   return (
   <div
-    className="px-1 py-2 bg-opacity-10 max-w-lg mx-auto"
+    className="relative px-1 py-2 bg-opacity-10 max-w-lg mx-auto"
     style={{ backgroundColor: "var(--section-color)" }}
   >
+    {isCancelled && (
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+        aria-hidden="true"
+      />
+    )}
     <div className="flex gap-2">
       <ParticipantAvatar name={name} imageUrl={imageUrl} />
       <div className="min-w-0 flex-1">
