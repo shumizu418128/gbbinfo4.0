@@ -1,0 +1,30 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { Top7toSmokeContent } from "~/views/2024/Top7toSmokeContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2024;
+  const common = await getCommonYearData(YEAR);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const subtitle = "7toSmoke";
+const title = `GBB ${yearWithCountry.year} 7toSmoke`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <Top7toSmokeContent locale={locale} year={yearWithCountry.year} />
+</SiteFrame>

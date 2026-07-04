@@ -82,12 +82,10 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
             text="現地観戦計画のたてかた"
-            image="/images/zenhit.webp"
             href={`/${locale}/others/how_to_plan`}
           />
           <LinkCard
             text={<span>{m.rules()}<br />{m.judges()}</span>}
-            image="/images/mahiro.webp"
             href={`/${locale}/${year}/rule`}
           />
         </div>
@@ -114,7 +112,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           textCenter
         />
         <div className="mb-8 flex flex-wrap gap-4">
-          <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} />
+          <LinkCard text={m.livestream()} href={`/${locale}/${year}/stream`} />
           <LinkCard
             text={
               <span>
@@ -123,7 +121,6 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
                 {m.participants()}
               </span>
             }
-            image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
         </div>
@@ -157,10 +154,9 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
             text="現地観戦計画のたてかた"
-            image="/images/zenhit.webp"
             href={`/${locale}/others/how_to_plan`}
           />
-          <LinkCard text={teamLabel} image="/images/team_japan.webp" href={teamHref} />
+          <LinkCard text={teamLabel} href={teamHref} />
         </div>
 
         <h2 id="seven-to-smoke" className={sectionHeadingClass}>
@@ -184,10 +180,9 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
             text="現地観戦計画のたてかた"
-            image="/images/zenhit.webp"
             href={`/${locale}/others/how_to_plan`}
           />
-          <LinkCard text="7toSmoke" image="/images/afterparty.webp" href={`/${locale}/${year}/top_7tosmoke`} />
+          <LinkCard text="7toSmoke" href={`/${locale}/${year}/top_7tosmoke`} />
         </div>
       </div>
     </main>
