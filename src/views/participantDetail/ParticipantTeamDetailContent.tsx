@@ -82,7 +82,7 @@ export const ParticipantTeamDetailContent = ({
   sameYearCategoryPeers,
   tavily,
 }: ParticipantTeamDetailContentProps) => {
-  const aiSearchQuery = encodeURIComponent(`${displayName} beatbox`);
+  const aiSearchQuery = `${displayName} beatbox`;
   const searchAboutText = m.participant_search_about({ name: aiSearchQuery });
   const googleSearchUrl = `https://www.google.com/search?q=${encodeURIComponent(searchAboutText)}&udm=50`;
   const chatGptUrl = `https://chatgpt.com/?q=${encodeURIComponent(searchAboutText)}`;
