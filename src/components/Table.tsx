@@ -5,6 +5,8 @@ type TableProps = {
   textCenter?: boolean;
   /** 列幅の比率（例: [5, 1, 4] → 50% : 10% : 40%）。 */
   columnWidths?: number[];
+  /** 列幅の固定値（例: ['32px']）。指定列は columnWidths より優先される。 */
+  columnFixedWidths?: string[];
   className?: string;
 };
 
@@ -39,8 +41,20 @@ const toColumnWidthPercent = (
  */
 const getCellStyle = (
   columnWidths: number[] | undefined,
+  columnFixedWidths: string[] | undefined,
   index: number,
 ): CSSProperties => {
+  const fixedWidth = columnFixedWidths?.[index];
+  if (fixedWidth) {
+    return {
+      boxSizing: "border-box",
+      padding: 8,
+      width: fixedWidth,
+      minWidth: fixedWidth,
+      maxWidth: fixedWidth,
+    };
+  }
+
   const width = columnWidths
     ? toColumnWidthPercent(columnWidths, index)
     : undefined;
@@ -51,6 +65,7 @@ export const Table = ({
   data,
   textCenter = false,
   columnWidths,
+  columnFixedWidths,
   className,
 }: TableProps) => {
   if (!data || data.length === 0) return null;
@@ -65,7 +80,10 @@ export const Table = ({
           {data[0].map((cell, j) => (
             <th
               key={j}
-              style={{ ...getCellStyle(columnWidths, j), fontWeight: "bold" }}
+              style={{
+                ...getCellStyle(columnWidths, columnFixedWidths, j),
+                fontWeight: "bold",
+              }}
             >
               {cell}
             </th>
@@ -82,7 +100,7 @@ export const Table = ({
               {row.map((cell, j) => (
                 <td
                   key={j}
-                  style={getCellStyle(columnWidths, j)}
+                  style={getCellStyle(columnWidths, columnFixedWidths, j)}
                   className={textCenter ? "text-center" : undefined}
                 >
                   {cell}

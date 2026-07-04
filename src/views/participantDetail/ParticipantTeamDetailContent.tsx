@@ -321,10 +321,10 @@ export const ParticipantTeamDetailContent = ({
         </h2>
 
         {tavily.accountUrls.length > 0 ? (
-          <Table data={accountUrlRows} textCenter />
+          <Table data={accountUrlRows} textCenter columnFixedWidths={["32px"]} />
         ) : null}
         {tavily.finalUrls.length > 0 ? (
-          <Table data={finalUrlRows} textCenter />
+          <Table data={finalUrlRows} textCenter columnFixedWidths={["32px"]} />
         ) : (
           <p className="my-8 text-center text-(--secondary-text-color)">
             {m.participant_no_related_sites()}
