@@ -7,6 +7,7 @@ export const BAN_WORDS = [
   "JPN CUP",
   "WIKI",
   "/PLAYLIST",
+  "TIMETREE"
 ] as const;
 
 export const TAVILY_EXCLUDE_DOMAINS = [
