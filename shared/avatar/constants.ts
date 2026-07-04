@@ -1,8 +1,11 @@
 import type { AvatarFetchMethod, AvatarPlatform, AvatarSnsPlatform } from "./types.js";
 import { SNS_AVATAR_PLATFORM_CONFIG } from "./platforms.js";
 
+/** 1か月（秒）。Cloudflare 無料枠の Cache Reserve 上限に合わせる。 */
+export const AVATAR_CACHE_MAX_AGE_SECONDS = 30 * 24 * 60 * 60;
+
 /** R2・HTTP レスポンス共通の Cache-Control（画像更新なし前提）。 */
-export const AVATAR_CACHE_CONTROL = "public, max-age=31536000, immutable";
+export const AVATAR_CACHE_CONTROL = `public, max-age=${AVATAR_CACHE_MAX_AGE_SECONDS}, immutable`;
 
 /** Cloudflare avatar proxy が受け付ける取得方式。 */
 export const AVATAR_FETCH_METHODS: readonly AvatarFetchMethod[] = [
