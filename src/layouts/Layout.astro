@@ -168,6 +168,20 @@ const showDevBanner = env && env !== "production";
         true,
       );
 
+      // LinkCard: unavailable/disabled 時は遷移せず Coming soon を表示
+      document.addEventListener("click", (event) => {
+        const target = event.target;
+        if (!(target instanceof Element)) {
+          return;
+        }
+        const blockedCard = target.closest("[data-link-card-blocked]");
+        if (!(blockedCard instanceof HTMLElement)) {
+          return;
+        }
+        event.preventDefault();
+        alert(blockedCard.dataset.comingSoonMessage ?? "Coming soon...");
+      });
+
       runInitialScroll();
     </script>
   </body>

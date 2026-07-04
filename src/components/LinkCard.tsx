@@ -1,6 +1,7 @@
-import type { MouseEvent } from "react";
-import * as m from "../../paraglide/messages";
+import type { CSSProperties, ReactNode } from "react";
 import { staticAssetUrl } from "~/util/staticAsset.js";
+
+const COMING_SOON_MESSAGE = "Coming soon...";
 
 export const LinkCard = ({
   text,
@@ -10,20 +11,19 @@ export const LinkCard = ({
   unavailable = false,
   fullWidth = false,
 }: {
-  text: string | React.ReactNode;
+  text: string | ReactNode;
   image?: string;
   href: string;
   disabled?: boolean;
   unavailable?: boolean;
   fullWidth?: boolean;
 }) => {
-  const comingSoonMessage = "Coming soon...";
-  const unavailableMessage = m.unavailable();
   const fontSize = "24px";
   const cardWidth = "calc((100% - 16px) / 2)";
   const disabledBackgroundColor = "rgba(0, 0, 0, 0.6)";
   const unavailableBackgroundColor = "rgba(0, 0, 0, 0.8)";
-  const isInteractive = !disabled && !unavailable;
+  const isBlocked = disabled || unavailable;
+  const isInteractive = !isBlocked;
   const isLight = !image;
   const hoverBackgroundClass = isInteractive
     ? "transition-colors duration-150 hover:bg-(--gbb-color)"
@@ -32,15 +32,18 @@ export const LinkCard = ({
     ? "transition-colors duration-150 group-hover:bg-(--gbb-color)"
     : "";
 
-  const handleClick = (event: MouseEvent<HTMLAnchorElement>) => {
-    if (disabled) {
-      event.preventDefault();
-      window.alert(comingSoonMessage);
-    }
-    if (unavailable) {
-      event.preventDefault();
-      window.alert(unavailableMessage);
-    }
+  const blockedWrapperProps = {
+    "data-link-card-blocked": true,
+    "data-coming-soon-message": COMING_SOON_MESSAGE,
+    role: "button" as const,
+    "aria-disabled": true,
+    tabIndex: 0,
+  };
+
+  const interactiveWrapperProps = {
+    href,
+    tabIndex: 0,
+    role: "button" as const,
   };
 
   if (image) {
@@ -53,25 +56,19 @@ export const LinkCard = ({
     const imageHeightPx = `${imageHeight}px`;
     const textMinHeightPx = `${textMinHeight}px`;
 
-    return (
-      <a
-        className={`inline-flex flex-col items-stretch justify-start font-bold text-white ${isInteractive ? "group" : ""}`}
-        style={{
-          position: "relative",
-          fontSize,
-          textDecoration: "none",
-          width: cardWidth,
-          height: "auto",
-          background: "none",
-          padding: 0,
-          cursor: disabled || unavailable ? "not-allowed" : "pointer",
-        }}
-        href={href}
-        onClick={handleClick}
-        aria-disabled={disabled || unavailable}
-        tabIndex={0}
-        role="button"
-      >
+    const wrapperStyle: CSSProperties = {
+      position: "relative",
+      fontSize,
+      textDecoration: "none",
+      width: cardWidth,
+      height: "auto",
+      background: "none",
+      padding: 0,
+      cursor: isBlocked ? "not-allowed" : "pointer",
+    };
+
+    const content = (
+      <>
         <div
           style={{
             position: "relative",
@@ -95,7 +92,7 @@ export const LinkCard = ({
               display: "block",
             }}
           />
-          {(disabled || unavailable) ? (
+          {isBlocked ? (
             <div
               style={{
                 position: "absolute",
@@ -111,7 +108,7 @@ export const LinkCard = ({
                 letterSpacing: "0.04em",
               }}
             >
-              {disabled || unavailable ? comingSoonMessage : unavailableMessage}
+              {COMING_SOON_MESSAGE}
             </div>
           ) : null}
         </div>
@@ -131,7 +128,7 @@ export const LinkCard = ({
           }}
         >
           {text}
-          {disabled || unavailable ? (
+          {isBlocked ? (
             <div
               style={{
                 position: "absolute",
@@ -142,43 +139,81 @@ export const LinkCard = ({
             />
           ) : null}
         </div>
+      </>
+    );
+
+    if (isBlocked) {
+      return (
+        <div
+          className="inline-flex flex-col items-stretch justify-start font-bold text-white"
+          style={wrapperStyle}
+          {...blockedWrapperProps}
+        >
+          {content}
+        </div>
+      );
+    }
+
+    return (
+      <a
+        className="inline-flex flex-col items-stretch justify-start font-bold text-white group"
+        style={wrapperStyle}
+        {...interactiveWrapperProps}
+      >
+        {content}
       </a>
+    );
+  }
+
+  const wrapperStyle: CSSProperties = {
+    position: "relative",
+    fontSize,
+    width: fullWidth ? "100%" : cardWidth,
+    minHeight: "80px",
+    height: "auto",
+    padding: "8px 16px",
+    boxSizing: "border-box",
+    textAlign: "center",
+    lineHeight: 1.333,
+    textDecorationColor: "var(--gbb-color)",
+    cursor: isBlocked ? "not-allowed" : "pointer",
+  };
+
+  const content = (
+    <>
+      {text}
+      {isBlocked ? (
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background: disabled ? disabledBackgroundColor : unavailableBackgroundColor,
+            pointerEvents: "none",
+          }}
+        />
+      ) : null}
+    </>
+  );
+
+  if (isBlocked) {
+    return (
+      <div
+        className={`inline-flex items-center justify-center font-bold ${isLight ? "bg-white text-black" : "text-white bg-(--button-background-color)"}`}
+        style={wrapperStyle}
+        {...blockedWrapperProps}
+      >
+        {content}
+      </div>
     );
   }
 
   return (
     <a
       className={`inline-flex items-center justify-center font-bold ${isLight ? "bg-white text-black hover:text-white" : "text-white bg-(--button-background-color)"} ${hoverBackgroundClass}`}
-      style={{
-        position: "relative",
-        fontSize,
-        width: fullWidth ? "100%" : cardWidth,
-        minHeight: "80px",
-        height: "auto",
-        padding: "8px 16px",
-        boxSizing: "border-box",
-        textAlign: "center",
-        lineHeight: 1.333,
-        textDecorationColor: "var(--gbb-color)",
-        cursor: disabled || unavailable ? "not-allowed" : "pointer",
-      }}
-      href={href}
-      onClick={handleClick}
-      aria-disabled={disabled || unavailable}
-      tabIndex={0}
-      role="button"
+      style={wrapperStyle}
+      {...interactiveWrapperProps}
     >
-      {text}
-      {disabled || unavailable ? (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            background: disabled || unavailable ? disabledBackgroundColor : unavailableBackgroundColor,
-            pointerEvents: "none",
-          }}
-        />
-      ) : null}
+      {content}
     </a>
   );
 };
