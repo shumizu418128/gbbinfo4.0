@@ -75,14 +75,6 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           />
         </div>
       </div>
-
-      <div className="mx-auto w-full max-w-2xl px-4">
-        <div className="bg-(--section-color) p-8 text-white mb-12">
-          <h2 className="text-2xl font-bold mb-2 text-center">{m.inquiry()}</h2>
-          <hr className="border-(--gbb-color) mb-4" />
-          <Table data={[["", "email"], [m.inquiry_ticket(), "gbb@swissbeatbox.com"], [m.inquiry_event(), "tickets@weeztix.com"]]} textCenter />
-        </div>
-      </div>
     </main>
   );
 }
