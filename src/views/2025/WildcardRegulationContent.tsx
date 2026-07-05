@@ -3,6 +3,12 @@ import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  BEATBOX,
+  RC505,
+  SWISSBEATBOX,
+  WILDCARD,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -11,9 +17,6 @@ type WildcardRegulationContentProps = {
   year: number;
 };
 
-const WILDCARD = "Wildcard";
-const SWISSBEATBOX = "Swissbeatbox";
-const RC505 = "RC505";
 const SWISSBEATBOX_SOURCE =
   "https://swissbeatbox.com/newsfeed/gbb-2025-wildcard-competition/";
 
@@ -144,7 +147,7 @@ export const WildcardRegulationContent = ({
           <LinkCard
             text={
               <span>
-                {m.rule_for_fans({ Beatbox: "Beatbox" })}
+                {m.rule_for_fans({ Beatbox: BEATBOX })}
                 <br />
                 GBB {year} {m.rules()}
               </span>

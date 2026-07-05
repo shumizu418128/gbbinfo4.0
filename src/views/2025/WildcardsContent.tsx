@@ -1,6 +1,15 @@
 import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  CREW,
+  LOOPSTATION,
+  PRODUCER,
+  SOLO,
+  TAG_TEAM,
+  WILDCARD,
+  YOUTUBE,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -15,31 +24,29 @@ type PlaylistItem = {
   deadline: string;
 };
 
-const WILDCARD = "Wildcard";
-
 const PLAYLISTS: PlaylistItem[] = [
   {
-    label: "Loopstation",
+    label: LOOPSTATION,
     playlistId: "PL-lF9xAI7Ut0yUF8WY5IuX6o4xRKyMBAC",
     deadline: "3/22",
   },
   {
-    label: "Solo",
+    label: SOLO,
     playlistId: "PL-lF9xAI7Ut1qGFSr93tDkjt3bADme5YG",
     deadline: "3/22",
   },
   {
-    label: "Producer",
+    label: PRODUCER,
     playlistId: "PL-lF9xAI7Ut0elAJ0t6yb6K1gxs5eTEZO",
     deadline: "3/29",
   },
   {
-    label: "Tag Team",
+    label: TAG_TEAM,
     playlistId: "PL-lF9xAI7Ut2lTXuqCIDXYT7noqSEHMfn",
     deadline: "4/5",
   },
   {
-    label: "Crew",
+    label: CREW,
     playlistId: "PL-lF9xAI7Ut0zfjRaQ3Sd7X-dqdu7IEg2",
     deadline: "4/5",
   },
@@ -94,7 +101,7 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
               />
             </div>
             <LinkCard
-              text="YouTube"
+              text={YOUTUBE}
               href={`https://www.youtube.com/playlist?list=${playlistId}`}
               fullWidth
             />

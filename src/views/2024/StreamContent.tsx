@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -6,8 +7,6 @@ type StreamContentProps = {
   locale: SupportedLanguage;
   year: number;
 };
-
-const WILDCARD = "Wildcard";
 
 const STREAM_LINKS = [
   { label: "Day1 11/1", href: "https://abe.ma/48kXwnx" },

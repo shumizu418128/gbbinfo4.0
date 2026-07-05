@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { SHOWCASE } from "~/constants/i18nTerms.js";
 import type {
   TournamentResultWithRelations,
   RankingResultWithRelations,
@@ -182,7 +183,7 @@ export const ResultContent = ({
 
         {isShowcaseCategory ? (
           <div className="py-40 text-center text-2xl text-(--secondary-text-color) text-balance">
-            {m.result_showcase_no_results({ SHOWCASE: "SHOWCASE" })}
+            {m.result_showcase_no_results({ SHOWCASE })}
           </div>
         ) : !hasResults ? (
           <div className="py-40 text-center text-2xl text-(--secondary-text-color)">

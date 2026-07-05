@@ -9,6 +9,7 @@ import { categorySlug } from "~/util/category";
 import { buildAvatarImageUrlMap } from "~/util/participantAvatar";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
 
 export async function getStaticPaths() {
   const YEAR = 2023;
@@ -52,7 +53,7 @@ const {
   latestYearWithCountry,
 } = Astro.props;
 
-const subtitle = m.wildcard_result_and_participants({ Wildcard: "Wildcard" });
+const subtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
 const title = `GBB ${yearWithCountry.year} ${subtitle}`;
 ---
 

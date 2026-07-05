@@ -4,6 +4,16 @@ import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  BEATBOX,
+  CREW,
+  GBB,
+  RC505,
+  SHOWCASE,
+  SWISSBEATBOX,
+  TAG_TEAM,
+  WILDCARD,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import * as m from "../../../paraglide/messages.js";
@@ -20,13 +30,6 @@ type RuleContentProps = {
   seedData: RuleSeedData;
 };
 
-const WILDCARD = "Wildcard";
-const GBB = "GBB";
-const SHOWCASE = "SHOWCASE";
-const TAG_TEAM = "Tag Team";
-const CREW = "Crew";
-const SWISSBEATBOX = "Swissbeatbox";
-const RC505 = "RC505";
 const SWISSBEATBOX_SOURCE =
   "https://swissbeatbox.com/newsfeed/gbb-2023-wildcard-competition/";
 
@@ -243,7 +246,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_toc_notices()}
         </RuleSectionHeading>
         <p className={paragraphClass}>
-          {m.rule_notices_p1({ Beatbox: "Beatbox" })}
+          {m.rule_notices_p1({ Beatbox: BEATBOX })}
           <br />
           {m.rule_notices_p1_note()}
           <strong>{m.rule_notices_p1_strong()}</strong>

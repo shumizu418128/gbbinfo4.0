@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -34,7 +35,7 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
           <LinkCard
             text={
               <span>
-                {m.wildcard_result({ Wildcard: "Wildcard" })}
+                {m.wildcard_result({ Wildcard: WILDCARD })}
                 <br />
                 {m.participants()}
               </span>

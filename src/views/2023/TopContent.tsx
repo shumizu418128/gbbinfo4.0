@@ -1,6 +1,7 @@
 import { LinkCard } from "~/components/LinkCard";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { SEVEN_TO_SMOKE, WILDCARD } from "~/constants/i18nTerms.js";
 import * as m from "../../../paraglide/messages.js";
 import type { YearWithCountry } from "~/db/year.js";
 
@@ -20,7 +21,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
       <div className="mx-auto w-full max-w-2xl px-4">
         <div className="mb-18 flex flex-wrap gap-4">
           <LinkCard
-            text={<span>{m.wildcard_result({ Wildcard: "Wildcard" })}<br />{m.participants()}</span>}
+            text={<span>{m.wildcard_result({ Wildcard: WILDCARD })}<br />{m.participants()}</span>}
             image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
@@ -51,7 +52,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
               href={`/${locale}/others/result_stream`}
               className={anchorClass}
             >
-              {m.wildcard_stream({ Wildcard: "Wildcard" })}
+              {m.wildcard_stream({ Wildcard: WILDCARD })}
             </a>
           </li>
           <li>
@@ -59,7 +60,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
               href={`/${locale}/${year}/wildcards`}
               className={anchorClass}
             >
-              {m.wildcard_list({ Wildcard: "Wildcard" })}
+              {m.wildcard_list({ Wildcard: WILDCARD })}
             </a>
           </li>
         </ul>
@@ -73,7 +74,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
             href={`/${locale}/others/how_to_plan`}
           />
           <LinkCard
-            text="7toSmoke"
+            text={SEVEN_TO_SMOKE}
             image="/images/afterparty.webp"
             href={`/${locale}/${year}/top_7tosmoke`}
           />

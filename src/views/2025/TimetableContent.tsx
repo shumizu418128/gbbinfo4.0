@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { SEVEN_TO_SMOKE, WILDCARD } from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import { Table } from "~/components/Table.js";
 import { anchorClass } from "~/constants/linkStyle.js";
@@ -116,7 +117,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           <LinkCard
             text={
               <span>
-                {m.wildcard_result({ Wildcard: "Wildcard" })}
+                {m.wildcard_result({ Wildcard: WILDCARD })}
                 <br />
                 {m.participants()}
               </span>
@@ -182,7 +183,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             text="現地観戦計画のたてかた"
             href={`/${locale}/others/how_to_plan`}
           />
-          <LinkCard text="7toSmoke" href={`/${locale}/${year}/top_7tosmoke`} />
+          <LinkCard text={SEVEN_TO_SMOKE} href={`/${locale}/${year}/top_7tosmoke`} />
         </div>
       </div>
     </main>

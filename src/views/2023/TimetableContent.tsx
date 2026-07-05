@@ -2,6 +2,15 @@ import type { ReactNode } from "react";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import { Table } from "~/components/Table.js";
+import {
+  CREW,
+  LOOPSTATION,
+  PRODUCER,
+  SHOWCASE_WORD,
+  SOLO,
+  TAG_TEAM,
+  WILDCARD,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -10,13 +19,6 @@ type TimetableContentProps = {
   year: number;
 };
 
-const WILDCARD = "Wildcard";
-const SOLO = "Solo";
-const TAG_TEAM = "Tag Team";
-const CREW = "Crew";
-const PRODUCER = "Producer";
-const LOOPSTATION = "Loopstation";
-const SHOWCASE = "showcase";
 const GBB_VENUE = "EX THEATER ROPPONGI";
 const DAY1 = "Day1 - 10/18";
 const DAY2 = "Day2 - 10/19";
@@ -97,14 +99,14 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
               "17:10",
               m.timetable_2023_tag_team_showcase_prelim({
                 TagTeam: TAG_TEAM,
-                SHOWCASE,
+                SHOWCASE: SHOWCASE_WORD,
               }),
             ],
             ["18:05", m.timetable_break()],
             ["18:55", u18Event(m.timetable_2023_u18_semifinal())],
             [
               "19:25",
-              m.timetable_2023_crew_showcase_prelim({ Crew: CREW, SHOWCASE }),
+              m.timetable_2023_crew_showcase_prelim({ Crew: CREW, SHOWCASE: SHOWCASE_WORD }),
             ],
             ["20:20", u18Event(m.timetable_2023_u18_final_ceremony())],
             ["21:15", m.timetable_end()],
@@ -141,14 +143,14 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             ["17:20", `${PRODUCER} showcase`],
             [
               "18:30",
-              m.timetable_2023_solo_showcase_prelim({ Solo: SOLO, SHOWCASE }),
+              m.timetable_2023_solo_showcase_prelim({ Solo: SOLO, SHOWCASE: SHOWCASE_WORD }),
             ],
             [
               "20:45",
               m.timetable_2023_showcase_ceremony({
                 Crew: CREW,
                 Producer: PRODUCER,
-                SHOWCASE,
+                SHOWCASE: SHOWCASE_WORD,
               }),
             ],
             ["21:15", m.timetable_end()],

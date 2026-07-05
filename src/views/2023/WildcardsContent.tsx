@@ -1,6 +1,15 @@
 import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  CREW,
+  LOOPSTATION,
+  PRODUCER,
+  SOLO,
+  TAG_TEAM,
+  WILDCARD,
+  YOUTUBE,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -18,13 +27,6 @@ type DeadlineGroup = {
   deadline: string;
   playlists: PlaylistItem[];
 };
-
-const WILDCARD = "Wildcard";
-const SOLO = "Solo";
-const TAG_TEAM = "Tag Team";
-const CREW = "Crew";
-const PRODUCER = "Producer";
-const LOOPSTATION = "Loopstation";
 
 const buildDeadlineGroups = (): DeadlineGroup[] => [
   {
@@ -103,7 +105,7 @@ const PlaylistSection = ({
       />
     </div>
     <LinkCard
-      text="YouTube"
+      text={YOUTUBE}
       href={`https://www.youtube.com/playlist?list=${playlistId}`}
       fullWidth
     />

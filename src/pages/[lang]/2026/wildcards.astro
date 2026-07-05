@@ -4,6 +4,7 @@ import { WildcardsContent } from "~/views/2026/WildcardsContent";
 import { getCommonYearData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
 
 export async function getStaticPaths() {
   const YEAR = 2026;
@@ -15,7 +16,7 @@ export async function getStaticPaths() {
 }
 
 const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
-const subtitle = m.wildcard_list({ Wildcard: "Wildcard" });
+const subtitle = m.wildcard_list({ Wildcard: WILDCARD });
 const title = `GBB ${yearWithCountry.year} ${subtitle}`;
 ---
 

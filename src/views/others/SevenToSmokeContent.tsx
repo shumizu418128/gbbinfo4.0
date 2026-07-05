@@ -2,6 +2,7 @@ import { LinkCard } from "~/components/LinkCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { SEVEN_TO_SMOKE } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 
 type SevenToSmokeContentProps = {
@@ -216,7 +217,7 @@ export const SevenToSmokeContent = ({ locale, year }: SevenToSmokeContentProps) 
           をご確認ください。
         </p>
         <div className="mb-8 flex flex-wrap gap-4">
-          <LinkCard text="7toSmoke"
+          <LinkCard text={SEVEN_TO_SMOKE}
             href={`/${locale}/${year}/top_7tosmoke`}
             fullWidth
           />

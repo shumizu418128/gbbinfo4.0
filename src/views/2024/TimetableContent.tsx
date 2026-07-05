@@ -1,4 +1,13 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  CREW,
+  LOOPSTATION,
+  PRODUCER,
+  SEVEN_TO_SMOKE,
+  SOLO,
+  TAG_TEAM,
+  WILDCARD,
+} from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import { Table } from "~/components/Table.js";
 import { anchorClass } from "~/constants/linkStyle.js";
@@ -8,13 +17,6 @@ type TimetableContentProps = {
   locale: SupportedLanguage;
   year: number;
 };
-
-const CREW = "Crew";
-const PRODUCER = "Producer";
-const LOOPSTATION = "Loopstation";
-const SOLO = "Solo";
-const TAG_TEAM = "Tag Team";
-const WILDCARD = "Wildcard";
 
 const paragraphClass = "mb-4 leading-relaxed text-(--secondary-text-color)";
 const sectionHeadingClass = "mb-4 mt-16 text-2xl font-bold";
@@ -207,7 +209,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             text={m.how_to_plan()}
             href={`/${locale}/others/how_to_plan`}
           />
-          <LinkCard text="7toSmoke" href={`/${locale}/${year}/top_7tosmoke`} />
+          <LinkCard text={SEVEN_TO_SMOKE} href={`/${locale}/${year}/top_7tosmoke`} />
         </div>
 
         <h2 id="showcase" className={sectionHeadingClass}>

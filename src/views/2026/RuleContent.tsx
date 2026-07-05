@@ -4,6 +4,22 @@ import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  BEATBOX,
+  BEATBOXER,
+  COMEBACK_WILDCARD,
+  GBB,
+  LOOPSTATION,
+  RC505,
+  SEVEN_TO_SMOKE,
+  SHOWCASE,
+  SOLO,
+  SOLO_WILDCARD,
+  SWISSBEATBOX,
+  TAG_TEAM_LOOPSTATION,
+  WILDCARD,
+  YOUTUBE,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import * as m from "../../../paraglide/messages.js";
@@ -19,13 +35,6 @@ type RuleContentProps = {
   year: number;
   seedData: RuleSeedData;
 };
-
-const WILDCARD = "Wildcard";
-const SHOWCASE = "SHOWCASE";
-const SWISSBEATBOX = "Swissbeatbox";
-const GBB = "GBB";
-const SOLO = "Solo";
-const RC505 = "RC505";
 
 const sectionClass = "mb-4 text-2xl font-bold";
 const tocSectionClass = "mb-4 text-2xl font-bold";
@@ -135,7 +144,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_toc_notices()}
         </RuleSectionHeading>
         <p className={paragraphClass}>
-          {m.rule_notices_p1({ Beatbox: "Beatbox" })}
+          {m.rule_notices_p1({ Beatbox: BEATBOX })}
           <br />
           {m.rule_notices_p1_note()}
           <strong>{m.rule_notices_p1_strong()}</strong>
@@ -207,17 +216,17 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           textCenter
         />
         <p className={paragraphClass}>
-          {m.rule_forgotten_ttl({ TagTeamLoopstation: "Tag Team Loopstation" })}
+          {m.rule_forgotten_ttl({ TagTeamLoopstation: TAG_TEAM_LOOPSTATION })}
           😭
         </p>
         <p className={paragraphClass}>{m.rule_category_note()}</p>
 
         <RuleSubSection>
           <RuleSubHeading>
-            {m.rule_solo_final_title({ Solo: "Solo" })}
+            {m.rule_solo_final_title({ Solo: SOLO })}
           </RuleSubHeading>
           <p className={paragraphClass}>
-            {m.rule_solo_final_p1({ year: String(year), Solo: "Solo" })}
+            {m.rule_solo_final_p1({ year: String(year), Solo: SOLO })}
             <br />
             {m.rule_solo_final_p2()}
           </p>
@@ -238,8 +247,8 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <p className={paragraphClass}>
           {m.rule_showcase_p2({
             SHOWCASE,
-            Solo: "Solo",
-            Loopstation: "Loopstation",
+            Solo: SOLO,
+            Loopstation: LOOPSTATION,
             Swissbeatbox: SWISSBEATBOX,
           })}
         </p>
@@ -264,9 +273,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSectionHeading>
         <p className={paragraphClass}>
           {m.rule_comeback_intro({
-            ComebackWildcard: "COMEBACK Wildcard",
-            SoloWildcard: "Solo Wildcard",
-            Beatboxer: "Beatboxer",
+            ComebackWildcard: COMEBACK_WILDCARD,
+            SoloWildcard: SOLO_WILDCARD,
+            Beatboxer: BEATBOXER,
           })}
         </p>
         <RuleSubSection>
@@ -288,14 +297,14 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             <br />
             {m.rule_judge_nomination_detail()}
             <PostIt>
-              <p>{m.rule_judge_nomination_note({ Beatboxer: "Beatboxer" })}</p>
+              <p>{m.rule_judge_nomination_note({ Beatboxer: BEATBOXER })}</p>
             </PostIt>
           </li>
           <li>
             <strong>
               {m.rule_revote({
                 Swissbeatbox: SWISSBEATBOX,
-                YouTube: "YouTube",
+                YouTube: YOUTUBE,
               })}
             </strong>
             <ul className="mt-2 list-disc space-y-2 pl-8">
@@ -303,7 +312,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               <li>
                 {m.rule_member_vote({
                   Swissbeatbox: SWISSBEATBOX,
-                  YouTube: "YouTube",
+                  YouTube: YOUTUBE,
                 })}
               </li>
             </ul>
@@ -314,7 +323,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             {m.rule_winner_decision_detail({
               year: String(year),
               Swissbeatbox: SWISSBEATBOX,
-              YouTube: "YouTube",
+              YouTube: YOUTUBE,
             })}
           </li>
           </ol>
@@ -447,7 +456,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                   <li>
                     {m.rule_special_solo_3({
                       prevYear: String(prevYear),
-                      SevenToSmoke: "7toSmoke",
+                      SevenToSmoke: SEVEN_TO_SMOKE,
                     })}
                   </li>
                 </ul>,
@@ -458,7 +467,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                   <li>
                     {m.rule_special_loop_1({
                       prevYear: String(prevYear),
-                      Loopstation: "Loopstation",
+                      Loopstation: LOOPSTATION,
                     })}
                   </li>
                   <li>{m.rule_special_loop_2({ Wildcard: WILDCARD })}</li>
@@ -600,7 +609,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                 m.rule_eligibility_past_gbb(),
                 <ul key="past" className="list-disc space-y-2 pl-8 text-left">
                   <li>{m.rule_eligibility_gbb2019()}</li>
-                  <li>{m.rule_eligibility_7tosmoke({ SevenToSmoke: "7toSmoke" })}</li>
+                  <li>{m.rule_eligibility_7tosmoke({ SevenToSmoke: SEVEN_TO_SMOKE })}</li>
                 </ul>,
               ],
               [
@@ -774,9 +783,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             {m.rule_official_name()}：Off The Lips Beatbox Battle
           </RuleSubHeading>
           <p className={paragraphClass}>
-            {m.rule_second_league_p1({ year: String(year), Solo: "Solo" })}
+            {m.rule_second_league_p1({ year: String(year), Solo: SOLO })}
             <br />
-            {m.rule_second_league_p2({ nextYear: String(nextYear), Solo: "Solo" })}
+            {m.rule_second_league_p2({ nextYear: String(nextYear), Solo: SOLO })}
           </p>
           <PostIt>
             <p>
@@ -787,7 +796,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </PostIt>
           <p className={paragraphClass}>{m.rule_second_league_policy()}</p>
           <p className={paragraphClass}>
-            {m.rule_second_league_replacement({ year: String(year), Solo: "Solo" })}
+            {m.rule_second_league_replacement({ year: String(year), Solo: SOLO })}
           </p>
         </RuleSubSection>
       </RuleSection>

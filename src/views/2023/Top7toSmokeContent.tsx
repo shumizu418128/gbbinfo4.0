@@ -1,13 +1,12 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { LinkCard } from "~/components/LinkCard.js";
+import { SEVEN_TO_SMOKE } from "~/constants/i18nTerms.js";
 import * as m from "../../../paraglide/messages.js";
 
 type Top7toSmokeContentProps = {
   locale: SupportedLanguage;
   year: number;
 };
-
-const SEVEN_TO_SMOKE = "7toSmoke";
 
 export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) => {
   return (

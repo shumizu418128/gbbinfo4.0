@@ -6,6 +6,7 @@ import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { CHATGPT } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type {
   ParticipantDetailParticipant,
@@ -349,7 +350,7 @@ export const ParticipantTeamDetailContent = ({
         <div className="my-4 flex flex-wrap justify-center gap-2">
           <LinkCard
             href={chatGptUrl}
-            text={`${m.participant_ask_chatgpt({ ChatGPT: "ChatGPT" })} - ${displayName}`}
+            text={`${m.participant_ask_chatgpt({ ChatGPT: CHATGPT })} - ${displayName}`}
             fullWidth
           />
         </div>

@@ -1,4 +1,11 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import {
+  LOOPSTATION,
+  SHOWCASE,
+  SOLO,
+  SWISSBEATBOX,
+  WILDCARD,
+} from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -11,10 +18,6 @@ const paragraphClass = "mb-4 leading-relaxed";
 const sectionClass = "mb-8 text-2xl font-bold";
 
 export const StudioCompetitionContent = ({ locale, year }: StudioCompetitionContentProps) => {
-  const SHOWCASE = "SHOWCASE";
-  const WILDCARD = "Wildcard";
-  const SWISSBEATBOX = "Swissbeatbox";
-
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
@@ -31,7 +34,7 @@ export const StudioCompetitionContent = ({ locale, year }: StudioCompetitionCont
             {m.rule_showcase_p1_review({ Wildcard: WILDCARD })}
           </p>
           <p className={paragraphClass}>
-            {m.rule_showcase_p2({ SHOWCASE, Solo: "Solo", Loopstation: "Loopstation", Swissbeatbox: SWISSBEATBOX })}
+            {m.rule_showcase_p2({ SHOWCASE, Solo: SOLO, Loopstation: LOOPSTATION, Swissbeatbox: SWISSBEATBOX })}
           </p>
         </section>
 
