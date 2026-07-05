@@ -18,11 +18,14 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: scripts/r2/package-lock.json
 
-      - run: npm ci
+      - name: Install R2 WebP script dependencies
+        working-directory: scripts/r2
+        run: npm ci
 
       - name: Convert R2 images to WebP
-        run: npm run r2:convert-webp
+        run: scripts/r2/node_modules/.bin/tsx scripts/r2/convert-to-webp.ts
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
