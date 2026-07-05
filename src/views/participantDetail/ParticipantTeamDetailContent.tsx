@@ -266,7 +266,7 @@ export const ParticipantTeamDetailContent = ({
 
         {tavily.youtubeEmbedUrl ? (
           <div className="mb-8 flex justify-center">
-            <div className="aspect-video w-full max-w-[560px]">
+            <div className="aspect-video w-full max-w-140">
               <iframe
                 src={tavily.youtubeEmbedUrl}
                 title="YouTube video player"
