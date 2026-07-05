@@ -1,0 +1,84 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { ResultContent } from "~/views/2023/ResultContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { findTournamentResults, findRankingResults } from "~/db/result";
+import type {
+  TournamentResultWithRelations,
+  RankingResultWithRelations,
+} from "~/db/result";
+import { findCategoriesByIds } from "~/db/category";
+import { categorySlug } from "~/util/category";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2023;
+  const common = await getCommonYearData(YEAR);
+  const validCategories = await findCategoriesByIds(
+    common.yearWithCountry.categories ?? [],
+  );
+  const categoryNames = validCategories.map((c) => c.name);
+
+  const paths = [];
+  for (const category of validCategories) {
+    let tournamentResults: TournamentResultWithRelations[] = [];
+    let rankingResults: RankingResultWithRelations[] = [];
+
+    try {
+      tournamentResults = await findTournamentResults(YEAR, category.id);
+      if (tournamentResults.length === 0) {
+        rankingResults = await findRankingResults(YEAR, category.id);
+      }
+    } catch {
+      // DBエラー時は空データで続行
+    }
+
+    for (const locale of locales) {
+      paths.push({
+        params: { lang: locale, category: categorySlug(category.name) },
+        props: {
+          locale,
+          selectedCategory: { name: category.name, isTeam: category.isTeam },
+          categoryNames,
+          tournamentResults,
+          rankingResults,
+          ...common,
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const {
+  locale,
+  selectedCategory,
+  categoryNames,
+  tournamentResults,
+  rankingResults,
+  yearWithCountry,
+  years,
+  latestYearWithCountry,
+} = Astro.props;
+
+const subtitle = m.result();
+const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <ResultContent
+    locale={locale}
+    selectedCategory={selectedCategory}
+    categoryNames={categoryNames}
+    tournamentResults={tournamentResults}
+    rankingResults={rankingResults}
+  />
+</SiteFrame>

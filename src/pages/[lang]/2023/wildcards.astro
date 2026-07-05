@@ -1,0 +1,31 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { WildcardsContent } from "~/views/2023/WildcardsContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2023;
+  const common = await getCommonYearData(YEAR);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const subtitle = m.wildcard_list({ Wildcard: "Wildcard" });
+const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <WildcardsContent locale={locale} year={yearWithCountry.year} />
+</SiteFrame>
