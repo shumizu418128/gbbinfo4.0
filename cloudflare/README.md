@@ -15,6 +15,7 @@ cloudflare/
     images/           # webp 画像・国旗など
   functions/
     avatar.ts         # GET /avatar — R2 キャッシュ付きアバター取得
+    avatar/upload.ts  # POST /avatar/upload — 手動アバターアップロード（要 secret）
   lib/
     fetch-avatar.ts   # platform 別取得
     og-image.ts       # og:image 抽出
@@ -57,6 +58,7 @@ Astro 側は `PUBLIC_ASSET_BASE_URL` + `staticAssetUrl()` / `buildAvatarProxyUrl
 GitHub Actions が **毎日 JST 03:00** に `gbbinfo-avatar-cache` 内の非 WebP 画像を WebP に変換し、同一キーで上書きする。
 
 - ワークフロー: [.github/workflows/convert-r2-webp.yml](../.github/workflows/convert-r2-webp.yml)
+- CI 依存関係: [`scripts/r2/package.json`](../scripts/r2/package.json)（sharp / S3 SDK / tsx のみ。ルート Astro スタックは使わない）
 - 手動実行: GitHub → **Actions** → **Convert R2 images to WebP** → **Run workflow**
 - ローカル実行: `npm run r2:convert-webp`（`.env` に R2 認証情報が必要）
 
@@ -91,6 +93,42 @@ GET /avatar?name=SHAH&platform=youtube&url=https%3A%2F%2F...&method=ogImage
 | ローカル | `npm run assets:dev` → ターミナルに `[avatar]` ログが出る |
 
 Dashboard の Logs は **Live** タブ（リアルタイムのみ、Pages は保存ログ非対応）。`wrangler pages deployment tail` が確実。
+
+## 手動アバターアップロード（`/avatar/upload`）
+
+R2 ダッシュボードから直接アップロードすると `avatars/NAME.jpg` のように拡張子付きキーになり、`GET /avatar` と一致しない。正しいキー（`avatars/{正規化された出場者名}`、拡張子なし）と `contentType` / `cacheControl` を設定するための API。
+
+**アクセス制限**: `Authorization: Bearer {AVATAR_UPLOAD_SECRET}` のみ。シークレット未設定時は **404**（エンドポイント非公開）。
+
+### 初回セットアップ
+
+1. シークレット生成（例）: `openssl rand -hex 32`
+2. Cloudflare Dashboard → Workers & Pages → `gbbinfo-assets` → Settings → Environment variables → Production に `AVATAR_UPLOAD_SECRET` を **Encrypted** で登録
+3. ローカル `.env` に同じ値を設定（`npm run r2:upload-avatar` 用）
+4. ローカル wrangler dev 用: `cloudflare/.dev.vars.example` を `cloudflare/.dev.vars` にコピーして同値を設定
+
+### アップロード
+
+```bash
+npm run r2:upload-avatar -- --name "Shah" --file ./shah-avatar.jpg
+```
+
+curl の例:
+
+```bash
+curl -X POST "https://gbbinfo-assets.pages.dev/avatar/upload" \
+  -H "Authorization: Bearer $AVATAR_UPLOAD_SECRET" \
+  -F "name=Shah" \
+  -F "file=@./shah-avatar.jpg"
+```
+
+成功時は `{ ok: true, name, r2Key, contentType, size }` が返る。既存キャッシュは上書きされる。
+
+### 注意
+
+- 対応形式: JPEG / PNG / WebP / GIF（最大 5MB）
+- アップロード直後は元形式のまま。日次 WebP 変換バッチで `image/webp` に上書きされる（キーは変わらない）
+- 本番 R2 へのローカル dev テスト: `npm run assets:dev -- --remote`（`cloudflare/.dev.vars` に secret 必須）
 
 ## 静的画像の追加・更新
 

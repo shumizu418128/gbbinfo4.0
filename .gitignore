@@ -2,6 +2,7 @@
 .env
 /.cache/
 /node_modules/
+/scripts/r2/node_modules/
 
 # Astro
 /dist/
@@ -17,3 +18,4 @@
 # Cloudflare Pages assets
 /cloudflare/node_modules/
 /cloudflare/.wrangler/
+/cloudflare/.dev.vars
