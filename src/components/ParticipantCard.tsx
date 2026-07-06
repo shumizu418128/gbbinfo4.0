@@ -36,7 +36,7 @@ export const ParticipantCard = ({
     {isCancelled && (
       <div
         className="absolute inset-0 pointer-events-none"
-        style={{ backgroundColor: "rgba(0, 0, 0, 0.3)" }}
+        style={{ backgroundColor: "rgba(255, 255, 255, 0.2)" }}
         aria-hidden="true"
       />
     )}
