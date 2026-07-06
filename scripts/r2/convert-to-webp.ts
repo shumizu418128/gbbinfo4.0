@@ -19,7 +19,7 @@ import {
 import { AVATAR_CACHE_CONTROL } from "../../shared/avatar/constants.ts";
 import sharp from "sharp";
 import { loadDotEnv } from "../lib/load-dotenv.ts";
-import { loadR2ClientFromEnv } from "../lib/r2/client.ts";
+import { loadR2ClientFromEnv } from "./lib/client.ts";
 
 const WEBP_CONTENT_TYPE = "image/webp";
 const WEBP_QUALITY = 80;
