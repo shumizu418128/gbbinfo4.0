@@ -1,0 +1,80 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { ParticipantsContent } from "~/views/2021/ParticipantsContent";
+import { ParticipantWorldMap } from "~/components/ParticipantWorldMap";
+import { getCommonYearData } from "~/util/staticPaths";
+import { findParticipants } from "~/db/participant";
+import { findCategoriesByIds } from "~/db/category";
+import { categorySlug } from "~/util/category";
+import { buildAvatarImageUrlMap } from "~/util/participantAvatar";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2021;
+  const common = await getCommonYearData(YEAR);
+  const validCategories = await findCategoriesByIds(
+    common.yearWithCountry.categories ?? [],
+  );
+  const categoryNames = validCategories.map((c) => c.name);
+
+  const paths = [];
+  for (const category of validCategories) {
+    const participants = await findParticipants(YEAR, category.id, null);
+    const avatarImageUrls = await buildAvatarImageUrlMap(
+      participants.map((p) => p.name),
+    );
+    for (const locale of locales) {
+      paths.push({
+        params: { lang: locale, category: categorySlug(category.name) },
+        props: {
+          locale,
+          participants,
+          selectedCategory: category,
+          categoryNames,
+          avatarImageUrls,
+          ...common,
+        },
+      });
+    }
+  }
+  return paths;
+}
+
+const {
+  locale,
+  participants,
+  selectedCategory,
+  categoryNames,
+  avatarImageUrls,
+  yearWithCountry,
+  years,
+  latestYearWithCountry,
+} = Astro.props;
+
+const subtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
+const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  title={title}
+  subtitle={subtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <ParticipantsContent
+    participants={participants}
+    locale={locale}
+    selectedCategory={selectedCategory}
+    categoryNames={categoryNames}
+    avatarImageUrls={avatarImageUrls}
+  />
+  <ParticipantWorldMap
+    client:visible
+    participants={participants}
+    locale={locale}
+  />
+</SiteFrame>
