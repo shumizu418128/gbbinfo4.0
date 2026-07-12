@@ -13,6 +13,8 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
   const teamHref =
     locale === "ko" ? `/${locale}/${year}/korea` : `/${locale}/${year}/japan`;
   const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
+  const teamImage =
+    locale === "ko" ? "/images/wing.webp" : "/images/team_japan.webp";
 
   return (
     <main
@@ -49,7 +51,7 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
           />
           <LinkCard
             text={teamLabel}
-            image="/images/team_japan.webp"
+            image={teamImage}
             href={teamHref}
           />
           <LinkCard

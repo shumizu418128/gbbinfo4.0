@@ -73,12 +73,10 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
                 {m.participants()}
               </span>
             }
-            image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />
           <LinkCard
             text={<span>{m.rules()}<br />{m.judges()}</span>}
-            image="/images/mahiro.webp"
             href={`/${locale}/${year}/rule`}
           />
         </div>
@@ -128,10 +126,9 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
         <div className="mt-16 flex flex-wrap gap-4">
           <LinkCard
             text={m.how_to_plan()}
-            image="/images/zenhit.webp"
             href={`/${locale}/others/how_to_plan`}
           />
-          <LinkCard text={teamLabel} image="/images/team_japan.webp" href={teamHref} />
+          <LinkCard text={teamLabel} href={teamHref} />
         </div>
       </div>
     </main>

@@ -15,6 +15,8 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
   const teamHref =
     locale === "ko" ? `/${locale}/${year}/korea` : `/${locale}/${year}/japan`;
   const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
+  const teamImage =
+    locale === "ko" ? "/images/wing.webp" : "/images/team_japan.webp";
 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
@@ -52,7 +54,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
             image="/images/dice.webp"
             href={`/${locale}/${year}/ticket`}
           />
-          <LinkCard text={teamLabel} image="/images/team_japan.webp" href={teamHref} />
+          <LinkCard text={teamLabel} image={teamImage} href={teamHref} />
           <LinkCard text={m.result()} image="/images/winner.webp" href={`/${locale}/${year}/result`} />
         </div>
       </div>

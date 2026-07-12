@@ -15,6 +15,8 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
   const teamHref =
     locale === "ko" ? `/${locale}/${year}/korea` : `/${locale}/${year}/japan`;
   const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
+  const teamImage =
+    locale === "ko" ? "/images/wing.webp" : "/images/team_japan.webp";
 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
@@ -27,7 +29,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           />
           <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href={`/${locale}/${year}/rule`} />
           <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href={`/${locale}/${year}/timetable`} />
-          <LinkCard text={teamLabel} image="/images/team_japan.webp" href={teamHref} />
+          <LinkCard text={teamLabel} image={teamImage} href={teamHref} />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
           <LinkCard text={m.withdrawn_list()} image="/images/b4start.webp" href={`/${locale}/${year}/cancel`} />

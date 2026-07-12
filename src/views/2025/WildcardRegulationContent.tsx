@@ -102,12 +102,10 @@ const guideLinkCards = (locale: SupportedLanguage, year: number) => (
   <div className="mb-8 flex flex-wrap gap-4">
     <LinkCard
       text={`GBB ${year} これだけガイド`}
-      image="/images/sora.webp"
       href={`/${locale}/${year}/top`}
     />
     <LinkCard
       text="7toSmoke これだけガイド"
-      image="/images/afterparty.webp"
       href={`/${locale}/${year}/top_7tosmoke`}
     />
   </div>
@@ -152,7 +150,6 @@ export const WildcardRegulationContent = ({
                 GBB {year} {m.rules()}
               </span>
             }
-            image="/images/mahiro.webp"
             href={`/${locale}/${year}/rule`}
           />
         </div>
