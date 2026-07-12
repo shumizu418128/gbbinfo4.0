@@ -17,7 +17,8 @@
     "assets:dev": "npm run dev --prefix cloudflare",
     "assets:deploy": "npm run deploy --prefix cloudflare",
     "r2:convert-webp": "tsx scripts/r2/convert-to-webp.ts",
-    "r2:upload-avatar": "tsx scripts/r2/upload-avatar.ts"
+    "r2:upload-avatar": "tsx scripts/r2/upload-avatar.ts",
+    "backup:db": "tsx scripts/backup-db-csv.ts"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.9",
