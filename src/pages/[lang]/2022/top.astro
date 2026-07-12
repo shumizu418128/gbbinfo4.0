@@ -3,6 +3,7 @@ import SiteFrame from "~/layouts/SiteFrame.astro";
 import { TopContent } from "~/views/2022/TopContent";
 import { getCommonYearData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
 
 export async function getStaticPaths() {
   const YEAR = 2022;
@@ -15,11 +16,13 @@ export async function getStaticPaths() {
 
 const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
 const title = `GBB ${yearWithCountry.year}`;
+const subtitle = m.top2022_cancelled()
 ---
 
 <SiteFrame
   locale={locale}
   title={title}
+  subtitle={subtitle}
   yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}

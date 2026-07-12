@@ -20,14 +20,9 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
       style={{ backgroundColor: "var(--background-color)" }}
     >
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className="mb-4 text-center text-xl">GBB {year}: 10/22 - 10/24</p>
-        <p className="mb-16 text-center text-(--secondary-text-color)">
-          {m.top2021_tagline()}
-        </p>
-
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
-            text={m.wildcard_result_and_participants({ Wildcard: WILDCARD })}
+            text={<span>{m.wildcard_result({ Wildcard: WILDCARD })}<br />{m.participants()}</span>}
             image="/images/sora.webp"
             href={`/${locale}/${year}/participants`}
           />

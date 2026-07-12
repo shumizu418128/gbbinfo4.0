@@ -19,9 +19,6 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className="mb-8 text-center">{m.top_2019_dates()}</p>
-        <p className="mb-16 text-center">{m.top_site_description()}</p>
-
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
             text={
