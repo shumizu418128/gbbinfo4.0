@@ -7,7 +7,7 @@ interface Props {
 }
 
 const { latestYearWithCountry } = Astro.props;
-const { isoAlpha2 } = latestYearWithCountry.country;
+const isoAlpha2 = latestYearWithCountry.country?.isoAlpha2 ?? null;
 const { city, year, startsAt } = latestYearWithCountry;
 const targetIso = startsAt ? new Date(startsAt).toISOString() : null;
 const flagHeight = 20;

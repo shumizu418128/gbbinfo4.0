@@ -26,9 +26,6 @@ const memberWithRelationsQuery = {
  *
  * Returns:
  *   years / participants / members / tavily を含むスナップショット。
- *
- * Raises:
- *   Error: Year に country が欠けている行がある場合。
  */
 export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => {
   const db = getDb();
@@ -47,23 +44,16 @@ export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => 
     db.query.tavilyTable.findMany(),
   ]);
 
-  const years = yearRows.flatMap((row) => {
-    if (!row.country) {
-      console.warn(`Skipping year without country in snapshot: year=${row.year}`);
-      return [];
-    }
-    return [
-      {
-        year: row.year,
-        startsAt: row.startsAt?.toISOString() ?? null,
-        endsAt: row.endsAt?.toISOString() ?? null,
-        categories: row.categories,
-        city: row.city,
-        isoCode: row.isoCode,
-        country: row.country,
-      },
-    ];
-  });
+  // 中止年（例: 2022）は country が null でもページ表示用に含める。
+  const years = yearRows.map((row) => ({
+    year: row.year,
+    startsAt: row.startsAt?.toISOString() ?? null,
+    endsAt: row.endsAt?.toISOString() ?? null,
+    categories: row.categories,
+    city: row.city,
+    isoCode: row.isoCode,
+    country: row.country ?? null,
+  }));
 
   const snapshotParticipants = participants.map((row) => {
     if (!row.country || !row.categoryInfo) {

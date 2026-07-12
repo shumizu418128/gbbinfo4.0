@@ -20,7 +20,7 @@ export type SnapshotCategory = {
   isTeam: boolean;
 };
 
-/** JSON シリアライズ可能な Year + Country。 */
+/** JSON シリアライズ可能な Year + Country（中止年は country が null）。 */
 export type SnapshotYearWithCountry = {
   year: number;
   startsAt: string | null;
@@ -28,7 +28,7 @@ export type SnapshotYearWithCountry = {
   categories: number[] | null;
   city: string | null;
   isoCode: number | null;
-  country: SnapshotCountry;
+  country: SnapshotCountry | null;
 };
 
 /** JSON シリアライズ可能な ParticipantMember（country 付き）。 */
@@ -77,9 +77,9 @@ export type SnapshotTavilyRow = {
 export type BuildCacheSnapshot = {
   version: typeof BUILD_CACHE_VERSION;
   generatedAt: string;
-  /** Country 付き Year のみ（ヘッダー表示用）。 */
+  /** ヘッダー表示用 Year（country 未定の中止年を含む）。 */
   years: SnapshotYearWithCountry[];
-  /** ナビゲーション用の全開催年（country 未定を含む）。 */
+  /** ナビゲーション用の全開催年。 */
   allYears: number[];
   participants: SnapshotParticipant[];
   members: SnapshotParticipantMemberDetail[];
