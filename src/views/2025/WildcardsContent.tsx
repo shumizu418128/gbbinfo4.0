@@ -3,6 +3,7 @@ import { PostIt } from "~/components/PostIt.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
   CREW,
+  GBB,
   LOOPSTATION,
   PRODUCER,
   SOLO,
@@ -93,7 +94,7 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
               <iframe
                 className="absolute inset-0 h-full w-full"
                 src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`}
-                title={`GBB ${year} Wildcard ${label}`}
+                title={`${GBB} ${year} ${WILDCARD} ${label}`}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               />

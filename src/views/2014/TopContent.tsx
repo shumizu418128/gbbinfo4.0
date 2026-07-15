@@ -27,7 +27,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
         <p className="mb-16 text-center leading-relaxed">
           {m.top_site_description()}
           <br />
-          {m.top_2013_2016_participants_only()}
+          {m.top_legacy_participants_only()}
         </p>
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard

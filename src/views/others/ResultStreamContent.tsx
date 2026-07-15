@@ -1,5 +1,6 @@
 import { LinkCard } from "~/components/LinkCard.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { GBB } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 
 type ResultStreamContentProps = {
@@ -64,7 +65,7 @@ export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) 
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text={`GBB ${year} ルール & 審査員`}
+            text={`${GBB} ${year} ルール & 審査員`}
             href={`/${locale}/${year}/rule`}
             fullWidth
           />

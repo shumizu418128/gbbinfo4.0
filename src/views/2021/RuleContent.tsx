@@ -4,8 +4,12 @@ import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
+  GBB,
   CREW,
+  LOOPSTATION,
+  SOLO,
   SWISSBEATBOX,
+  TAG_TEAM,
   TAG_TEAM_LOOPSTATION,
   WILDCARD,
 } from "~/constants/i18nTerms.js";
@@ -64,23 +68,23 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 
 const mainJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "D-LOW\nKENNY URBAN\nZEDE\nREEPS ONE\nPE4ENKATA"],
-  ["Tag Team", "D-LOW\nKENNY URBAN\nCHRIS CELIZ\nBEATNESS\nBMG"],
-  ["Loopstation", "INKIE\nTHE PETEBOX\nZEDE\nBEATNESS\nSARO"],
-  ["Tag Team Loopstation", "INKIE\nTHE PETEBOX\nZEDE\nGENE SHINOZAKI\nSARO"],
-  ["Crew", "MC ZANI\nKENNY URBAN\nCHRIS CELIZ\nBEATNESS\nBEASTY"],
+  [SOLO, "D-LOW\nKENNY URBAN\nZEDE\nREEPS ONE\nPE4ENKATA"],
+  [TAG_TEAM, "D-LOW\nKENNY URBAN\nCHRIS CELIZ\nBEATNESS\nBMG"],
+  [LOOPSTATION, "INKIE\nTHE PETEBOX\nZEDE\nBEATNESS\nSARO"],
+  [TAG_TEAM_LOOPSTATION, "INKIE\nTHE PETEBOX\nZEDE\nGENE SHINOZAKI\nSARO"],
+  [CREW, "MC ZANI\nKENNY URBAN\nCHRIS CELIZ\nBEATNESS\nBEASTY"],
 ];
 
 const wildcardJudges2020TableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nKIM\nSKILLER\nZEDE"],
-  ["Tag Team", "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nCHRIS CELIZ\nBMG\nNAPOM"],
-  ["Loopstation", "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nTIONEB\nINKIE\nGENE SHINOZAKI"],
+  [SOLO, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nKIM\nSKILLER\nZEDE"],
+  [TAG_TEAM, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nCHRIS CELIZ\nBMG\nNAPOM"],
+  [LOOPSTATION, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nTIONEB\nINKIE\nGENE SHINOZAKI"],
   [
-    "Tag Team Loopstation",
+    TAG_TEAM_LOOPSTATION,
     "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nTOM THUM\nGENE SHINOZAKI\nFAYA BRAZ",
   ],
-  ["Crew", "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nMC ZANI\nTOM THUM\nHOBBIT"],
+  [CREW, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nMC ZANI\nTOM THUM\nHOBBIT"],
 ];
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
@@ -91,11 +95,11 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
   const wildcardJudges2021TableData: (string | ReactNode)[][] = [
     [m.rule_col_category(), m.rule_col_judges()],
-    ["Solo", "KENNY URBAN\nPE4ENKATA\nSKILLER\nKIM\nBALL-ZEE"],
-    ["Tag Team", "KENNY URBAN\nCHRIS CELIZ\nMC ZANI\nHOBBIT\nZHANG ZE"],
-    ["Loopstation", "TIONEB\nINKIE\nSARO\nHOBBIT\nPE4ENKATA"],
-    ["Tag Team Loopstation", m.rule2021_extra_none()],
-    ["Crew", "KENNY URBAN\nCHRIS CELIZ\nMC ZANI\nHOBBIT\nZHANG ZE"],
+    [SOLO, "KENNY URBAN\nPE4ENKATA\nSKILLER\nKIM\nBALL-ZEE"],
+    [TAG_TEAM, "KENNY URBAN\nCHRIS CELIZ\nMC ZANI\nHOBBIT\nZHANG ZE"],
+    [LOOPSTATION, "TIONEB\nINKIE\nSARO\nHOBBIT\nPE4ENKATA"],
+    [TAG_TEAM_LOOPSTATION, m.rule_extra_slot_none()],
+    [CREW, "KENNY URBAN\nCHRIS CELIZ\nMC ZANI\nHOBBIT\nZHANG ZE"],
   ];
 
   return (
@@ -116,7 +120,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB 2021 Wildcard Competition
+            {GBB} 2021 {WILDCARD} Competition
           </a>
           <br />
           <a
@@ -125,7 +129,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB 2020 Wildcard Competition
+            {GBB} 2020 {WILDCARD} Competition
           </a>
         </p>
 
@@ -147,7 +151,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <ol className="mb-8 list-decimal space-y-2 pl-8">
           <li>
             <a href="#notices-section" className={anchorClass}>
-              {m.rule2021_toc_notices()}
+              {m.rule_supplementary_notes()}
             </a>
           </li>
           <li>
@@ -167,12 +171,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </li>
           <li>
             <a href="#wildcard-judges-2020-section" className={anchorClass}>
-              {m.rule2021_judges_2020wc({ Wildcard: WILDCARD })}
+              {m.rule_judges_prior_wildcard({ Wildcard: WILDCARD })}
             </a>
           </li>
           <li>
             <a href="#wildcard-judges-2021-section" className={anchorClass}>
-              {m.rule2021_judges_2021extra({ Wildcard: WILDCARD })}
+              {m.rule_judges_extra_wildcard({ Wildcard: WILDCARD })}
             </a>
           </li>
         </ol>
@@ -180,23 +184,23 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
       <RuleSection>
         <RuleSectionHeading id="notices-section">
-          {m.rule2021_toc_notices()}
+          {m.rule_supplementary_notes()}
         </RuleSectionHeading>
-        <p className={paragraphClass}>{m.rule2021_notes_p1()}</p>
-        <p className={paragraphClass}>{m.rule2021_notes_p2()}</p>
-        <p className={paragraphClass}>{m.rule2021_notes_p3()}</p>
+        <p className={paragraphClass}>{m.rule_postponement_note_p1()}</p>
+        <p className={paragraphClass}>{m.rule_postponement_note_p2()}</p>
+        <p className={paragraphClass}>{m.rule_postponement_note_p3()}</p>
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="category-section">
           {m.rule_toc_categories()}
         </RuleSectionHeading>
-        <p className={paragraphClass}>{m.rule2021_categories_intro()}</p>
+        <p className={paragraphClass}>{m.rule_category_routes_intro()}</p>
         <ul className="mb-8 list-disc space-y-2 pl-8">
-          <li>{m.rule2021_route_2020_wildcard({ Wildcard: WILDCARD })}</li>
-          <li>{m.rule2021_route_2020_seed()}</li>
-          <li>{m.rule2021_route_2020online()}</li>
-          <li>{m.rule2021_route_2021extra({ Wildcard: WILDCARD })}</li>
+          <li>{m.rule_route_cancelled_wildcard({ Wildcard: WILDCARD })}</li>
+          <li>{m.rule_route_cancelled_seed()}</li>
+          <li>{m.rule_route_online_winner()}</li>
+          <li>{m.rule_route_extra_wildcard({ Wildcard: WILDCARD })}</li>
         </ul>
         <Table
           data={[
@@ -206,22 +210,22 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               m.rule_col_seed(),
               m.rule_col_total(),
             ],
-            ["Solo", "16", "8", "24"],
-            ["Tag Team", "9", "1", "10"],
-            ["Loopstation", "14", "3", "17"],
-            ["Tag Team Loopstation", "3", "0", "3"],
-            ["Crew", "4", "0", "4"],
+            [SOLO, "16", "8", "24"],
+            [TAG_TEAM, "9", "1", "10"],
+            [LOOPSTATION, "14", "3", "17"],
+            [TAG_TEAM_LOOPSTATION, "3", "0", "3"],
+            [CREW, "4", "0", "4"],
           ]}
           textCenter
         />
         <p className={paragraphClass}>
-          {m.rule2021_category_note1({
+          {m.rule_debut_category_no_seed({
             TagTeamLoopstation: TAG_TEAM_LOOPSTATION,
             Crew: CREW,
           })}
         </p>
         <p className={paragraphClass}>
-          {m.rule2021_category_note2({
+          {m.rule_slot_count_merged({
             TagTeamLoopstation: TAG_TEAM_LOOPSTATION,
           })}
         </p>
@@ -255,7 +259,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
 
         <p className={`${paragraphClass} mt-8`}>
-          {m.rule2021_seed_forfeit({ Wildcard: WILDCARD })}
+          {m.rule_seed_forfeit_policy({ Wildcard: WILDCARD })}
         </p>
 
         <div className="mb-8 flex flex-wrap gap-4">
@@ -286,15 +290,15 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
       <RuleSection>
         <RuleSectionHeading id="wildcard-judges-2020-section">
-          {m.rule2021_judges_2020wc({ Wildcard: WILDCARD })}
+          {m.rule_judges_prior_wildcard({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
         <Table data={wildcardJudges2020TableData} textCenter />
-        <p className={`${paragraphClass} mt-8`}>{m.rule2021_2020_judges_note()}</p>
+        <p className={`${paragraphClass} mt-8`}>{m.rule_sbx_judges_historical_note()}</p>
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="wildcard-judges-2021-section">
-          {m.rule2021_judges_2021extra({ Wildcard: WILDCARD })}
+          {m.rule_judges_extra_wildcard({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
         <Table data={wildcardJudges2021TableData} textCenter />
       </RuleSection>

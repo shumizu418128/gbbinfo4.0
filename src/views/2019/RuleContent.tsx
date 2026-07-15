@@ -4,7 +4,7 @@ import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { BEATBOX, SEVEN_TO_SMOKE, WILDCARD } from "~/constants/i18nTerms.js";
+import { BEATBOX, LOOPSTATION, SEVEN_TO_SMOKE, SOLO, TAG_TEAM, WILDCARD } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import * as m from "../../../paraglide/messages.js";
@@ -57,17 +57,17 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 
 const mainJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "DHARNI\nPE4ENKATA\nREEPS ONE\nSKILLER\nZEDE"],
-  ["Tag Team", "CHRIS CELIZ\nGENE SHINOZAKI\nJAYTON\nPASH\nSLIZZER"],
-  ["Loopstation", "BEARDYMAN\nMB14\nSAM PERRY\nTHE PETEBOX\nTOM THUM"],
+  [SOLO, "DHARNI\nPE4ENKATA\nREEPS ONE\nSKILLER\nZEDE"],
+  [TAG_TEAM, "CHRIS CELIZ\nGENE SHINOZAKI\nJAYTON\nPASH\nSLIZZER"],
+  [LOOPSTATION, "BEARDYMAN\nMB14\nSAM PERRY\nTHE PETEBOX\nTOM THUM"],
   [SEVEN_TO_SMOKE, "CHEZAME\nMB14\nB-ART\nFROSTY\nCOLAPS"],
 ];
 
 const wildcardJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nSKILLER\nZEDE"],
-  ["Tag Team", "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nSPIDER HORSE\nMAD TWINZ"],
-  ["Loopstation", "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nWAWAD\nGENE SHINOZAKI"],
+  [SOLO, "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nSKILLER\nZEDE"],
+  [TAG_TEAM, "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nSPIDER HORSE\nMAD TWINZ"],
+  [LOOPSTATION, "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nWAWAD\nGENE SHINOZAKI"],
 ];
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
@@ -124,9 +124,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
-            ["Solo", "11", "5", "16"],
-            ["Tag Team", "9", "1", "10"],
-            ["Loopstation", "6", "2", "8"],
+            [SOLO, "11", "5", "16"],
+            [TAG_TEAM, "9", "1", "10"],
+            [LOOPSTATION, "6", "2", "8"],
           ]}
           textCenter
         />
@@ -202,7 +202,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_wildcard_judges({ Wildcard: WILDCARD })}
         </RuleSectionHeading>
         <Table data={wildcardJudgesTableData} textCenter />
-        <p className={paragraphClass}>{m.rule_2019_sbx_judges_note()}</p>
+        <p className={paragraphClass}>{m.rule_sbx_judges_historical_note()}</p>
       </RuleSection>
     </main>
   );

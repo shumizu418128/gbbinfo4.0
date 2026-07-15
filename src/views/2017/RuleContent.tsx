@@ -4,7 +4,7 @@ import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { BEATBOX, SEVEN_TO_SMOKE, WILDCARD } from "~/constants/i18nTerms.js";
+import { BEATBOX, LOOPSTATION, SEVEN_TO_SMOKE, SOLO, TAG_TEAM, WILDCARD } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import * as m from "../../../paraglide/messages.js";
@@ -57,9 +57,9 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 
 const mainJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "DHARNI\nWAWAD\nALEM\nZEDE\nGENE SHINOZAKI"],
-  ["Tag Team", "DHARNI\nZEDE\nALEM\nWAWAD\nBEATNESS"],
-  ["Loopstation", "DHARNI\nWAWAD\nALEM\nFAYA BRAZ\nGENE SHINOZAKI"],
+  [SOLO, "DHARNI\nWAWAD\nALEM\nZEDE\nGENE SHINOZAKI"],
+  [TAG_TEAM, "DHARNI\nZEDE\nALEM\nWAWAD\nBEATNESS"],
+  [LOOPSTATION, "DHARNI\nWAWAD\nALEM\nFAYA BRAZ\nGENE SHINOZAKI"],
   [SEVEN_TO_SMOKE, "NAPOM\nKEUMART\nB-ART\nFUNKAZTEK\nXIN WANG"],
 ];
 
@@ -112,13 +112,13 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
-            ["Solo", "9", "7", "16"],
-            ["Tag Team", "", "7", "7"],
-            ["Loopstation", "3", "5", "8"],
+            [SOLO, "9", "7", "16"],
+            [TAG_TEAM, "", "7", "7"],
+            [LOOPSTATION, "3", "5", "8"],
           ]}
           textCenter
         />
-        <p className={paragraphClass}>{m.rule_2017_tag_team_note()}</p>
+        <p className={paragraphClass}>{m.rule_tag_team_invite_only_note({ TagTeam: TAG_TEAM, Wildcard: WILDCARD })}</p>
       </RuleSection>
 
       <RuleSection>

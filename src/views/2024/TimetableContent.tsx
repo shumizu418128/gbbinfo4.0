@@ -32,9 +32,9 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className={paragraphClass}>{m.timetable_note_schedule()}</p>
-        <p className={paragraphClass}>{m.timetable_note_gbb21_delay()}</p>
-        <p className={paragraphClass}>{m.timetable_note_2023_tt()}</p>
-        <p className={paragraphClass}>{m.timetable_note_gbb24_tt()}</p>
+        <p className={paragraphClass}>{m.timetable_historical_delay_note()}</p>
+        <p className={paragraphClass}>{m.timetable_bilingual_tt_error()}</p>
+        <p className={paragraphClass}>{m.timetable_historical_tt_error_note()}</p>
 
         <h2 className="mb-4 mt-16 text-xl font-bold">{m.rule_toc()}</h2>
         <ol className="mb-16 list-decimal space-y-2 pl-8">
@@ -203,7 +203,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           ]}
           textCenter
         />
-        <p className={paragraphClass}>{m.timetable_2024_7tosmoke_timing_note()}</p>
+        <p className={paragraphClass}>{m.timetable_7tosmoke_abema_timing_note({ SevenToSmoke: SEVEN_TO_SMOKE })}</p>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
             text={m.how_to_plan()}

@@ -8,6 +8,7 @@ import {
   BEATBOX,
   BEATBOXER,
   COMEBACK_WILDCARD,
+  CREW,
   GBB,
   LOOPSTATION,
   RC505,
@@ -16,6 +17,7 @@ import {
   SOLO,
   SOLO_WILDCARD,
   SWISSBEATBOX,
+  TAG_TEAM,
   TAG_TEAM_LOOPSTATION,
   WILDCARD,
   YOUTUBE,
@@ -118,7 +120,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </li>
           <li>
             <a href="#wildcard-rules-section" className={anchorClass}>
-              Wildcard {m.rule_wildcard_deadline()}
+              {WILDCARD} {m.rule_wildcard_deadline()}
             </a>
           </li>
           <li>
@@ -168,13 +170,13 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           data={[
             [
               m.rule_col_category(),
-              "Wildcard",
+              WILDCARD,
               "CS",
               `GBB\n${prevYear}`,
               m.rule_col_total(),
             ],
             [
-              "Solo",
+              SOLO,
               <>
                 9
                 <br />+{" "}
@@ -186,9 +188,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               "3",
               "20",
             ],
-            ["Loopstation", "5", "2", "1", "8"],
-            ["Tag Team", "6", "1", "1", "8"],
-            ["Crew", "1", "1", "0", "2"],
+            [LOOPSTATION, "5", "2", "1", "8"],
+            [TAG_TEAM, "6", "1", "1", "8"],
+            [CREW, "1", "1", "0", "2"],
             ["SHOWCASE\n(producer)", "2", "0", "0", "2"],
             [
               "SHOWCASE\n(loopstation)",
@@ -228,7 +230,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           <p className={paragraphClass}>
             {m.rule_solo_final_p1({ year: String(year), Solo: SOLO })}
             <br />
-            {m.rule_solo_final_p2()}
+            {m.rule_solo_final_p2({ Beatboxer: BEATBOXER })}
           </p>
         </RuleSubSection>
       </RuleSection>
@@ -414,22 +416,22 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             data={[
               [m.rule_col_category(), m.rule_col_target(), ""],
               [
-                "Solo",
+                SOLO,
                 m.rule_rank_until({ rank: "15" }),
                 m.rule_rank_no_replacement({ rank: "16" }),
               ],
               [
-                "Loopstation",
+                LOOPSTATION,
                 m.rule_rank_until({ rank: "20" }),
                 m.rule_rank_swiss_decision({ rank: "21", Swissbeatbox: SWISSBEATBOX }),
               ],
               [
-                "Tag Team",
+                TAG_TEAM,
                 m.rule_rank_until({ rank: "10" }),
                 m.rule_rank_no_replacement({ rank: "11" }),
               ],
               [
-                "Crew",
+                CREW,
                 m.rule_rank_until({ rank: "5" }),
                 m.rule_rank_no_replacement({ rank: "6" }),
               ],
@@ -444,7 +446,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             data={[
               [m.rule_col_item(), m.rule_col_description()],
               [
-                <strong key="solo">Solo</strong>,
+                <strong key="solo">{SOLO}</strong>,
                 <ul key="solo-ul" className="list-disc space-y-2 pl-8 text-left">
                   <li>
                     {m.rule_special_solo_1({
@@ -462,7 +464,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                 </ul>,
               ],
               [
-                <strong key="loop">Loopstation</strong>,
+                <strong key="loop">{LOOPSTATION}</strong>,
                 <ul key="loop-ul" className="list-disc space-y-2 pl-8 text-left">
                   <li>
                     {m.rule_special_loop_1({
@@ -474,8 +476,8 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                 </ul>,
               ],
               [
-                <strong key="crew">Crew</strong>,
-                m.rule_special_crew({ Showcase: SHOWCASE }),
+                <strong key="crew">{CREW}</strong>,
+                m.rule_special_crew({ SHOWCASE }),
               ],
             ]}
           />
@@ -501,7 +503,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Solo",
+              SOLO,
               <>
                 {m.rule_time_limit()} 2:00 (±10s)
                 <br />
@@ -513,7 +515,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Tag Team",
+              TAG_TEAM,
               <>
                 {m.rule_time_limit()} 2:00 (±10s)
                 <br />
@@ -525,7 +527,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Loopstation",
+              LOOPSTATION,
               <>
                 {m.rule_time_limit()} 3:00~3:30 (±0s)
                 <br />
@@ -539,7 +541,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Crew",
+              CREW,
               <>
                 {m.rule_time_limit()} 3:00 (±10s)
                 <br />
@@ -608,15 +610,15 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               [
                 m.rule_eligibility_past_gbb(),
                 <ul key="past" className="list-disc space-y-2 pl-8 text-left">
-                  <li>{m.rule_eligibility_gbb2019()}</li>
+                  <li>{m.rule_eligibility_gbb_since_main()}</li>
                   <li>{m.rule_eligibility_7tosmoke({ SevenToSmoke: SEVEN_TO_SMOKE })}</li>
                 </ul>,
               ],
               [
                 m.rule_eligibility_wildcard_rank({ Wildcard: WILDCARD }),
                 <ul key="wc" className="list-disc space-y-2 pl-8 text-left">
-                  <li>Solo: {m.rule_eligibility_solo_top30()}</li>
-                  <li>Loopstation: {m.rule_eligibility_loop_top20()}</li>
+                  <li>Solo: {m.rule_eligibility_solo_top30({ Solo: SOLO })}</li>
+                  <li>Loopstation: {m.rule_eligibility_loop_top20({ Loopstation: LOOPSTATION })}</li>
                 </ul>,
               ],
               [
@@ -655,15 +657,15 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), m.rule_col_judges()],
-            ["Solo", m.rule_update_pending()],
-            ["Tag Team", m.rule_update_pending()],
-            ["Loopstation", m.rule_update_pending()],
-            ["Crew", m.rule_update_pending()],
+            [SOLO, m.rule_update_pending()],
+            [TAG_TEAM, m.rule_update_pending()],
+            [LOOPSTATION, m.rule_update_pending()],
+            [CREW, m.rule_update_pending()],
             ["SHOWCASE\n(producer)", m.rule_no_judges()],
             ["SHOWCASE\n(loopstation)", m.rule_no_judges()],
             ["SHOWCASE\n(solo)", m.rule_no_judges()],
             [
-              "7toSmoke",
+              SEVEN_TO_SMOKE,
               <>
                 {m.rule_judges_unknown()}
                 <br />
@@ -691,7 +693,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           data={[
             [m.rule_col_category(), m.rule_col_judges()],
             [
-              "Solo",
+              SOLO,
               <>
                 COLAPS
                 <br />
@@ -705,7 +707,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Tag Team",
+              TAG_TEAM,
               <>
                 MAXO
                 <br />
@@ -715,7 +717,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Loopstation",
+              LOOPSTATION,
               <>
                 ZHANG ZE
                 <br />
@@ -729,7 +731,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
               </>,
             ],
             [
-              "Crew",
+              CREW,
               <>
                 CHRIS CELIZ
                 <br />
@@ -812,7 +814,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
         <div className="mb-4">
           <LinkCard
-            text={`GBB ${year} ${m.rule_chat_button()}`}
+            text={`${GBB} ${year} ${m.rule_chat_button()}`}
             href="https://notebooklm.google.com/notebook/7b384060-d2cd-4064-a57e-8b2b7d41571e"
             fullWidth
           />

@@ -4,7 +4,7 @@ import { PostIt } from "~/components/PostIt.js";
 import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { BEATBOX, SEVEN_TO_SMOKE, WILDCARD } from "~/constants/i18nTerms.js";
+import { BEATBOX, LOOPSTATION, SEVEN_TO_SMOKE, SOLO, TAG_TEAM, WILDCARD } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type { ParticipantWithRelations } from "~/db/participant.js";
 import * as m from "../../../paraglide/messages.js";
@@ -57,9 +57,9 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 
 const mainJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "ALEXINHO\nKRNFX\nKENNY URBAN\nNAPOM\nZHANG ZE"],
-  ["Tag Team", "ALEXINHO\nJAYTON\nPASH\nSARO\nTHORSEN"],
-  ["Loopstation", "ALEXINHO\nKRNFX\nSARO\nZEDE\nTHORSEN"],
+  [SOLO, "ALEXINHO\nKRNFX\nKENNY URBAN\nNAPOM\nZHANG ZE"],
+  [TAG_TEAM, "ALEXINHO\nJAYTON\nPASH\nSARO\nTHORSEN"],
+  [LOOPSTATION, "ALEXINHO\nKRNFX\nSARO\nZEDE\nTHORSEN"],
   [SEVEN_TO_SMOKE, "BEATNESS\nCHRIS CELIZ\nSHOW-GO\nGHITZMO"],
 ];
 
@@ -112,9 +112,9 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
-            ["Solo", "10", "5", "15"],
-            ["Tag Team", "3", "6", "9"],
-            ["Loopstation", "6", "2", "8"],
+            [SOLO, "10", "5", "15"],
+            [TAG_TEAM, "3", "6", "9"],
+            [LOOPSTATION, "6", "2", "8"],
           ]}
           textCenter
         />

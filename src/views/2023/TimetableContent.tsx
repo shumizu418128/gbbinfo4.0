@@ -45,8 +45,8 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className={paragraphClass}>{m.timetable_note_2023_en_source()}</p>
-        <p className={paragraphClass}>{m.timetable_note_2023_tt()}</p>
+        <p className={paragraphClass}>{m.timetable_en_source_discrepancy()}</p>
+        <p className={paragraphClass}>{m.timetable_bilingual_tt_error()}</p>
 
         <h2 className="mb-4 mt-16 text-xl font-bold">{m.rule_toc()}</h2>
         <ol className="mb-16 list-decimal space-y-2 pl-8">
@@ -93,22 +93,22 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             ["13:15", m.timetable_doors_open()],
             ["14:00", m.timetable_start()],
             ["14:15", "Pe4enkata showcase"],
-            ["14:30", `${PRODUCER} showcase`],
-            ["16:20", u18Event(m.timetable_2023_u18_quarterfinal())],
+            ["14:30", `${PRODUCER} ${SHOWCASE_WORD}`],
+            ["16:20", u18Event(m.timetable_u18_quarterfinal())],
             [
               "17:10",
-              m.timetable_2023_tag_team_showcase_prelim({
+              m.timetable_tag_team_showcase_prelim({
                 TagTeam: TAG_TEAM,
                 SHOWCASE: SHOWCASE_WORD,
               }),
             ],
             ["18:05", m.timetable_break()],
-            ["18:55", u18Event(m.timetable_2023_u18_semifinal())],
+            ["18:55", u18Event(m.timetable_u18_semifinal())],
             [
               "19:25",
-              m.timetable_2023_crew_showcase_prelim({ Crew: CREW, SHOWCASE: SHOWCASE_WORD }),
+              m.timetable_crew_showcase_prelim({ Crew: CREW, SHOWCASE: SHOWCASE_WORD }),
             ],
-            ["20:20", u18Event(m.timetable_2023_u18_final_ceremony())],
+            ["20:20", u18Event(m.timetable_u18_final_ceremony())],
             ["21:15", m.timetable_end()],
           ]}
           textCenter
@@ -138,16 +138,16 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             ["14:00", m.timetable_start()],
             ["14:05", "Mad Twinz showcase"],
             ["14:20", m.timetable_loop_quarterfinal({ Loopstation: LOOPSTATION })],
-            ["16:00", m.timetable_2023_crew_final_en_note({ Crew: CREW })],
+            ["16:00", m.timetable_crew_final_en_note({ Crew: CREW })],
             ["16:30", m.timetable_break()],
-            ["17:20", `${PRODUCER} showcase`],
+            ["17:20", `${PRODUCER} ${SHOWCASE_WORD}`],
             [
               "18:30",
-              m.timetable_2023_solo_showcase_prelim({ Solo: SOLO, SHOWCASE: SHOWCASE_WORD }),
+              m.timetable_solo_showcase_prelim({ Solo: SOLO, SHOWCASE: SHOWCASE_WORD }),
             ],
             [
               "20:45",
-              m.timetable_2023_showcase_ceremony({
+              m.timetable_showcase_ceremony({
                 Crew: CREW,
                 Producer: PRODUCER,
                 SHOWCASE: SHOWCASE_WORD,
@@ -180,18 +180,18 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             ["14:05", "Uniteam showcase"],
             [
               "14:25",
-              m.timetable_2023_loop_semifinal_final({ Loopstation: LOOPSTATION }),
+              m.timetable_loop_semifinal_final_only({ Loopstation: LOOPSTATION }),
             ],
             ["16:00", m.timetable_solo_quarterfinal({ Solo: SOLO })],
             ["16:50", m.timetable_break()],
             ["17:35", "SKILLER showcase"],
             ["17:50", m.timetable_tag_team_semifinal({ TagTeam: TAG_TEAM })],
             ["18:20", m.timetable_solo_semifinal({ Solo: SOLO })],
-            ["18:45", m.timetable_2023_tag_team_final({ TagTeam: TAG_TEAM })],
-            ["19:15", m.timetable_2023_solo_final({ Solo: SOLO })],
+            ["18:45", m.timetable_tag_team_final_only({ TagTeam: TAG_TEAM })],
+            ["19:15", m.timetable_solo_final_only({ Solo: SOLO })],
             [
               "19:40",
-              m.timetable_2023_main_ceremony({
+              m.timetable_main_ceremony({
                 Solo: SOLO,
                 TagTeam: TAG_TEAM,
                 Loopstation: LOOPSTATION,
@@ -229,8 +229,8 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             ["17:10", "SARO + Rythmind"],
             ["17:50", "Gene shinozaki"],
             ["18:15", m.timetable_break()],
-            ["19:25", m.timetable_2023_secret_guest_note()],
-            ["19:55", m.timetable_2023_berywam_note()],
+            ["19:25", m.timetable_secret_guest_note()],
+            ["19:55", m.timetable_berywam_note()],
             ["20:30", "Beardyman"],
             ["21:10", m.timetable_end()],
           ]}

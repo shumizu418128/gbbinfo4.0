@@ -8,8 +8,11 @@ import {
   BEATBOX,
   CREW,
   GBB,
+  LOOPSTATION,
+  PRODUCER,
   RC505,
   SHOWCASE,
+  SOLO,
   SWISSBEATBOX,
   TAG_TEAM,
   WILDCARD,
@@ -75,30 +78,30 @@ const buildWildcardRulesTableData = (year: number): (string | ReactNode)[][] => 
     <>
       {m.rule_submission_start()} 1/1 (0:00 CET)
       <br />
-      {m.rule_2023_penalty_under_10s()}
+      {m.rule_penalty_under_10s()}
       <br />
-      {m.rule_2023_penalty_over_11s()}
+      {m.rule_penalty_over_11s()}
     </>,
   ],
   [
-    "Solo",
+    SOLO,
     <>
       {m.rule_time_limit()} 2:00
       <br />
-      {m.rule_2023_round1()}
+      {m.rule_round1()}
       {m.rule_submission_deadline()} 2/4 (23:59 CET)
       <br />
-      {m.rule_2023_round1()}
+      {m.rule_round1()}
       {m.rule_result_announcement()} 2/26
       <br />
-      {m.rule_2023_round2_submission_period()} 3/2~3/16 (23:59 CET)
+      {m.rule_round2_submission_period()} 3/2~3/16 (23:59 CET)
       <br />
-      {m.rule_2023_round2()}
+      {m.rule_round2()}
       {m.rule_result_announcement()} 3/26
     </>,
   ],
   [
-    "Tag Team",
+    TAG_TEAM,
     <>
       {m.rule_time_limit()} 2:00
       <br />
@@ -108,26 +111,26 @@ const buildWildcardRulesTableData = (year: number): (string | ReactNode)[][] => 
     </>,
   ],
   [
-    "Loopstation",
+    LOOPSTATION,
     <>
       {m.rule_time_limit()} 3:30
       <br />
-      {m.rule_2023_round1()}
+      {m.rule_round1()}
       {m.rule_submission_deadline()} 2/4 (23:59 CET)
       <br />
-      {m.rule_2023_round1()}
+      {m.rule_round1()}
       {m.rule_result_announcement()} 2/25
       <br />
-      {m.rule_2023_round2_submission_period()} 3/1~3/15 (23:59 CET)
+      {m.rule_round2_submission_period()} 3/1~3/15 (23:59 CET)
       <br />
-      {m.rule_2023_round2()}
+      {m.rule_round2()}
       {m.rule_result_announcement()} 3/25
       <br />
       {m.rule_rc505_only({ RC505 })}
     </>,
   ],
   [
-    "Producer",
+    PRODUCER,
     <>
       {m.rule_time_limit()} 5:00
       <br />
@@ -139,7 +142,7 @@ const buildWildcardRulesTableData = (year: number): (string | ReactNode)[][] => 
     </>,
   ],
   [
-    "Crew",
+    CREW,
     <>
       {m.rule_time_limit()} 3:00
       <br />
@@ -157,16 +160,16 @@ const buildWildcardRulesTableData = (year: number): (string | ReactNode)[][] => 
       <br />
       {m.rule_result_announcement()} 2/26
       <br />
-      {m.rule_2023_u18_eligibility({ GBB, year: String(year) })}
+      {m.rule_u18_eligibility({ GBB, year: String(year) })}
     </>,
   ],
 ];
 
 const buildJudgesTableData = (): string[][] => [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "Alexinho\nSkiller\nD-low\nWAWAD\nGene shinozaki"],
-  ["Tag Team", "PE4ENKATA\nSupernova\nAlem\nPash\nJayton"],
-  ["Loopstation", "SARO\nbeardyman\nRythmind\nkristof\nTom thum"],
+  [SOLO, "Alexinho\nSkiller\nD-low\nWAWAD\nGene shinozaki"],
+  [TAG_TEAM, "PE4ENKATA\nSupernova\nAlem\nPash\nJayton"],
+  [LOOPSTATION, "SARO\nbeardyman\nRythmind\nkristof\nTom thum"],
 ];
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
@@ -194,7 +197,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB {year} Wildcard Competition
+            {GBB} {year} {WILDCARD} Competition
           </a>
         </p>
 
@@ -282,11 +285,11 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
-            ["Solo", "11", "10", "21"],
-            ["Tag Team", "6", "2", "8"],
-            ["Loopstation", "7", "1", "8"],
-            ["Producer", "5", "1", "6"],
-            ["Crew", "5", "1", "6"],
+            [SOLO, "11", "10", "21"],
+            [TAG_TEAM, "6", "2", "8"],
+            [LOOPSTATION, "7", "1", "8"],
+            [PRODUCER, "5", "1", "6"],
+            [CREW, "5", "1", "6"],
             ["U18", "8", m.rule_col_none(), "8"],
           ]}
           textCenter
@@ -370,12 +373,12 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_judges_list()}
         </RuleSectionHeading>
         <p className={paragraphClass}>
-          {m.rule_2023_judges_same({ GBB, year: String(year), Wildcard: WILDCARD })}
+          {m.rule_judges_wildcard_same({ GBB, year: String(year), Wildcard: WILDCARD })}
         </p>
         <p className={paragraphClass}>
-          {m.rule_2023_judges_showcase_video({ SHOWCASE })}
+          {m.rule_judges_showcase_video({ SHOWCASE })}
         </p>
-        <p className={paragraphClass}>{m.rule_2023_judges_showcase_actual({ SHOWCASE })}</p>
+        <p className={paragraphClass}>{m.rule_judges_showcase_actual({ SHOWCASE })}</p>
         <Table data={judgesTableData} textCenter />
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard

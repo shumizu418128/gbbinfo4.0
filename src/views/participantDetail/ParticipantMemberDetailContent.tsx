@@ -5,7 +5,7 @@ import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { CHATGPT } from "~/constants/i18nTerms.js";
+import { CHATGPT, GBB } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import type {
   ParticipantDetailMember,
@@ -259,12 +259,12 @@ export const ParticipantMemberDetailContent = ({
             {row.flatMap((pastYear) => [
               <LinkCard
                 key={`${pastYear}-participants`}
-                text={`GBB ${pastYear} ${m.participant_participants_list_year()}`}
+                text={`${GBB} ${pastYear} ${m.participant_participants_list_year()}`}
                 href={`/${locale}/${pastYear}/participants`}
               />,
               <LinkCard
                 key={`${pastYear}-result`}
-                text={`GBB ${pastYear} ${m.result()}`}
+                text={`${GBB} ${pastYear} ${m.result()}`}
                 href={`/${locale}/${pastYear}/result`}
               />,
             ])}
@@ -319,11 +319,11 @@ export const ParticipantMemberDetailContent = ({
         <div className="my-8 flex flex-wrap justify-center gap-2">
           <LinkCard
             href={`/${locale}/${year}/participants`}
-            text={`GBB ${year} ${m.participant_all_participants()}`}
+            text={`${GBB} ${year} ${m.participant_all_participants()}`}
           />
           <LinkCard
             href={`/${locale}/${year}/result`}
-            text={`GBB ${year} ${m.result()}`}
+            text={`${GBB} ${year} ${m.result()}`}
           />
         </div>
       </div>

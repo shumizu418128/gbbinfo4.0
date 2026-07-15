@@ -2,6 +2,8 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
   CREW,
   LOOPSTATION,
+  SHOWCASE,
+  SEVEN_TO_SMOKE,
   SOLO,
   TAG_TEAM,
   TAG_TEAM_LOOPSTATION,
@@ -40,7 +42,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
       style={{ backgroundColor: "var(--background-color)" }}
     >
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className={paragraphClass}>{m.timetable2021_intro()}</p>
+        <p className={paragraphClass}>{m.timetable_timestamp_intro()}</p>
         <p className="mb-4">
           <a
             href={TIMETABLE_PDF_URL}
@@ -48,11 +50,11 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            {m.timetable2021_pdf()}
+            {m.timetable_pdf_link()}
           </a>
         </p>
-        <p className={paragraphClass}>{m.timetable2021_no_7tosmoke()}</p>
-        <p className={paragraphClass}>{m.timetable2021_delay_detail()}</p>
+        <p className={paragraphClass}>{m.timetable_no_7tosmoke_timestamps({ SevenToSmoke: SEVEN_TO_SMOKE })}</p>
+        <p className={paragraphClass}>{m.timetable_delay_detail()}</p>
 
         <h2 className="mb-4 mt-16 text-xl font-bold">{m.rule_toc()}</h2>
         <ol className="mb-16 list-decimal space-y-2 pl-8">
@@ -113,7 +115,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
               m.timetable_ttl_prelim({ TagTeamLoopstation: TAG_TEAM_LOOPSTATION }),
             ],
             ["19:41", "2:41", m.timetable_tag_team_prelim({ TagTeam: TAG_TEAM })],
-            ["21:47", "4:47", "SHOWCASE"],
+            ["21:47", "4:47", SHOWCASE],
             [
               "22:05",
               "5:05",
@@ -124,7 +126,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
               "6:35",
               m.timetable_solo_final_tournament_r1({ Solo: SOLO }),
             ],
-            ["1:01", "8:01", "SHOWCASE"],
+            ["1:01", "8:01", SHOWCASE],
           ]}
           textCenter
         />
@@ -149,7 +151,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <Table
           data={[
             tableHeader,
-            ["19:10", "2:10", "SHOWCASE"],
+            ["19:10", "2:10", SHOWCASE],
             ["19:39", "2:39", m.timetable_crew_prelim({ Crew: CREW })],
             [
               "20:30",
@@ -163,13 +165,13 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
               m.timetable_tag_team_semifinal_final({ TagTeam: TAG_TEAM }),
             ],
             ["1:03", "8:03", m.timetable_solo_all_finals({ Solo: SOLO })],
-            ["2:30", "9:30", "SHOWCASE"],
+            ["2:30", "9:30", SHOWCASE],
           ]}
           textCenter
         />
 
-        <p className={`${paragraphClass} mt-8`}>{m.timetable2021_anecdote_p1()}</p>
-        <p className={paragraphClass}>{m.timetable2021_anecdote_p2()}</p>
+        <p className={`${paragraphClass} mt-8`}>{m.timetable_anecdote_p1({ SHOWCASE })}</p>
+        <p className={paragraphClass}>{m.timetable_anecdote_p2()}</p>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard text={m.how_to_plan()} href={`/${locale}/others/how_to_plan`} />

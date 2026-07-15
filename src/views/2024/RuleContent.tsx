@@ -7,9 +7,13 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
   BEATBOX,
   CREW,
+  GBB,
   LOOPSTATION,
   PRODUCER,
   RC505,
+  SEVEN_TO_SMOKE,
+  SHOWCASE_WORD,
+  SOLO,
   SWISSBEATBOX,
   TAG_TEAM,
   TAG_TEAM_LOOPSTATION,
@@ -80,7 +84,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Solo",
+    SOLO,
     <>
       {m.rule_time_limit()} 2:10
       <br />
@@ -90,7 +94,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Tag Team",
+    TAG_TEAM,
     <>
       {m.rule_time_limit()} 2:10
       <br />
@@ -100,7 +104,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Loopstation",
+    LOOPSTATION,
     <>
       {m.rule_time_limit()} 3:30
       <br />
@@ -114,7 +118,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Producer",
+    PRODUCER,
     <>
       {m.rule_time_limit()} 5:00
       <br />
@@ -126,7 +130,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Crew",
+    CREW,
     <>
       {m.rule_time_limit()} 3:10
       <br />
@@ -139,21 +143,21 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
 
 const mainJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "FOOTBOXG\nCOLAPS\nDHARNI\nHISS\nNAPOM"],
-  ["Tag Team", "CHRIS CELIZ\nFOOTBOXG\nFROSTY\nHIRONA\nRIVER'"],
-  ["Loopstation", "BIZKIT\nROBIN\nFROSTY\nSLIZZER\nTIONEB"],
-  ["Producer", "JAYTON\nROBIN\nFROSTY\nPASH\nTIONEB"],
-  ["Crew", "CHRIS CELIZ\nCOLAPS\nDHARNI\nSLIZZER\nSO-SO"],
-  ["7toSmoke", `${m.rule_judges_unknown()}\n${m.rule_judges_not_announced()}`],
+  [SOLO, "FOOTBOXG\nCOLAPS\nDHARNI\nHISS\nNAPOM"],
+  [TAG_TEAM, "CHRIS CELIZ\nFOOTBOXG\nFROSTY\nHIRONA\nRIVER'"],
+  [LOOPSTATION, "BIZKIT\nROBIN\nFROSTY\nSLIZZER\nTIONEB"],
+  [PRODUCER, "JAYTON\nROBIN\nFROSTY\nPASH\nTIONEB"],
+  [CREW, "CHRIS CELIZ\nCOLAPS\nDHARNI\nSLIZZER\nSO-SO"],
+  [SEVEN_TO_SMOKE, `${m.rule_judges_unknown()}\n${m.rule_judges_not_announced()}`],
 ];
 
 const wildcardJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "FOOTBOXG\nCOLAPS\nRIVER'"],
-  ["Tag Team", "RIVER'\nCOLAPS\nCHRIS CELIZ"],
-  ["Loopstation", "BIZKIT\nKRISTOF\nTIONEB"],
-  ["Producer", "INKIE\nKRISTOF\nTIONEB"],
-  ["Crew", "CHRIS CELIZ\nCOLAPS\nSLIZZER"],
+  [SOLO, "FOOTBOXG\nCOLAPS\nRIVER'"],
+  [TAG_TEAM, "RIVER'\nCOLAPS\nCHRIS CELIZ"],
+  [LOOPSTATION, "BIZKIT\nKRISTOF\nTIONEB"],
+  [PRODUCER, "INKIE\nKRISTOF\nTIONEB"],
+  [CREW, "CHRIS CELIZ\nCOLAPS\nSLIZZER"],
 ];
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
@@ -179,7 +183,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB {year} Wildcard Competition Rules and Application
+            {GBB} {year} {WILDCARD} Competition Rules and Application
           </a>
         </p>
 
@@ -272,11 +276,11 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
-            ["Solo", "8", "8", "16"],
-            ["Loopstation", "6", "2", "8"],
-            ["Crew", "3", "1", "4"],
-            ["Producer", "3", "1", "4"],
-            ["Tag Team", "6", "1", "7"],
+            [SOLO, "8", "8", "16"],
+            [LOOPSTATION, "6", "2", "8"],
+            [CREW, "3", "1", "4"],
+            [PRODUCER, "3", "1", "4"],
+            [TAG_TEAM, "6", "1", "7"],
           ]}
           textCenter
         />
@@ -292,6 +296,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             {m.rule_producer_description({
               Loopstation: LOOPSTATION,
               Producer: PRODUCER,
+              SHOWCASE: SHOWCASE_WORD,
             })}
           </p>
         </RuleSubSection>

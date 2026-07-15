@@ -3,8 +3,10 @@ import { PostIt } from "~/components/PostIt.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
   CREW,
+  GBB,
   LOOPSTATION,
   PRODUCER,
+  SHOWCASE_WORD,
   SOLO,
   TAG_TEAM,
   WILDCARD,
@@ -33,11 +35,11 @@ const buildDeadlineGroups = (): DeadlineGroup[] => [
     deadline: "2/5",
     playlists: [
       {
-        label: `${LOOPSTATION} ${m.wildcard_2023_round1()}`,
+        label: `${LOOPSTATION} ${m.wildcard_round1_label()}`,
         playlistId: "PL-lF9xAI7Ut0qVQxqcolridFy6fxq9mzf",
       },
       {
-        label: `${SOLO} ${m.wildcard_2023_round1()}`,
+        label: `${SOLO} ${m.wildcard_round1_label()}`,
         playlistId: "PL-lF9xAI7Ut3r03svs85h1EpBFe6FdH-h",
       },
       {
@@ -50,7 +52,7 @@ const buildDeadlineGroups = (): DeadlineGroup[] => [
     deadline: "2/12",
     playlists: [
       {
-        label: `${PRODUCER} showcase`,
+        label: `${PRODUCER} ${SHOWCASE_WORD}`,
         playlistId: "PL-lF9xAI7Ut2ANtv6g6g_2ZIjIWGUBg0M",
       },
       {
@@ -72,7 +74,7 @@ const buildDeadlineGroups = (): DeadlineGroup[] => [
     deadline: "3/16",
     playlists: [
       {
-        label: `${LOOPSTATION} ${m.wildcard_2023_round2()}`,
+        label: `${LOOPSTATION} ${m.wildcard_round2_label()}`,
         playlistId: "PL-lF9xAI7Ut2t2B-_zjCW-nz7ifEPNKRx",
       },
     ],
@@ -81,7 +83,7 @@ const buildDeadlineGroups = (): DeadlineGroup[] => [
     deadline: "3/17",
     playlists: [
       {
-        label: `${SOLO} ${m.wildcard_2023_round2()}`,
+        label: `${SOLO} ${m.wildcard_round2_label()}`,
         playlistId: "PL-lF9xAI7Ut1S8hLs1-rYzmNV2OT8ivG-",
       },
     ],
@@ -99,7 +101,7 @@ const PlaylistSection = ({
       <iframe
         className="absolute inset-0 h-full w-full"
         src={`https://www.youtube.com/embed/videoseries?list=${playlistId}`}
-        title={`GBB ${year} Wildcard ${label}`}
+        title={`${GBB} ${year} ${WILDCARD} ${label}`}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
@@ -118,7 +120,7 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
   const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
   const deadlineGroups = buildDeadlineGroups();
   const bonusPlaylist = {
-    label: m.wildcard_2023_loop_jp_r1({
+    label: m.wildcard_loop_jp_round1({
       Loopstation: LOOPSTATION,
       Wildcard: WILDCARD,
     }),
@@ -129,7 +131,7 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className="mb-8 text-(--secondary-text-color)">
-          {m.wildcard_2023_jst_note()}
+          {m.wildcard_jst_deadline_note()}
         </p>
 
         <div className="mb-16 flex flex-wrap gap-4">
@@ -161,7 +163,7 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
         ))}
 
         <section className="mb-16">
-          <h2 className="mb-8 text-xl font-bold">{m.wildcard_2023_bonus()}</h2>
+          <h2 className="mb-8 text-xl font-bold">{m.wildcard_bonus_section()}</h2>
           <PlaylistSection {...bonusPlaylist} year={year} />
         </section>
 

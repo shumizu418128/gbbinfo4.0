@@ -1,5 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { WILDCARD } from "~/constants/i18nTerms.js";
+import { SWISSBEATBOX, WILDCARD, YOUTUBE } from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -16,7 +16,7 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className="mb-16 leading-relaxed">{m.ticket_2020_online({ year: String(year) })}</p>
+        <p className="mb-16 leading-relaxed">{m.ticket_online_stream({ year: String(year), Swissbeatbox: SWISSBEATBOX, YouTube: YOUTUBE })}</p>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard

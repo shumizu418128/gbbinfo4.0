@@ -4,10 +4,19 @@ import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
+  GBB,
   BEATBOX,
+  BEATBOXER,
+  CREW,
+  LOOPSTATION,
+  PRODUCER,
   RC505,
+  SEVEN_TO_SMOKE,
+  SOLO,
   SWISSBEATBOX,
+  TAG_TEAM,
   WILDCARD,
+  YOUTUBE,
 } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
@@ -43,7 +52,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Solo",
+    SOLO,
     <>
       {m.rule_time_limit()} 2:10
       <br />
@@ -53,7 +62,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Tag Team",
+    TAG_TEAM,
     <>
       {m.rule_time_limit()} 2:10
       <br />
@@ -63,7 +72,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Loopstation",
+    LOOPSTATION,
     <>
       {m.rule_time_limit()} 3:30
       <br />
@@ -75,7 +84,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Producer",
+    PRODUCER,
     <>
       {m.rule_time_limit()} 3:30
       <br />
@@ -87,7 +96,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Crew",
+    CREW,
     <>
       {m.rule_time_limit()} 3:10
       <br />
@@ -101,11 +110,11 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
 const guideLinkCards = (locale: SupportedLanguage, year: number) => (
   <div className="mb-8 flex flex-wrap gap-4">
     <LinkCard
-      text={`GBB ${year} これだけガイド`}
+      text={m.gbb_year_guide({ year: String(year) })}
       href={`/${locale}/${year}/top`}
     />
     <LinkCard
-      text="7toSmoke これだけガイド"
+      text={m.seven_to_smoke_guide({ SevenToSmoke: SEVEN_TO_SMOKE })}
       href={`/${locale}/${year}/top_7tosmoke`}
     />
   </div>
@@ -134,10 +143,10 @@ export const WildcardRegulationContent = ({
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB {year} Wildcard Competition
+            {GBB} {year} {WILDCARD} Competition
           </a>
           <br />
-          このページでは、{WILDCARD}提出にあたって重要なルールを解説します。
+          {m.wildcard_reg_intro({ Wildcard: WILDCARD })}
         </p>
 
         <div className="mb-8 flex flex-wrap gap-4">
@@ -168,22 +177,22 @@ export const WildcardRegulationContent = ({
           </li>
           <li>
             <a href="#p03" className={anchorClass}>
-              年齢制限
+              {m.wildcard_reg_toc_age()}
             </a>
           </li>
           <li>
             <a href="#p04" className={anchorClass}>
-              {WILDCARD}提出について
+              {m.wildcard_reg_toc_submission({ Wildcard: WILDCARD })}
             </a>
           </li>
           <li>
             <a href="#p05" className={anchorClass}>
-              部門別ルール
+              {m.wildcard_reg_toc_category_rules()}
             </a>
           </li>
           <li>
             <a href="#p06" className={anchorClass}>
-              失格にならないために
+              {m.wildcard_reg_toc_disqualification()}
             </a>
           </li>
         </ol>
@@ -195,9 +204,9 @@ export const WildcardRegulationContent = ({
           {m.rule_toc_notices()}
         </h2>
         <p className={paragraphClass}>
-          以下に示す内容は、{WILDCARD}を作るBeatboxer向けの情報です。
+          {m.wildcard_reg_notices_p1({ Wildcard: WILDCARD, Beatboxer: BEATBOXER })}
           <br />
-          当サイト管理人はBeatboxerではありません。また、当サイト管理人はGBB運営と一切無関係です。
+          {m.wildcard_reg_notices_p1_note({ Beatboxer: BEATBOXER })}
         </p>
         <p className={paragraphClass}>
           {m.rule_notices_p2()}
@@ -220,12 +229,12 @@ export const WildcardRegulationContent = ({
         </h2>
         <Table
           data={[
-            [m.rule_col_category(), "Wildcard"],
-            ["Solo", "6"],
-            ["Loopstation", "5"],
-            ["Crew", "2"],
-            ["Producer", "2"],
-            ["Tag Team", "5"],
+            [m.rule_col_category(), WILDCARD],
+            [SOLO, "6"],
+            [LOOPSTATION, "5"],
+            [CREW, "2"],
+            [PRODUCER, "2"],
+            [TAG_TEAM, "5"],
           ]}
           textCenter
         />
@@ -235,21 +244,16 @@ export const WildcardRegulationContent = ({
 
       <RuleSection>
         <h2 id="p03" className={sectionClass}>
-          年齢制限
+          {m.wildcard_reg_age_limit_title()}
         </h2>
         <ul className="mb-8 list-disc space-y-2 pl-8">
-          <li>年齢制限: 本番当日、16歳以上であること</li>
+          <li>{m.wildcard_reg_age_min()}</li>
           <li>
-            未成年者(18歳未満)の参加:
+            {m.wildcard_reg_minor_title()}
             <ul className="mt-2 list-disc space-y-2 pl-8">
-              <li>保護者の同伴が必須</li>
-              <li>
-                主催者は、保護者の同伴にかかる費用(ビザ、フライト、ホテル、食事など)を負担しない
-              </li>
-              <li>
-                上記要件を満たさない、同意できない場合は失格となり、{WILDCARD}
-                下位からの繰り上げが行われる
-              </li>
+              <li>{m.wildcard_reg_minor_guardian()}</li>
+              <li>{m.wildcard_reg_minor_cost()}</li>
+              <li>{m.wildcard_reg_minor_disqualify({ Wildcard: WILDCARD })}</li>
             </ul>
           </li>
         </ul>
@@ -258,68 +262,60 @@ export const WildcardRegulationContent = ({
 
       <RuleSection>
         <h2 id="p04" className={sectionClass}>
-          {WILDCARD}作成・提出について
+          {m.wildcard_reg_submission_title({ Wildcard: WILDCARD })}
         </h2>
 
-        <h3 className="mb-4 font-bold">{WILDCARD}動画の内容</h3>
-        <p className={paragraphClass}>動画の冒頭で、以下のように自己紹介する</p>
+        <h3 className="mb-4 font-bold">
+          {m.wildcard_reg_video_content_title({ Wildcard: WILDCARD })}
+        </h3>
+        <p className={paragraphClass}>{m.wildcard_reg_video_intro()}</p>
         <p className={`${paragraphClass} italic`}>
           &quot;My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year}{" "}
           World League.&quot;
         </p>
         <PostIt>
           <p>
-            このルールに関する表記は、原文では非常に強い表現で示されています。
+            {m.wildcard_reg_video_script_note()}
             <br />
-            また、過去にこのルールに違反したことで失格処分になった事例があります。
+            {m.wildcard_reg_video_script_note_2()}
           </p>
         </PostIt>
 
-        <h3 className="mb-4 mt-8 font-bold">録音方法</h3>
+        <h3 className="mb-4 mt-8 font-bold">{m.wildcard_reg_recording_title()}</h3>
         <ul className="mb-8 list-disc space-y-2 pl-8">
-          <li>カメラにはっきり映っていること (マスクや視覚効果で顔や口を覆わないこと)</li>
-          <li>リップシンクやその他のビデオ技術は禁止</li>
-          <li>撮影と録音は、同時に行うこと</li>
-          <li>
-            基本的なダイナミック (コンプレッション)、EQ プラグイン、リバーブは使用可能。ただし、録音自体は生の状態で行い、後で編集すること
-          </li>
-          <li>キックとスネアに異なる EQ やコンプレッションを施すなどの自動処理は禁止</li>
-          <li>録音全体を同じように処理すること</li>
-          <li>歪み、遅延、その他の動的処理、周波数歪み効果は禁止</li>
+          <li>{m.wildcard_reg_recording_1()}</li>
+          <li>{m.wildcard_reg_recording_2()}</li>
+          <li>{m.wildcard_reg_recording_3()}</li>
+          <li>{m.wildcard_reg_recording_4()}</li>
+          <li>{m.wildcard_reg_recording_5()}</li>
+          <li>{m.wildcard_reg_recording_6()}</li>
+          <li>{m.wildcard_reg_recording_7()}</li>
           <li className="font-bold text-red-500">
-            上記ルールについて、不正行為の疑いがある場合、{WILDCARD}
-            作成に使ったファイルの追加提出を求められる場合あり
+            {m.wildcard_reg_recording_fraud({ Wildcard: WILDCARD })}
           </li>
         </ul>
 
-        <h3 className="mb-4 font-bold">提出方法</h3>
+        <h3 className="mb-4 font-bold">{m.wildcard_reg_submit_title()}</h3>
         <ol className="mb-4 list-decimal space-y-2 pl-8">
-          <li>{WILDCARD}をYouTubeにアップロード</li>
-          <li>Swissbeatbox公式サイトにある申請フォームで提出</li>
+          <li>{m.wildcard_reg_submit_step_1({ Wildcard: WILDCARD, YouTube: YOUTUBE })}</li>
+          <li>{m.wildcard_reg_submit_step_2({ Swissbeatbox: SWISSBEATBOX })}</li>
         </ol>
         <ul className="mb-4 list-disc space-y-2 pl-8">
-          <li className="font-bold text-red-500">上記2つが両方できていない場合は、失格</li>
+          <li className="font-bold text-red-500">{m.wildcard_reg_submit_both_required()}</li>
         </ul>
         <ul className="mb-4 list-disc space-y-2 pl-8">
-          <li className="font-bold text-red-500">
-            毎年必ず、申請フォーム入力忘れによる失格者が発生します！！！
-          </li>
+          <li className="font-bold text-red-500">{m.wildcard_reg_submit_form_warning()}</li>
         </ul>
-        <p className={paragraphClass}>
-          ぜひここのスクリーンショットをとってSNSで拡散してください。推しが失格にならないために...
-        </p>
+        <p className={paragraphClass}>{m.wildcard_reg_submit_sns({ Beatboxer: BEATBOXER })}</p>
         <ul className="mb-8 list-disc space-y-2 pl-8">
-          <li>生のオーディオと生のビデオ (カメラのオーディオを含む) の提出が必要</li>
-          <li>Solo以外の全部門は、録画中のスクリーンキャプチャの提出も必要</li>
-          <li className="font-bold text-red-500">上記2つが無い場合は、失格</li>
-          <li>
-            {WILDCARD}提出は一度のみ。一度提出したら、後から別の{WILDCARD}
-            を提出することはできない
-          </li>
+          <li>{m.wildcard_reg_submit_raw_audio()}</li>
+          <li>{m.wildcard_reg_submit_screen_capture({ Solo: SOLO })}</li>
+          <li className="font-bold text-red-500">{m.wildcard_reg_submit_raw_required()}</li>
+          <li>{m.wildcard_reg_submit_once({ Wildcard: WILDCARD })}</li>
           <li className="font-bold text-red-500">
-            誤って一度提出した{WILDCARD}を削除した場合、失格
+            {m.wildcard_reg_submit_delete({ Wildcard: WILDCARD })}
             <ul className="mt-2 list-disc pl-8 font-normal text-white">
-              <li>このルールは、GBB 2019で発生したトラブルの対策として設けられている</li>
+              <li>{m.wildcard_reg_submit_delete_note()}</li>
             </ul>
           </li>
         </ul>
@@ -328,61 +324,57 @@ export const WildcardRegulationContent = ({
 
       <RuleSection>
         <h2 id="p05" className={sectionClass}>
-          部門別ルール
+          {m.wildcard_reg_category_rules_title()}
         </h2>
         <Table data={categoryRulesTableData} textCenter />
         <PostIt>
           <p>
-            ※中央ヨーロッパ時間には、サマータイムがあります。2025年のサマータイムは3/30からです。
+            {m.rule_dst_note({ year: String(year) })}
             <br />
-            Tag Team部門・Crew部門参加希望の方はご注意ください。
+            {m.rule_dst_tag_team_crew_note({ TagTeam: TAG_TEAM, Crew: CREW })}
           </p>
         </PostIt>
 
-        <h3 className="mb-4 mt-8 font-bold">Loopstation デバイスルール</h3>
+        <h3 className="mb-4 mt-8 font-bold">
+          {m.wildcard_reg_loop_device_title({ Loopstation: LOOPSTATION })}
+        </h3>
         <ul className="mb-8 list-disc space-y-2 pl-8">
-          <li>MIDIコントローラーの使用は禁止</li>
-          <li>マシン内の追加ケーブルは使用可能 ケーブルはデバイスではないとみなされる</li>
+          <li>{m.wildcard_reg_loop_device_1()}</li>
+          <li>{m.wildcard_reg_loop_device_2()}</li>
         </ul>
 
-        <h3 className="mb-4 font-bold">Producer デバイスルール</h3>
+        <h3 className="mb-4 font-bold">
+          {m.wildcard_reg_producer_device_title({ Producer: PRODUCER })}
+        </h3>
         <ul className="mb-8 list-disc space-y-2 pl-8">
-          <li>Loopstation単体での出場は禁止</li>
-          <li className="font-bold text-red-500">
-            事前にデバイス構成をSUPPORT@swissbeatbox.comへ申請すること
-          </li>
-          <li>ボイスソース、ボイストリガーのみ</li>
-          <li>事前に録音されたサンプルは使用禁止</li>
-          <li>
-            FOH (ミキシング デスク) または録音への出力はステレオ信号である必要があり、マルチチャンネル出力は禁止
-          </li>
+          <li>{m.wildcard_reg_producer_device_1({ Loopstation: LOOPSTATION })}</li>
+          <li className="font-bold text-red-500">{m.wildcard_reg_producer_device_2()}</li>
+          <li>{m.wildcard_reg_producer_device_3()}</li>
+          <li>{m.wildcard_reg_producer_device_4()}</li>
+          <li>{m.wildcard_reg_producer_device_5()}</li>
         </ul>
         {guideLinkCards(locale, year)}
       </RuleSection>
 
       <RuleSection>
         <h2 id="p06" className={sectionClass}>
-          失格にならないために
+          {m.wildcard_reg_disqualification_title()}
         </h2>
         <ol className="mb-8 list-decimal space-y-4 pl-8">
           <li>
-            <strong>Swissbeatbox公式サイトにある申請フォームで提出</strong>
-          </li>
-          <li>
             <strong>
-              {WILDCARD}
-              動画の作成にあたり使用したすべてのファイルを、バックアップ含め保存しておき、いつでも提出できるようにしておく
+              {m.wildcard_reg_disqualify_1({ Swissbeatbox: SWISSBEATBOX })}
             </strong>
           </li>
           <li>
-            <strong>
-              {WILDCARD}提出は一度のみ。一度提出したら、後から別の{WILDCARD}
-              を提出することはできない
-            </strong>
+            <strong>{m.wildcard_reg_disqualify_2({ Wildcard: WILDCARD })}</strong>
+          </li>
+          <li>
+            <strong>{m.wildcard_reg_disqualify_3({ Wildcard: WILDCARD })}</strong>
           </li>
         </ol>
         <p className="mb-8 text-center">
-          皆さんの{WILDCARD}を楽しみにしています！
+          {m.wildcard_reg_closing({ Wildcard: WILDCARD })}
           <br />
           Good luck have fun!
         </p>

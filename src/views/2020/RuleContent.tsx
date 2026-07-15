@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { LinkCard } from "~/components/LinkCard.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { WILDCARD } from "~/constants/i18nTerms.js";
+import { LOOPSTATION, SOLO, WILDCARD } from "~/constants/i18nTerms.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -37,27 +37,27 @@ const RuleSectionHeading = ({
 
 const finalJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "CHRIS CELIZ\nDHARNI\nK.I.M\nREEPS ONE\nSKILLER"],
-  ["Loopstation", "BEATNESS\nGENE SHINOZAKI\nMB14\nTOM THUM\nZEDE"],
+  [SOLO, "CHRIS CELIZ\nDHARNI\nK.I.M\nREEPS ONE\nSKILLER"],
+  [LOOPSTATION, "BEATNESS\nGENE SHINOZAKI\nMB14\nTOM THUM\nZEDE"],
 ];
 
 const qualifierJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "AMIT\nCHEZAME\nCOLAPS\nTIMMEH\nTHOMSON"],
-  ["Loopstation", "BEATNESS\nMIXFX\nMB14\nTOM THUM\nZEDE"],
+  [SOLO, "AMIT\nCHEZAME\nCOLAPS\nTIMMEH\nTHOMSON"],
+  [LOOPSTATION, "BEATNESS\nMIXFX\nMB14\nTOM THUM\nZEDE"],
 ];
 
 export const RuleContent = ({ locale, year }: RuleContentProps) => {
   return (
     <main className="bg-(--background-color) pt-16">
       <RuleSection>
-        <p className={paragraphClass}>{m.rule_2020_intro({ year: String(year) })}</p>
+        <p className={paragraphClass}>{m.rule_online_intro({ year: String(year) })}</p>
 
         <RuleSectionHeading id="toc-section">{m.rule_toc()}</RuleSectionHeading>
         <ol className="mb-8 list-decimal space-y-2 pl-8">
           <li>
             <a href="#background-section" className={anchorClass}>
-              {m.rule_2020_background_title()}
+              {m.rule_cancellation_background_title()}
             </a>
           </li>
           <li>
@@ -80,21 +80,21 @@ export const RuleContent = ({ locale, year }: RuleContentProps) => {
 
       <RuleSection>
         <RuleSectionHeading id="background-section">
-          {m.rule_2020_background_title()}
+          {m.rule_cancellation_background_title()}
         </RuleSectionHeading>
-        <p className={paragraphClass}>{m.rule_2020_background()}</p>
+        <p className={paragraphClass}>{m.rule_cancellation_background({ Solo: SOLO, Loopstation: LOOPSTATION })}</p>
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="category-section">{m.rule_toc_categories()}</RuleSectionHeading>
         <Table
           data={[
-            [m.rule_col_category(), m.rule_2020_category_invitees()],
+            [m.rule_col_category(), m.rule_category_invitees()],
             [
-              "Solo",
-              m.rule_2020_solo_invitees(),
+              SOLO,
+              m.rule_solo_invitees_list({ Wildcard: WILDCARD }),
             ],
-            ["Loopstation", m.rule_2020_loop_invitees()],
+            [LOOPSTATION, m.rule_loop_invitees_list({ Wildcard: WILDCARD })],
           ]}
           textCenter
         />
@@ -106,14 +106,14 @@ export const RuleContent = ({ locale, year }: RuleContentProps) => {
 
       <RuleSection>
         <RuleSectionHeading id="final-judges-section">
-          {m.rule_2020_final_judges()}
+          {m.rule_final_tournament_judges()}
         </RuleSectionHeading>
         <Table data={finalJudgesTableData} textCenter />
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="qualifier-judges-section">
-          {m.rule_2020_qualifier_judges()}
+          {m.rule_qualifier_judges()}
         </RuleSectionHeading>
         <Table data={qualifierJudgesTableData} textCenter />
       </RuleSection>

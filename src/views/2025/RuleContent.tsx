@@ -5,12 +5,16 @@ import { RuleSeedTable } from "~/components/RuleSeedTable.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import {
+  GBB,
   BEATBOX,
   BEATBOXER,
   CREW,
   LOOPSTATION,
   PRODUCER,
   RC505,
+  SEVEN_TO_SMOKE,
+  SHOWCASE_WORD,
+  SOLO,
   SWISSBEATBOX,
   TAG_TEAM,
   TAG_TEAM_LOOPSTATION,
@@ -70,11 +74,11 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
   <h3 className={subSectionClass}>{children}</h3>
 );
 
-const wildcardRegulationLinkText = (wildcard: string) => (
+const wildcardRegulationLinkText = () => (
   <span>
     {m.rule_for_beatboxers({ Beatboxer: BEATBOXER })}
     <br />
-    {m.rule_wildcard_regulation_explanation({ Wildcard: wildcard })}
+    {m.rule_wildcard_regulation_explanation({ Wildcard: WILDCARD })}
   </span>
 );
 
@@ -91,7 +95,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Solo",
+    SOLO,
     <>
       {m.rule_time_limit()} 2:10
       <br />
@@ -101,7 +105,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Tag Team",
+    TAG_TEAM,
     <>
       {m.rule_time_limit()} 2:10
       <br />
@@ -111,7 +115,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Loopstation",
+    LOOPSTATION,
     <>
       {m.rule_time_limit()} 3:30
       <br />
@@ -123,7 +127,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Producer",
+    PRODUCER,
     <>
       {m.rule_time_limit()} 3:30
       <br />
@@ -135,7 +139,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
     </>,
   ],
   [
-    "Crew",
+    CREW,
     <>
       {m.rule_time_limit()} 3:10
       <br />
@@ -148,22 +152,22 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
 
 const mainJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "RIVER'\nPE4ENKATA\nD-LOW\nBALL-ZEE\nTRUNG BAO"],
-  ["Tag Team", "COLAPS\nD-LOW\nJOHN T\nALEXINHO\nZHANG ZE"],
-  ["Loopstation", "SO-SO\nSARO\nKBA\nINKIE\nBEARDYMAN"],
-  ["Producer", "SO-SO\nKBA\nINKIE\nBEARDYMAN\nZHANG ZE"],
-  ["Crew", "SO-SO\nD-LOW\nMB14\nBALL-ZEE\nZHANG ZE"],
-  ["7toSmoke", `${m.rule_judges_unknown()}\n${m.rule_judges_not_announced()}`],
+  [SOLO, "RIVER'\nPE4ENKATA\nD-LOW\nBALL-ZEE\nTRUNG BAO"],
+  [TAG_TEAM, "COLAPS\nD-LOW\nJOHN T\nALEXINHO\nZHANG ZE"],
+  [LOOPSTATION, "SO-SO\nSARO\nKBA\nINKIE\nBEARDYMAN"],
+  [PRODUCER, "SO-SO\nKBA\nINKIE\nBEARDYMAN\nZHANG ZE"],
+  [CREW, "SO-SO\nD-LOW\nMB14\nBALL-ZEE\nZHANG ZE"],
+  [SEVEN_TO_SMOKE, `${m.rule_judges_unknown()}\n${m.rule_judges_not_announced()}`],
   [m.rule_referee(), "KRISTOF"],
 ];
 
 const wildcardJudgesTableData: string[][] = [
   [m.rule_col_category(), m.rule_col_judges()],
-  ["Solo", "FOOTBOXG\nD-LOW\nTRUNG BAO"],
-  ["Tag Team", "D-LOW\nCOLAPS\nYAMORI"],
-  ["Loopstation", "BREZ\nKRISTOF\nFROSTY"],
-  ["Producer", "KBA\nKRISTOF\nFROSTY"],
-  ["Crew", "KRISTOF\nD-LOW\nZHANG ZE"],
+  [SOLO, "FOOTBOXG\nD-LOW\nTRUNG BAO"],
+  [TAG_TEAM, "D-LOW\nCOLAPS\nYAMORI"],
+  [LOOPSTATION, "BREZ\nKRISTOF\nFROSTY"],
+  [PRODUCER, "KBA\nKRISTOF\nFROSTY"],
+  [CREW, "KRISTOF\nD-LOW\nZHANG ZE"],
 ];
 
 export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
@@ -189,7 +193,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            GBB {year} Wildcard Competition
+            {GBB} {year} {WILDCARD} Competition
           </a>
         </p>
 
@@ -205,7 +209,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </div>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text={wildcardRegulationLinkText(WILDCARD)}
+            text={wildcardRegulationLinkText()}
             href={`/${locale}/${year}/wildcard_regulation`}
             fullWidth
           />
@@ -289,11 +293,11 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), WILDCARD, m.rule_col_seed(), m.rule_col_total()],
-            ["Solo", "6", "10", "16"],
-            ["Loopstation", "5", "3", "8"],
-            ["Crew", "2", "1", "3"],
-            ["Producer", "2", "0", "2"],
-            ["Tag Team", "5", "3", "8"],
+            [SOLO, "6", "10", "16"],
+            [LOOPSTATION, "5", "3", "8"],
+            [CREW, "2", "1", "3"],
+            [PRODUCER, "2", "0", "2"],
+            [TAG_TEAM, "5", "3", "8"],
           ]}
           textCenter
         />
@@ -309,13 +313,14 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             {m.rule_producer_description({
               Loopstation: LOOPSTATION,
               Producer: PRODUCER,
+              SHOWCASE: SHOWCASE_WORD,
             })}
           </p>
         </RuleSubSection>
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text={wildcardRegulationLinkText(WILDCARD)}
+            text={wildcardRegulationLinkText()}
             href={`/${locale}/${year}/wildcard_regulation`}
           />
         </div>

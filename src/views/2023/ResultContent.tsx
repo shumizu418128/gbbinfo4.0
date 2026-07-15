@@ -163,7 +163,7 @@ export const ResultContent = ({
 
   const isShowcaseCategory = selectedCategory.name
     .toUpperCase()
-    .startsWith("SHOWCASE");
+    .startsWith(SHOWCASE);
   const hasTournament = tournamentResults.length > 0;
   const hasRanking = rankingResults.length > 0;
   const hasResults = hasTournament || hasRanking;

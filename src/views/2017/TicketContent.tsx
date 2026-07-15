@@ -16,7 +16,7 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className="mb-8 leading-relaxed">{m.ticket_2017_venue_detail({ year: String(year) })}</p>
+        <p className="mb-8 leading-relaxed">{m.ticket_venue_voltahalle({ year: String(year) })}</p>
         <p className="mb-16 leading-relaxed">{m.ticket_sales_ended()}</p>
 
         <div className="mb-8 flex flex-wrap gap-4">

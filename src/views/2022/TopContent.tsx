@@ -20,11 +20,11 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
     >
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className="mb-8 text-center text-6xl font-bold">
-          {m.top2022_cancelled()}
+          {m.top_cancelled()}
         </p>
 
         <p className="mb-8 leading-relaxed text-(--secondary-text-color)">
-          {m.top2022_message({ Swissbeatbox: SWISSBEATBOX })}
+          {m.top_cancelled_message({ Swissbeatbox: SWISSBEATBOX })}
         </p>
 
         <p className="mb-16 text-center">
@@ -34,7 +34,7 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
             rel="noopener noreferrer"
             className={anchorClass}
           >
-            {m.top2022_source()}
+            {m.top_cancelled_source()}
           </a>
         </p>
 
