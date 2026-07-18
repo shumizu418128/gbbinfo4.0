@@ -25,8 +25,6 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
     >
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className="mb-16 text-center leading-relaxed">
-          {m.top_site_description()}
-          <br />
           {m.top_legacy_participants_only()}
         </p>
         <div className="mb-16 flex flex-wrap gap-4">
