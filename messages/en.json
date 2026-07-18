@@ -16,6 +16,7 @@
   "others_translation_pages_intro": "The pages providing translation are as follows.",
   "others_translation_title": "Translation service for each page",
   "others_translation_untranslated_note": "Pages without translation are displayed in the original Japanese.",
+  "japanese_only_page_notice": "This page is not translated. The body text is shown only in the original Japanese.",
   "others_translation_year_range": "Fiscal year: 2024 and beyond",
   "participant_all_participants": "All participants",
   "participant_ask_chatgpt": "Ask {ChatGPT}",

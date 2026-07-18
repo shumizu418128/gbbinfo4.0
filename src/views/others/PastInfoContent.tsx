@@ -1,4 +1,5 @@
 import { Table } from "~/components/Table.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 
@@ -37,6 +38,7 @@ export const PastInfoContent = ({ locale }: PastInfoContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className={paragraphClass}>
           GBBINFO-JPNは、
           <a href={`/${locale}/others/about`} className={anchorClass}>

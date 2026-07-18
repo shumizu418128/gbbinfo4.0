@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { anchorClass } from "~/constants/linkStyle.js";
 
@@ -10,6 +11,7 @@ export const LinksContent = ({ locale }: LinksContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className="mb-8">
           当サイトの内容（特に法制度・行政手続き等）については、事前の通告なしに変更される場合もあります。<br />
           渡航前に必ず、渡航先国の在外公館または観光局等で最新情報を確認してください。

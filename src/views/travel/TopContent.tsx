@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import { PostIt } from "~/components/PostIt.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 
@@ -10,6 +11,7 @@ export const TopContent = ({ locale }: TopContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className="mb-4">
           ポーランドで開催された、GBB 2021 を現地観戦した管理人が、ポーランドへ行くための情報をまとめたページです。
         </p>

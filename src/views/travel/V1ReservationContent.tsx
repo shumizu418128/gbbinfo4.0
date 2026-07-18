@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
@@ -61,6 +62,7 @@ export const V1ReservationContent = ({ locale }: V1ReservationContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className="mb-8">
           ワルシャワまでの飛行機やホテルの予約を立てるための情報を、GBB 2021 の実例を参考にまとめています。
         </p>

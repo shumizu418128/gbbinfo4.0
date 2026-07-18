@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
@@ -19,6 +20,7 @@ export const V1FlightContent = ({ locale }: V1FlightContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className="mb-8">
           カタール航空を例に、日本からワルシャワまでの航空機での移動について、GBB 2021の実体験を交えて解説します。
         </p>

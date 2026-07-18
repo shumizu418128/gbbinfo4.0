@@ -16,6 +16,7 @@
   "others_translation_pages_intro": "翻訳を提供しているページは、以下の通りです。",
   "others_translation_title": "各ページの翻訳提供について",
   "others_translation_untranslated_note": "翻訳を提供していないページは、原文である日本語で表示されます。",
+  "japanese_only_page_notice": "このページは翻訳対応を行っていません。本文は日本語の原文のみ表示されます。",
   "others_translation_year_range": "対応年度：2024年以降",
   "participant_all_participants": "全出場者一覧",
   "participant_ask_chatgpt": "{ChatGPT}に聞く",

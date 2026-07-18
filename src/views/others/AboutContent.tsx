@@ -1,5 +1,6 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import { anchorClass } from "~/constants/linkStyle.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 
 type AboutContentProps = {
   locale: SupportedLanguage;
@@ -11,6 +12,7 @@ export const AboutContent = ({ locale: _locale }: AboutContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className={paragraphClass}>
           はじめまして、このサイトの管理人です。
           <br />

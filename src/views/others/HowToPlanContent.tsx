@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import { PostIt } from "~/components/PostIt.js";
 import { SocialEmbed } from "~/components/SocialEmbed.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
@@ -24,6 +25,7 @@ export const HowToPlanContent = ({ locale: _locale }: HowToPlanContentProps) => 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className={paragraphClass}>
           GBB21を現地観戦した管理人が、GBBに向けて計画を立てる上で知っておくべきことを解説します。
         </p>

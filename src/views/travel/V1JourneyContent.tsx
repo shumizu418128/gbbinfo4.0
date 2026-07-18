@@ -1,4 +1,5 @@
 import { LinkCard } from "~/components/LinkCard.js";
+import { JapaneseOnlyPageNotice } from "~/components/JapaneseOnlyPageNotice.js";
 import { PostIt } from "~/components/PostIt.js";
 import { Table } from "~/components/Table.js";
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
@@ -57,6 +58,7 @@ export const V1JourneyContent = ({ locale }: V1JourneyContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <JapaneseOnlyPageNotice />
         <p className="mb-8">
           ワルシャワでの旅程や、おすすめの持ち物などを、GBB 2021 の実例を参考にまとめています。
         </p>
