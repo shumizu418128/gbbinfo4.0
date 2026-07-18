@@ -20,7 +20,7 @@ export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) 
           GBBのWildcard審査結果は、例年、Swissbeatboxの公式YouTubeチャンネルで公開されます。世界中のトップクラスのBeatboxerが、こぞってGBB各部門のWildcardを提出します。しかし、近年Wildcard出場枠が減少傾向にあり、過去にGBB出場経験がある有名なBeatboxerが、出場どころか上位にすら入れないことも当たり前になってきました。
         </p>
         <p className={paragraphClass}>
-          そのため、結果が発表されると、毎年必ず結果に対する不満が噴出し、YouTubeコメント欄は批判的な意見や誹謗中傷で溢れ返ります。GBB 2023 Wildcard結果発表ライブのコメント欄では、例年以上に批判的な意見や誹謗中傷が多くみられ、SNS上でも非難が殺到しました。
+          そのため、結果が発表されると、毎年必ず結果に対する不満が噴出し、YouTubeコメント欄は批判的な意見や誹謗中傷で溢れ返ります。GBB23 Wildcard結果発表ライブのコメント欄では、例年以上に批判的な意見や誹謗中傷が多くみられ、SNS上でも非難が殺到しました。
         </p>
         <p className={paragraphClass}>
           Wildcard結果発表のコメント欄は、
@@ -31,6 +31,19 @@ export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) 
         </p>
         <p className={paragraphClass}>Wildcard結果発表を見る際は、YouTubeコメント欄を絶対に見ないでください。</p>
         <p className="mb-8 text-center text-2xl font-bold text-red-500">後悔しますよ、マジで</p>
+
+        <div className="mb-8 flex flex-wrap gap-4">
+          <LinkCard
+            text="Wildcard結果 & 出場者"
+            href={`/${locale}/${year}/participants`}
+            fullWidth
+          />
+          <LinkCard
+            text="Wildcard結果発表日"
+            href={`/${locale}/${year}/rule?scroll=result_date`}
+            fullWidth
+          />
+        </div>
 
         <img
           alt="自己防衛"
@@ -56,17 +69,20 @@ export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) 
           <LinkCard
             text={`${GBB} ${year} ルール & 審査員`}
             href={`/${locale}/${year}/rule`}
+            fullWidth
           />
-          <LinkCard text="Wildcard一覧" href={`/${locale}/${year}/wildcards`} />
+          <LinkCard text="Wildcard一覧" href={`/${locale}/${year}/wildcards`} fullWidth />
         </div>
         <div className="flex flex-wrap gap-4">
           <LinkCard
             text="Wildcard結果 & 出場者"
             href={`/${locale}/${year}/participants`}
+            fullWidth
           />
           <LinkCard
             text="Wildcard結果発表日"
             href={`/${locale}/${year}/rule?scroll=result_date`}
+            fullWidth
           />
         </div>
       </div>
