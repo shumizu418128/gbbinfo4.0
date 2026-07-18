@@ -60,7 +60,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
       </div>
 
       <div className="flex justify-center w-full">
-        <ul className="mb-16 w-full max-w-md list-disc gap-6 px-12 text-left">
+        <ul className="mb-16 w-full max-w-md list-disc space-y-4 px-8 text-left">
           <li>
             <a href={`/${locale}/others/url_change`} className={anchorClass}>
               {m.site_url_notice()}

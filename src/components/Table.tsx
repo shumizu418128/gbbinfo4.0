@@ -1,4 +1,4 @@
-import type { CSSProperties, ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
 
 type TableProps = {
   data: (string | number | ReactNode)[][];
@@ -8,6 +8,19 @@ type TableProps = {
   /** 列幅の固定値（例: ['32px']）。指定列は columnWidths より優先される。 */
   columnFixedWidths?: string[];
   className?: string;
+};
+
+const renderTableCell = (cell: string | number | ReactNode): ReactNode => {
+  if (typeof cell === "string" && cell.includes("\n")) {
+    return cell.split("\n").map((line, index) => (
+      <Fragment key={index}>
+        {index > 0 && <br />}
+        {line}
+      </Fragment>
+    ));
+  }
+
+  return cell;
 };
 
 /**
@@ -85,7 +98,7 @@ export const Table = ({
                 fontWeight: "bold",
               }}
             >
-              {cell}
+              {renderTableCell(cell)}
             </th>
           ))}
         </tr>
@@ -103,7 +116,7 @@ export const Table = ({
                   style={getCellStyle(columnWidths, columnFixedWidths, j)}
                   className={textCenter ? "text-center" : undefined}
                 >
-                  {cell}
+                  {renderTableCell(cell)}
                 </td>
               ))}
             </tr>

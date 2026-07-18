@@ -33,7 +33,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
       </div>
 
       <div className="flex justify-center w-full">
-        <ul className="w-full max-w-md list-disc text-left px-12 gap-6 mb-18">
+        <ul className="mb-18 w-full max-w-md list-disc space-y-4 px-8 text-left">
           <li>
             <a
               href={`/${locale}/others/url_change`}
