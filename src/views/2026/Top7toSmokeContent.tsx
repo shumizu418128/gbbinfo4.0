@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { SEVEN_TO_SMOKE } from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import * as m from "../../../paraglide/messages.js";
 
@@ -13,7 +14,11 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
       <div className="mx-auto w-full max-w-2xl px-4">
 
         <div className="mb-16 flex flex-wrap gap-4">
-          <LinkCard text="7toSmokeとは" image="/images/afterparty.webp" href={`/${locale}/others/7tosmoke`} />
+          <LinkCard
+            text={m.seven_to_smoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
+            image="/images/afterparty.webp"
+            href={`/${locale}/others/7tosmoke`}
+          />
           <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href={`/${locale}/${year}/ticket`} />
           <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href={`/${locale}/${year}/timetable`} />
           <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} />

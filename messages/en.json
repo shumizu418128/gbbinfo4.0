@@ -409,5 +409,12 @@
   "timetable_tag_team_semifinal_final": "{TagTeam} Semifinals, 3rd-place & Final",
   "timetable_ttl_prelim": "{TagTeamLoopstation} Prelims",
   "timetable_warsaw_time": "Warsaw time",
-  "withdrawn_list": "Withdrawn list"
+  "withdrawn_list": "Withdrawn list",
+  "rule_penalty_undertime_3s": "Finishing early lowers final rank by 1 for every 3 unused seconds",
+  "rule_ai_translation_notice": "For Non-Japanese Users: Please note that this article was originally written in Japanese and subsequently translated using AI. As a result, there may be instances of inaccurate translation. For any questions or concerns, please refer to the official website or social media channels.",
+  "wildcard_reg_video_script": "\"My name is [Name], and this is my [Category] wildcard for the GBB {year} World League.\"",
+  "wildcard_reg_credit_thumbnail": "dupo (@TWlCER) — GBB25 {Wildcard} thumbnail creation",
+  "wildcard_reg_credit_mastering": "Impedance (@impedanceryuma) — GBB {Wildcard} mastering",
+  "others_past_info_title": "Past GBB info coverage status",
+  "site_description": "A clear overview of Grand Beatbox Battle, the world championship for human beatbox hosted by Swissbeatbox."
 }

@@ -409,5 +409,12 @@
   "timetable_tag_team_semifinal_final": "{TagTeam} 準決勝・3位決定戦・決勝",
   "timetable_ttl_prelim": "{TagTeamLoopstation} 予選",
   "timetable_warsaw_time": "ワルシャワ時間",
-  "withdrawn_list": "辞退者一覧"
+  "withdrawn_list": "辞退者一覧",
+  "rule_penalty_undertime_3s": "制限時間を使い切らず余らせた場合、3秒につき最終順位を1つ下げる",
+  "rule_ai_translation_notice": "非日本語話者向け: 本記事は日本語で書かれた原文をAIで翻訳しています。誤訳がある場合があります。疑問点は公式サイトまたは公式SNSをご確認ください。",
+  "wildcard_reg_video_script": "\"My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year} World League.\"",
+  "wildcard_reg_credit_thumbnail": "dupo (@TWlCER) — GBB25 {Wildcard}サムネイル作成",
+  "wildcard_reg_credit_mastering": "Impedance (@impedanceryuma) — GBB {Wildcard}マスタリング",
+  "others_past_info_title": "過去のGBB情報対応状況",
+  "site_description": "Swissbeatboxが主催するHuman Beatboxの世界大会「Grand Beatbox Battle」の各種情報を、見やすくまとめたサイトです。"
 }

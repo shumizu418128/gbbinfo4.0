@@ -48,7 +48,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_penalty_overtime()}
       <br />
-      制限時間を使い切らず余らせた場合、3秒につき最終順位を1つ下げる
+      {m.rule_penalty_undertime_3s()}
     </>,
   ],
   [
@@ -68,7 +68,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_submission_deadline()} 4/5 (23:59 CET)
       <br />
-      {m.rule_result_announcement()} 4/24 時間未定
+      {m.rule_result_announcement()} 4/24 {m.rule_time_undecided()}
     </>,
   ],
   [
@@ -90,7 +90,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_submission_deadline()} 3/29 (23:59 CET)
       <br />
-      {m.rule_result_announcement()} 4/22 時間未定
+      {m.rule_result_announcement()} 4/22 {m.rule_time_undecided()}
       <br />
       {m.rule_no_device_limit()}
     </>,
@@ -102,7 +102,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
       <br />
       {m.rule_submission_deadline()} 4/5 (23:59 CET)
       <br />
-      {m.rule_result_announcement()} 4/26 時間未定
+      {m.rule_result_announcement()} 4/26 {m.rule_time_undecided()}
     </>,
   ],
 ];
@@ -215,10 +215,7 @@ export const WildcardRegulationContent = ({
           <strong className="text-red-500">{m.rule_notices_p2_strong()}</strong>
         </p>
         <p className={`${paragraphClass} text-(--secondary-text-color)`}>
-          For Non-Japanese Users: Please note that this article was originally written in
-          Japanese and subsequently translated using AI. As a result, there may be instances
-          of inaccurate translation. For any questions or concerns, please refer to the
-          official website or social media channels.
+          {m.rule_ai_translation_notice()}
         </p>
         {guideLinkCards(locale, year)}
       </RuleSection>
@@ -270,8 +267,7 @@ export const WildcardRegulationContent = ({
         </h3>
         <p className={paragraphClass}>{m.wildcard_reg_video_intro()}</p>
         <p className={`${paragraphClass} italic`}>
-          &quot;My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year}{" "}
-          World League.&quot;
+          {m.wildcard_reg_video_script({ year: String(year) })}
         </p>
         <PostIt>
           <p>
@@ -386,7 +382,7 @@ export const WildcardRegulationContent = ({
               rel="noopener noreferrer"
               className={anchorClass}
             >
-              dupo (@TWlCER) — GBB25 ワイルドカードサムネイル作成
+              {m.wildcard_reg_credit_thumbnail({ Wildcard: WILDCARD })}
             </a>
           </li>
           <li>
@@ -396,7 +392,7 @@ export const WildcardRegulationContent = ({
               rel="noopener noreferrer"
               className={anchorClass}
             >
-              Impedance (@impedanceryuma) — GBB wildcardマスタリング
+              {m.wildcard_reg_credit_mastering({ Wildcard: WILDCARD })}
             </a>
           </li>
         </ul>

@@ -1,5 +1,13 @@
 import type { SupportedLanguage } from "~/constants/languageLabels.js";
-import { SEVEN_TO_SMOKE, WILDCARD } from "~/constants/i18nTerms.js";
+import {
+  CREW,
+  LOOPSTATION,
+  PRODUCER,
+  SEVEN_TO_SMOKE,
+  SOLO,
+  TAG_TEAM,
+  WILDCARD,
+} from "~/constants/i18nTerms.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import { Table } from "~/components/Table.js";
 import { anchorClass } from "~/constants/linkStyle.js";
@@ -18,17 +26,15 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
     locale === "ko" ? `/${locale}/${year}/korea` : `/${locale}/${year}/japan`;
   const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
 
+  const tableHeader = [m.timetable_time(), m.timetable_event()];
+
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className={paragraphClass}>時刻はあくまでも予定です。</p>
-        <p className={paragraphClass}>GBB21では、予定から約2時間遅延しました。</p>
-        <p className={paragraphClass}>
-          GBB23では、本番7日前に日本語版・英語版のタイムテーブルが公開されましたが、日本語版のみ正しく、英語版には誤記が多くみられました。
-        </p>
-        <p className={paragraphClass}>
-          GBB24では、本番約1ヶ月前に公開されましたが、誤記が多くみられました。
-        </p>
+        <p className={paragraphClass}>{m.timetable_note_schedule()}</p>
+        <p className={paragraphClass}>{m.timetable_historical_delay_note()}</p>
+        <p className={paragraphClass}>{m.timetable_bilingual_tt_error()}</p>
+        <p className={paragraphClass}>{m.timetable_historical_tt_error_note()}</p>
 
         <h2 className="mb-4 mt-16 text-xl font-bold">{m.rule_toc()}</h2>
         <ol className="mb-16 list-decimal space-y-2 pl-8">
@@ -61,28 +67,26 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <p className={paragraphClass}>JST GMT+9</p>
         <Table
           data={[
-            ["時刻", "内容"],
-            ["14:00", "入場開始"],
-            ["14:55", "サプライズゲスト"],
-            ["15:15", "オープニング"],
+            tableHeader,
+            ["14:00", m.timetable_doors_open()],
+            ["14:55", m.timetable_surprise_guest()],
+            ["15:15", m.timetable_opening()],
             ["-", "SPECIAL SHOWCASE"],
-            ["-", "Crew 予選"],
-            ["-", "Tag Team 予選"],
-            ["-", "休憩"],
+            ["-", m.timetable_crew_prelim({ Crew: CREW })],
+            ["-", m.timetable_tag_team_prelim({ TagTeam: TAG_TEAM })],
+            ["-", m.timetable_break()],
             ["-", "SPECIAL SHOWCASE"],
-            ["-", "Crew 決勝"],
-            ["-", "Producer 予選"],
+            ["-", m.timetable_crew_final({ Crew: CREW })],
+            ["-", m.timetable_producer_prelim({ Producer: PRODUCER })],
             ["-", "SPECIAL SHOWCASE"],
-            ["19:30", "終了"],
+            ["19:30", m.timetable_end()],
           ]}
           textCenter
         />
-        <p className={paragraphClass}>
-          タイムテーブルの終了時刻は19:30になっていますが、なぜか中継配信は21時まで行われるようです。理由は不明です。初日も21時まで行われるのかどうかも不明です。
-        </p>
+        <p className={paragraphClass}>{m.timetable_day1_stream_end_note()}</p>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text="現地観戦計画のたてかた"
+            text={m.how_to_plan()}
             href={`/${locale}/others/how_to_plan`}
           />
           <LinkCard
@@ -98,17 +102,17 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <p className={paragraphClass}>JST GMT+9</p>
         <Table
           data={[
-            ["時刻", "内容"],
-            ["13:00", "入場開始"],
-            ["13:45", "サプライズゲスト"],
-            ["14:15", "オープニング"],
+            tableHeader,
+            ["13:00", m.timetable_doors_open()],
+            ["13:45", m.timetable_surprise_guest()],
+            ["14:15", m.timetable_opening()],
             ["", "SPECIAL SHOWCASE"],
-            ["", "Loopstation 準々決勝"],
-            ["", "休憩"],
-            ["", "Solo 予選"],
-            ["", "Producer 予選 2"],
+            ["", m.timetable_loop_quarterfinal({ Loopstation: LOOPSTATION })],
+            ["", m.timetable_break()],
+            ["", m.timetable_solo_prelim({ Solo: SOLO })],
+            ["", m.timetable_producer_prelim_2({ Producer: PRODUCER })],
             ["", "SPECIAL SHOWCASE"],
-            ["19:12", "終了"],
+            ["19:12", m.timetable_end()],
           ]}
           textCenter
         />
@@ -133,28 +137,28 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <p className={paragraphClass}>JST GMT+9</p>
         <Table
           data={[
-            ["時刻", "内容"],
-            ["13:15", "入場開始"],
-            ["14:00", "サプライズゲスト"],
-            ["14:30", "オープニング"],
+            tableHeader,
+            ["13:15", m.timetable_doors_open()],
+            ["14:00", m.timetable_surprise_guest()],
+            ["14:30", m.timetable_opening()],
             ["", "SPECIAL SHOWCASE"],
-            ["", "Loopstation 準決勝・3位決定戦・決勝"],
-            ["", "Solo 準々決勝"],
-            ["", "休憩"],
-            ["", "Producer 決勝"],
-            ["", "Tag Team 準決勝"],
-            ["", "Solo 準決勝"],
-            ["", "Tag Team 3位決定戦・決勝"],
-            ["", "Solo 3位決定戦・決勝"],
+            ["", m.timetable_loop_semifinal_final({ Loopstation: LOOPSTATION })],
+            ["", m.timetable_solo_quarterfinal({ Solo: SOLO })],
+            ["", m.timetable_break()],
+            ["", m.timetable_producer_final({ Producer: PRODUCER })],
+            ["", m.timetable_tag_team_semifinal({ TagTeam: TAG_TEAM })],
+            ["", m.timetable_solo_semifinal({ Solo: SOLO })],
+            ["", m.timetable_tag_team_final({ TagTeam: TAG_TEAM })],
+            ["", m.timetable_solo_final({ Solo: SOLO })],
             ["", "SPECIAL SHOWCASE"],
-            ["19:58", "セレモニー"],
-            ["21:00", "終了"],
+            ["19:58", m.timetable_ceremony()],
+            ["21:00", m.timetable_end()],
           ]}
           textCenter
         />
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text="現地観戦計画のたてかた"
+            text={m.how_to_plan()}
             href={`/${locale}/others/how_to_plan`}
           />
           <LinkCard text={teamLabel} href={teamHref} />
@@ -167,20 +171,20 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <p className={paragraphClass}>JST GMT+9</p>
         <Table
           data={[
-            ["時刻", "内容"],
-            ["14:20", "入場開始"],
-            ["15:00", "スタート"],
-            ["16:30", "ABEMA配信スタート"],
-            ["発表次第更新", "終了"],
+            tableHeader,
+            ["14:20", m.timetable_doors_open()],
+            ["15:00", m.timetable_start()],
+            ["16:30", m.timetable_abema_stream_start()],
+            [m.rule_update_pending(), m.timetable_end()],
           ]}
           textCenter
         />
         <p className={paragraphClass}>
-          7toSmoke開始時刻と配信スタート時刻が違う理由は不明です。
+          {m.timetable_7tosmoke_stream_timing_note({ SevenToSmoke: SEVEN_TO_SMOKE })}
         </p>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard
-            text="現地観戦計画のたてかた"
+            text={m.how_to_plan()}
             href={`/${locale}/others/how_to_plan`}
           />
           <LinkCard text={SEVEN_TO_SMOKE} href={`/${locale}/${year}/top_7tosmoke`} />
