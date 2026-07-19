@@ -1,20 +1,19 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
 import { TranslationContent } from "~/views/others/TranslationContent";
-import { getCommonYearData } from "~/util/staticPaths";
+import { getHeaderFooterData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "../../../../paraglide/messages.js";
 
 export async function getStaticPaths() {
-  const YEAR = new Date().getFullYear();
-  const common = await getCommonYearData(YEAR);
+  const headerFooter = await getHeaderFooterData();
   return locales.map((locale) => ({
     params: { lang: locale },
-    props: { locale, ...common },
+    props: { locale, ...headerFooter },
   }));
 }
 
-const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const { locale, years, latestYearWithCountry } = Astro.props;
 const heroSubtitle = m.others_translation_title();
 const pageTitle = `${m.others_translation_title()} - GBBinfo`;
 ---
@@ -24,7 +23,6 @@ const pageTitle = `${m.others_translation_title()} - GBBinfo`;
   pageTitle={pageTitle}
   heroSubtitle={heroSubtitle}
   heroHeading="GBBINFO"
-  yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}
 >

@@ -1,19 +1,18 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
 import { SevenToSmokeContent } from "~/views/others/SevenToSmokeContent";
-import { getCommonYearData } from "~/util/staticPaths";
+import { getHeaderFooterData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
 
 export async function getStaticPaths() {
-  const YEAR = new Date().getFullYear();
-  const common = await getCommonYearData(YEAR);
+  const headerFooter = await getHeaderFooterData();
   return locales.map((locale) => ({
     params: { lang: locale },
-    props: { locale, ...common },
+    props: { locale, ...headerFooter },
   }));
 }
 
-const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const { locale, years, latestYearWithCountry } = Astro.props;
 const heroSubtitle = "7toSmokeとは";
 const pageTitle = "7toSmokeとは - GBBinfo";
 ---
@@ -23,9 +22,8 @@ const pageTitle = "7toSmokeとは - GBBinfo";
   pageTitle={pageTitle}
   heroSubtitle={heroSubtitle}
   heroHeading="GBBINFO"
-  yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}
 >
-  <SevenToSmokeContent client:idle locale={locale} year={yearWithCountry.year} />
+  <SevenToSmokeContent client:idle locale={locale} year={latestYearWithCountry.year} />
 </SiteFrame>

@@ -34,7 +34,7 @@ export type YearWithCountry = Awaited<ReturnType<typeof findYearWithCountry>>;
  * Returns:
  *   年の数値配列。
  */
-const findAllYears = async (): Promise<number[]> => {
+export const findAllYears = async (): Promise<number[]> => {
   const rows = await getDb()
     .select({ year: yearTable.year })
     .from(yearTable)
@@ -58,4 +58,20 @@ export const findYearResources = async (year: number) => {
     findAllYears(),
   ]);
   return { yearWithCountry, years };
+};
+
+/**
+ * 非年度ページの Header / Footer 用データを取得する。
+ *
+ * Returns:
+ *   years: 全開催年の数値配列（降順）。
+ *   latestYearWithCountry: 最新開催年の Country 付き Year 情報。
+ */
+export const findHeaderFooterData = async () => {
+  const latestYear = new Date().getFullYear();
+  const [years, latestYearWithCountry] = await Promise.all([
+    findAllYears(),
+    findYearWithCountry(latestYear),
+  ]);
+  return { years, latestYearWithCountry };
 };

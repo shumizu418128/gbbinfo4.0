@@ -1,10 +1,12 @@
 import {
+  findHeaderFooterData,
   findYearResources,
   findYearWithCountry,
   type YearWithCountry,
 } from "~/db/year.js";
 import {
   getCommonYearDataFromStore,
+  getHeaderFooterDataFromStore,
   loadBuildCache,
 } from "~/db/buildCache.js";
 
@@ -14,7 +16,13 @@ export type CommonYearData = {
   latestYearWithCountry: YearWithCountry;
 };
 
+export type HeaderFooterData = {
+  years: number[];
+  latestYearWithCountry: YearWithCountry;
+};
+
 const commonYearDataMemo = new Map<number, CommonYearData>();
+let headerFooterDataMemo: HeaderFooterData | undefined;
 
 /**
  * 指定年の共通ページデータ（Header / Hero / Footer 用）をビルド時に取得する。
@@ -50,5 +58,30 @@ export const getCommonYearData = async (
       : await findYearWithCountry(latestYear);
   const data = { yearWithCountry, years, latestYearWithCountry };
   commonYearDataMemo.set(year, data);
+  return data;
+};
+
+/**
+ * 非年度ページの Header / Footer 用データをビルド時に取得する。
+ *
+ * ビルドキャッシュが存在する場合は DB にアクセスしない。
+ *
+ * Returns:
+ *   years・latestYearWithCountry。
+ */
+export const getHeaderFooterData = async (): Promise<HeaderFooterData> => {
+  if (headerFooterDataMemo) {
+    return headerFooterDataMemo;
+  }
+
+  const store = loadBuildCache();
+  if (store) {
+    const data = getHeaderFooterDataFromStore(store);
+    headerFooterDataMemo = data;
+    return data;
+  }
+
+  const data = await findHeaderFooterData();
+  headerFooterDataMemo = data;
   return data;
 };

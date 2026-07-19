@@ -3,15 +3,20 @@ import { Flag } from "./Flag";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type HeroImageProps = {
-  yearWithCountry: YearWithCountry;
+  yearWithCountry?: YearWithCountry;
   heroSubtitle?: string;
   heroHeading?: string;
 }
 
 export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", heroHeading }: HeroImageProps) => {
-  const { year, city, startsAt, endsAt, country } = yearWithCountry;
+  const year = yearWithCountry?.year;
+  const city = yearWithCountry?.city;
+  const country = yearWithCountry?.country;
+  const startsAt = yearWithCountry?.startsAt;
+  const endsAt = yearWithCountry?.endsAt;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
   const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate())).toLocaleDateString() : "";
+  const heading = heroHeading ?? (yearWithCountry ? `GBB ${year}` : "GBBINFO");
 
   return (
     <>
@@ -39,16 +44,16 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
             className="text-white z-10 w-full text-center"
             style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
           >
-            {heroHeading ?? `GBB ${year}`}
+            {heading}
           </h1>
-          {startDate && endDate && (
+          {yearWithCountry && startDate && endDate && (
             <div className="z-10 w-full text-center">
               <span className="text-white font-bold" style={{ fontSize: "clamp(16px, 3vw, 32px)" }}>
                 {startDate} - {endDate}
               </span>
             </div>
           )}
-          {(country || city) && (
+          {yearWithCountry && (country || city) && (
             <div className="z-10 w-full text-center flex items-center justify-center gap-2">
               {country && (
                 <Flag isoAlpha2={country.isoAlpha2} height={24} paddingBottom={0} />

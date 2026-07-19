@@ -305,6 +305,31 @@ export const getCommonYearDataFromStore = (
 };
 
 /**
+ * スナップショットから非年度ページの Header / Footer 用データを取得する。
+ *
+ * Args:
+ *   store: ビルドキャッシュストア。
+ *
+ * Returns:
+ *   years・latestYearWithCountry。
+ *
+ * Raises:
+ *   Error: 最新年が存在しない場合。
+ */
+export const getHeaderFooterDataFromStore = (store: BuildCacheStore) => {
+  const latestYear = new Date().getFullYear();
+  const latestYearWithCountry = store.yearsByYear.get(latestYear);
+  if (!latestYearWithCountry) {
+    throw new Error(`Year not found: ${latestYear}`);
+  }
+
+  return {
+    years: store.allYears,
+    latestYearWithCountry,
+  };
+};
+
+/**
  * スナップショットから静的生成対象の出場者詳細パス一覧を返す。
  *
  * Args:

@@ -10,7 +10,7 @@ import type { YearWithCountry } from "~/db/year";
 interface Props {
   locale: SupportedLanguage;
   pageTitle: string;
-  yearWithCountry: YearWithCountry;
+  yearWithCountry?: YearWithCountry;
   years: number[];
   latestYearWithCountry: YearWithCountry;
   heroSubtitle?: string;
@@ -28,13 +28,14 @@ const {
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
+const headerYear = yearWithCountry?.year ?? latestYearWithCountry.year;
 ---
 
 <Layout locale={locale} pageTitle={pageTitle}>
   <HeaderMenu
     lang={locale}
     currentPath={currentPath}
-    year={yearWithCountry.year}
+    year={headerYear}
     years={years}
   />
   <HeroImage yearWithCountry={yearWithCountry} heroSubtitle={heroSubtitle} heroHeading={heroHeading} />
@@ -43,7 +44,7 @@ const currentPath = Astro.url.pathname;
   <HamburgerMenu
     lang={locale}
     currentPath={currentPath}
-    year={yearWithCountry.year}
+    year={headerYear}
     years={years}
   />
 </Layout>

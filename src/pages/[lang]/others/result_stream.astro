@@ -1,19 +1,18 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
 import { ResultStreamContent } from "~/views/others/ResultStreamContent";
-import { getCommonYearData } from "~/util/staticPaths";
+import { getHeaderFooterData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
 
 export async function getStaticPaths() {
-  const YEAR = new Date().getFullYear();
-  const common = await getCommonYearData(YEAR);
+  const headerFooter = await getHeaderFooterData();
   return locales.map((locale) => ({
     params: { lang: locale },
-    props: { locale, ...common },
+    props: { locale, ...headerFooter },
   }));
 }
 
-const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const { locale, years, latestYearWithCountry } = Astro.props;
 const heroSubtitle = "Wildcard結果発表配信";
 const pageTitle = "Wildcard結果発表配信 - GBBinfo";
 ---
@@ -23,9 +22,8 @@ const pageTitle = "Wildcard結果発表配信 - GBBinfo";
   pageTitle={pageTitle}
   heroSubtitle={heroSubtitle}
   heroHeading="GBBINFO"
-  yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}
 >
-  <ResultStreamContent locale={locale} year={yearWithCountry.year} />
+  <ResultStreamContent locale={locale} year={latestYearWithCountry.year} />
 </SiteFrame>
