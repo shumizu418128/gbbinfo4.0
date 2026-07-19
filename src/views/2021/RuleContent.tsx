@@ -67,7 +67,7 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 );
 
 const mainJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "D-LOW\nKENNY URBAN\nZEDE\nREEPS ONE\nPE4ENKATA"],
   [TAG_TEAM, "D-LOW\nKENNY URBAN\nCHRIS CELIZ\nBEATNESS\nBMG"],
   [LOOPSTATION, "INKIE\nTHE PETEBOX\nZEDE\nBEATNESS\nSARO"],
@@ -76,7 +76,7 @@ const mainJudgesTableData: string[][] = [
 ];
 
 const wildcardJudges2020TableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nKIM\nSKILLER\nZEDE"],
   [TAG_TEAM, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nCHRIS CELIZ\nBMG\nNAPOM"],
   [LOOPSTATION, "PEPOUNI\nSINJO\nMADOX\nCIACCOLO\nTIONEB\nINKIE\nGENE SHINOZAKI"],
@@ -94,7 +94,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
   const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
 
   const wildcardJudges2021TableData: (string | ReactNode)[][] = [
-    [m.rule_col_category(), m.rule_col_judges()],
+    [m.rule_col_category(), m.judges()],
     [SOLO, "KENNY URBAN\nPE4ENKATA\nSKILLER\nKIM\nBALL-ZEE"],
     [TAG_TEAM, "KENNY URBAN\nCHRIS CELIZ\nMC ZANI\nHOBBIT\nZHANG ZE"],
     [LOOPSTATION, "TIONEB\nINKIE\nSARO\nHOBBIT\nPE4ENKATA"],

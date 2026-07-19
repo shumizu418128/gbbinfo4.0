@@ -60,7 +60,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           </li>
           <li>
             <a href="#showcase" className={anchorClass}>
-              SPECIAL SHOWCASE {m.participant_participants_list_year()}
+              SPECIAL SHOWCASE {m.participants_list()}
             </a>
           </li>
         </ol>
@@ -215,7 +215,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
         <h2 id="showcase" className={sectionHeadingClass}>
           SPECIAL SHOWCASE
           <br />
-          {m.participant_participants_list_year()}
+          {m.participants_list()}
         </h2>
         <ul className="mb-8 list-disc space-y-2 pl-8 text-(--secondary-text-color)">
           <li>M.O.M.</li>

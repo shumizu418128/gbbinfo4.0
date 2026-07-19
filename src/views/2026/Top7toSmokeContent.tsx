@@ -15,7 +15,7 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
 
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
-            text={m.seven_to_smoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
+            text={m.top7tosmoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
             image="/images/afterparty.webp"
             href={`/${locale}/others/7tosmoke`}
           />

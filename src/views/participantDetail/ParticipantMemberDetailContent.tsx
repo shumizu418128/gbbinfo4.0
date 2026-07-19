@@ -111,7 +111,7 @@ export const ParticipantMemberDetailContent = ({
   ];
 
   const peerRows: ReactNode[][] = [
-    [m.participant_col_country(), m.rule_col_name(), m.participant_col_ticket()],
+    [m.participant_col_country(), m.rule_col_name(), m.rule_col_ticket()],
     ...sameYearCategoryPeers.map((peer) => {
       const countries = resolveParticipantCountries(peer);
       const countryLabel =
@@ -259,7 +259,7 @@ export const ParticipantMemberDetailContent = ({
             {row.flatMap((pastYear) => [
               <LinkCard
                 key={`${pastYear}-participants`}
-                text={`${GBB} ${pastYear} ${m.participant_participants_list_year()}`}
+                text={`${GBB} ${pastYear} ${m.participants_list()}`}
                 href={`/${locale}/${pastYear}/participants`}
               />,
               <LinkCard

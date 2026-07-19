@@ -56,7 +56,7 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 );
 
 const mainJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "DHARNI\nWAWAD\nALEM\nZEDE\nGENE SHINOZAKI"],
   [TAG_TEAM, "DHARNI\nZEDE\nALEM\nWAWAD\nBEATNESS"],
   [LOOPSTATION, "DHARNI\nWAWAD\nALEM\nFAYA BRAZ\nGENE SHINOZAKI"],
@@ -147,7 +147,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             text={m.wildcard_result({ Wildcard: WILDCARD })}
             href={participantsPath}
           />
-          <LinkCard text={m.rule_participants_list()} href={participantsPath} />
+          <LinkCard text={m.participants_list()} href={participantsPath} />
         </div>
 
         <p className={paragraphClass}>

@@ -183,7 +183,7 @@ const buildRankingTableData = (
     ];
   });
 
-  return [[m.result_rank(), m.result_name()], ...rows];
+  return [[m.result_rank(), m.rule_col_name()], ...rows];
 };
 
 export const ResultContent = ({

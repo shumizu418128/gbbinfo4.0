@@ -166,7 +166,7 @@ const buildWildcardRulesTableData = (year: number): (string | ReactNode)[][] => 
 ];
 
 const buildJudgesTableData = (): string[][] => [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "Alexinho\nSkiller\nD-low\nWAWAD\nGene shinozaki"],
   [TAG_TEAM, "PE4ENKATA\nSupernova\nAlem\nPash\nJayton"],
   [LOOPSTATION, "SARO\nbeardyman\nRythmind\nkristof\nTom thum"],
@@ -325,7 +325,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             href={participantsPath}
           />
           <LinkCard
-            text={m.rule_participants_list()}
+            text={m.participants_list()}
             href={participantsPath}
           />
         </div>

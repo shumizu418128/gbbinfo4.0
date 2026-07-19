@@ -56,7 +56,7 @@ const RuleSubHeading = ({ children }: { children: ReactNode }) => (
 );
 
 const mainJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "DHARNI\nPE4ENKATA\nREEPS ONE\nSKILLER\nZEDE"],
   [TAG_TEAM, "CHRIS CELIZ\nGENE SHINOZAKI\nJAYTON\nPASH\nSLIZZER"],
   [LOOPSTATION, "BEARDYMAN\nMB14\nSAM PERRY\nTHE PETEBOX\nTOM THUM"],
@@ -64,7 +64,7 @@ const mainJudgesTableData: string[][] = [
 ];
 
 const wildcardJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nSKILLER\nZEDE"],
   [TAG_TEAM, "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nSPIDER HORSE\nMAD TWINZ"],
   [LOOPSTATION, "PEPOUNI\nSINJO\nMADOX\nBBK\nCLAUDIO\nWAWAD\nGENE SHINOZAKI"],
@@ -158,7 +158,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             text={m.wildcard_result({ Wildcard: WILDCARD })}
             href={participantsPath}
           />
-          <LinkCard text={m.rule_participants_list()} href={participantsPath} />
+          <LinkCard text={m.participants_list()} href={participantsPath} />
         </div>
 
         <p className={paragraphClass}>

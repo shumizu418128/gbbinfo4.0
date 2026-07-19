@@ -39,7 +39,7 @@ export const StudioCompetitionContent = ({ locale, year }: StudioCompetitionCont
         </section>
 
         <section className="mb-16">
-          <h2 className={sectionClass}>{m.rule_showcase_eligibility()}</h2>
+          <h2 className={sectionClass}>{m.rule_eligibility_condition()}</h2>
           <p className={paragraphClass}>
             {m.rule_showcase_eligibility_intro()}
           </p>

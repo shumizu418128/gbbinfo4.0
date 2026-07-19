@@ -36,13 +36,13 @@ const RuleSectionHeading = ({
 );
 
 const finalJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "CHRIS CELIZ\nDHARNI\nK.I.M\nREEPS ONE\nSKILLER"],
   [LOOPSTATION, "BEATNESS\nGENE SHINOZAKI\nMB14\nTOM THUM\nZEDE"],
 ];
 
 const qualifierJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "AMIT\nCHEZAME\nCOLAPS\nTIMMEH\nTHOMSON"],
   [LOOPSTATION, "BEATNESS\nMIXFX\nMB14\nTOM THUM\nZEDE"],
 ];

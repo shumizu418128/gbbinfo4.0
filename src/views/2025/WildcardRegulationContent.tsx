@@ -114,7 +114,7 @@ const guideLinkCards = (locale: SupportedLanguage, year: number) => (
       href={`/${locale}/${year}/top`}
     />
     <LinkCard
-      text={m.seven_to_smoke_guide({ SevenToSmoke: SEVEN_TO_SMOKE })}
+      text={m.top7tosmoke_guide({ SevenToSmoke: SEVEN_TO_SMOKE })}
       href={`/${locale}/${year}/top_7tosmoke`}
     />
   </div>
@@ -177,22 +177,22 @@ export const WildcardRegulationContent = ({
           </li>
           <li>
             <a href="#p03" className={anchorClass}>
-              {m.wildcard_reg_toc_age()}
+              {m.wildcard_age_limit()}
             </a>
           </li>
           <li>
             <a href="#p04" className={anchorClass}>
-              {m.wildcard_reg_toc_submission({ Wildcard: WILDCARD })}
+              {m.wildcard_submission_about({ Wildcard: WILDCARD })}
             </a>
           </li>
           <li>
             <a href="#p05" className={anchorClass}>
-              {m.wildcard_reg_toc_category_rules()}
+              {m.wildcard_category_rules()}
             </a>
           </li>
           <li>
             <a href="#p06" className={anchorClass}>
-              {m.wildcard_reg_toc_disqualification()}
+              {m.wildcard_avoid_disqualification()}
             </a>
           </li>
         </ol>
@@ -241,7 +241,7 @@ export const WildcardRegulationContent = ({
 
       <RuleSection>
         <h2 id="p03" className={sectionClass}>
-          {m.wildcard_reg_age_limit_title()}
+          {m.wildcard_age_limit()}
         </h2>
         <ul className="mb-8 list-disc space-y-2 pl-8">
           <li>{m.wildcard_reg_age_min()}</li>
@@ -294,7 +294,7 @@ export const WildcardRegulationContent = ({
         <h3 className="mb-4 font-bold">{m.wildcard_reg_submit_title()}</h3>
         <ol className="mb-4 list-decimal space-y-2 pl-8">
           <li>{m.wildcard_reg_submit_step_1({ Wildcard: WILDCARD, YouTube: YOUTUBE })}</li>
-          <li>{m.wildcard_reg_submit_step_2({ Swissbeatbox: SWISSBEATBOX })}</li>
+          <li>{m.wildcard_submit_via_form({ Swissbeatbox: SWISSBEATBOX })}</li>
         </ol>
         <ul className="mb-4 list-disc space-y-2 pl-8">
           <li className="font-bold text-red-500">{m.wildcard_reg_submit_both_required()}</li>
@@ -307,7 +307,7 @@ export const WildcardRegulationContent = ({
           <li>{m.wildcard_reg_submit_raw_audio()}</li>
           <li>{m.wildcard_reg_submit_screen_capture({ Solo: SOLO })}</li>
           <li className="font-bold text-red-500">{m.wildcard_reg_submit_raw_required()}</li>
-          <li>{m.wildcard_reg_submit_once({ Wildcard: WILDCARD })}</li>
+          <li>{m.wildcard_submit_once({ Wildcard: WILDCARD })}</li>
           <li className="font-bold text-red-500">
             {m.wildcard_reg_submit_delete({ Wildcard: WILDCARD })}
             <ul className="mt-2 list-disc pl-8 font-normal text-white">
@@ -320,7 +320,7 @@ export const WildcardRegulationContent = ({
 
       <RuleSection>
         <h2 id="p05" className={sectionClass}>
-          {m.wildcard_reg_category_rules_title()}
+          {m.wildcard_category_rules()}
         </h2>
         <Table data={categoryRulesTableData} textCenter />
         <PostIt>
@@ -354,19 +354,19 @@ export const WildcardRegulationContent = ({
 
       <RuleSection>
         <h2 id="p06" className={sectionClass}>
-          {m.wildcard_reg_disqualification_title()}
+          {m.wildcard_avoid_disqualification()}
         </h2>
         <ol className="mb-8 list-decimal space-y-4 pl-8">
           <li>
             <strong>
-              {m.wildcard_reg_disqualify_1({ Swissbeatbox: SWISSBEATBOX })}
+              {m.wildcard_submit_via_form({ Swissbeatbox: SWISSBEATBOX })}
             </strong>
           </li>
           <li>
             <strong>{m.wildcard_reg_disqualify_2({ Wildcard: WILDCARD })}</strong>
           </li>
           <li>
-            <strong>{m.wildcard_reg_disqualify_3({ Wildcard: WILDCARD })}</strong>
+            <strong>{m.wildcard_submit_once({ Wildcard: WILDCARD })}</strong>
           </li>
         </ol>
         <p className="mb-8 text-center">

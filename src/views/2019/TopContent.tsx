@@ -73,7 +73,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           </li>
           <li>
             <a href={`/${locale}/others/7tosmoke`} className={anchorClass}>
-              {m.seven_to_smoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
+              {m.top7tosmoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
             </a>
           </li>
         </ul>

@@ -110,7 +110,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </li>
           <li>
             <a href="#seeds-section" className={anchorClass}>
-              {m.rule_toc_challenger()}
+              {m.rule_challenger_series()}
             </a>
           </li>
           <li>
@@ -120,7 +120,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           </li>
           <li>
             <a href="#wildcard-rules-section" className={anchorClass}>
-              {WILDCARD} {m.rule_wildcard_deadline()}
+              {WILDCARD} {m.rule_col_deadline_rule()}
             </a>
           </li>
           <li>
@@ -164,7 +164,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           {m.rule_toc_categories()}
         </RuleSectionHeading>
         <p className={paragraphClass}>
-          <span className="text-(--gbb-color)">CS</span> = {m.rule_cs_equals()}
+          <span className="text-(--gbb-color)">CS</span> = {m.rule_challenger_series()}
         </p>
         <Table
           data={[
@@ -281,7 +281,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
           })}
         </p>
         <RuleSubSection>
-          <RuleSubHeading>{m.rule_target()}</RuleSubHeading>
+          <RuleSubHeading>{m.rule_col_target()}</RuleSubHeading>
           <p className={paragraphClass}>
             {m.rule_comeback_target({
               year: String(year),
@@ -342,7 +342,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             GBB {prevYear} {m.rule_top_winners()}
           </li>
           <li>
-            {m.rule_toc_challenger()} {m.rule_challenger_winners_only()}
+            {m.rule_challenger_series()} {m.rule_challenger_winners_only()}
           </li>
           <li>Wildcard</li>
         </ul>
@@ -367,7 +367,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSubSection>
 
         <RuleSubSection>
-          <RuleSubHeading>{m.rule_seeds_cancelled()}</RuleSubHeading>
+          <RuleSubHeading>{m.withdrawn_list()}</RuleSubHeading>
           <RuleSeedTable participants={seedData.cancelled} cancelled locale={locale} />
         </RuleSubSection>
 
@@ -601,7 +601,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
         <RuleSubSection>
           <RuleSubHeading>
-            SHOWCASE (loopstation) / SHOWCASE (solo) {m.rule_showcase_eligibility()}
+            SHOWCASE (loopstation) / SHOWCASE (solo) {m.rule_eligibility_condition()}
           </RuleSubHeading>
           <p className={paragraphClass}>{m.rule_showcase_eligibility_intro()}</p>
           <Table
@@ -656,7 +656,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </p>
         <Table
           data={[
-            [m.rule_col_category(), m.rule_col_judges()],
+            [m.rule_col_category(), m.judges()],
             [SOLO, m.rule_update_pending()],
             [TAG_TEAM, m.rule_update_pending()],
             [LOOPSTATION, m.rule_update_pending()],
@@ -691,7 +691,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         </RuleSectionHeading>
         <Table
           data={[
-            [m.rule_col_category(), m.rule_col_judges()],
+            [m.rule_col_category(), m.judges()],
             [
               SOLO,
               <>

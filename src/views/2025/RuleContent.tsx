@@ -151,7 +151,7 @@ const wildcardRulesTableData: (string | ReactNode)[][] = [
 ];
 
 const mainJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "RIVER'\nPE4ENKATA\nD-LOW\nBALL-ZEE\nTRUNG BAO"],
   [TAG_TEAM, "COLAPS\nD-LOW\nJOHN T\nALEXINHO\nZHANG ZE"],
   [LOOPSTATION, "SO-SO\nSARO\nKBA\nINKIE\nBEARDYMAN"],
@@ -162,7 +162,7 @@ const mainJudgesTableData: string[][] = [
 ];
 
 const wildcardJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.rule_col_judges()],
+  [m.rule_col_category(), m.judges()],
   [SOLO, "FOOTBOXG\nD-LOW\nTRUNG BAO"],
   [TAG_TEAM, "D-LOW\nCOLAPS\nYAMORI"],
   [LOOPSTATION, "BREZ\nKRISTOF\nFROSTY"],
@@ -355,7 +355,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             href={participantsPath}
           />
           <LinkCard
-            text={m.rule_participants_list()}
+            text={m.participants_list()}
             href={participantsPath}
           />
         </div>
