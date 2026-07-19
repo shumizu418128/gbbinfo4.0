@@ -3,6 +3,7 @@
  * 各言語の JSON ファイルのキーを同期し、ソートして保存します。
  * baseLocale（src/constants/languageLabels.ts）のキーを正とし、
  * 他言語に足りないキーは空文字で追加し、base に無いキーは削除します。
+ * base に同一 value のキーが複数ある場合、ソート順で先のキーのみ残します。
  */
 
 import * as fs from "node:fs";
@@ -34,9 +35,37 @@ if (!baseFile) {
   process.exit(1);
 }
 
-const baseKeys = Object.keys(baseFile.content)
-  .filter((k) => k !== "$schema")
-  .sort();
+// valueが同じならkeyも統一してほしいので削除
+const removeDuplicateValueKeys = (
+  keys: string[],
+  content: JsonObj,
+): string[] => {
+  const seenValues = new Set<string>();
+  const deduped: string[] = [];
+
+  for (const key of keys) {
+    const value = content[key];
+    if (typeof value === "string" && value !== "") {
+      if (seenValues.has(value)) {
+        console.warn(
+          `Removing duplicate value key "${key}" in ${baseLocale}.json`,
+        );
+        continue;
+      }
+      seenValues.add(value);
+    }
+    deduped.push(key);
+  }
+
+  return deduped;
+};
+
+const baseKeys = removeDuplicateValueKeys(
+  Object.keys(baseFile.content)
+    .filter((k) => k !== "$schema")
+    .sort(),
+  baseFile.content,
+);
 
 // $schema を末尾に置くため、いずれかのファイルから値だけ拾う
 let schemaVal: string | undefined;
