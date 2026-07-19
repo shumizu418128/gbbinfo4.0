@@ -1,9 +1,10 @@
 import * as m from "../../paraglide/messages.js";
+import { SITE_NAME } from "~/util/seo.js";
 
 export const createMeta = (env: string, title: string) => {
-  let metaTitle = title + " - GBBinfo";
+  let metaTitle = `${title} - ${SITE_NAME}`;
   if (env && env !== "production") {
-    metaTitle = `[${env}] ${title} - GBBinfo`;
+    metaTitle = `[${env}] ${title} - ${SITE_NAME}`;
   }
   return [
     { title: metaTitle },

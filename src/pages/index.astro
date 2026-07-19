@@ -14,9 +14,10 @@ const fallback = `/${baseLocale}/${year}/top`;
 <html lang={baseLocale}>
   <head>
     <meta charset="utf-8" />
+    <meta name="robots" content="noindex, follow" />
     <FaviconLink />
     <meta http-equiv="refresh" content={`0; url=${fallback}`} />
-    <link rel="canonical" href={fallback} />
+    <link rel="canonical" href={new URL(fallback, Astro.site).href} />
     <script is:inline define:vars={{ year, fallback, supportedLanguages, baseLocale }}>
       const nav = (navigator.language || baseLocale).slice(0, 2).toLowerCase();
       const locale = supportedLanguages.includes(nav) ? nav : baseLocale;

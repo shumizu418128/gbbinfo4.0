@@ -29,6 +29,17 @@ export const supportedLanguages = Object.keys(
 ) as SupportedLanguage[];
 
 /**
+ * Open Graph 用ロケール（BCP 47 風）。
+ * languageLabels に言語を足したら、ここにも対応エントリを追加すること。
+ */
+export const ogLocales = {
+  ja: "ja_JP",
+  ko: "ko_KR",
+  en: "en_US",
+  de: "de_DE",
+} as const satisfies Record<SupportedLanguage, string>;
+
+/**
  * 値が SupportedLanguage かどうかを判定する。
  *
  * Args:

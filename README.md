@@ -87,7 +87,7 @@ npm run sync:tavily:cache
 
 1. [Render Dashboard](https://dashboard.render.com/) で **New → Web Service** から本リポジトリを接続
 2. **Runtime** で **Docker** を選択（[`Dockerfile`](Dockerfile) が使用されます）
-3. **Environment**（または Docker build args）に `DATABASE_URL` と `PUBLIC_ASSET_BASE_URL` を設定
+3. Environment（または Docker build args）に `DATABASE_URL` と `PUBLIC_ASSET_BASE_URL` を設定（`PUBLIC_SITE_URL` は通常不要）
 4. main ブランチへの push で自動デプロイ
 
 ビルドステージで `npm run build` が実行されます。最初に `sync:build-cache` が Supabase から years / participants / members / tavily を 4 並列 bulk SELECT で一括取得し、続く `astro build` はローカルスナップショットを参照します。ランタイムは nginx が `dist/` を配信します（ポート 80）。
@@ -97,7 +97,11 @@ npm run sync:tavily:cache
 | 変数名 | 説明 |
 |--------|------|
 | `DATABASE_URL` | Supabase Postgres の接続文字列（SSG ビルド時に必須） |
-| `DEPLOY_ENV` | 実行環境（例: `development`） |
+| `DEPLOY_ENV` | 実行環境（`production` 以外は title にプレフィックス、`noindex`） |
 | `PUBLIC_ASSET_BASE_URL` | Cloudflare Pages の公開 URL（例: `https://gbbinfo-assets.pages.dev`。dev / build とも必須） |
+| `PUBLIC_SITE_URL` | （任意）サイト絶対 URL の上書き。未設定時は Render の `RENDER_EXTERNAL_URL`、それも無ければ本番既定 URL |
+| `RENDER_EXTERNAL_URL` | Render が自動注入（`https://xxx.onrender.com`）。手設定不要 |
+
+canonical / OGP / sitemap の絶対 URL はビルド時に確定する（Flask の `request.host_url` 相当を SSG で再現）。Render 上では `RENDER_EXTERNAL_URL` が自動で入るため、通常は URL を手で書かなくてよい。独自ドメインを正規 URL にしたいときだけ `PUBLIC_SITE_URL` を設定する。
 
 `.env.example` を `.env` にコピーし、Supabase Dashboard → Connect → Shared Pooler → Transaction mode の URI と Cloudflare Pages URL を設定してください。画像の追加・更新は [`cloudflare/README.md`](cloudflare/README.md) を参照。

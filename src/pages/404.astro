@@ -13,6 +13,7 @@ const fallback = `/${baseLocale}/404`;
 <html lang={baseLocale}>
   <head>
     <meta charset="utf-8" />
+    <meta name="robots" content="noindex, follow" />
     <FaviconLink />
     <meta http-equiv="refresh" content={`0; url=${fallback}`} />
     <script is:inline define:vars={{ fallback, supportedLanguages, baseLocale }}>
