@@ -9,33 +9,35 @@ import type { YearWithCountry } from "~/db/year";
 
 interface Props {
   locale: SupportedLanguage;
-  title: string;
+  pageTitle: string;
   yearWithCountry: YearWithCountry;
   years: number[];
   latestYearWithCountry: YearWithCountry;
-  subtitle?: string;
+  heroSubtitle?: string;
+  heroHeading?: string;
 }
 
 const {
   locale,
-  title,
+  pageTitle,
   yearWithCountry,
   years,
   latestYearWithCountry,
-  subtitle,
+  heroSubtitle,
+  heroHeading,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
 ---
 
-<Layout locale={locale} title={title}>
+<Layout locale={locale} pageTitle={pageTitle}>
   <HeaderMenu
     lang={locale}
     currentPath={currentPath}
     year={yearWithCountry.year}
     years={years}
   />
-  <HeroImage yearWithCountry={yearWithCountry} subtitle={subtitle} />
+  <HeroImage yearWithCountry={yearWithCountry} heroSubtitle={heroSubtitle} heroHeading={heroHeading} />
   <slot />
   <FooterMenu locale={locale} latestYearWithCountry={latestYearWithCountry} />
   <HamburgerMenu

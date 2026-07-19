@@ -4,10 +4,11 @@ import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type HeroImageProps = {
   yearWithCountry: YearWithCountry;
-  subtitle?: string;
+  heroSubtitle?: string;
+  heroHeading?: string;
 }
 
-export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: HeroImageProps) => {
+export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", heroHeading }: HeroImageProps) => {
   const { year, city, startsAt, endsAt, country } = yearWithCountry;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
   const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate())).toLocaleDateString() : "";
@@ -38,7 +39,7 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: Her
             className="text-white z-10 w-full text-center"
             style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
           >
-            GBB {year}
+            {heroHeading ?? `GBB ${year}`}
           </h1>
           {startDate && endDate && (
             <div className="z-10 w-full text-center">
@@ -67,7 +68,7 @@ export const HeroImage = ({ yearWithCountry, subtitle = "WE LOVE BEATBOX" }: Her
               className="text-white font-bold"
               style={{ fontSize: "clamp(24px, 4vw, 48px)" }}
             >
-              {subtitle}
+              {heroSubtitle}
             </span>
           </div>
         </div>

@@ -14,13 +14,13 @@ export async function getStaticPaths() {
 }
 
 const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
-const title = "404";
+const pageTitle = "404";
 ---
 
 <SiteFrame
   locale={locale}
-  title={title}
-  subtitle="Page not found"
+  pageTitle={pageTitle}
+  heroSubtitle="Page not found"
   yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}

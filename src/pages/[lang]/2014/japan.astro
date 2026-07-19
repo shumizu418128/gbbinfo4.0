@@ -16,10 +16,10 @@ export async function getStaticPaths() {
 }
 
 const { locale, participants, avatarImageUrls, yearWithCountry, years, latestYearWithCountry } = Astro.props;
-const subtitle = m.team_japan();
-const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+const heroSubtitle = m.team_japan();
+const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
 ---
 
-<SiteFrame locale={locale} title={title} subtitle={subtitle} yearWithCountry={yearWithCountry} years={years} latestYearWithCountry={latestYearWithCountry}>
+<SiteFrame locale={locale} pageTitle={pageTitle} heroSubtitle={heroSubtitle} yearWithCountry={yearWithCountry} years={years} latestYearWithCountry={latestYearWithCountry}>
   <JapanContent participants={participants} locale={locale} avatarImageUrls={avatarImageUrls} />
 </SiteFrame>

@@ -19,12 +19,12 @@ import {
 
 interface Props {
   locale: string;
-  title: string;
+  pageTitle: string;
 }
 
-const { locale, title } = Astro.props;
+const { locale, pageTitle } = Astro.props;
 const env = envCheck();
-const meta = createMeta(env, title);
+const meta = createMeta(env, pageTitle);
 const metaTitle = (meta[0] as { title: string }).title;
 const description = (meta[1] as { content: string }).content;
 

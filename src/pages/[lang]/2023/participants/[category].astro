@@ -53,14 +53,14 @@ const {
   latestYearWithCountry,
 } = Astro.props;
 
-const subtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
-const title = `GBB ${yearWithCountry.year} ${subtitle}`;
+const heroSubtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
+const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
 ---
 
 <SiteFrame
   locale={locale}
-  title={title}
-  subtitle={subtitle}
+  pageTitle={pageTitle}
+  heroSubtitle={heroSubtitle}
   yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}

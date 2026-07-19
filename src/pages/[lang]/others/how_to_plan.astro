@@ -14,14 +14,15 @@ export async function getStaticPaths() {
 }
 
 const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
-const subtitle = "GBB 現地観戦計画のたてかた";
-const title = "GBB現地観戦計画のたてかた - GBBinfo";
+const heroSubtitle = "GBB 現地観戦計画のたてかた";
+const pageTitle = "GBB現地観戦計画のたてかた - GBBinfo";
 ---
 
 <SiteFrame
   locale={locale}
-  title={title}
-  subtitle={subtitle}
+  pageTitle={pageTitle}
+  heroSubtitle={heroSubtitle}
+  heroHeading="GBBINFO"
   yearWithCountry={yearWithCountry}
   years={years}
   latestYearWithCountry={latestYearWithCountry}
