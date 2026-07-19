@@ -1,7 +1,7 @@
 {
   "cancelled": "Ritiro",
   "footer_nice_view": "Bella vista, no?",
-  "gbb_year_guide": "GBB {year}: la guida essenziale",
+  "back_to_home": "Torna alla home",
   "go_to_poland": "Si va in Polonia",
   "how_to_plan": "Come organizzare la trasferta per assistere all'evento",
   "inquiry": "Contatti",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "Informazioni sull'invio del {Wildcard}",
   "wildcard_reg_video_content_title": "Contenuto del video {Wildcard}",
   "wildcard_reg_video_intro": "All'inizio del video, presentati come segue",
-  "wildcard_reg_video_script": "\"My name is 【Nome】, and this is my 【Categoria】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "Nel testo originale, questa regola viene espressa con un linguaggio molto forte.",
   "wildcard_reg_video_script_note_2": "In passato si sono verificati casi di squalifica per la violazione di questa regola.",
   "wildcard_result": "Risultati del {Wildcard}",

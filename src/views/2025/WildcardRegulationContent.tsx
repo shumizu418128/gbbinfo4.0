@@ -110,7 +110,7 @@ const categoryRulesTableData: (string | ReactNode)[][] = [
 const guideLinkCards = (locale: SupportedLanguage, year: number) => (
   <div className="mb-8 flex flex-wrap gap-4">
     <LinkCard
-      text={m.gbb_year_guide({ year: String(year) })}
+      text={m.back_to_home()}
       href={`/${locale}/${year}/top`}
     />
     <LinkCard
@@ -267,7 +267,7 @@ export const WildcardRegulationContent = ({
         </h3>
         <p className={paragraphClass}>{m.wildcard_reg_video_intro()}</p>
         <p className={`${paragraphClass} italic`}>
-          {m.wildcard_reg_video_script({ year: String(year) })}
+          {`"My name is 【${m.rule_col_name()}】, and this is my 【${m.rule_col_category()}】 wildcard for the GBB ${year} World League."`}
         </p>
         <PostIt>
           <p>

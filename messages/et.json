@@ -1,7 +1,7 @@
 {
   "cancelled": "Loobumine",
   "footer_nice_view": "Ilus vaade, kas pole?",
-  "gbb_year_guide": "GBB {year} kiirjuhend",
+  "back_to_home": "Tagasi avalehele",
   "go_to_poland": "Lähme Poola",
   "how_to_plan": "Kuidas planeerida reisi, et näha võistlust kohapeal",
   "inquiry": "Kontakt",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "{Wildcard}i esitamisest",
   "wildcard_reg_video_content_title": "{Wildcard} video sisu",
   "wildcard_reg_video_intro": "Video algul tutvusta ennast järgnevalt",
-  "wildcard_reg_video_script": "\"My name is [Nimi], and this is my [Kategooria] wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "Algtekstis on see reegel väljendatud väga tugevalt.",
   "wildcard_reg_video_script_note_2": "Lisaks on varem esinenud juhtumeid, kus selle reegli rikkumine tõi kaasa diskvalifitseerimise.",
   "wildcard_result": "{Wildcard} tulemus",

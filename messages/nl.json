@@ -1,7 +1,7 @@
 {
   "cancelled": "Terugtrekking",
   "footer_nice_view": "Mooi uitzicht, toch?",
-  "gbb_year_guide": "GBB {year} in een notendop",
+  "back_to_home": "Terug naar home",
   "go_to_poland": "Op naar Polen",
   "how_to_plan": "Hoe je een reis naar het evenement plant",
   "inquiry": "Contact",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "Over het indienen van {Wildcard}",
   "wildcard_reg_video_content_title": "Inhoud van de {Wildcard}-video",
   "wildcard_reg_video_intro": "Stel je aan het begin van de video als volgt voor",
-  "wildcard_reg_video_script": "\"My name is 【naam】, and this is my 【categorie】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "Deze regel wordt in de originele tekst in zeer sterke bewoordingen vermeld.",
   "wildcard_reg_video_script_note_2": "Er zijn ook eerdere gevallen geweest waarin overtreding van deze regel tot diskwalificatie leidde.",
   "wildcard_result": "{Wildcard}-resultaat",

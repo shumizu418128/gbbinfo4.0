@@ -1,7 +1,7 @@
 {
   "cancelled": "辞退",
   "footer_nice_view": "いい景色だろ？",
-  "gbb_year_guide": "GBB {year} これだけガイド",
+  "back_to_home": "ホームへ戻る",
   "go_to_poland": "ポーランドへ行こう",
   "how_to_plan": "現地観戦計画のたてかた",
   "inquiry": "お問い合わせ",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "{Wildcard}提出について",
   "wildcard_reg_video_content_title": "{Wildcard}動画の内容",
   "wildcard_reg_video_intro": "動画の冒頭で、以下のように自己紹介する",
-  "wildcard_reg_video_script": "\"My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "このルールに関する表記は、原文では非常に強い表現で示されています。",
   "wildcard_reg_video_script_note_2": "また、過去にこのルールに違反したことで失格処分になった事例があります。",
   "wildcard_result": "{Wildcard}結果",

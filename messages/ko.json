@@ -1,7 +1,7 @@
 {
   "cancelled": "기권",
   "footer_nice_view": "멋진 경치지?",
-  "gbb_year_guide": "GBB {year} 핵심 가이드",
+  "back_to_home": "홈으로 돌아가기",
   "go_to_poland": "폴란드로 가기",
   "how_to_plan": "현지 관람 계획 세우기",
   "inquiry": "문의",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "{Wildcard} 제출에 대하여",
   "wildcard_reg_video_content_title": "{Wildcard} 영상 내용",
   "wildcard_reg_video_intro": "영상 시작 부분에서 다음과 같이 자기소개",
-  "wildcard_reg_video_script": "\"My name is 【이름】, and this is my 【부문】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "원문 규칙에서는 이 요건이 매우 강한 표현으로 명시되어 있습니다.",
   "wildcard_reg_video_script_note_2": "과거에 이 규칙 위반으로 실격된 사례도 있습니다.",
   "wildcard_result": "{Wildcard} 결과",

@@ -1,7 +1,7 @@
 {
   "cancelled": "விலகல்",
   "footer_nice_view": "அருமையான காட்சி இல்லையா?",
-  "gbb_year_guide": "GBB {year} விரைவு வழிகாட்டி",
+  "back_to_home": "முகப்புக்குத் திரும்பு",
   "go_to_poland": "போலந்துக்குச் செல்வோம்",
   "how_to_plan": "நேரடியாகப் பார்க்கத் திட்டமிடும் முறை",
   "inquiry": "தொடர்பு",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "{Wildcard} சமர்ப்பிப்பு பற்றி",
   "wildcard_reg_video_content_title": "{Wildcard} வீடியோவின் உள்ளடக்கம்",
   "wildcard_reg_video_intro": "வீடியோவின் தொடக்கத்தில், பின்வருமாறு தன்னை அறிமுகப்படுத்தவும்",
-  "wildcard_reg_video_script": "\"My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "இந்த விதி தொடர்பான குறிப்பு, மூலப் பிரதியில் மிகவும் வலுவான சொற்களால் தெரிவிக்கப்பட்டுள்ளது.",
   "wildcard_reg_video_script_note_2": "மேலும், கடந்த காலத்தில் இந்த விதியை மீறியதால் தகுதி நீக்கப்பட்ட நிகழ்வுகள் உள்ளன.",
   "wildcard_result": "{Wildcard} முடிவுகள்",

@@ -1,7 +1,7 @@
 {
   "cancelled": "Desistência",
   "footer_nice_view": "Bela vista, não é?",
-  "gbb_year_guide": "Guia essencial da GBB {year}",
+  "back_to_home": "Voltar ao início",
   "go_to_poland": "Vamos à Polónia",
   "how_to_plan": "Como planear a viagem para assistir ao vivo",
   "inquiry": "Contacto",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "Sobre a submissão do {Wildcard}",
   "wildcard_reg_video_content_title": "Conteúdo do vídeo do {Wildcard}",
   "wildcard_reg_video_intro": "No início do vídeo, apresentar-se da seguinte forma",
-  "wildcard_reg_video_script": "\"My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "A redação original desta regra utiliza uma linguagem muito enfática.",
   "wildcard_reg_video_script_note_2": "Além disso, já houve casos de desqualificação por violação desta regra.",
   "wildcard_result": "Resultados do {Wildcard}",

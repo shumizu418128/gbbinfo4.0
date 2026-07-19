@@ -40,11 +40,11 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
 
         <div className="flex flex-wrap gap-4">
           <LinkCard
-            text={m.gbb_year_guide({ year: "2021" })}
+            text="GBB 2021"
             href={`/${locale}/2021/top`}
           />
           <LinkCard
-            text={m.gbb_year_guide({ year: "2023" })}
+            text="GBB 2023"
             href={`/${locale}/2023/top`}
           />
         </div>

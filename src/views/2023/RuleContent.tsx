@@ -362,7 +362,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
             href={`/${locale}/others/how_to_plan`}
           />
           <LinkCard
-            text={m.gbb_year_guide({ year: String(year) })}
+            text={m.back_to_home()}
             href={`/${locale}/${year}/top`}
           />
         </div>

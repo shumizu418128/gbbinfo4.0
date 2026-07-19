@@ -1,7 +1,7 @@
 {
   "cancelled": "退賽",
   "footer_nice_view": "風景不錯吧？",
-  "gbb_year_guide": "GBB {year} 速覽指南",
+  "back_to_home": "返回首頁",
   "go_to_poland": "去波蘭吧",
   "how_to_plan": "現場觀賽計畫指南",
   "inquiry": "聯繫方式",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "關於{Wildcard}的提交",
   "wildcard_reg_video_content_title": "{Wildcard}影片的內容",
   "wildcard_reg_video_intro": "在影片開頭，按以下方式進行自我介紹",
-  "wildcard_reg_video_script": "\"My name is 【名前】, and this is my 【部門】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "關於此規則的表述，原文使用了非常強烈的措辭。",
   "wildcard_reg_video_script_note_2": "此外，過去也曾有因違反此規則而被取消資格的案例。",
   "wildcard_result": "{Wildcard}結果",

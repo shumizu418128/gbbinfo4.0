@@ -1,7 +1,7 @@
 {
   "cancelled": "Penarikan diri",
   "footer_nice_view": "Pemandangan yang cantik, kan?",
-  "gbb_year_guide": "Panduan ringkas GBB {year}",
+  "back_to_home": "Kembali ke laman utama",
   "go_to_poland": "Mari ke Poland",
   "how_to_plan": "Cara merancang perjalanan menonton secara langsung",
   "inquiry": "Pertanyaan",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "Mengenai penyerahan {Wildcard}",
   "wildcard_reg_video_content_title": "Kandungan video {Wildcard}",
   "wildcard_reg_video_intro": "Pada awal video, perkenalkan diri anda seperti berikut",
-  "wildcard_reg_video_script": "\"My name is 【Nama】, and this is my 【Kategori】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "Peraturan berkaitan ini dinyatakan dalam bahasa yang sangat tegas dalam teks asal.",
   "wildcard_reg_video_script_note_2": "Selain itu, terdapat kes lampau di mana pelanggaran peraturan ini menyebabkan diskualifikasi.",
   "wildcard_result": "Keputusan {Wildcard}",

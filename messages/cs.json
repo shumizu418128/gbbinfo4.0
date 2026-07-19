@@ -1,7 +1,7 @@
 {
   "cancelled": "Odstoupení",
   "footer_nice_view": "Krásný výhled, že?",
-  "gbb_year_guide": "Základní průvodce GBB {year}",
+  "back_to_home": "Zpět na úvod",
   "go_to_poland": "Jedeme do Polska",
   "how_to_plan": "Jak naplánovat cestu na živou akci",
   "inquiry": "Kontakt",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "O odeslání {Wildcard}",
   "wildcard_reg_video_content_title": "Obsah videa {Wildcard}",
   "wildcard_reg_video_intro": "Na začátku videa se představte následujícím způsobem",
-  "wildcard_reg_video_script": "\"My name is [Jméno], and this is my [Kategorie] wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "V původním textu je toto pravidlo vyjádřeno velmi silnými slovy.",
   "wildcard_reg_video_script_note_2": "Kromě toho se v minulosti staly případy diskvalifikace za porušení tohoto pravidla.",
   "wildcard_result": "Výsledek {Wildcard}",

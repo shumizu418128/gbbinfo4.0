@@ -1,7 +1,7 @@
 {
   "cancelled": "Trukket seg",
   "footer_nice_view": "Fin utsikt, eller hva?",
-  "gbb_year_guide": "GBB {year} kjapp guide",
+  "back_to_home": "Tilbake til hjem",
   "go_to_poland": "La oss dra til Polen",
   "how_to_plan": "Hvordan planlegge en reise for å se det live",
   "inquiry": "Kontakt",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "Om innsending av {Wildcard}",
   "wildcard_reg_video_content_title": "Innholdet i {Wildcard}-videoen",
   "wildcard_reg_video_intro": "I begynnelsen av videoen, presenter deg selv slik",
-  "wildcard_reg_video_script": "\"My name is 【navn】, and this is my 【kategori】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "Denne regelen er angitt med svært sterke formuleringer i originalteksten.",
   "wildcard_reg_video_script_note_2": "Det har også vært tidligere tilfeller der brudd på denne regelen førte til diskvalifisering.",
   "wildcard_result": "{Wildcard}-resultat",

@@ -1,7 +1,7 @@
 {
   "cancelled": "नाम वापसी",
   "footer_nice_view": "नज़ारा अच्छा है, है ना?",
-  "gbb_year_guide": "GBB {year} की संपूर्ण गाइड",
+  "back_to_home": "होम पर वापस जाएँ",
   "go_to_poland": "पोलैंड चलते हैं",
   "how_to_plan": "इवेंट देखने जाने की योजना कैसे बनाएं",
   "inquiry": "संपर्क करें",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "{Wildcard} जमा करने के बारे में",
   "wildcard_reg_video_content_title": "{Wildcard} वीडियो की सामग्री",
   "wildcard_reg_video_intro": "वीडियो की शुरुआत में, इस तरह से अपना परिचय दें",
-  "wildcard_reg_video_script": "\"My name is 【नाम】, and this is my 【श्रेणी】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "मूल पाठ में, इस नियम को बहुत सख़्त भाषा में व्यक्त किया गया है।",
   "wildcard_reg_video_script_note_2": "पहले भी इस नियम के उल्लंघन के कारण अयोग्य घोषित होने के मामले सामने आए हैं।",
   "wildcard_result": "{Wildcard} परिणाम",

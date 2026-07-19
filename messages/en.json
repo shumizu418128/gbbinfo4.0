@@ -1,7 +1,7 @@
 {
   "cancelled": "Cancelled",
   "footer_nice_view": "Nice view, isn't it?",
-  "gbb_year_guide": "GBB {year} quick guide",
+  "back_to_home": "Back to home",
   "go_to_poland": "Go to Poland",
   "how_to_plan": "How to plan your live viewing trip",
   "inquiry": "Inquiry",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "About {Wildcard} submission",
   "wildcard_reg_video_content_title": "{Wildcard} video content",
   "wildcard_reg_video_intro": "At the start of the video, introduce yourself as follows",
-  "wildcard_reg_video_script": "\"My name is [Name], and this is my [Category] wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "In the original rules, this requirement is stated in very strong language.",
   "wildcard_reg_video_script_note_2": "There have also been cases in the past where violations of this rule led to disqualification.",
   "wildcard_result": "{Wildcard} result",

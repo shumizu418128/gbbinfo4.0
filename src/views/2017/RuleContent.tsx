@@ -164,7 +164,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
 
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard text={m.how_to_plan()} href={`/${locale}/others/how_to_plan`} />
-          <LinkCard text={m.gbb_year_guide({ year: String(YEAR) })} href={`/${locale}/${year}/top`} />
+          <LinkCard text={m.back_to_home()} href={`/${locale}/${year}/top`} />
         </div>
       </RuleSection>
 

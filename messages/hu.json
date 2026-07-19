@@ -1,7 +1,7 @@
 {
   "cancelled": "Visszalépés",
   "footer_nice_view": "Szép kilátás, nem?",
-  "gbb_year_guide": "GBB {year} – a lényeg röviden",
+  "back_to_home": "Vissza a főoldalra",
   "go_to_poland": "Irány Lengyelország",
   "how_to_plan": "Hogyan tervezd meg a helyszíni látogatást",
   "inquiry": "Kapcsolat",
@@ -406,7 +406,6 @@
   "wildcard_reg_toc_submission": "A {Wildcard} beadásáról",
   "wildcard_reg_video_content_title": "A {Wildcard} videó tartalma",
   "wildcard_reg_video_intro": "A videó elején mutasd be magad a következőképpen",
-  "wildcard_reg_video_script": "\"My name is 【Név】, and this is my 【Kategória】 wildcard for the GBB {year} World League.\"",
   "wildcard_reg_video_script_note": "Az eredeti szövegben ez a szabály nagyon erős megfogalmazásban van közzétéve.",
   "wildcard_reg_video_script_note_2": "Voltak már olyan esetek, amikor e szabály megsértése miatt kizárták a versenyzőt.",
   "wildcard_result": "{Wildcard} eredmény",
