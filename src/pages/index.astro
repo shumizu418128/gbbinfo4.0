@@ -19,8 +19,20 @@ const fallback = `/${baseLocale}/${year}/top`;
     <meta http-equiv="refresh" content={`0; url=${fallback}`} />
     <link rel="canonical" href={new URL(fallback, Astro.site).href} />
     <script is:inline define:vars={{ year, fallback, supportedLanguages, baseLocale }}>
-      const nav = (navigator.language || baseLocale).slice(0, 2).toLowerCase();
-      const locale = supportedLanguages.includes(nav) ? nav : baseLocale;
+      const nav = (navigator.language || baseLocale).toLowerCase();
+      let locale = baseLocale;
+      if (nav.startsWith("zh")) {
+        // 中国語は navigator.language が "zh-cn" / "zh-tw" / "zh-hk" のような
+        // BCP47 表記のため、地域から簡体字/繁体字を判定する。
+        locale = nav.includes("tw") || nav.includes("hk") || nav.includes("mo")
+          ? "zh_Hant_TW"
+          : "zh_Hans_CN";
+      } else {
+        const short = nav.slice(0, 2);
+        if (supportedLanguages.includes(short)) {
+          locale = short;
+        }
+      }
       window.location.replace(
         locale === baseLocale ? fallback : `/${locale}/${year}/top`,
       );
