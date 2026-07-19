@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import type { YearWithCountry } from "../db/year";
 import { Flag } from "./Flag";
 import { staticAssetUrl } from "~/util/staticAsset.js";
@@ -7,6 +8,19 @@ type HeroImageProps = {
   heroSubtitle?: string;
   heroHeading?: string;
 }
+
+const renderHeroSubtitle = (subtitle: string) => {
+  if (!subtitle.includes("\n")) {
+    return subtitle;
+  }
+
+  return subtitle.split("\n").map((line, index) => (
+    <Fragment key={index}>
+      {index > 0 && <br />}
+      {line}
+    </Fragment>
+  ));
+};
 
 export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", heroHeading }: HeroImageProps) => {
   const year = yearWithCountry?.year;
@@ -73,7 +87,7 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
               className="text-white font-bold"
               style={{ fontSize: "clamp(24px, 4vw, 48px)" }}
             >
-              {heroSubtitle}
+              {renderHeroSubtitle(heroSubtitle)}
             </span>
           </div>
         </div>
