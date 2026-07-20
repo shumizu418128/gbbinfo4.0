@@ -21,7 +21,7 @@ export const ParticipantAvatar = ({
     return (
       <div
         className="shrink-0"
-        style={{ width: size, height: size, backgroundColor: "#000000" }}
+        style={{ width: size, height: size, backgroundColor: "var(--background-color)" }}
       />
     );
   }
@@ -29,7 +29,7 @@ export const ParticipantAvatar = ({
   return (
     <div
       className="shrink-0"
-      style={{ width: size, height: size, backgroundColor: "#000000" }}
+      style={{ width: size, height: size, backgroundColor: "var(--background-color)" }}
     >
       <img
         src={imageUrl}

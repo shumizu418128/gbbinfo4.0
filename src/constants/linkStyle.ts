@@ -1,6 +1,6 @@
 /** インライン文本リンク（オレンジ → ホバーで白）。 */
 export const anchorClass =
-  "text-(--gbb-color) underline transition-colors duration-150 hover:text-white";
+  "text-(--gbb-color) underline transition-colors duration-150 hover:text-(--rule-hover-text)";
 
 /** オレンジ背景のCTAボタン型リンク。 */
 export const anchorButtonClass =

@@ -86,7 +86,7 @@ export const Table = ({
   return (
     <table
       className={className ?? "mx-auto my-4 w-[95%] border-collapse"}
-      style={{ background: "rgba(255,255,255,0.05)" }}
+      style={{ background: "var(--table-body-color)" }}
     >
       <thead>
         <tr className="border-b border-(--table-border-color) bg-(--section-color)">

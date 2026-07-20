@@ -40,14 +40,14 @@ const yearItems = years.map((y) => ({
 
 const languageSubmenuClass =
   languageItems.length >= 5
-    ? "max-h-40 overflow-y-auto overscroll-contain bg-black/30"
-    : "bg-black/30";
+    ? "max-h-40 overflow-y-auto overscroll-contain bg-(--background-color)/30"
+    : "bg-(--background-color)/30";
 ---
 
 <div class="fixed bottom-8 right-8 z-50">
   <details class="hamburger-menu relative">
     <summary
-      class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-black px-2 py-2 [&::-webkit-details-marker]:hidden"
+      class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-(--background-color) px-2 py-2 [&::-webkit-details-marker]:hidden"
     >
       <span class="hamburger-icon-open">
         <svg
@@ -101,7 +101,7 @@ const languageSubmenuClass =
           <span>{m.select_year()}</span>
           <span class="submenu-chevron text-xs">▾</span>
         </summary>
-        <div class="max-h-40 overflow-y-auto overscroll-contain bg-black/30">
+        <div class="max-h-40 overflow-y-auto overscroll-contain bg-(--background-color)/30">
           {
             yearItems.map((item) => (
               <a

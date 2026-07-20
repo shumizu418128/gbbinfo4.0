@@ -25,6 +25,7 @@ body {
   --post-it-color: rgba(255, 255, 255, 0.15);
   --rule-hover-text: #fff;
   --table-border-color: rgba(255, 255, 255, 0.2);
+  --table-body-color: rgba(255, 255, 255, 0.05);
 }
 
 .participant-world-map .leaflet-container {

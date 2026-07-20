@@ -57,9 +57,6 @@ export const POPUP_SCROLL_THRESHOLD = 7;
 /** ポップアップの最大高さ (px)。 */
 export const POPUP_MAX_HEIGHT_PX = 200;
 
-/** ポップアップ見出しの色。 */
-export const POPUP_HEADER_COLOR = "#ff6417";
-
 /** ポップアップのフォントファミリー。 */
 export const POPUP_FONT_FAMILY =
   "'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR'";
