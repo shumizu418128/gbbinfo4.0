@@ -44,10 +44,10 @@ const languageSubmenuClass =
     : "bg-(--background-color)/30";
 ---
 
-<div class="fixed bottom-[calc(2rem+100px)] right-8 z-50">
+<div class="fixed bottom-32 right-8 z-50">
   <details class="hamburger-menu relative">
     <summary
-      class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-(--background-color) px-2 py-2 [&::-webkit-details-marker]:hidden"
+      class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-(--background-color) px-2 py-2 transition-colors duration-150 hover:bg-(--gbb-color) [&::-webkit-details-marker]:hidden"
     >
       <span class="hamburger-icon-open">
         <svg
@@ -82,21 +82,21 @@ const languageSubmenuClass =
     >
       <a
         href={`/${lang}/${year}/top`}
-        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--hover-background-color)"
+        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--gbb-color)"
       >
         Home
       </a>
 
       <a
         href={`/${lang}/${year}/participants`}
-        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--hover-background-color)"
+        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--gbb-color)"
       >
         {m.participants_list()}
       </a>
 
       <details class="hamburger-submenu border-b border-(--button-border-color)">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--hover-background-color) [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--gbb-color) [&::-webkit-details-marker]:hidden"
         >
           <span>{m.select_year()}</span>
           <span class="submenu-chevron text-xs">▾</span>
@@ -106,7 +106,7 @@ const languageSubmenuClass =
             yearItems.map((item) => (
               <a
                 href={item.href}
-                class={`block px-6 py-2 font-bold hover:bg-(--hover-background-color) ${
+                class={`block px-6 py-2 font-bold hover:bg-(--gbb-color) ${
                   item.isActive ? "text-(--gbb-color)" : "text-white"
                 }`}
               >
@@ -119,7 +119,7 @@ const languageSubmenuClass =
 
       <details class="hamburger-submenu">
         <summary
-          class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--hover-background-color) [&::-webkit-details-marker]:hidden"
+          class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--gbb-color) [&::-webkit-details-marker]:hidden"
         >
           <span class="flex items-center gap-2">
             <svg
@@ -142,7 +142,7 @@ const languageSubmenuClass =
             languageItems.map((item) => (
               <a
                 href={item.href}
-                class={`block px-6 py-2 font-bold hover:bg-(--hover-background-color) ${
+                class={`block px-6 py-2 font-bold hover:bg-(--gbb-color) ${
                   item.isActive ? "text-(--gbb-color)" : "text-white"
                 }`}
               >

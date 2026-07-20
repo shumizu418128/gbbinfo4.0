@@ -9,15 +9,15 @@ interface Props {
 const { locale, latestYear } = Astro.props;
 const href = `/${locale}/${latestYear}/top`;
 const buttonClass =
-  "flex min-h-16 cursor-pointer items-center justify-center border border-(--button-border-color) bg-(--background-color) px-4 py-2 transition-colors duration-150 hover:bg-(--hover-background-color)";
+  "flex min-h-16 cursor-pointer items-center justify-center border border-(--button-border-color) bg-(--background-color) px-4 py-2 transition-colors duration-150 hover:bg-(--gbb-color)";
 ---
 
 <div
   id="latest-year-prompt"
-  class="fixed bottom-[calc(2rem+100px)] left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-200"
+  class="fixed bottom-32 left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-200"
 >
   <a href={href} class={buttonClass}>
-    <span class="text-xs font-bold text-white">GBB {latestYear}</span>
+    <span class="text-xs font-bold text-white">{latestYear}</span>
   </a>
 </div>
 
