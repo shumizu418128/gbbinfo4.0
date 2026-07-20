@@ -1,6 +1,7 @@
 ---
 import "../app.css";
 import FaviconLink from "~/components/FaviconLink.astro";
+import ThirdPartyScripts from "~/components/ThirdPartyScripts.astro";
 import { createMeta } from "~/util/meta";
 import { envCheck } from "~/util/dev";
 import {
@@ -82,6 +83,7 @@ const ogLocale = isSupportedLanguage(locale)
     <meta name="twitter:title" content={metaTitle} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
+    <ThirdPartyScripts />
   </head>
   <body>
     <main>
