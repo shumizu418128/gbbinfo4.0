@@ -27,7 +27,7 @@ const sectionClass = "mb-4 text-2xl font-bold";
 const paragraphClass = "mb-4 leading-relaxed";
 const subSectionClass = "mb-4 font-bold";
 const ruleSubSectionClass = "mt-8 bg-(--section-color) px-4 py-8";
-const ruleSectionClass = "bg-(--background-color) py-16 text-white";
+const ruleSectionClass = "bg-(--background-color) py-24 text-white";
 
 const RuleSection = ({ children }: { children: ReactNode }) => (
   <section className={ruleSectionClass}>

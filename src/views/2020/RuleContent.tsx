@@ -15,6 +15,8 @@ type RuleContentProps = {
 
 const sectionClass = "mb-4 text-2xl font-bold";
 const paragraphClass = "mb-4 leading-relaxed";
+const subSectionClass = "mb-4 font-bold";
+const ruleSubSectionClass = "mt-8 bg-(--section-color) px-4 py-8";
 const ruleSectionClass = "bg-(--background-color) py-16 text-white";
 
 const RuleSection = ({ children }: { children: ReactNode }) => (
@@ -35,17 +37,13 @@ const RuleSectionHeading = ({
   </h2>
 );
 
-const finalJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.judges()],
-  [SOLO, "CHRIS CELIZ\nDHARNI\nK.I.M\nREEPS ONE\nSKILLER"],
-  [LOOPSTATION, "BEATNESS\nGENE SHINOZAKI\nMB14\nTOM THUM\nZEDE"],
-];
+const RuleSubSection = ({ children }: { children: ReactNode }) => (
+  <div className={ruleSubSectionClass}>{children}</div>
+);
 
-const qualifierJudgesTableData: string[][] = [
-  [m.rule_col_category(), m.judges()],
-  [SOLO, "AMIT\nCHEZAME\nCOLAPS\nTIMMEH\nTHOMSON"],
-  [LOOPSTATION, "BEATNESS\nMIXFX\nMB14\nTOM THUM\nZEDE"],
-];
+const RuleSubHeading = ({ children }: { children: ReactNode }) => (
+  <h3 className={subSectionClass}>{children}</h3>
+);
 
 export const RuleContent = ({ locale, year }: RuleContentProps) => {
   return (
@@ -87,17 +85,18 @@ export const RuleContent = ({ locale, year }: RuleContentProps) => {
 
       <RuleSection>
         <RuleSectionHeading id="category-section">{m.rule_toc_categories()}</RuleSectionHeading>
-        <Table
-          data={[
-            [m.rule_col_category(), m.rule_category_invitees()],
-            [
-              SOLO,
-              m.rule_solo_invitees_list({ Wildcard: WILDCARD }),
-            ],
-            [LOOPSTATION, m.rule_loop_invitees_list({ Wildcard: WILDCARD })],
-          ]}
-          textCenter
-        />
+        <RuleSubSection>
+          <RuleSubHeading>{SOLO}</RuleSubHeading>
+          <p className={paragraphClass}>
+            {m.rule_solo_invitees_list({ Wildcard: WILDCARD })}
+          </p>
+        </RuleSubSection>
+        <RuleSubSection>
+          <RuleSubHeading>{LOOPSTATION}</RuleSubHeading>
+          <p className={paragraphClass}>
+            {m.rule_loop_invitees_list({ Wildcard: WILDCARD })}
+          </p>
+        </RuleSubSection>
         <div className="mb-8 flex flex-wrap gap-4">
           <LinkCard text={m.how_to_plan()} href={`/${locale}/others/how_to_plan`} />
           <LinkCard text={m.back_to_home()} href={`/${locale}/${year}/top`} />
@@ -108,14 +107,40 @@ export const RuleContent = ({ locale, year }: RuleContentProps) => {
         <RuleSectionHeading id="final-judges-section">
           {m.rule_final_tournament_judges()}
         </RuleSectionHeading>
-        <Table data={finalJudgesTableData} textCenter />
+        <RuleSubSection>
+          <RuleSubHeading>{SOLO}</RuleSubHeading>
+          <Table
+            data={[[m.judges(), "CHRIS CELIZ\nDHARNI\nK.I.M\nREEPS ONE\nSKILLER"]]}
+            textCenter
+          />
+        </RuleSubSection>
+        <RuleSubSection>
+          <RuleSubHeading>{LOOPSTATION}</RuleSubHeading>
+          <Table
+            data={[[m.judges(), "BEATNESS\nGENE SHINOZAKI\nMB14\nTOM THUM\nZEDE"]]}
+            textCenter
+          />
+        </RuleSubSection>
       </RuleSection>
 
       <RuleSection>
         <RuleSectionHeading id="qualifier-judges-section">
           {m.rule_qualifier_judges()}
         </RuleSectionHeading>
-        <Table data={qualifierJudgesTableData} textCenter />
+        <RuleSubSection>
+          <RuleSubHeading>{SOLO}</RuleSubHeading>
+          <Table
+            data={[[m.judges(), "AMIT\nCHEZAME\nCOLAPS\nTIMMEH\nTHOMSON"]]}
+            textCenter
+          />
+        </RuleSubSection>
+        <RuleSubSection>
+          <RuleSubHeading>{LOOPSTATION}</RuleSubHeading>
+          <Table
+            data={[[m.judges(), "BEATNESS\nMIXFX\nMB14\nTOM THUM\nZEDE"]]}
+            textCenter
+          />
+        </RuleSubSection>
       </RuleSection>
     </main>
   );
