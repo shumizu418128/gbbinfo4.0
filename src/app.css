@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: 'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+  --font-sans: 'Averta ExtraBold', 'Meiryo', sans-serif;
 }
 
 html,
@@ -57,7 +57,7 @@ body {
 .participant-world-map .participant-popup {
   display: block;
   max-width: var(--popup-max-width);
-  font-family: 'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR', sans-serif;
+  font-family: 'Averta ExtraBold', 'Meiryo', sans-serif;
   font-size: 14px;
 }
 

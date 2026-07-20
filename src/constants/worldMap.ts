@@ -59,7 +59,7 @@ export const POPUP_MAX_HEIGHT_PX = 200;
 
 /** ポップアップのフォントファミリー。 */
 export const POPUP_FONT_FAMILY =
-  "'Averta ExtraBold', 'Noto Sans JP', 'Noto Sans KR'";
+  "'Averta ExtraBold', 'Meiryo'";
 
 /** 国旗画像の公開パス prefix。 */
 export const FLAG_IMAGE_PATH_PREFIX = "/images/flags";
