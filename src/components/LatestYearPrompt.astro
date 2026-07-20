@@ -1,0 +1,50 @@
+---
+import type { SupportedLanguage } from "~/constants/languageLabels";
+
+interface Props {
+  locale: SupportedLanguage;
+  latestYear: number;
+}
+
+const { locale, latestYear } = Astro.props;
+const href = `/${locale}/${latestYear}/top`;
+const buttonClass =
+  "flex min-h-16 cursor-pointer items-center justify-center border border-(--button-border-color) bg-(--background-color) px-4 py-2 transition-colors duration-150 hover:bg-(--hover-background-color)";
+---
+
+<div
+  id="latest-year-prompt"
+  class="fixed bottom-[calc(2rem+100px)] left-8 z-50 opacity-0 pointer-events-none transition-opacity duration-200"
+>
+  <a href={href} class={buttonClass}>
+    <span class="text-xs font-bold text-white">GBB {latestYear}</span>
+  </a>
+</div>
+
+<script define:vars={{ scrollThreshold: 400 }}>
+  const root = document.getElementById("latest-year-prompt");
+  if (root instanceof HTMLElement) {
+    let visible = false;
+
+    const show = () => {
+      if (visible) {
+        return;
+      }
+      visible = true;
+      root.classList.remove("opacity-0", "pointer-events-none");
+    };
+
+    const onScroll = () => {
+      if (window.scrollY >= scrollThreshold) {
+        show();
+        window.removeEventListener("scroll", onScroll, { capture: false });
+      }
+    };
+
+    if (window.scrollY >= scrollThreshold) {
+      show();
+    } else {
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+  }
+</script>

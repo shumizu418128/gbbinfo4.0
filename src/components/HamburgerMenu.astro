@@ -11,9 +11,10 @@ interface Props {
   currentPath: string;
   year: number;
   years: number[];
+  elevated?: boolean;
 }
 
-const { lang, currentPath, year, years } = Astro.props;
+const { lang, currentPath, year, years, elevated = false } = Astro.props;
 
 const buildLanguagePath = (targetLanguage: SupportedLanguage): string => {
   const segments = currentPath.split("/").filter(Boolean);
@@ -44,7 +45,12 @@ const languageSubmenuClass =
     : "bg-(--background-color)/30";
 ---
 
-<div class="fixed bottom-8 right-8 z-50">
+<div
+  class:list={[
+    "fixed right-8 z-50",
+    elevated ? "bottom-[calc(2rem+100px)]" : "bottom-8",
+  ]}
+>
   <details class="hamburger-menu relative">
     <summary
       class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-(--background-color) px-2 py-2 [&::-webkit-details-marker]:hidden"

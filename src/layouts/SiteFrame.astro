@@ -4,6 +4,7 @@ import HeaderMenu from "~/components/HeaderMenu.astro";
 import HamburgerMenu from "~/components/HamburgerMenu.astro";
 import { HeroImage } from "~/components/HeroImage";
 import FooterMenu from "~/components/FooterMenu.astro";
+import LatestYearPrompt from "~/components/LatestYearPrompt.astro";
 import type { SupportedLanguage } from "~/constants/languageLabels";
 import type { YearWithCountry } from "~/db/year";
 
@@ -29,6 +30,9 @@ const {
 
 const currentPath = Astro.url.pathname;
 const headerYear = yearWithCountry?.year ?? latestYearWithCountry.year;
+const isPastYearPage =
+  yearWithCountry != null &&
+  yearWithCountry.year < latestYearWithCountry.year;
 ---
 
 <Layout locale={locale} pageTitle={pageTitle}>
@@ -46,5 +50,14 @@ const headerYear = yearWithCountry?.year ?? latestYearWithCountry.year;
     currentPath={currentPath}
     year={headerYear}
     years={years}
+    elevated={isPastYearPage}
   />
+  {
+    isPastYearPage && (
+      <LatestYearPrompt
+        locale={locale}
+        latestYear={latestYearWithCountry.year}
+      />
+    )
+  }
 </Layout>
