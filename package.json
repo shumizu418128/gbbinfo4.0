@@ -27,7 +27,7 @@
     "@emnapi/core": "^1.11.2",
     "@emnapi/runtime": "^1.11.2",
     "@tavily/core": "^0.7.6",
-    "astro": "^7.0.3",
+    "astro": "^7.1.0",
     "drizzle-orm": "^0.45.2",
     "leaflet": "^1.9.4",
     "lodash": "^4.18.1",
