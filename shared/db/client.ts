@@ -14,6 +14,8 @@ const getClient = () => {
     client = postgres(connectionString, {
       prepare: false,
       ssl: "require",
+      connect_timeout: 30,
+      max: 4,
     });
   }
   return client;

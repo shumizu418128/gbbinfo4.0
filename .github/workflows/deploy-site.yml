@@ -59,6 +59,11 @@ jobs:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           echo "::group::sync:build-cache"
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL secret is empty"
+            exit 1
+          fi
+          echo "DATABASE_URL is set (length=${#DATABASE_URL})"
           npm run sync:build-cache
           echo "::endgroup::"
 
