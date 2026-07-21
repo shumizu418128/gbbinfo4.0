@@ -27,11 +27,17 @@ const timed = async <T>(
 ): Promise<T> => {
   const startedAt = Date.now();
   console.log(`[build-cache] ${label}...`);
-  const result = await run();
-  const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
-  const count = Array.isArray(result) ? ` rows=${result.length}` : "";
-  console.log(`[build-cache] ${label} done (${elapsed}s)${count}`);
-  return result;
+  try {
+    const result = await run();
+    const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
+    const count = Array.isArray(result) ? ` rows=${result.length}` : "";
+    console.log(`[build-cache] ${label} done (${elapsed}s)${count}`);
+    return result;
+  } catch (error) {
+    const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
+    console.error(`[build-cache] ${label} failed after ${elapsed}s`);
+    throw error;
+  }
 };
 
 /**
@@ -43,27 +49,32 @@ const timed = async <T>(
 export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => {
   const db = getDb();
   const startedAt = Date.now();
-  console.log("[build-cache] Fetching 4 bulk queries...");
+  console.log("[build-cache] Fetching 4 bulk queries in parallel...");
 
-  const yearRows = await timed("years", () =>
+  const yearPromise = timed("years", () =>
     db.query.yearTable.findMany({
       with: { country: true },
       orderBy: desc(yearTable.year),
     }),
   );
-  const participants = await timed("participants", () =>
+  const participantsPromise = timed("participants", () =>
     db.query.participantTable.findMany({
       with: participantWithRelationsQuery,
     }),
   );
-  const members = await timed("members", () =>
+  const membersPromise = timed("members", () =>
     db.query.participantMemberTable.findMany({
       with: memberWithRelationsQuery,
     }),
   );
-  const tavilyRows = await timed("tavily", () =>
-    db.query.tavilyTable.findMany(),
-  );
+  const tavilyPromise = timed("tavily", () => db.query.tavilyTable.findMany());
+
+  const [yearRows, participants, members, tavilyRows] = await Promise.all([
+    yearPromise,
+    participantsPromise,
+    membersPromise,
+    tavilyPromise,
+  ]);
 
   // 中止年（例: 2022）は country が null でもページ表示用に含める。
   const years = yearRows.map((row) => ({
