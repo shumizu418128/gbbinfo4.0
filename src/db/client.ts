@@ -1,1 +1,1 @@
-export { getDb } from "@shared/db/client.js";
+export { getDb, closeDb } from "@shared/db/client.js";

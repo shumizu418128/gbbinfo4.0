@@ -27,3 +27,12 @@ export const getDb = (): PostgresJsDatabase<Schema> => {
   }
   return db;
 };
+
+/** スクリプト終了時に接続プールを閉じる（未呼び出しだと process が残る） */
+export const closeDb = async (): Promise<void> => {
+  if (client) {
+    await client.end({ timeout: 5 });
+    client = null;
+    db = null;
+  }
+};
