@@ -1,6 +1,7 @@
 /** avatar proxy が受け付けるリクエスト元ホスト名。 */
 const ALLOWED_AVATAR_HOSTNAMES = new Set([
   "gbbinfo-jpn.onrender.com",
+  "gbbinfo-preview.onrender.com",
   "localhost",
   "127.0.0.1",
   "[::1]",
