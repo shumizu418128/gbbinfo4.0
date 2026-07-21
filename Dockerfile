@@ -1,7 +1,8 @@
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm ci
+# Windows で生成した lock は optional の OS 差分で npm ci が落ちることがあるため install を使う
+RUN npm install --no-audit --no-fund
 COPY . .
 # SSG ビルドは sync:build-cache で Supabase から一括取得したスナップショットを参照し、
 # 全ページを静的生成する（出場者詳細は astro build 中に DB へアクセスしない）。
