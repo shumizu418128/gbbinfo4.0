@@ -21,6 +21,19 @@ const memberWithRelationsQuery = {
   },
 } as const;
 
+const timed = async <T>(
+  label: string,
+  run: () => Promise<T>,
+): Promise<T> => {
+  const startedAt = Date.now();
+  console.log(`[build-cache] ${label}...`);
+  const result = await run();
+  const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
+  const count = Array.isArray(result) ? ` rows=${result.length}` : "";
+  console.log(`[build-cache] ${label} done (${elapsed}s)${count}`);
+  return result;
+};
+
 /**
  * Supabase からビルド用スナップショットを一括取得する。
  *
@@ -29,20 +42,28 @@ const memberWithRelationsQuery = {
  */
 export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => {
   const db = getDb();
+  const startedAt = Date.now();
+  console.log("[build-cache] Fetching 4 bulk queries...");
 
-  const [yearRows, participants, members, tavilyRows] = await Promise.all([
+  const yearRows = await timed("years", () =>
     db.query.yearTable.findMany({
       with: { country: true },
       orderBy: desc(yearTable.year),
     }),
+  );
+  const participants = await timed("participants", () =>
     db.query.participantTable.findMany({
       with: participantWithRelationsQuery,
     }),
+  );
+  const members = await timed("members", () =>
     db.query.participantMemberTable.findMany({
       with: memberWithRelationsQuery,
     }),
+  );
+  const tavilyRows = await timed("tavily", () =>
     db.query.tavilyTable.findMany(),
-  ]);
+  );
 
   // 中止年（例: 2022）は country が null でもページ表示用に含める。
   const years = yearRows.map((row) => ({
@@ -128,6 +149,9 @@ export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => 
       },
     };
   });
+
+  const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
+  console.log(`[build-cache] All queries finished (${elapsed}s)`);
 
   return {
     version: BUILD_CACHE_VERSION,

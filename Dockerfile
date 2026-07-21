@@ -1,25 +1,7 @@
-FROM node:24-alpine AS build
-WORKDIR /app
-COPY package.json package-lock.json ./
-# Windows で生成した lock は optional の OS 差分で npm ci が落ちることがあるため install を使う
-RUN npm install --no-audit --no-fund
-COPY . .
-# SSG ビルドは sync:build-cache で Supabase から一括取得したスナップショットを参照し、
-# 全ページを静的生成する（出場者詳細は astro build 中に DB へアクセスしない）。
-ARG PUBLIC_ASSET_BASE_URL
-ARG PUBLIC_SITE_URL
-ARG RENDER_EXTERNAL_URL
-ARG DATABASE_URL
-ARG DEPLOY_ENV
-ENV PUBLIC_ASSET_BASE_URL=$PUBLIC_ASSET_BASE_URL
-ENV PUBLIC_SITE_URL=$PUBLIC_SITE_URL
-ENV RENDER_EXTERNAL_URL=$RENDER_EXTERNAL_URL
-ENV DATABASE_URL=$DATABASE_URL
-ENV DEPLOY_ENV=$DEPLOY_ENV
-RUN npm run build
-
-FROM nginx:alpine AS runtime
+# GHA でビルド済みの dist/ を配信する runtime 専用イメージ。
+# ソースからのフルビルドは Dockerfile.full を参照。
+FROM nginx:alpine
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=build /app/dist /usr/share/nginx/html
+COPY dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

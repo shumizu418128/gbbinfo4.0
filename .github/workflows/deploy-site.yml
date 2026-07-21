@@ -1,0 +1,176 @@
+name: Deploy site
+
+on:
+  push:
+    branches:
+      - main
+      - preview
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-site-${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  IMAGE_NAME: gbbinfo4.0
+  NODE_VERSION: "24.10.0"
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          echo "::group::npm ci"
+          npm ci
+          echo "::endgroup::"
+
+      - name: Sync Tavily (production / main only)
+        if: github.ref_name == 'main'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          echo "::group::sync:tavily"
+          npm run sync:tavily
+          echo "::endgroup::"
+
+      - name: Sync locales
+        run: |
+          echo "::group::sync:locales"
+          npm run sync:locales
+          echo "::endgroup::"
+
+      - name: Sync build cache
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "::group::sync:build-cache"
+          npm run sync:build-cache
+          echo "::endgroup::"
+
+      - name: Resolve site env
+        id: site_env
+        run: |
+          if [ "${{ github.ref_name }}" = "main" ]; then
+            PUBLIC_SITE_URL="${{ vars.PUBLIC_SITE_URL_PRODUCTION }}"
+            PUBLIC_SITE_URL="${PUBLIC_SITE_URL:-https://gbbinfo-jpn.onrender.com}"
+            echo "deploy_env=production" >> "$GITHUB_OUTPUT"
+            echo "image_tag=production" >> "$GITHUB_OUTPUT"
+          else
+            PUBLIC_SITE_URL="${{ vars.PUBLIC_SITE_URL_PREVIEW }}"
+            PUBLIC_SITE_URL="${PUBLIC_SITE_URL:-https://gbbinfo-preview.onrender.com}"
+            echo "deploy_env=preview" >> "$GITHUB_OUTPUT"
+            echo "image_tag=preview" >> "$GITHUB_OUTPUT"
+          fi
+          echo "public_site_url=${PUBLIC_SITE_URL}" >> "$GITHUB_OUTPUT"
+          echo "Resolved PUBLIC_SITE_URL=${PUBLIC_SITE_URL}"
+
+      - name: Astro build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PUBLIC_ASSET_BASE_URL: ${{ vars.PUBLIC_ASSET_BASE_URL }}
+          PUBLIC_SITE_URL: ${{ steps.site_env.outputs.public_site_url }}
+          DEPLOY_ENV: ${{ steps.site_env.outputs.deploy_env }}
+        run: |
+          echo "::group::astro build"
+          if [ -z "$PUBLIC_ASSET_BASE_URL" ]; then
+            export PUBLIC_ASSET_BASE_URL="https://gbbinfo-assets.pages.dev"
+          fi
+          echo "DEPLOY_ENV=$DEPLOY_ENV"
+          echo "PUBLIC_SITE_URL=$PUBLIC_SITE_URL"
+          echo "PUBLIC_ASSET_BASE_URL=$PUBLIC_ASSET_BASE_URL"
+          npx astro build
+          echo "::endgroup::"
+
+      - name: Log into GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and push image
+        id: image
+        env:
+          IMAGE_TAG: ${{ steps.site_env.outputs.image_tag }}
+        run: |
+          echo "::group::docker build/push"
+          IMAGE_BASE="ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}"
+          IMAGE_SHA="${IMAGE_BASE}:${{ github.sha }}"
+          IMAGE_BRANCH="${IMAGE_BASE}:${IMAGE_TAG}"
+          echo "Building ${IMAGE_SHA}"
+          docker build -t "$IMAGE_SHA" -t "$IMAGE_BRANCH" .
+          docker push "$IMAGE_SHA"
+          docker push "$IMAGE_BRANCH"
+          echo "image_sha=${IMAGE_SHA}" >> "$GITHUB_OUTPUT"
+          echo "image_branch=${IMAGE_BRANCH}" >> "$GITHUB_OUTPUT"
+          echo "::endgroup::"
+
+      - name: Deploy preview to Render
+        if: github.ref_name == 'preview'
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SERVICE_ID: ${{ vars.RENDER_SERVICE_ID_PREVIEW }}
+          IMAGE_URL: ${{ steps.image.outputs.image_sha }}
+        run: |
+          echo "::group::render deploy (preview)"
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "RENDER_API_KEY is required"
+            exit 1
+          fi
+          SERVICE_ID="${SERVICE_ID:-srv-d9fo6qb7uimc73f3gqsg}"
+          echo "Deploying ${IMAGE_URL} to ${SERVICE_ID}"
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+            -d "{\"imageUrl\":\"${IMAGE_URL}\"}"
+          echo
+          echo "::endgroup::"
+
+      - name: Deploy production to Render
+        if: github.ref_name == 'main' && vars.DEPLOY_PRODUCTION == 'true'
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY }}
+          SERVICE_ID: ${{ vars.RENDER_SERVICE_ID_PRODUCTION }}
+          IMAGE_URL: ${{ steps.image.outputs.image_sha }}
+        run: |
+          echo "::group::render deploy (production)"
+          if [ -z "$RENDER_API_KEY" ]; then
+            echo "RENDER_API_KEY is required"
+            exit 1
+          fi
+          SERVICE_ID="${SERVICE_ID:-srv-cpr2q6lumphs73bumjr0}"
+          echo "Deploying ${IMAGE_URL} to ${SERVICE_ID}"
+          curl -sS -X POST \
+            -H "Authorization: Bearer ${RENDER_API_KEY}" \
+            -H "Accept: application/json" \
+            -H "Content-Type: application/json" \
+            "https://api.render.com/v1/services/${SERVICE_ID}/deploys" \
+            -d "{\"imageUrl\":\"${IMAGE_URL}\"}"
+          echo
+          echo "::endgroup::"
+
+      - name: Skip production Render deploy
+        if: github.ref_name == 'main' && vars.DEPLOY_PRODUCTION != 'true'
+        run: |
+          echo "DEPLOY_PRODUCTION is not true — image pushed, Render production deploy skipped"
+          echo "Image: ${{ steps.image.outputs.image_sha }}"

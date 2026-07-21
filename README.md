@@ -83,25 +83,70 @@ npm run sync:tavily
 npm run sync:tavily:cache
 ```
 
-## デプロイ（Render.com）
+## デプロイ（GitHub Actions → GHCR → Render）
 
-1. [Render Dashboard](https://dashboard.render.com/) で **New → Web Service** から本リポジトリを接続
-2. **Runtime** で **Docker** を選択（[`Dockerfile`](Dockerfile) が使用されます）
-3. Environment（または Docker build args）に `DATABASE_URL` と `PUBLIC_ASSET_BASE_URL` を設定（`PUBLIC_SITE_URL` は通常不要）
-4. main ブランチへの push で自動デプロイ
+ビルド・データ同期は **GitHub Actions** で行い、Render は **prebuilt Docker イメージ（nginx + `dist/`）** を配信するだけです。
 
-ビルドステージで `npm run build` が実行されます。最初に `sync:build-cache` が Supabase から years / participants / members / tavily を 4 並列 bulk SELECT で一括取得し、続く `astro build` はローカルスナップショットを参照します。ランタイムは nginx が `dist/` を配信します（ポート 80）。
+```mermaid
+flowchart LR
+  push[push main or preview] --> gha[GitHub Actions]
+  gha --> tavily["sync:tavily main only"]
+  gha --> build[sync:build-cache and astro build]
+  build --> ghcr[Push GHCR image]
+  ghcr --> previewDeploy[gbbinfo-preview]
+  ghcr -.->|"DEPLOY_PRODUCTION=true のとき"| prodDeploy[gbbinfo-jpn]
+```
+
+| ブランチ | Render サービス | Tavily/DeepL | 備考 |
+|----------|-----------------|--------------|------|
+| `preview` | `gbbinfo-preview` | 実行しない | 不足データの作成なし |
+| `main` | `gbbinfo-jpn` | `sync:tavily` で不足分を作成 | 本番デプロイは repository variable `DEPLOY_PRODUCTION=true` のときのみ |
+
+ワークフロー: [`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml)
+
+### 必要な GitHub Secrets / Variables
+
+**Secrets**
+
+| 名前 | 用途 |
+|------|------|
+| `DATABASE_URL` | build-cache / tavily |
+| `TAVILY_API_KEY` | main の `sync:tavily` |
+| `DEEPL_API_KEY` | main の `sync:tavily` |
+| `RENDER_API_KEY` | Render Deploy API |
+
+**Variables（任意・既定あり）**
+
+| 名前 | 既定 | 説明 |
+|------|------|------|
+| `PUBLIC_ASSET_BASE_URL` | `https://gbbinfo-assets.pages.dev` | アセット CDN |
+| `PUBLIC_SITE_URL_PREVIEW` | `https://gbbinfo-preview.onrender.com` | preview の canonical |
+| `PUBLIC_SITE_URL_PRODUCTION` | `https://gbbinfo-jpn.onrender.com` | 本番の canonical |
+| `RENDER_SERVICE_ID_PREVIEW` | `srv-d9fo6qb7uimc73f3gqsg` | preview サービス ID |
+| `RENDER_SERVICE_ID_PRODUCTION` | `srv-cpr2q6lumphs73bumjr0` | 本番サービス ID |
+| `DEPLOY_PRODUCTION` | （未設定=`false`） | `true` のときのみ main → gbbinfo-jpn デプロイ |
+
+### ローカルでのフル Docker ビルド
+
+本番経路は GHA ですが、ソースから一括ビルドする検証用に [`Dockerfile.full`](Dockerfile.full) があります。通常の [`Dockerfile`](Dockerfile) はビルド済み `dist/` を COPY する runtime 専用です。
+
+```bash
+npm run build
+docker build -t gbbinfo4.0:local .
+```
 
 ## 環境変数
 
 | 変数名 | 説明 |
 |--------|------|
 | `DATABASE_URL` | Supabase Postgres の接続文字列（SSG ビルド時に必須） |
-| `DEPLOY_ENV` | 実行環境（`production` 以外は title にプレフィックス、`noindex`） |
+| `DEPLOY_ENV` | 実行環境（`production` / `preview` / `dev`。`production` 以外は title にプレフィックス、`noindex`） |
 | `PUBLIC_ASSET_BASE_URL` | Cloudflare Pages の公開 URL（例: `https://gbbinfo-assets.pages.dev`。dev / build とも必須） |
 | `PUBLIC_SITE_URL` | （任意）サイト絶対 URL の上書き。未設定時は Render の `RENDER_EXTERNAL_URL`、それも無ければ本番既定 URL |
 | `RENDER_EXTERNAL_URL` | Render が自動注入（`https://xxx.onrender.com`）。手設定不要 |
+| `TAVILY_API_KEY` | `sync:tavily` 用（本番 GHA / 手動同期） |
+| `DEEPL_API_KEY` | `sync:tavily` 用（本番 GHA / 手動同期） |
 
-canonical / OGP / sitemap の絶対 URL はビルド時に確定する（Flask の `request.host_url` 相当を SSG で再現）。Render 上では `RENDER_EXTERNAL_URL` が自動で入るため、通常は URL を手で書かなくてよい。独自ドメインを正規 URL にしたいときだけ `PUBLIC_SITE_URL` を設定する。
+canonical / OGP / sitemap の絶対 URL はビルド時に確定する。GHA ではブランチごとに `PUBLIC_SITE_URL` を渡す。独自ドメインを正規 URL にしたいときだけ `PUBLIC_SITE_URL_PRODUCTION` 等を上書きする。
 
 `.env.example` を `.env` にコピーし、Supabase Dashboard → Connect → Shared Pooler → Transaction mode の URI と Cloudflare Pages URL を設定してください。画像の追加・更新は [`cloudflare/README.md`](cloudflare/README.md) を参照。

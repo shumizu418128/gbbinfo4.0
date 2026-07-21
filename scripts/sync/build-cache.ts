@@ -40,12 +40,13 @@ const main = async (): Promise<void> => {
     throw new Error("DATABASE_URL is required");
   }
 
-  console.log("Fetching build cache snapshot (4 bulk queries)...");
+  console.log("[build-cache] Starting snapshot sync...");
   const snapshot = await fetchBuildCacheSnapshot();
+  console.log("[build-cache] Writing snapshot to .cache/build/...");
   writeBuildCacheSnapshot(snapshot);
 
   console.log(
-    `Wrote snapshot: ${snapshot.years.length} years, ${snapshot.participants.length} participants, ${snapshot.members.length} members, ${snapshot.tavily.length} tavily rows`,
+    `[build-cache] Wrote snapshot: ${snapshot.years.length} years, ${snapshot.participants.length} participants, ${snapshot.members.length} members, ${snapshot.tavily.length} tavily rows`,
   );
 };
 

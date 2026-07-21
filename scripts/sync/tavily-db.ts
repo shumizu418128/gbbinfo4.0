@@ -20,6 +20,11 @@ import { findTavilySyncTargetNames } from "../lib/tavily/sync-targets.ts";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const formatElapsed = (startedAt: number): string => {
+  const seconds = ((Date.now() - startedAt) / 1000).toFixed(1);
+  return `${seconds}s`;
+};
+
 const main = async (): Promise<void> => {
   loadDotEnv();
 
@@ -27,6 +32,7 @@ const main = async (): Promise<void> => {
   const tavilyApiKey = process.env.TAVILY_API_KEY;
   const deeplApiKey = process.env.DEEPL_API_KEY;
   const force = process.argv.includes("--force");
+  const startedAt = Date.now();
 
   if (!databaseUrl) {
     throw new Error("DATABASE_URL is required");
@@ -38,28 +44,38 @@ const main = async (): Promise<void> => {
     throw new Error("DEEPL_API_KEY is required");
   }
 
+  console.log(`[tavily] start force=${force}`);
   const names = await findTavilySyncTargetNames();
-  console.log(`Found ${names.length} beatboxer names to sync`);
+  const total = names.length;
+  console.log(`[tavily] Found ${total} beatboxer names to sync`);
 
   let synced = 0;
   let skipped = 0;
   let failed = 0;
 
-  for (const name of names) {
+  for (let index = 0; index < names.length; index += 1) {
+    const name = names[index]!;
+    const position = index + 1;
     const cacheKey = toTavilyCacheKey(name);
+    const prefix = `[tavily] [${position}/${total}]`;
 
     try {
       if (!force && (await hasCachedAnswer(cacheKey))) {
         skipped += 1;
+        console.log(
+          `${prefix} skip (cached) ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
+        );
         continue;
       }
 
-      console.log(`Syncing: ${name}`);
+      console.log(`${prefix} syncing ${name}...`);
       const searchResult = await fetchTavilySearch(name, tavilyApiKey);
 
       if (searchResult.answer == null) {
-        console.warn(`  Skipped (no answer): ${name}`);
         skipped += 1;
+        console.warn(
+          `${prefix} skip (no answer) ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
+        );
         await sleep(500);
         continue;
       }
@@ -79,14 +95,22 @@ const main = async (): Promise<void> => {
         answerTranslation,
       );
       synced += 1;
+      console.log(
+        `${prefix} synced ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
+      );
       await sleep(500);
     } catch (error) {
       failed += 1;
-      console.error(`  Failed: ${name}`, error);
+      console.error(
+        `${prefix} failed ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
+        error,
+      );
     }
   }
 
-  console.log(`Done. synced=${synced}, skipped=${skipped}, failed=${failed}`);
+  console.log(
+    `[tavily] done in ${formatElapsed(startedAt)} | synced=${synced} skipped=${skipped} failed=${failed}`,
+  );
 };
 
 main().catch((error) => {
