@@ -3,7 +3,7 @@ import "../app.css";
 import FaviconLink from "~/components/FaviconLink.astro";
 import ThirdPartyScripts from "~/components/ThirdPartyScripts.astro";
 import { createMeta } from "~/util/meta";
-import { envCheck } from "~/util/dev";
+import { envCheck, envBannerColors } from "~/util/dev";
 import {
   SITE_NAME,
   THEME_COLOR,
@@ -29,12 +29,9 @@ const meta = createMeta(env, pageTitle);
 const metaTitle = (meta[0] as { title: string }).title;
 const description = (meta[1] as { content: string }).content;
 
-const envColors: Record<string, string> = {
-  dev: "bg-red-600",
-  "deploy-preview": "bg-blue-600",
-  "branch-deploy": "bg-gray-600",
-};
 const showDevBanner = Boolean(env && env !== "production");
+const bannerColor =
+  env !== "production" ? envBannerColors[env] : undefined;
 
 const pathname = normalizePathname(Astro.url.pathname);
 const canonicalUrl = toAbsoluteUrl(Astro.site, pathname);
@@ -92,7 +89,7 @@ const ogLocale = isSupportedLanguage(locale)
           <div
             role="status"
             aria-live="polite"
-            class={`fixed top-0 left-0 z-50 flex h-5 w-full items-center justify-center text-xs font-bold text-white ${envColors[env]}`}
+            class={`fixed top-0 left-0 z-50 flex h-5 w-full items-center justify-center text-xs font-bold text-white ${bannerColor}`}
           >
             {env}
           </div>
