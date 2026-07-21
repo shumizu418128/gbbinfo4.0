@@ -10,6 +10,7 @@
  */
 
 import { toTavilyCacheKey } from "../../shared/tavily/cache-key.ts";
+import { closeDb } from "@shared/db/client.js";
 import { readLocalTavilyCache } from "../../shared/tavily/local-cache-read.ts";
 import { loadDotEnv } from "../lib/load-dotenv.ts";
 import { hydrateLocalCacheFromDb } from "../lib/tavily/db-sync.ts";
@@ -66,7 +67,11 @@ const main = async (): Promise<void> => {
   );
 };
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await closeDb();
+  });

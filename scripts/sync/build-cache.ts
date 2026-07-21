@@ -9,6 +9,7 @@
  *   npm run sync:build-cache -- --force
  */
 
+import { closeDb } from "@shared/db/client.js";
 import { fetchBuildCacheSnapshot } from "../lib/build-cache/fetch-snapshot.ts";
 import {
   isBuildCacheFresh,
@@ -50,7 +51,11 @@ const main = async (): Promise<void> => {
   );
 };
 
-main().catch((error) => {
-  console.error(error);
-  process.exit(1);
-});
+main()
+  .catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  })
+  .finally(async () => {
+    await closeDb();
+  });
