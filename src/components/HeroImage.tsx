@@ -30,7 +30,7 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
   const endsAt = yearWithCountry?.endsAt;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
   const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate())).toLocaleDateString() : "";
-  const heading = heroHeading ?? (yearWithCountry ? `GBB ${year}` : "GBBINFO");
+  const heading = heroHeading ?? (yearWithCountry ? `GBB ${year}` : "GBBinfo");
 
   return (
     <>

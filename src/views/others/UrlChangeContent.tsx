@@ -20,7 +20,7 @@ export const UrlChangeContent = ({ locale }: UrlChangeContentProps) => {
           <strong>
             新URL：
             <a href={`/${locale}/`} className={anchorClass}>
-              https://gbbinfo-jpn.onrender.com/
+              当サイト（GBBinfo）
             </a>
           </strong>
         </p>

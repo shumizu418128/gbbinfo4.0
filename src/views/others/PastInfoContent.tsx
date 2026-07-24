@@ -40,7 +40,7 @@ export const PastInfoContent = ({ locale }: PastInfoContentProps) => {
       <div className="mx-auto w-full max-w-2xl px-4">
         <JapaneseOnlyPageNotice />
         <p className={paragraphClass}>
-          GBBINFO-JPNは、
+          GBBinfoは、
           <a href={`/${locale}/others/about`} className={anchorClass}>
             2021年10月に初公開、2024年6月に現在の開発体制に移行しました。
           </a>

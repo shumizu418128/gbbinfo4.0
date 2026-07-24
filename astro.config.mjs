@@ -33,7 +33,7 @@ const resolveSiteUrl = () => {
     env.PUBLIC_SITE_URL,
     process.env.RENDER_EXTERNAL_URL,
     env.RENDER_EXTERNAL_URL,
-    "https://gbbinfo-jpn.onrender.com",
+    "https://gbbinfo-jpn.onrender.com", // Render 既定ホスト名（変更不可）
   ];
   for (const value of candidates) {
     if (typeof value === "string" && value.trim()) {

@@ -25,7 +25,7 @@ export const ResultStreamContent = ({ locale, year }: ResultStreamContentProps) 
         <p className={paragraphClass}>
           Wildcard結果発表のコメント欄は、
           <strong className="text-red-500">精神衛生に悪影響を及ぼします。</strong>
-          GBBINFO-JPNは、今後結果発表
+          GBBinfoは、今後結果発表
           <strong className="text-red-500">配信のURLを一切掲載せず、</strong>
           Wildcard結果のみ掲載します。
         </p>

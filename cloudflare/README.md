@@ -70,7 +70,7 @@ GitHub Actions が **毎日 JST 03:00** に `gbbinfo-avatar-cache` 内の非 Web
 
 **アクセス制限**: `Origin` / `Referer` が次のホストからのリクエストのみ受け付ける。
 
-- `gbbinfo-jpn.onrender.com`（本番）
+- `gbbinfo-jpn.onrender.com`（本番・Render 既定ホスト名）
 - `localhost` / `127.0.0.1` / `[::1]`（ローカル開発）
 
 それ以外は `403 Forbidden`。

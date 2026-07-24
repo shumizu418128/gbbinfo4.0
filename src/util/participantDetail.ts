@@ -333,7 +333,7 @@ export const participantDetailFrameProps = (
   pageData: ParticipantDetailPageData,
 ) => ({
   locale: pageData.locale,
-  pageTitle: `GBB ${pageData.year} ${pageData.displayName} - GBBinfo`,
+  pageTitle: `GBB ${pageData.year} ${pageData.displayName}`,
   heroSubtitle: pageData.displayName,
   yearWithCountry: pageData.common.yearWithCountry,
   years: pageData.common.years,
