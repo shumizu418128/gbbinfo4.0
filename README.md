@@ -83,26 +83,24 @@ npm run sync:tavily
 npm run sync:tavily:cache
 ```
 
-## デプロイ（GitHub Actions → GHCR → Render）
+## デプロイ（GitHub Actions CI → Render After CI）
 
-ビルド・データ同期は **GitHub Actions** で行い、Render は **prebuilt Docker イメージ（nginx + `dist/`）** を配信するだけです。
+`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + SSG 検証）になり、成功後に Render が **Git 連携の Docker フルビルド**で `gbbinfo-preview` をデプロイします（Auto-Deploy: After CI Checks Pass）。
 
 ```mermaid
 flowchart LR
-  push[push main or preview] --> gha[GitHub Actions]
-  gha --> tavily["sync:tavily main only"]
-  gha --> build[sync:build-cache and astro build]
-  build --> ghcr[Push GHCR image]
-  ghcr --> previewDeploy[gbbinfo-preview]
-  ghcr -.->|"DEPLOY_PRODUCTION=true のとき"| prodDeploy[gbbinfo-jpn]
+  push[push main] --> gha[GHA CI]
+  gha --> tavily[sync:tavily]
+  gha --> verify[sync:build-cache and astro build]
+  verify -->|checks pass| render[gbbinfo-preview]
+  render --> docker[Dockerfile full build]
 ```
 
 | ブランチ | Render サービス | Tavily/DeepL | 備考 |
 |----------|-----------------|--------------|------|
-| `preview` | `gbbinfo-preview` | 実行しない | 不足データの作成なし |
-| `main` | `gbbinfo-jpn` | `sync:tavily` で不足分を作成 | 本番デプロイは repository variable `DEPLOY_PRODUCTION=true` のときのみ |
+| `main` | `gbbinfo-preview` | GHA で `sync:tavily` | `DEPLOY_ENV=preview`。`gbbinfo-jpn` は未接続 |
 
-ワークフロー: [`.github/workflows/deploy-site.yml`](.github/workflows/deploy-site.yml)
+ワークフロー: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
 ### 必要な GitHub Secrets / Variables
 
@@ -110,29 +108,26 @@ flowchart LR
 
 | 名前 | 用途 |
 |------|------|
-| `DATABASE_URL` | build-cache / tavily |
-| `TAVILY_API_KEY` | main の `sync:tavily` |
-| `DEEPL_API_KEY` | main の `sync:tavily` |
-| `RENDER_API_KEY` | Render Deploy API |
+| `DATABASE_URL` | build-cache / tavily（GHA と Render 双方） |
+| `TAVILY_API_KEY` | GHA の `sync:tavily` |
+| `DEEPL_API_KEY` | GHA の `sync:tavily` |
 
 **Variables（任意・既定あり）**
 
 | 名前 | 既定 | 説明 |
 |------|------|------|
-| `PUBLIC_ASSET_BASE_URL` | `https://gbbinfo-assets.pages.dev` | アセット CDN |
-| `PUBLIC_SITE_URL_PREVIEW` | `https://gbbinfo-preview.onrender.com` | preview の canonical |
-| `PUBLIC_SITE_URL_PRODUCTION` | `https://gbbinfo-jpn.onrender.com` | 本番の canonical |
-| `RENDER_SERVICE_ID_PREVIEW` | `srv-d9fo6qb7uimc73f3gqsg` | preview サービス ID |
-| `RENDER_SERVICE_ID_PRODUCTION` | `srv-cpr2q6lumphs73bumjr0` | 本番サービス ID |
-| `DEPLOY_PRODUCTION` | （未設定=`false`） | `true` のときのみ main → gbbinfo-jpn デプロイ |
+| `PUBLIC_ASSET_BASE_URL` | `https://gbbinfo-assets.pages.dev` | アセット CDN（GHA 検証ビルド） |
+| `PUBLIC_SITE_URL_PREVIEW` | `https://gbbinfo-preview.onrender.com` | CI 検証ビルドの canonical |
 
-### ローカルでのフル Docker ビルド
-
-本番経路は GHA ですが、ソースから一括ビルドする検証用に [`Dockerfile.full`](Dockerfile.full) があります。通常の [`Dockerfile`](Dockerfile) はビルド済み `dist/` を COPY する runtime 専用です。
+### ローカルでの Docker ビルド
 
 ```bash
-npm run build
-docker build -t gbbinfo4.0:local .
+docker build -t gbbinfo4.0:local \
+  --build-arg DATABASE_URL=... \
+  --build-arg PUBLIC_ASSET_BASE_URL=https://gbbinfo-assets.pages.dev \
+  --build-arg PUBLIC_SITE_URL=https://gbbinfo-preview.onrender.com \
+  --build-arg DEPLOY_ENV=preview \
+  .
 ```
 
 ## 環境変数
@@ -144,9 +139,9 @@ docker build -t gbbinfo4.0:local .
 | `PUBLIC_ASSET_BASE_URL` | Cloudflare Pages の公開 URL（例: `https://gbbinfo-assets.pages.dev`。dev / build とも必須） |
 | `PUBLIC_SITE_URL` | （任意）サイト絶対 URL の上書き。未設定時は Render の `RENDER_EXTERNAL_URL`、それも無ければ本番既定 URL |
 | `RENDER_EXTERNAL_URL` | Render が自動注入（`https://xxx.onrender.com`）。手設定不要 |
-| `TAVILY_API_KEY` | `sync:tavily` 用（本番 GHA / 手動同期） |
-| `DEEPL_API_KEY` | `sync:tavily` 用（本番 GHA / 手動同期） |
+| `TAVILY_API_KEY` | `sync:tavily` 用（GHA / 手動同期） |
+| `DEEPL_API_KEY` | `sync:tavily` 用（GHA / 手動同期） |
 
-canonical / OGP / sitemap の絶対 URL はビルド時に確定する。GHA ではブランチごとに `PUBLIC_SITE_URL` を渡す。独自ドメインを正規 URL にしたいときだけ `PUBLIC_SITE_URL_PRODUCTION` 等を上書きする。
+canonical / OGP / sitemap の絶対 URL はビルド時に確定する。Render ではサービス環境変数の `PUBLIC_SITE_URL`（または `RENDER_EXTERNAL_URL`）を使う。GHA の検証ビルドは `PUBLIC_SITE_URL_PREVIEW` を参照する。
 
 `.env.example` を `.env` にコピーし、Supabase Dashboard → Connect → Shared Pooler → Transaction mode の URI と Cloudflare Pages URL を設定してください。画像の追加・更新は [`cloudflare/README.md`](cloudflare/README.md) を参照。

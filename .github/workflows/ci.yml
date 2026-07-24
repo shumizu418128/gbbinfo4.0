@@ -1,0 +1,84 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24.10.0"
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: |
+          echo "::group::npm ci"
+          npm ci
+          echo "::endgroup::"
+
+      - name: Sync Tavily
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
+          DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
+        run: |
+          echo "::group::sync:tavily"
+          npm run sync:tavily
+          echo "::endgroup::"
+
+      - name: Sync locales
+        run: |
+          echo "::group::sync:locales"
+          npm run sync:locales
+          echo "::endgroup::"
+
+      - name: Sync build cache
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "::group::sync:build-cache"
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL secret is empty"
+            exit 1
+          fi
+          echo "DATABASE_URL is set (length=${#DATABASE_URL})"
+          npm run sync:build-cache
+          echo "::endgroup::"
+
+      - name: Astro build
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PUBLIC_ASSET_BASE_URL: ${{ vars.PUBLIC_ASSET_BASE_URL }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL_PREVIEW }}
+          DEPLOY_ENV: preview
+        run: |
+          echo "::group::astro build"
+          if [ -z "$PUBLIC_ASSET_BASE_URL" ]; then
+            export PUBLIC_ASSET_BASE_URL="https://gbbinfo-assets.pages.dev"
+          fi
+          if [ -z "$PUBLIC_SITE_URL" ]; then
+            export PUBLIC_SITE_URL="https://gbbinfo-preview.onrender.com"
+          fi
+          echo "DEPLOY_ENV=$DEPLOY_ENV"
+          echo "PUBLIC_SITE_URL=$PUBLIC_SITE_URL"
+          echo "PUBLIC_ASSET_BASE_URL=$PUBLIC_ASSET_BASE_URL"
+          npx astro build
+          echo "::endgroup::"

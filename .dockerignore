@@ -9,7 +9,6 @@ node_modules
 coverage
 *.md
 !nginx.conf
-Dockerfile.full
 backup
 cloudflare
 agent-transcripts

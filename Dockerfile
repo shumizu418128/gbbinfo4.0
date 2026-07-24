@@ -1,7 +1,24 @@
-# GHA でビルド済みの dist/ を配信する runtime 専用イメージ。
-# ソースからのフルビルドは Dockerfile.full を参照。
-FROM nginx:alpine
+# Render / ローカル: ソースから SSG ビルドして nginx で配信する。
+# Alpine 上の optional deps 差異を避けるため npm install を使う。
+FROM node:24-alpine AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install --no-audit --no-fund
+COPY . .
+ARG PUBLIC_ASSET_BASE_URL
+ARG PUBLIC_SITE_URL
+ARG RENDER_EXTERNAL_URL
+ARG DATABASE_URL
+ARG DEPLOY_ENV
+ENV PUBLIC_ASSET_BASE_URL=$PUBLIC_ASSET_BASE_URL
+ENV PUBLIC_SITE_URL=$PUBLIC_SITE_URL
+ENV RENDER_EXTERNAL_URL=$RENDER_EXTERNAL_URL
+ENV DATABASE_URL=$DATABASE_URL
+ENV DEPLOY_ENV=$DEPLOY_ENV
+RUN npm run build
+
+FROM nginx:alpine AS runtime
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY dist /usr/share/nginx/html
+COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

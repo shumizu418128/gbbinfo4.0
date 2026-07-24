@@ -107,9 +107,9 @@ npm run sync:build-cache
 
 - **目的**: 本番データの Tavily 検索結果・answer 翻訳を更新する（不足分のみ。`--force` で再取得）
 - **いつ実行するか**:
-  - **本番デプロイ（`main` の GHA）で自動実行**
+  - **`main` の GHA CI で自動実行**（Render デプロイ前のゲート）
   - ローカルでは新規出場者追加後など **手動**
-- **`preview` ブランチの GHA / `astro build` 単体には含まれない**
+- **`astro build` / Render Docker ビルド単体には含まれない**（GHA が先に不足分を埋める）
 - **必要な環境変数**: `DATABASE_URL`, `TAVILY_API_KEY`, `DEEPL_API_KEY`
 
 ```bash
@@ -169,7 +169,7 @@ npm run build
 2. `sync:build-cache` — Supabase から最新スナップショットを取得
 3. `astro build` — 静的 HTML を `dist/` に生成
 
-Render 本番経路では、GHA が `sync:locales` →（main のみ `sync:tavily`）→ `sync:build-cache` → `astro build` → Docker イメージ push → Render デプロイを行う。Render 上ではソースビルドしない（runtime イメージの nginx 配信のみ）。詳細は [README.md](../README.md) のデプロイ節を参照。
+デプロイ経路では、GHA CI が `sync:tavily` → `sync:locales` → `sync:build-cache` → `astro build` で検証し、成功後に Render（`gbbinfo-preview`）が Git 連携の Dockerfile で同様のフルビルドを行う（After CI Checks Pass）。詳細は [README.md](../README.md) のデプロイ節を参照。
 
 ---
 
@@ -182,9 +182,8 @@ Render 本番経路では、GHA が `sync:locales` →（main のみ `sync:tavil
 | 本番デプロイ前の確認 | `npm run build` |
 | 言語を追加した | `languageLabels.ts` 編集 → `npm run dev` または `npm run build`（locales 同期は自動） |
 | Tavily 表示を dev で確認したい | `sync:tavily:cache`（必要なら先に `sync:tavily`） |
-| Tavily 本番データを更新したい | `main` へ push（GHA が `sync:tavily`）または手動 `sync:tavily` |
-| preview を更新したい | `preview` へ push |
-| 本番 Render デプロイを有効化 | GitHub variable `DEPLOY_PRODUCTION=true`（合図後） |
+| Tavily データを更新しつつ preview をデプロイ | `main` へ push（GHA CI → Render After CI） |
+| Tavily だけ手動更新 | `npm run sync:tavily` |
 
 ---
 
