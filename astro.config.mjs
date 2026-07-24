@@ -46,10 +46,21 @@ const site = resolveSiteUrl();
 process.env.PUBLIC_SITE_URL = site;
 
 // languageLabels.ts → sync:locales → settings.json。sitemap の言語リストはここから取る。
+// URL / inlang キーはそのまま。値だけ hreflang（英字とハイフンのみ）に変換する。
+// zh_Hans_CN 等の `_` 付き値を渡すと @astrojs/sitemap がバリデーションで失敗し、
+// sitemap 全体の生成がスキップされる。
+const sitemapHreflangByLocale = {
+  zh_Hans_CN: "zh-CN",
+  zh_Hant_TW: "zh-TW",
+};
+
 const sitemapI18n = {
   defaultLocale: inlangSettings.baseLocale,
   locales: Object.fromEntries(
-    inlangSettings.locales.map((locale) => [locale, locale]),
+    inlangSettings.locales.map((locale) => [
+      locale,
+      sitemapHreflangByLocale[locale] ?? locale,
+    ]),
   ),
 };
 
