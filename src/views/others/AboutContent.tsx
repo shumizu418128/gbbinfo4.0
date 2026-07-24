@@ -26,7 +26,7 @@ export const AboutContent = ({ locale: _locale }: AboutContentProps) => {
         <p className={paragraphClass}>
           しかし、残念ながらこの大会の情報はすべて英語で発信されており、日本の人にとって情報を手に入れるのが難しい状況が続きました。
           <br />
-          この状況を次のGBBまでに改善するため、この度GBBINFO-JPNというサイトを立ち上げ、運営SNSの翻訳、また非公式の情報までもここにまとめていきます。
+          この状況を次のGBBまでに改善するため、この度GBBinfoというサイトを立ち上げ、運営SNSの翻訳、また非公式の情報までもここにまとめていきます。
         </p>
         <p className={paragraphClass}>ぜひ、拡散よろしくお願いします。</p>
         <p className={paragraphClass}>

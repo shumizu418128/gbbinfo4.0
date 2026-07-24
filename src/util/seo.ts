@@ -9,7 +9,7 @@ import { toSitemapHreflang } from "@shared/i18n/hreflang.js";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 /** 3.0 互換のサイト表示名（og:site_name / title 接尾辞） */
-export const SITE_NAME = "GBBINFO-JPN";
+export const SITE_NAME = "GBBinfo";
 
 /** 3.0 互換の theme-color（ブランドオレンジ） */
 export const THEME_COLOR = GBB_COLOR;

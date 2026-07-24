@@ -85,20 +85,20 @@ npm run sync:tavily:cache
 
 ## デプロイ（GitHub Actions CI → Render After CI）
 
-`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + build-cache 同期）になり、成功後に Render が **Git 連携の Docker フルビルド**（`astro build` 含む）で `gbbinfo-jpn` をデプロイします（Auto-Deploy: After CI Checks Pass）。
+`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + build-cache 同期）になり、成功後に Render が **Git 連携の Docker フルビルド**（`astro build` 含む）で **GBBinfo**（Render サービス `gbbinfo`）をデプロイします（Auto-Deploy: After CI Checks Pass）。
 
 ```mermaid
 flowchart LR
   push[push main] --> gha[GHA CI]
   gha --> tavily[sync:tavily]
   gha --> cache[sync:build-cache]
-  cache -->|checks pass| render[gbbinfo-jpn]
+  cache -->|checks pass| render[gbbinfo]
   render --> docker[Dockerfile full build]
 ```
 
 | ブランチ | Render サービス | Tavily/DeepL | 備考 |
 |----------|-----------------|--------------|------|
-| `main` | `gbbinfo-jpn` | GHA で `sync:tavily` | `DEPLOY_ENV=production` |
+| `main` | `gbbinfo` | GHA で `sync:tavily` | `DEPLOY_ENV=production` |
 
 ワークフロー: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 

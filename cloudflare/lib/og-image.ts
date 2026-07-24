@@ -1,5 +1,5 @@
 const SNS_FETCH_USER_AGENT =
-  "Mozilla/5.0 (compatible; GBBInfoBot/1.0; +https://gbbinfo.com)";
+  "Mozilla/5.0 (compatible; GBBinfoBot/1.0; +https://gbbinfo.com)";
 
 export type ImageFetchResult =
   | { ok: true; bytes: ArrayBuffer; contentType: string }
