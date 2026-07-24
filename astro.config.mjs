@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadEnv } from "vite";
 import { robotsTxt } from "./scripts/astro/robots-txt.mjs";
+import { toSitemapHreflang } from "./shared/i18n/hreflang.ts";
 import inlangSettings from "./project.inlang/settings.json" with { type: "json" };
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
@@ -47,19 +48,12 @@ process.env.PUBLIC_SITE_URL = site;
 
 // languageLabels.ts → sync:locales → settings.json。sitemap の言語リストはここから取る。
 // URL / inlang キーはそのまま。値だけ hreflang（英字とハイフンのみ）に変換する。
-// zh_Hans_CN 等の `_` 付き値を渡すと @astrojs/sitemap がバリデーションで失敗し、
-// sitemap 全体の生成がスキップされる。
-const sitemapHreflangByLocale = {
-  zh_Hans_CN: "zh-CN",
-  zh_Hant_TW: "zh-TW",
-};
-
 const sitemapI18n = {
   defaultLocale: inlangSettings.baseLocale,
   locales: Object.fromEntries(
     inlangSettings.locales.map((locale) => [
       locale,
-      sitemapHreflangByLocale[locale] ?? locale,
+      toSitemapHreflang(locale),
     ]),
   ),
 };
