@@ -7,6 +7,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { loadEnv } from "vite";
 import { robotsTxt } from "./scripts/astro/robots-txt.mjs";
+import { toSitemapHreflang } from "./shared/i18n/hreflang.ts";
 import inlangSettings from "./project.inlang/settings.json" with { type: "json" };
 
 const rootDir = path.dirname(fileURLToPath(import.meta.url));
@@ -46,10 +47,14 @@ const site = resolveSiteUrl();
 process.env.PUBLIC_SITE_URL = site;
 
 // languageLabels.ts → sync:locales → settings.json。sitemap の言語リストはここから取る。
+// URL / inlang キーはそのまま。値だけ hreflang（英字とハイフンのみ）に変換する。
 const sitemapI18n = {
   defaultLocale: inlangSettings.baseLocale,
   locales: Object.fromEntries(
-    inlangSettings.locales.map((locale) => [locale, locale]),
+    inlangSettings.locales.map((locale) => [
+      locale,
+      toSitemapHreflang(locale),
+    ]),
   ),
 };
 

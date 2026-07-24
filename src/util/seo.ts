@@ -5,6 +5,7 @@ import {
   type SupportedLanguage,
 } from "~/constants/languageLabels.js";
 import { GBB_COLOR } from "~/constants/colors.js";
+import { toSitemapHreflang } from "@shared/i18n/hreflang.js";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 /** 3.0 互換のサイト表示名（og:site_name / title 接尾辞） */
@@ -78,12 +79,14 @@ export const replaceLocaleInPath = (
 };
 
 export type HreflangLink = {
-  hreflang: SupportedLanguage | "x-default";
+  /** sitemap と同一ロジックで正規化した hreflang（例: zh-CN）または x-default */
+  hreflang: string;
   href: string;
 };
 
 /**
  * hreflang alternate 一覧（各言語 + x-default）を生成する。
+ * 中国語など URL ロケールと hreflang が異なる場合は toSitemapHreflang で揃える。
  *
  * Args:
  *   site: Astro.site。
@@ -97,7 +100,7 @@ export const buildHreflangLinks = (
   pathname: string,
 ): HreflangLink[] => {
   const links: HreflangLink[] = supportedLanguages.map((locale) => ({
-    hreflang: locale,
+    hreflang: toSitemapHreflang(locale),
     href: toAbsoluteUrl(site, replaceLocaleInPath(pathname, locale)),
   }));
   links.push({
