@@ -62,23 +62,3 @@ jobs:
           echo "DATABASE_URL is set (length=${#DATABASE_URL})"
           npm run sync:build-cache
           echo "::endgroup::"
-
-      - name: Astro build
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PUBLIC_ASSET_BASE_URL: ${{ vars.PUBLIC_ASSET_BASE_URL }}
-          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL_PREVIEW }}
-          DEPLOY_ENV: preview
-        run: |
-          echo "::group::astro build"
-          if [ -z "$PUBLIC_ASSET_BASE_URL" ]; then
-            export PUBLIC_ASSET_BASE_URL="https://gbbinfo-assets.pages.dev"
-          fi
-          if [ -z "$PUBLIC_SITE_URL" ]; then
-            export PUBLIC_SITE_URL="https://gbbinfo-preview.onrender.com"
-          fi
-          echo "DEPLOY_ENV=$DEPLOY_ENV"
-          echo "PUBLIC_SITE_URL=$PUBLIC_SITE_URL"
-          echo "PUBLIC_ASSET_BASE_URL=$PUBLIC_ASSET_BASE_URL"
-          npx astro build
-          echo "::endgroup::"

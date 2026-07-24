@@ -85,14 +85,14 @@ npm run sync:tavily:cache
 
 ## デプロイ（GitHub Actions CI → Render After CI）
 
-`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + SSG 検証）になり、成功後に Render が **Git 連携の Docker フルビルド**で `gbbinfo-jpn` をデプロイします（Auto-Deploy: After CI Checks Pass）。
+`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + build-cache 同期）になり、成功後に Render が **Git 連携の Docker フルビルド**（`astro build` 含む）で `gbbinfo-jpn` をデプロイします（Auto-Deploy: After CI Checks Pass）。
 
 ```mermaid
 flowchart LR
   push[push main] --> gha[GHA CI]
   gha --> tavily[sync:tavily]
-  gha --> verify[sync:build-cache and astro build]
-  verify -->|checks pass| render[gbbinfo-jpn]
+  gha --> cache[sync:build-cache]
+  cache -->|checks pass| render[gbbinfo-jpn]
   render --> docker[Dockerfile full build]
 ```
 
@@ -111,13 +111,6 @@ flowchart LR
 | `DATABASE_URL` | build-cache / tavily（GHA と Render 双方） |
 | `TAVILY_API_KEY` | GHA の `sync:tavily` |
 | `DEEPL_API_KEY` | GHA の `sync:tavily` |
-
-**Variables（任意・既定あり）**
-
-| 名前 | 既定 | 説明 |
-|------|------|------|
-| `PUBLIC_ASSET_BASE_URL` | `https://gbbinfo-assets.pages.dev` | アセット CDN（GHA 検証ビルド） |
-| `PUBLIC_SITE_URL_PREVIEW` | `https://gbbinfo-preview.onrender.com` | CI 検証ビルドの canonical（本番 Render とは独立） |
 
 ### ローカルでの Docker ビルド
 
@@ -141,6 +134,6 @@ docker build -t gbbinfo4.0:local \
 | `TAVILY_API_KEY` | `sync:tavily` 用（GHA / 手動同期） |
 | `DEEPL_API_KEY` | `sync:tavily` 用（GHA / 手動同期） |
 
-canonical / OGP / sitemap の絶対 URL はビルド時に確定する。Render ではサービス環境変数の `PUBLIC_SITE_URL`（または `RENDER_EXTERNAL_URL`）を使う。GHA の検証ビルドは `PUBLIC_SITE_URL_PREVIEW` を参照する。
+canonical / OGP / sitemap の絶対 URL はビルド時に確定する。Render ではサービス環境変数の `PUBLIC_SITE_URL`（または `RENDER_EXTERNAL_URL`）を使う。
 
 `.env.example` を `.env` にコピーし、Supabase Dashboard → Connect → Shared Pooler → Transaction mode の URI と Cloudflare Pages URL を設定してください。画像の追加・更新は [`cloudflare/README.md`](cloudflare/README.md) を参照。
