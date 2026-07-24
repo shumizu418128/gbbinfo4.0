@@ -169,7 +169,7 @@ npm run build
 2. `sync:build-cache` — Supabase から最新スナップショットを取得
 3. `astro build` — 静的 HTML を `dist/` に生成
 
-デプロイ経路では、GHA CI が `sync:tavily` → `sync:locales` → `sync:build-cache` → `astro build` で検証し、成功後に Render（`gbbinfo-jpn`）が Git 連携の Dockerfile で同様のフルビルドを行う（After CI Checks Pass）。詳細は [README.md](../README.md) のデプロイ節を参照。
+デプロイ経路では、GHA CI が `sync:tavily` → `sync:locales` → `sync:build-cache` を実行し、成功後に Render（`gbbinfo-jpn`）が Git 連携の Dockerfile で `npm run build`（locales → build-cache → `astro build`）を行う（After CI Checks Pass）。SSG は Render のみ。詳細は [README.md](../README.md) のデプロイ節を参照。
 
 ---
 
