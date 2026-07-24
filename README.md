@@ -85,20 +85,20 @@ npm run sync:tavily:cache
 
 ## デプロイ（GitHub Actions CI → Render After CI）
 
-`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + SSG 検証）になり、成功後に Render が **Git 連携の Docker フルビルド**で `gbbinfo-preview` をデプロイします（Auto-Deploy: After CI Checks Pass）。
+`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + SSG 検証）になり、成功後に Render が **Git 連携の Docker フルビルド**で `gbbinfo-jpn` をデプロイします（Auto-Deploy: After CI Checks Pass）。
 
 ```mermaid
 flowchart LR
   push[push main] --> gha[GHA CI]
   gha --> tavily[sync:tavily]
   gha --> verify[sync:build-cache and astro build]
-  verify -->|checks pass| render[gbbinfo-preview]
+  verify -->|checks pass| render[gbbinfo-jpn]
   render --> docker[Dockerfile full build]
 ```
 
 | ブランチ | Render サービス | Tavily/DeepL | 備考 |
 |----------|-----------------|--------------|------|
-| `main` | `gbbinfo-preview` | GHA で `sync:tavily` | `DEPLOY_ENV=preview`。`gbbinfo-jpn` は未接続 |
+| `main` | `gbbinfo-jpn` | GHA で `sync:tavily` | `DEPLOY_ENV=production` |
 
 ワークフロー: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
@@ -117,7 +117,7 @@ flowchart LR
 | 名前 | 既定 | 説明 |
 |------|------|------|
 | `PUBLIC_ASSET_BASE_URL` | `https://gbbinfo-assets.pages.dev` | アセット CDN（GHA 検証ビルド） |
-| `PUBLIC_SITE_URL_PREVIEW` | `https://gbbinfo-preview.onrender.com` | CI 検証ビルドの canonical |
+| `PUBLIC_SITE_URL_PREVIEW` | `https://gbbinfo-preview.onrender.com` | CI 検証ビルドの canonical（本番 Render とは独立） |
 
 ### ローカルでの Docker ビルド
 
@@ -125,11 +125,10 @@ flowchart LR
 docker build -t gbbinfo4.0:local \
   --build-arg DATABASE_URL=... \
   --build-arg PUBLIC_ASSET_BASE_URL=https://gbbinfo-assets.pages.dev \
-  --build-arg PUBLIC_SITE_URL=https://gbbinfo-preview.onrender.com \
-  --build-arg DEPLOY_ENV=preview \
+  --build-arg PUBLIC_SITE_URL=https://gbbinfo-jpn.onrender.com \
+  --build-arg DEPLOY_ENV=production \
   .
 ```
-
 ## 環境変数
 
 | 変数名 | 説明 |

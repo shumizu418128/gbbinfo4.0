@@ -169,7 +169,7 @@ npm run build
 2. `sync:build-cache` — Supabase から最新スナップショットを取得
 3. `astro build` — 静的 HTML を `dist/` に生成
 
-デプロイ経路では、GHA CI が `sync:tavily` → `sync:locales` → `sync:build-cache` → `astro build` で検証し、成功後に Render（`gbbinfo-preview`）が Git 連携の Dockerfile で同様のフルビルドを行う（After CI Checks Pass）。詳細は [README.md](../README.md) のデプロイ節を参照。
+デプロイ経路では、GHA CI が `sync:tavily` → `sync:locales` → `sync:build-cache` → `astro build` で検証し、成功後に Render（`gbbinfo-jpn`）が Git 連携の Dockerfile で同様のフルビルドを行う（After CI Checks Pass）。詳細は [README.md](../README.md) のデプロイ節を参照。
 
 ---
 
@@ -182,7 +182,7 @@ npm run build
 | 本番デプロイ前の確認 | `npm run build` |
 | 言語を追加した | `languageLabels.ts` 編集 → `npm run dev` または `npm run build`（locales 同期は自動） |
 | Tavily 表示を dev で確認したい | `sync:tavily:cache`（必要なら先に `sync:tavily`） |
-| Tavily データを更新しつつ preview をデプロイ | `main` へ push（GHA CI → Render After CI） |
+| Tavily データを更新しつつ本番デプロイ | `main` へ push（GHA CI → Render After CI） |
 | Tavily だけ手動更新 | `npm run sync:tavily` |
 
 ---
