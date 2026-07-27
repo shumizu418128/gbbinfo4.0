@@ -657,10 +657,10 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), m.judges()],
-            [SOLO, m.rule_update_pending()],
-            [TAG_TEAM, m.rule_update_pending()],
-            [LOOPSTATION, m.rule_update_pending()],
-            [CREW, m.rule_update_pending()],
+            [SOLO, "COLAPS\nWING\nSKILLER\nZEDE\nDHARNI"],
+            [TAG_TEAM, "MAXO\nYAMORI\nKIM\nEON\nHISS"],
+            [LOOPSTATION, "RITHMIND\nZHANG ZE\nSYJO\nBIZKIT\nYASWEDE"],
+            [CREW, "EPOCK\nGEO POPOFF\nHOBBIT\nHISS\nNEXOR"],
             ["SHOWCASE\n(producer)", m.rule_no_judges()],
             ["SHOWCASE\n(loopstation)", m.rule_no_judges()],
             ["SHOWCASE\n(solo)", m.rule_no_judges()],
