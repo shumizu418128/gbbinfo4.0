@@ -1,0 +1,58 @@
+---
+description: Windows で git commit / gh pr create を確実に行う手順
+alwaysApply: true
+---
+
+# GitHub PR（Windows / PowerShell）
+
+ローカルは **Windows 11 + PowerShell**。bash 向け HEREDOC（`$(cat <<'EOF' ...)`）は **ParserError になるため使わない**。
+
+## 事前条件（PR 作成前に必ず確認）
+
+```powershell
+gh auth status
+```
+
+- `You are not logged into any GitHub hosts` のときは **`gh pr create` を実行しない**。
+- ユーザーに次を依頼し、完了後に再開する:
+  1. ターミナルで `gh auth login`（GitHub.com / HTTPS / Login with a web browser）
+  2. または環境変数 `GH_TOKEN`（`repo` スコープの PAT）を設定
+- push だけ成功して PR だけ失敗した場合も、認証復旧後に同じブランチで `gh pr create` すればよい（再 push 不要）。
+
+## コミットメッセージ（PowerShell）
+
+```powershell
+git add <files>
+git commit -m "feat: ルートページにSEOメタタグを追加"
+```
+
+複数行が必要なときだけ here-string + `-F -` を使う:
+
+```powershell
+@"
+feat: ルートページにSEOメタタグを追加
+
+補足があれば2行目以降へ
+"@ | git commit -F -
+```
+
+## PR 作成（PowerShell）
+
+```powershell
+git push -u origin HEAD
+
+gh pr create --title "feat: ルートページにSEOメタタグを追加" --body @"
+## Summary
+- 要点1
+- 要点2
+
+## Test plan
+- [ ] 確認項目
+"@
+```
+
+## やってはいけないこと
+
+- bash HEREDOC を PowerShell にそのまま貼る
+- `gh` 未認証のまま PR URL だけ渡して終わりにする（認証依頼 → 再実行が先）
+- 認証失敗を「Composer の制限」と誤認して手順を書かない

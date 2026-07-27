@@ -15,3 +15,7 @@ GBBINFO4.0 は Astro 7（`output: "static"` / SSG）の多言語情報サイト�
 - **本番ビルド**: ローカルの `npm run build` は常に `sync:build-cache`（全年 bulk SELECT）を走らせるため `DATABASE_URL` が必須。デプロイは GHA（`.github/workflows/ci.yml`）が `sync:tavily` + build-cache 同期を行い、Render（`gbbinfo`・ホスト名は `gbbinfo-jpn.onrender.com`）が After CI Checks Pass で Dockerfile フルビルド（`astro build` 含む）する。
 - **画像アセット**: `PUBLIC_ASSET_BASE_URL`（dev/build 双方で必須）。既定値は `.env.example` の Cloudflare Pages 公開 URL を使う。オフラインで使う場合のみ `npm run assets:dev`（Cloudflare Pages エミュレータ, http://localhost:8788）を併走。
 - **型チェック**: `npm run typecheck`（`astro check`）。未使用変数などは hint 扱いで 0 errors なら成功。
+
+### GitHub PR（Windows・非自明）
+- ローカルは PowerShell のため、bash HEREDOC（`$(cat <<'EOF'`）は使えない。手順は `.cursor/rules/github-pr-windows.mdc` を参照。
+- `gh pr create` 前に `gh auth status` でログイン確認。未ログインならユーザーに `gh auth login`（または `GH_TOKEN`）を依頼してから再実行する。
