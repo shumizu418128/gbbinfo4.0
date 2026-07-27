@@ -111,6 +111,33 @@ export const buildHreflangLinks = (
 };
 
 /**
+ * ルート `/` リダイレクトページ用 hreflang alternate 一覧を生成する。
+ * 各言語の当該年トップページへ向ける。
+ *
+ * Args:
+ *   site: Astro.site。
+ *   year: リダイレクト先の開催年。
+ *
+ * Returns:
+ *   link rel=alternate 用の配列。
+ */
+export const buildRootHreflangLinks = (
+  site: URL | undefined,
+  year: number,
+): HreflangLink[] => {
+  const topPath = (locale: SupportedLanguage): string => `/${locale}/${year}/top`;
+  const links: HreflangLink[] = supportedLanguages.map((locale) => ({
+    hreflang: toSitemapHreflang(locale),
+    href: toAbsoluteUrl(site, topPath(locale)),
+  }));
+  links.push({
+    hreflang: "x-default",
+    href: toAbsoluteUrl(site, topPath(baseLocale)),
+  });
+  return links;
+};
+
+/**
  * デフォルトの OGP / Twitter 用画像 URL を返す（3.0 の background.webp 相当）。
  *
  * Returns:
