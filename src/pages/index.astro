@@ -14,10 +14,19 @@ import {
   buildRootHreflangLinks,
   defaultOgImageUrl,
 } from "~/util/seo";
+import { loadBuildCache } from "~/db/buildCache.js";
 import { setLocale } from "../../paraglide/runtime.js";
 // ルートパス: 言語を自動判定し、現在の開催年のトップへリダイレクトする。
 // SSG ではサーバー側で言語判定できないため、クライアントで navigator.language を見る。
-const year = new Date().getFullYear();
+// 開催年は壁時計ではなくビルドスナップショット（降順先頭）を正とする。
+const resolveEventYear = (): number => {
+  const store = loadBuildCache();
+  if (store && store.allYears.length > 0) {
+    return store.allYears[0];
+  }
+  return new Date().getFullYear();
+};
+const year = resolveEventYear();
 const fallback = `/${baseLocale}/${year}/top`;
 const env = envCheck();
 setLocale(baseLocale, { reload: false });
@@ -26,7 +35,6 @@ const metaTitle = (meta[0] as { title: string }).title;
 const description = (meta[1] as { content: string }).content;
 const showDevBanner = Boolean(env && env !== "production");
 const canonicalUrl = toAbsoluteUrl(Astro.site, fallback);
-const rootUrl = toAbsoluteUrl(Astro.site, "/");
 const hreflangLinks = buildRootHreflangLinks(Astro.site, year);
 const ogImage = defaultOgImageUrl();
 const ogLocale = ogLocales[baseLocale];
@@ -55,7 +63,7 @@ const ogLocale = ogLocales[baseLocale];
     <meta property="og:title" content={metaTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content={rootUrl} />
+    <meta property="og:url" content={canonicalUrl} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:secure_url" content={ogImage} />
     <meta property="og:site_name" content={SITE_NAME} />
