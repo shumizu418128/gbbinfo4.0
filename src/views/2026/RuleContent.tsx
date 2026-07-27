@@ -657,7 +657,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
         <Table
           data={[
             [m.rule_col_category(), m.judges()],
-            [SOLO, m.rule_update_pending()],
+            [SOLO, "DHARNI"],
             [TAG_TEAM, m.rule_update_pending()],
             [LOOPSTATION, m.rule_update_pending()],
             [CREW, m.rule_update_pending()],
