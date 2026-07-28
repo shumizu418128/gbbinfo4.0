@@ -99,7 +99,10 @@ export const buildTranslations = async (
   const translation: AnswerTranslation = { ...existing, en: answer };
 
   for (const locale of TRANSLATION_LOCALES) {
-    if (translation[locale]) {
+    // isAnswerTranslationComplete と同様、空白のみは未翻訳扱いにする
+    const existingValue = translation[locale]?.trim();
+    if (existingValue) {
+      translation[locale] = existingValue;
       continue;
     }
     translation[locale] = await translateWithDeepL(
