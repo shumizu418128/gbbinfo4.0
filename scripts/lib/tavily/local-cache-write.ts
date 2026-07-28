@@ -1,7 +1,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { LOCAL_TAVILY_CACHE_DIR } from "../../../shared/tavily/constants.ts";
-import type { LocalTavilyCacheEntry } from "../../../shared/tavily/types.ts";
+import type {
+  AnswerTranslation,
+  LocalTavilyCacheEntry,
+} from "../../../shared/tavily/types.ts";
 
 /**
  * cache_key に対応するローカルキャッシュファイルパスを返す。
@@ -26,6 +29,20 @@ export const writeLocalTavilyCache = (entry: LocalTavilyCacheEntry): void => {
 };
 
 /**
+ * answer_translation に ja/ko が揃っているか判定する。
+ *
+ * Args:
+ *   answerTranslation: Tavily.answer_translation JSON。
+ *
+ * Returns:
+ *   ja と ko の両方に非空文字があれば true。
+ */
+export const isAnswerTranslationComplete = (
+  answerTranslation: AnswerTranslation,
+): boolean =>
+  Boolean(answerTranslation.ja?.trim() && answerTranslation.ko?.trim());
+
+/**
  * ローカルキャッシュが Tavily 同期完了状態か判定する。
  *
  * Args:
@@ -41,5 +58,5 @@ export const isLocalTavilyCacheComplete = (
   if (answer == null || answer === "") {
     return false;
   }
-  return Boolean(entry.answerTranslation.ja && entry.answerTranslation.ko);
+  return isAnswerTranslationComplete(entry.answerTranslation);
 };

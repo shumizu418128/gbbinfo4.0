@@ -13,10 +13,7 @@ import { upsertTavilyRow } from "@shared/db/tavily.js";
 import { loadDotEnv } from "../lib/load-dotenv.ts";
 import { fetchTavilySearch } from "../lib/tavily/api.ts";
 import { buildTranslations } from "../lib/tavily/deepl.ts";
-import {
-  findExistingTranslationsFromDb,
-  hasCachedAnswer,
-} from "../lib/tavily/db-sync.ts";
+import { getCachedTavilyStatus } from "../lib/tavily/db-sync.ts";
 import { findTavilySyncTargetNames } from "../lib/tavily/sync-targets.ts";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -61,12 +58,40 @@ const main = async (): Promise<void> => {
     const prefix = `[tavily] [${position}/${total}]`;
 
     try {
-      if (!force && (await hasCachedAnswer(cacheKey))) {
-        skipped += 1;
-        console.log(
-          `${prefix} skip (cached) ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
-        );
-        continue;
+      if (!force) {
+        const cached = await getCachedTavilyStatus(cacheKey);
+
+        // answer + ja/ko が揃っていればスキップ
+        if (cached.kind === "complete") {
+          skipped += 1;
+          console.log(
+            `${prefix} skip (cached) ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
+          );
+          continue;
+        }
+
+        // answer のみある場合は Tavily 再取得せず、不足翻訳だけ埋める
+        // （旧ロジックは answer 有無だけで skip し、ko 欠落のまま英語原文が表示されていた）
+        if (cached.kind === "answer_only") {
+          console.log(`${prefix} translating ${name}...`);
+          const answerTranslation = await buildTranslations(
+            cached.answer,
+            name,
+            deeplApiKey,
+            cached.answerTranslation,
+          );
+          await upsertTavilyRow(
+            cacheKey,
+            cached.row.searchResults as Record<string, unknown>,
+            answerTranslation,
+          );
+          synced += 1;
+          console.log(
+            `${prefix} translated ${name} | synced=${synced} skipped=${skipped} failed=${failed}`,
+          );
+          await sleep(250);
+          continue;
+        }
       }
 
       console.log(`${prefix} syncing ${name}...`);
@@ -81,13 +106,17 @@ const main = async (): Promise<void> => {
         continue;
       }
 
-      const existingTranslations = await findExistingTranslationsFromDb(cacheKey);
+      const cachedForExisting = await getCachedTavilyStatus(cacheKey);
+      const priorTranslations =
+        cachedForExisting.kind === "missing"
+          ? {}
+          : cachedForExisting.answerTranslation;
 
       const answerTranslation = await buildTranslations(
         searchResult.answer,
         name,
         deeplApiKey,
-        existingTranslations,
+        priorTranslations,
       );
 
       await upsertTavilyRow(

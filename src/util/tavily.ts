@@ -47,13 +47,17 @@ export const resolveTavilyAnswer = (
   answerTranslation: AnswerTranslation,
   locale: SupportedLanguage,
 ): string => {
+  // ja/ko は answer_translation の該当キーのみ使う（欠落時に英語原文へ落とさない）
   if (locale === "ja" || locale === "ko") {
-    const translated = answerTranslation[locale];
-    if (translated) {
-      return translated;
-    }
+    return answerTranslation[locale]?.trim() ?? "";
   }
-  return searchResults.answer ?? "";
+
+  return (
+    answerTranslation[locale]?.trim() ||
+    answerTranslation.en?.trim() ||
+    searchResults.answer?.trim() ||
+    ""
+  );
 };
 
 /**
