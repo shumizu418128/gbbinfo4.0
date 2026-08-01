@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import type { YearWithCountry } from "../db/year";
-import { Flag } from "./Flag";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type HeroImageProps = {
@@ -24,13 +23,12 @@ const renderHeroSubtitle = (subtitle: string) => {
 
 export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", heroHeading }: HeroImageProps) => {
   const year = yearWithCountry?.year;
-  const city = yearWithCountry?.city;
-  const country = yearWithCountry?.country;
   const startsAt = yearWithCountry?.startsAt;
   const endsAt = yearWithCountry?.endsAt;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
   const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate())).toLocaleDateString() : "";
   const heading = heroHeading ?? (yearWithCountry ? `GBB ${year}` : "GBBinfo");
+  const showCountdown = Boolean(startsAt);
 
   return (
     <>
@@ -53,38 +51,45 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
           }}
         />
 
-        <div className="relative flex flex-col items-center justify-center h-full w-full gap-6 translate-y-8">
-          <h1
-            className="text-white z-10 w-full text-center"
-            style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
-          >
-            {heading}
-          </h1>
-          {yearWithCountry && startDate && endDate && (
-            <div className="z-10 w-full text-center">
-              <span className="text-white font-bold" style={{ fontSize: "clamp(16px, 3vw, 32px)" }}>
-                {startDate} - {endDate}
-              </span>
-            </div>
-          )}
-          {yearWithCountry && (country || city) && (
-            <div className="z-10 w-full text-center flex items-center justify-center gap-2">
-              {country && (
-                <Flag isoAlpha2={country.isoAlpha2} height={24} paddingBottom={0} />
+        <div className="relative flex flex-col items-center justify-center h-full w-full gap-16">
+          <div className="z-10 flex w-full flex-col items-center gap-2">
+            <h1
+              className="w-full text-center text-white"
+              style={{ fontSize: "clamp(32px, 16vw, 96px)" }}
+            >
+              {heading}
+            </h1>
+          </div>
+          {(yearWithCountry && startDate && endDate) || showCountdown ? (
+            <div className="z-10 flex w-full flex-col items-center gap-2">
+              {yearWithCountry && startDate && endDate && (
+                <div className="w-full text-center">
+                  <span className="font-bold text-white" style={{ fontSize: "clamp(16px, 3vw, 32px)" }}>
+                    {startDate} - {endDate}
+                  </span>
+                </div>
               )}
-              {city && (
-                <span
-                  className="text-white font-bold"
-                  style={{ fontSize: "clamp(16px, 3vw, 32px)" }}
+              {showCountdown && (
+                <div
+                  id="hero-gbb-countdown-root"
+                  className="w-full max-w-2xl hidden"
+                  aria-live="polite"
                 >
-                  {city}
-                </span>
+                  <p
+                    id="hero-gbb-countdown-value"
+                    className="text-center font-bold tabular-nums text-white"
+                    style={{ fontSize: "clamp(24px, 6vw, 48px)" }}
+                    role="timer"
+                  >
+                    00d 00:00:00
+                  </p>
+                </div>
               )}
             </div>
-          )}
-          <div className="mt-16 z-10 w-full text-center">
+          ) : null}
+          <div className="z-10 w-full text-center">
             <span
-              className="text-white font-bold"
+              className="font-bold text-white"
               style={{ fontSize: "clamp(24px, 4vw, 48px)" }}
             >
               {renderHeroSubtitle(heroSubtitle)}

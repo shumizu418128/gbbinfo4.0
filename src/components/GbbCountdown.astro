@@ -16,7 +16,7 @@ const flagHeight = 20;
 {targetIso && (
 <div
   id="gbb-countdown-root"
-  class="mt-8 z-10 w-full max-w-2xl px-4 hidden"
+  class="mt-8 z-10 w-full max-w-2xl bg-(--section-color) p-8 hidden"
   aria-live="polite"
 >
   <p class="mb-4 text-center text-white text-2xl">
@@ -52,7 +52,7 @@ const flagHeight = 20;
     <div class="flex min-w-8 flex-col items-center">
       <span
         id="gbb-countdown-days"
-        class="font-bold tabular-nums text-(--gbb-color)"
+        class="font-bold tabular-nums text-white"
         style="font-size: clamp(24px, 6vw, 48px)"
       >0</span>
       <span class="mt-2 text-base text-(--secondary-text-color)">d</span>
@@ -60,7 +60,7 @@ const flagHeight = 20;
     <div class="flex min-w-8 flex-col items-center">
       <span
         id="gbb-countdown-hours"
-        class="font-bold tabular-nums text-(--gbb-color)"
+        class="font-bold tabular-nums text-white"
         style="font-size: clamp(24px, 6vw, 48px)"
       >00</span>
       <span class="mt-2 text-base text-(--secondary-text-color)">h</span>
@@ -68,7 +68,7 @@ const flagHeight = 20;
     <div class="flex min-w-8 flex-col items-center">
       <span
         id="gbb-countdown-minutes"
-        class="font-bold tabular-nums text-(--gbb-color)"
+        class="font-bold tabular-nums text-white"
         style="font-size: clamp(24px, 6vw, 48px)"
       >00</span>
       <span class="mt-2 text-base text-(--secondary-text-color)">m</span>
@@ -76,7 +76,7 @@ const flagHeight = 20;
     <div class="flex min-w-8 flex-col items-center">
       <span
         id="gbb-countdown-seconds"
-        class="font-bold tabular-nums text-(--gbb-color)"
+        class="font-bold tabular-nums text-white"
         style="font-size: clamp(24px, 6vw, 48px)"
       >00</span>
       <span class="mt-2 text-base text-(--secondary-text-color)">s</span>
@@ -126,8 +126,6 @@ const flagHeight = 20;
       messageEl.textContent =
         countdownMessages[Math.floor(Math.random() * countdownMessages.length)];
 
-      let timeoutId;
-
       const tick = () => {
         const next = parseRemaining(target);
         if (next.totalMs === 0) {
@@ -142,7 +140,7 @@ const flagHeight = 20;
         root.classList.remove("hidden");
 
         const delay = 1000 - (Date.now() % 1000);
-        timeoutId = window.setTimeout(tick, delay);
+        window.setTimeout(tick, delay);
       };
 
       tick();
