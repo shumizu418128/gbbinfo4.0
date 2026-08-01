@@ -1,5 +1,5 @@
 # Render / ローカル: ソースから SSG ビルドして nginx で配信する。
-# Vite content hash を GHA（Pages へ上げる _astro）と揃えるため npm ci を使う。
+# package-lock.json に固定した依存ツリーを厳密に使うため npm ci を使う。
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
@@ -20,7 +20,5 @@ RUN npm run build
 FROM nginx:alpine AS runtime
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
-# JS/CSS は Cloudflare Pages（assetsPrefix）から配信。Render 上の複製は削除して誤配信と容量を抑える。
-RUN rm -rf /usr/share/nginx/html/_astro
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]

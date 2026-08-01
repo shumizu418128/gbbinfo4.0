@@ -12,18 +12,12 @@ concurrency:
 
 env:
   NODE_VERSION: "24.10.0"
-  PUBLIC_ASSET_BASE_URL: https://gbbinfo-assets.pages.dev
 
 jobs:
   ci:
     runs-on: ubuntu-latest
-    # Pages デプロイと Render ゲートを直列化（_astro を HTML より先に公開する）
-    concurrency:
-      group: pages-assets
-      cancel-in-progress: false
     permissions:
       contents: read
-      deployments: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,29 +62,3 @@ jobs:
           echo "DATABASE_URL is set (length=${#DATABASE_URL})"
           npm run sync:build-cache
           echo "::endgroup::"
-
-      # Render より先に /_astro を Pages へ載せる。HTML は Render が同じ commit で再ビルドする。
-      # Vite の content hash 一致のため、Render Dockerfile も npm ci + 同一 PUBLIC_ASSET_BASE_URL を使う。
-      - name: Build site (for _astro upload)
-        env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          DEPLOY_ENV: production
-          PUBLIC_SITE_URL: https://gbbinfo-jpn.onrender.com
-        run: |
-          echo "::group::astro build"
-          npx astro build
-          echo "::endgroup::"
-
-      - name: Prepare Cloudflare Pages directory
-        run: |
-          echo "::group::assets:prepare"
-          npm run assets:prepare
-          echo "::endgroup::"
-
-      - name: Deploy assets + _astro to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: cloudflare
-          command: pages deploy dist-pages --project-name=gbbinfo-assets

@@ -85,18 +85,14 @@ npm run sync:tavily:cache
 
 ## デプロイ（GitHub Actions CI → Render After CI）
 
-`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + build-cache 同期 + `/_astro` を Cloudflare Pages へアップロード）になり、成功後に Render が **Git 連携の Docker フルビルド**（`astro build` 含む）で **GBBinfo**（Render サービス `gbbinfo`）をデプロイします（Auto-Deploy: After CI Checks Pass）。
-
-HTML の公開 URL は `gbbinfo-jpn.onrender.com` のまま。ハッシュ付き JS/CSS（`/_astro`）だけ Pages（`gbbinfo-assets.pages.dev`）から配信し、Render 帯域を抑えます。
+`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + build-cache 同期）になり、成功後に Render が **Git 連携の Docker フルビルド**（`astro build` 含む）で **GBBinfo**（Render サービス `gbbinfo`）をデプロイします（Auto-Deploy: After CI Checks Pass）。
 
 ```mermaid
 flowchart LR
   push[push main] --> gha[GHA CI]
   gha --> tavily[sync:tavily]
   gha --> cache[sync:build-cache]
-  cache --> build[astro build]
-  build --> pages[Pages public + _astro]
-  pages -->|checks pass| render[gbbinfo]
+  cache -->|checks pass| render[gbbinfo]
   render --> docker[Dockerfile full build]
 ```
 
@@ -115,8 +111,6 @@ flowchart LR
 | `DATABASE_URL` | build-cache / tavily（GHA と Render 双方） |
 | `TAVILY_API_KEY` | GHA の `sync:tavily` |
 | `DEEPL_API_KEY` | GHA の `sync:tavily` |
-| `CLOUDFLARE_API_TOKEN` | GHA が Pages へ `/_astro` + 画像をデプロイ |
-| `CLOUDFLARE_ACCOUNT_ID` | 同上 |
 
 ### ローカルでの Docker ビルド
 
