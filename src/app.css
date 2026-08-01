@@ -16,16 +16,16 @@ body {
 /* TODO: 色を追加したら、tailwind.config.js にも追加する */
 :root {
   --background-color: rgb(5, 5, 5);
-  --section-color: rgba(255,255,255,0.03);
-  --button-background-color: rgba(255,255,255,0.08);
-  --hover-background-color: rgba(255,255,255,0.1);
-  --button-border-color: rgba(255,255,255,0.12);
+  --section-color: rgba(255,255,255,0.1);
+  --button-background-color: rgba(255,255,255,0.1);
+  --hover-background-color: rgba(255,255,255,0.2);
+  --button-border-color: rgba(255,255,255,0.2);
   --gbb-color: rgb(255, 100, 20);
   --secondary-text-color: rgba(255,255,255,0.8);
-  --post-it-color: rgba(255, 255, 255, 0.15);
+  --post-it-color: rgba(255, 255, 255, 0.2);
   --rule-hover-text: #fff;
   --table-border-color: rgba(255, 255, 255, 0.2);
-  --table-body-color: rgba(255, 255, 255, 0.05);
+  --table-body-color: rgba(255, 255, 255, 0.1);
 }
 
 .participant-world-map .leaflet-container {
