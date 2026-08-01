@@ -2,6 +2,7 @@
 import SiteFrame from "~/layouts/SiteFrame.astro";
 import { ParticipantsContent } from "~/views/2018/ParticipantsContent";
 import { ParticipantWorldMap } from "~/components/ParticipantWorldMap";
+import { buildWorldMapMarkers } from "~/util/worldMapMarkers";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findParticipants } from "~/db/participant";
 import { findCategoriesByIds } from "~/db/category";
@@ -53,6 +54,7 @@ const {
   latestYearWithCountry,
 } = Astro.props;
 
+const mapMarkers = buildWorldMapMarkers(participants, locale);
 const heroSubtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
 const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
 ---
@@ -74,7 +76,7 @@ const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
   />
   <ParticipantWorldMap
     client:visible
-    participants={participants}
+    markers={mapMarkers}
     locale={locale}
   />
 </SiteFrame>
