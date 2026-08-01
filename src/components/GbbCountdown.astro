@@ -16,7 +16,7 @@ const flagHeight = 20;
 {targetIso && (
 <div
   id="gbb-countdown-root"
-  class="mt-8 z-10 w-full max-w-2xl px-4 hidden"
+  class="mt-8 z-10 w-full max-w-2xl bg-(--section-color) p-8 hidden"
   aria-live="polite"
 >
   <p class="mb-4 text-center text-white text-2xl">
@@ -44,44 +44,12 @@ const flagHeight = 20;
     }{" "}
     {city}
   </p>
-  <div
-    class="flex flex-wrap justify-center"
-    style="gap: 32px"
+  <p
+    id="gbb-countdown-value"
+    class="text-center font-bold tabular-nums text-white"
+    style="font-size: clamp(24px, 6vw, 48px)"
     role="timer"
-  >
-    <div class="flex min-w-8 flex-col items-center">
-      <span
-        id="gbb-countdown-days"
-        class="font-bold tabular-nums text-(--gbb-color)"
-        style="font-size: clamp(24px, 6vw, 48px)"
-      >0</span>
-      <span class="mt-2 text-base text-(--secondary-text-color)">d</span>
-    </div>
-    <div class="flex min-w-8 flex-col items-center">
-      <span
-        id="gbb-countdown-hours"
-        class="font-bold tabular-nums text-(--gbb-color)"
-        style="font-size: clamp(24px, 6vw, 48px)"
-      >00</span>
-      <span class="mt-2 text-base text-(--secondary-text-color)">h</span>
-    </div>
-    <div class="flex min-w-8 flex-col items-center">
-      <span
-        id="gbb-countdown-minutes"
-        class="font-bold tabular-nums text-(--gbb-color)"
-        style="font-size: clamp(24px, 6vw, 48px)"
-      >00</span>
-      <span class="mt-2 text-base text-(--secondary-text-color)">m</span>
-    </div>
-    <div class="flex min-w-8 flex-col items-center">
-      <span
-        id="gbb-countdown-seconds"
-        class="font-bold tabular-nums text-(--gbb-color)"
-        style="font-size: clamp(24px, 6vw, 48px)"
-      >00</span>
-      <span class="mt-2 text-base text-(--secondary-text-color)">s</span>
-    </div>
-  </div>
+  >00d 00:00:00</p>
   <p
     id="gbb-countdown-message"
     class="mb-4 text-center text-white text-base mt-10"
@@ -97,28 +65,29 @@ const flagHeight = 20;
   }}
 >
   const root = document.getElementById("gbb-countdown-root");
-  const daysEl = document.getElementById("gbb-countdown-days");
-  const hoursEl = document.getElementById("gbb-countdown-hours");
-  const minutesEl = document.getElementById("gbb-countdown-minutes");
-  const secondsEl = document.getElementById("gbb-countdown-seconds");
+  const valueEl = document.getElementById("gbb-countdown-value");
   const messageEl = document.getElementById("gbb-countdown-message");
 
   if (
     root instanceof HTMLElement &&
-    daysEl instanceof HTMLElement &&
-    hoursEl instanceof HTMLElement &&
-    minutesEl instanceof HTMLElement &&
-    secondsEl instanceof HTMLElement &&
+    valueEl instanceof HTMLElement &&
     messageEl instanceof HTMLElement
   ) {
-    const parseRemaining = (targetMs) => {
+    const formatCountdown = (targetMs) => {
       const totalMs = Math.max(0, targetMs - Date.now());
       const secondsTotal = Math.floor(totalMs / 1000);
       const days = Math.floor(secondsTotal / 86400);
       const hours = Math.floor((secondsTotal % 86400) / 3600);
       const minutes = Math.floor((secondsTotal % 3600) / 60);
       const seconds = secondsTotal % 60;
-      return { totalMs, days, hours, minutes, seconds };
+      const dd = String(days).padStart(2, "0");
+      const hh = String(hours).padStart(2, "0");
+      const mm = String(minutes).padStart(2, "0");
+      const ss = String(seconds).padStart(2, "0");
+      return {
+        totalMs,
+        text: `${dd}d ${hh}:${mm}:${ss}`,
+      };
     };
 
     const target = Date.parse(targetIso);
@@ -126,23 +95,18 @@ const flagHeight = 20;
       messageEl.textContent =
         countdownMessages[Math.floor(Math.random() * countdownMessages.length)];
 
-      let timeoutId;
-
       const tick = () => {
-        const next = parseRemaining(target);
+        const next = formatCountdown(target);
         if (next.totalMs === 0) {
           root.classList.add("hidden");
           return;
         }
 
-        daysEl.textContent = String(next.days);
-        hoursEl.textContent = String(next.hours).padStart(2, "0");
-        minutesEl.textContent = String(next.minutes).padStart(2, "0");
-        secondsEl.textContent = String(next.seconds).padStart(2, "0");
+        valueEl.textContent = next.text;
         root.classList.remove("hidden");
 
         const delay = 1000 - (Date.now() % 1000);
-        timeoutId = window.setTimeout(tick, delay);
+        window.setTimeout(tick, delay);
       };
 
       tick();
