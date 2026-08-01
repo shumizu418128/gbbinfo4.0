@@ -7,10 +7,8 @@ interface Props {
 }
 
 const { latestYearWithCountry } = Astro.props;
-const isoAlpha2 = latestYearWithCountry.country?.isoAlpha2 ?? null;
-const { city, year, startsAt } = latestYearWithCountry;
+const { year, startsAt } = latestYearWithCountry;
 const targetIso = startsAt ? new Date(startsAt).toISOString() : null;
-const flagHeight = 20;
 ---
 
 {targetIso && (
@@ -20,29 +18,7 @@ const flagHeight = 20;
   aria-live="polite"
 >
   <p class="mb-4 text-center text-white text-2xl">
-    GBB {year}<br />
-    {
-      isoAlpha2 ? (
-        <picture>
-          <source
-            type="image/webp"
-            srcset={`https://flagcdn.com/h${flagHeight}/${isoAlpha2}.webp, https://flagcdn.com/h${flagHeight * 2}/${isoAlpha2}.webp 2x, https://flagcdn.com/h${flagHeight * 3}/${isoAlpha2}.webp 3x`}
-          />
-          <source
-            type="image/png"
-            srcset={`https://flagcdn.com/h${flagHeight}/${isoAlpha2}.png, https://flagcdn.com/h${flagHeight * 2}/${isoAlpha2}.png 2x, https://flagcdn.com/h${flagHeight * 3}/${isoAlpha2}.png 3x`}
-          />
-          <img
-            src={`https://flagcdn.com/h${flagHeight}/${isoAlpha2}.png`}
-            height={flagHeight}
-            alt=""
-            loading="lazy"
-            style="display:inline-block;vertical-align:middle;padding-bottom:5px"
-          />
-        </picture>
-      ) : null
-    }{" "}
-    {city}
+    GBB {year}
   </p>
   <div
     class="flex flex-wrap justify-center"
