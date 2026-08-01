@@ -14,6 +14,11 @@ on:
       - ".github/workflows/deploy-assets.yml"
   workflow_dispatch:
 
+# gbbinfo-assets への本番デプロイを直列化し、古い run が後から上書きしないようにする
+concurrency:
+  group: pages-assets
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest

@@ -1,9 +1,9 @@
 # Render / ローカル: ソースから SSG ビルドして nginx で配信する。
-# Alpine 上の optional deps 差異を避けるため npm install を使う。
+# package-lock.json に固定した依存ツリーを厳密に使うため npm ci を使う。
 FROM node:24-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
-RUN npm install --no-audit --no-fund
+RUN npm ci --no-audit --no-fund
 COPY . .
 ARG PUBLIC_ASSET_BASE_URL
 ARG PUBLIC_SITE_URL
