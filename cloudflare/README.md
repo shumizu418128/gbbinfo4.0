@@ -3,6 +3,7 @@
 本番サイト（Render.com）の HTML とは別に、静的画像と SNS アバターを Cloudflare Pages から配信する。
 
 - **静的画像**: `cloudflare/public/`（git 管理）
+- **Astro `/_astro`（JS/CSS）**: CI が `dist/_astro` を合成してデプロイ（git 管理しない）
 - **SNS アバター**: Pages Function `/avatar` + R2 永続キャッシュ
 - **本番 URL**: `https://gbbinfo-assets.pages.dev`（プロジェクト名変更時は各所を揃える）
 
@@ -133,21 +134,16 @@ curl -X POST "https://gbbinfo-assets.pages.dev/avatar/upload" \
 ## 静的画像の追加・更新
 
 1. `cloudflare/public/images/` に webp を配置（パスは `/images/foo.webp` 形式で参照される）
-2. `main` へ push → GitHub Actions が `cloudflare/` から自動デプロイ（Functions + R2 binding 込み）
+2. `main` へ push → CI（[`.github/workflows/ci.yml`](../.github/workflows/ci.yml)）が `public` + ビルドした `/_astro` を合成して Pages へデプロイ
 
-手動デプロイ:
-
-```bash
-cd cloudflare
-npm install
-npm run deploy
-```
-
-ルートから:
+手動デプロイ（ルートから。先に `npm run build` 相当で `dist/_astro` が必要）:
 
 ```bash
+npm run build
 npm run assets:deploy
 ```
+
+`public` だけの `wrangler pages deploy public` は **Pages 上の `/_astro` を消す**ため使わない。
 
 ## ローカル開発
 
@@ -157,15 +153,27 @@ npm run assets:deploy
 PUBLIC_ASSET_BASE_URL=https://gbbinfo-assets.pages.dev
 ```
 
-**パターン B（オフライン）**: ローカルで Pages + Functions を模擬
+**パターン B（オフライン・画像のみ）**: ローカルで Pages + Functions を模擬
 
 ```bash
 # terminal 1
-npm run assets:dev    # http://127.0.0.1:8788（/avatar も利用可、R2 はローカルシミュレーション）
+npm run assets:dev    # http://127.0.0.1:8788（public のみ。/avatar 可）
 
 # terminal 2（.env）
 PUBLIC_ASSET_BASE_URL=http://127.0.0.1:8788
 npm run dev
+```
+
+**パターン C（オフライン・`/_astro` 込み）**: 本番同様に JS/CSS も Pages エミュレータから配る
+
+```bash
+npm run build
+# terminal 1
+npm run assets:dev:with-astro
+
+# terminal 2
+PUBLIC_ASSET_BASE_URL=http://127.0.0.1:8788
+npm run preview
 ```
 
 ## 関連
