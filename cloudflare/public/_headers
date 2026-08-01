@@ -1,9 +1,6 @@
 /images/*
   Cache-Control: public, max-age=2592000, immutable
 
-/_astro/*
-  Cache-Control: public, max-age=2592000, immutable
-
 /avatar*
   Cache-Control: public, max-age=2592000, immutable
   CDN-Cache-Control: public, max-age=2592000, immutable
