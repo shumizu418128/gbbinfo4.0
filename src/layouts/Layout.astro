@@ -21,9 +21,11 @@ import {
 interface Props {
   locale: string;
   pageTitle: string;
+  /** 本番向け robots。dev/preview では常に noindex, nofollow が優先される */
+  robots?: string;
 }
 
-const { locale, pageTitle } = Astro.props;
+const { locale, pageTitle, robots } = Astro.props;
 const env = envCheck();
 const meta = createMeta(env, pageTitle);
 const metaTitle = (meta[0] as { title: string }).title;
@@ -32,6 +34,7 @@ const description = (meta[1] as { content: string }).content;
 const showDevBanner = Boolean(env && env !== "production");
 const bannerColor =
   env !== "production" ? envBannerColors[env] : undefined;
+const robotsContent = showDevBanner ? "noindex, nofollow" : robots;
 
 const pathname = normalizePathname(Astro.url.pathname);
 const canonicalUrl = toAbsoluteUrl(Astro.site, pathname);
@@ -48,11 +51,7 @@ const ogLocale = isSupportedLanguage(locale)
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content={THEME_COLOR} />
-    {
-      showDevBanner && (
-        <meta name="robots" content="noindex, nofollow" />
-      )
-    }
+    {robotsContent && <meta name="robots" content={robotsContent} />}
     <FaviconLink />
     <link
       rel="stylesheet"

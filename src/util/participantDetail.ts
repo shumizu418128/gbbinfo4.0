@@ -338,6 +338,7 @@ export const participantDetailFrameProps = (
   yearWithCountry: pageData.common.yearWithCountry,
   years: pageData.common.years,
   latestYearWithCountry: pageData.common.latestYearWithCountry,
+  robots: "noindex, follow",
 });
 
 const participantDetailCommonProps = (pageData: ParticipantDetailPageData) => ({

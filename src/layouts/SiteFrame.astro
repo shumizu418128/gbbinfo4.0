@@ -16,6 +16,7 @@ interface Props {
   latestYearWithCountry: YearWithCountry;
   heroSubtitle?: string;
   heroHeading?: string;
+  robots?: string;
 }
 
 const {
@@ -26,6 +27,7 @@ const {
   latestYearWithCountry,
   heroSubtitle,
   heroHeading,
+  robots,
 } = Astro.props;
 
 const currentPath = Astro.url.pathname;
@@ -38,7 +40,7 @@ const heroCountdownTargetIso = yearWithCountry?.startsAt
   : null;
 ---
 
-<Layout locale={locale} pageTitle={pageTitle}>
+<Layout locale={locale} pageTitle={pageTitle} robots={robots}>
   <HeaderMenu
     lang={locale}
     currentPath={currentPath}

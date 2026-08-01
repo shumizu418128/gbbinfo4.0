@@ -67,6 +67,8 @@ export default defineConfig({
     react(),
     sitemap({
       i18n: sitemapI18n,
+      // 単一巨大 sitemap を分割し、1 取得あたりの Render egress を抑える
+      entryLimit: 5000,
       filter: (page) => {
         const normalized = page.replace(/\/+$/, "");
         const siteRoot = site.replace(/\/+$/, "");
@@ -78,6 +80,10 @@ export default defineConfig({
         }
         // カテゴリ無しの index はリダイレクト専用のため除外
         if (/\/(participants|result)$/.test(normalized)) {
+          return false;
+        }
+        // 出場者詳細は robots.txt で Disallow するため sitemap からも除外
+        if (/\/participant\//.test(normalized)) {
           return false;
         }
         return true;

@@ -14,9 +14,26 @@ export const robotsTxt = (siteUrl) => ({
   name: "robots-txt",
   hooks: {
     "astro:build:done": async ({ dir }) => {
+      // 出場者詳細（現行 /{lang}/participant/… と旧 /{lang}/participant_detail/…）は
+      // クロール負荷の主因のためインデックス・巡回対象外とする。
+      // /*/participants（年別一覧）は末尾 s があるためこの Disallow に含まれない。
       const body = [
         "User-agent: *",
         "Allow: /",
+        "Disallow: /*/participant/",
+        "Disallow: /*/participant_detail",
+        "",
+        "User-agent: GPTBot",
+        "Disallow: /",
+        "",
+        "User-agent: CCBot",
+        "Disallow: /",
+        "User-agent: ClaudeBot",
+        "Disallow: /",
+        "User-agent: Bytespider",
+        "Disallow: /",
+        "User-agent: Amazonbot",
+        "Disallow: /",
         "",
         `Sitemap: ${siteUrl}/sitemap-index.xml`,
         "",
