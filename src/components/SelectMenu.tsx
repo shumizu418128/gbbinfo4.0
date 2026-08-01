@@ -18,19 +18,19 @@ type SelectMenuProps = {
 export const SelectMenu = ({ label, items }: SelectMenuProps) => {
   return (
     <details className="select-menu relative">
-      <summary className="flex min-h-10 w-full min-w-40 cursor-pointer list-none items-center justify-between gap-2 border border-(--button-border-color) px-4 py-2 text-white [&::-webkit-details-marker]:hidden">
+      <summary className="bg-(--button-background-color) flex min-h-10 w-full min-w-40 cursor-pointer list-none items-center justify-between gap-2 px-4 py-2 text-white [&::-webkit-details-marker]:hidden">
         <span className="truncate text-2xl md:text-3xl lg:text-4xl">{label}</span>
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
           strokeWidth="2"
           strokeLinecap="round"
           strokeLinejoin="round"
-          className="select-menu__chevron shrink-0 transition-transform"
+          className="select-menu__chevron shrink-0 text-(--gbb-color) transition-transform"
           aria-hidden="true"
         >
           <path d="m18 15-6-6-6 6" />
