@@ -1,6 +1,5 @@
 import { Fragment } from "react";
 import type { YearWithCountry } from "../db/year";
-import { Flag } from "./Flag";
 import { staticAssetUrl } from "~/util/staticAsset.js";
 
 type HeroImageProps = {
@@ -24,8 +23,6 @@ const renderHeroSubtitle = (subtitle: string) => {
 
 export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", heroHeading }: HeroImageProps) => {
   const year = yearWithCountry?.year;
-  const city = yearWithCountry?.city;
-  const country = yearWithCountry?.country;
   const startsAt = yearWithCountry?.startsAt;
   const endsAt = yearWithCountry?.endsAt;
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
@@ -62,21 +59,6 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
             >
               {heading}
             </h1>
-            {yearWithCountry && (country || city) && (
-              <div className="flex w-full items-center justify-center gap-2">
-                {country && (
-                  <Flag isoAlpha2={country.isoAlpha2} height={24} paddingBottom={0} />
-                )}
-                {city && (
-                  <span
-                    className="font-bold text-white"
-                    style={{ fontSize: "clamp(16px, 3vw, 32px)" }}
-                  >
-                    {city}
-                  </span>
-                )}
-              </div>
-            )}
           </div>
           {(yearWithCountry && startDate && endDate) || showCountdown ? (
             <div className="z-10 flex w-full flex-col items-center gap-2">
