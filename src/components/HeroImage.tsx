@@ -28,7 +28,8 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
   const startDate = startsAt ? new Date(startsAt).toLocaleDateString() : "";
   const endDate = endsAt ? new Date(new Date(endsAt).setDate(new Date(endsAt).getDate())).toLocaleDateString() : "";
   const heading = heroHeading ?? (yearWithCountry ? `GBB ${year}` : "GBBinfo");
-  const showCountdown = Boolean(startsAt);
+  const showCountdown =
+    startsAt != null && new Date(startsAt).getTime() > Date.now();
 
   return (
     <>

@@ -35,9 +35,13 @@ const headerYear = yearWithCountry?.year ?? latestYearWithCountry.year;
 const isPastYearPage =
   yearWithCountry != null &&
   yearWithCountry.year < latestYearWithCountry.year;
-const heroCountdownTargetIso = yearWithCountry?.startsAt
-  ? new Date(yearWithCountry.startsAt).toISOString()
-  : null;
+const startsAtMs = yearWithCountry?.startsAt
+  ? new Date(yearWithCountry.startsAt).getTime()
+  : NaN;
+const heroCountdownTargetIso =
+  Number.isFinite(startsAtMs) && startsAtMs > Date.now()
+    ? new Date(startsAtMs).toISOString()
+    : null;
 ---
 
 <Layout locale={locale} pageTitle={pageTitle} robots={robots}>
