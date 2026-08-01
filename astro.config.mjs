@@ -46,6 +46,31 @@ const resolveSiteUrl = () => {
 const site = resolveSiteUrl();
 process.env.PUBLIC_SITE_URL = site;
 
+/**
+ * Cloudflare Pages のアセットオリジンを解決する。
+ * build.assetsPrefix と staticAssetUrl で同一値を使い、/_astro を Render 外へ出す。
+ *
+ * Returns:
+ *   末尾スラッシュなしの絶対 URL。未設定時は空文字。
+ */
+const resolveAssetBaseUrl = () => {
+  const candidates = [
+    process.env.PUBLIC_ASSET_BASE_URL,
+    env.PUBLIC_ASSET_BASE_URL,
+  ];
+  for (const value of candidates) {
+    if (typeof value === "string" && value.trim()) {
+      return value.trim().replace(/\/+$/, "");
+    }
+  }
+  return "";
+};
+
+const assetBaseUrl = resolveAssetBaseUrl();
+if (assetBaseUrl) {
+  process.env.PUBLIC_ASSET_BASE_URL = assetBaseUrl;
+}
+
 // languageLabels.ts → sync:locales → settings.json。sitemap の言語リストはここから取る。
 // URL / inlang キーはそのまま。値だけ hreflang（英字とハイフンのみ）に変換する。
 const sitemapI18n = {
@@ -63,6 +88,10 @@ export default defineConfig({
   site,
   output: "static",
   trailingSlash: "never",
+  build: {
+    // HTML の /_astro/* 参照を Pages 絶対 URL にする（Render egress 削減）
+    ...(assetBaseUrl ? { assetsPrefix: assetBaseUrl } : {}),
+  },
   integrations: [
     react(),
     sitemap({
