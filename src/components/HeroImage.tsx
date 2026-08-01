@@ -54,7 +54,7 @@ export const HeroImage = ({ yearWithCountry, heroSubtitle = "WE LOVE BEATBOX", h
           }}
         />
 
-        <div className="relative flex flex-col items-center justify-center h-full w-full gap-16 -translate-y-8">
+        <div className="relative flex flex-col items-center justify-center h-full w-full gap-16">
           <div className="z-10 flex w-full flex-col items-center gap-2">
             <h1
               className="w-full text-center text-white"
