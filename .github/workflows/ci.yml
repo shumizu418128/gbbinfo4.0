@@ -12,12 +12,19 @@ concurrency:
 
 env:
   NODE_VERSION: "24.10.0"
+  PUBLIC_ASSET_BASE_URL: https://gbbinfo-assets.pages.dev
+  PUBLIC_SITE_URL: https://gbbinfo-jpn.onrender.com
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    # Pages デプロイと Render ゲートを直列化（_astro を HTML より先に公開する）
+    concurrency:
+      group: pages-assets
+      cancel-in-progress: false
     permissions:
       contents: read
+      deployments: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -62,3 +69,67 @@ jobs:
           echo "DATABASE_URL is set (length=${#DATABASE_URL})"
           npm run sync:build-cache
           echo "::endgroup::"
+
+      # PR #31 失敗原因: ホスト (Ubuntu) の astro build と Render (Alpine) で
+      # Vite content hash が不一致になった。Pages 用 _astro も同じ Dockerfile の
+      # build ステージから抽出し、Render とビルド環境を揃える。
+      - name: Build dist in Docker (export stage)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "::group::docker build --target export"
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL secret is empty"
+            exit 1
+          fi
+          docker buildx build \
+            --target export \
+            --output type=local,dest=./export-out \
+            --build-arg DATABASE_URL="$DATABASE_URL" \
+            --build-arg PUBLIC_ASSET_BASE_URL="$PUBLIC_ASSET_BASE_URL" \
+            --build-arg PUBLIC_SITE_URL="$PUBLIC_SITE_URL" \
+            --build-arg DEPLOY_ENV=production \
+            .
+          rm -rf dist
+          mv export-out/dist dist
+          test -d dist/_astro
+          echo "Exported $(find dist/_astro -type f | wc -l) files from Docker build"
+          echo "::endgroup::"
+
+      - name: Verify HTML assetsPrefix targets exist in dist/_astro
+        run: |
+          echo "::group::verify assetsPrefix"
+          sample="$(find dist -path '*/2026/top/index.html' | head -n 1)"
+          if [ -z "$sample" ]; then
+            sample="$(find dist -name 'index.html' | head -n 1)"
+          fi
+          echo "Checking $sample"
+          missing=0
+          while IFS= read -r url; do
+            file="${url##*/}"
+            file="${file%%\?*}"
+            if [ ! -f "dist/_astro/$file" ]; then
+              echo "Missing dist/_astro/$file (from $url)"
+              missing=1
+            fi
+          done < <(grep -oE "${PUBLIC_ASSET_BASE_URL}/_astro/[^\"' )]+" "$sample" || true)
+          if [ "$missing" -ne 0 ]; then
+            echo "assetsPrefix targets missing from Docker export"
+            exit 1
+          fi
+          echo "All referenced _astro files exist in export"
+          echo "::endgroup::"
+
+      - name: Prepare Cloudflare Pages directory
+        run: |
+          echo "::group::assets:prepare"
+          npm run assets:prepare
+          echo "::endgroup::"
+
+      - name: Deploy assets + _astro to Cloudflare Pages
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: cloudflare
+          command: pages deploy dist-pages --project-name=gbbinfo-assets

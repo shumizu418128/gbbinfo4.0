@@ -1,23 +1,18 @@
 name: Deploy assets to Cloudflare Pages
 
+# main への通常デプロイは ci.yml が public + _astro を合成して行う。
+# 本 workflow は手動再デプロイ用（画像だけ直してすぐ上げたいときなど）。
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "cloudflare/public/**"
-      - "cloudflare/functions/**"
-      - "cloudflare/lib/**"
-      - "shared/avatar/**"
-      - "cloudflare/wrangler.toml"
-      - "cloudflare/package.json"
-      - ".github/workflows/deploy-assets.yml"
   workflow_dispatch:
 
-# gbbinfo-assets への本番デプロイを直列化し、古い run が後から上書きしないようにする
 concurrency:
   group: pages-assets
   cancel-in-progress: true
+
+env:
+  NODE_VERSION: "24.10.0"
+  PUBLIC_ASSET_BASE_URL: https://gbbinfo-assets.pages.dev
+  PUBLIC_SITE_URL: https://gbbinfo-jpn.onrender.com
 
 jobs:
   deploy:
@@ -28,11 +23,41 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build dist in Docker (export stage)
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          if [ -z "$DATABASE_URL" ]; then
+            echo "DATABASE_URL secret is empty"
+            exit 1
+          fi
+          docker buildx build \
+            --target export \
+            --output type=local,dest=./export-out \
+            --build-arg DATABASE_URL="$DATABASE_URL" \
+            --build-arg PUBLIC_ASSET_BASE_URL="$PUBLIC_ASSET_BASE_URL" \
+            --build-arg PUBLIC_SITE_URL="$PUBLIC_SITE_URL" \
+            --build-arg DEPLOY_ENV=production \
+            .
+          rm -rf dist
+          mv export-out/dist dist
+
+      - name: Prepare Cloudflare Pages directory
+        run: npm run assets:prepare
+
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          # cloudflare/ から実行し functions/ と wrangler.toml（R2 binding）を含める
           workingDirectory: cloudflare
-          command: pages deploy public --project-name=gbbinfo-assets
+          command: pages deploy dist-pages --project-name=gbbinfo-assets

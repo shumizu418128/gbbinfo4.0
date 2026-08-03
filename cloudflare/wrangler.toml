@@ -1,6 +1,7 @@
 name = "gbbinfo-assets"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "public"
+# CI / assets:prepare 後は dist-pages（public + _astro）。コマンド引数で上書き可。
+pages_build_output_dir = "dist-pages"
 
 [[r2_buckets]]
 binding = "AVATAR_CACHE"

@@ -1,8 +1,9 @@
 # Cloudflare Pages 静的アセット + アバター proxy
 
-本番サイト（Render.com）の HTML とは別に、静的画像と SNS アバターを Cloudflare Pages から配信する。
+本番サイト（Render.com）の HTML とは別に、静的画像・Astro の `/_astro`（JS/CSS）・SNS アバターを Cloudflare Pages から配信する。
 
 - **静的画像**: `cloudflare/public/`（git 管理）
+- **`/_astro`**: CI が同じ Dockerfile でビルドした `dist/_astro` を `public` と合成してデプロイ
 - **SNS アバター**: Pages Function `/avatar` + R2 永続キャッシュ
 - **本番 URL**: `https://gbbinfo-assets.pages.dev`（プロジェクト名変更時は各所を揃える）
 
@@ -133,21 +134,15 @@ curl -X POST "https://gbbinfo-assets.pages.dev/avatar/upload" \
 ## 静的画像の追加・更新
 
 1. `cloudflare/public/images/` に webp を配置（パスは `/images/foo.webp` 形式で参照される）
-2. `main` へ push → GitHub Actions が `cloudflare/` から自動デプロイ（Functions + R2 binding 込み）
+2. `main` へ push → CI（`.github/workflows/ci.yml`）が `public` + `/_astro` を合成してデプロイ
 
-手動デプロイ:
-
-```bash
-cd cloudflare
-npm install
-npm run deploy
-```
-
-ルートから:
+手動デプロイ（`/_astro` も再生成して合成する）:
 
 ```bash
 npm run assets:deploy
 ```
+
+画像だけ素早く上げたいときは Actions の **Deploy assets to Cloudflare Pages**（`workflow_dispatch`）を使う。
 
 ## ローカル開発
 

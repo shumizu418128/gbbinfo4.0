@@ -12,8 +12,8 @@ GBBINFO4.0 は Astro 7（`output: "static"` / SSG）の多言語情報サイト�
 - **Astro dev（メインプロダクト）**: `npm run dev` → http://localhost:4321 。内部で `sync:build-cache -- --skip` を実行するため **DB に接続せず、既存の `.cache/build/snapshot.json` を再利用**する。
   - 新規チェックアウトでは snapshot が無いため、コンテンツページ（`/{lang}/{year}/...`）は `DATABASE_URL is required` で 500 になる。ルート `/`（クライアント側リダイレクト）のみデータ無しで描画可能。
   - 実データを描画するには `.env` の `DATABASE_URL`（Supabase Shared Pooler / Transaction mode, port 6543）を設定し、一度 `npm run sync:build-cache` を実行して snapshot を作る（または dev の DB フォールバックが同 URL を使う）。
-- **本番ビルド**: ローカルの `npm run build` は常に `sync:build-cache`（全年 bulk SELECT）を走らせるため `DATABASE_URL` が必須。デプロイは GHA（`.github/workflows/ci.yml`）が `sync:tavily` + build-cache 同期を行い、Render（`gbbinfo`・ホスト名は `gbbinfo-jpn.onrender.com`）が After CI Checks Pass で Dockerfile フルビルド（`astro build` 含む）する。
-- **画像アセット**: `PUBLIC_ASSET_BASE_URL`（dev/build 双方で必須）。既定値は `.env.example` の Cloudflare Pages 公開 URL を使う。オフラインで使う場合のみ `npm run assets:dev`（Cloudflare Pages エミュレータ, http://localhost:8788）を併走。
+- **本番ビルド**: ローカルの `npm run build` は常に `sync:build-cache`（全年 bulk SELECT）を走らせるため `DATABASE_URL` が必須。デプロイは GHA（`.github/workflows/ci.yml`）が `sync:tavily` + **同じ Dockerfile の export ステージ**で `dist/_astro` を Pages へ上げ、Render（`gbbinfo`・ホスト名は `gbbinfo-jpn.onrender.com`）が After CI Checks Pass で同一 Dockerfile フルビルドする（ホスト上の `astro build` は使わない。PR #31 のハッシュ不一致を避けるため）。
+- **画像アセット + `/_astro`**: `PUBLIC_ASSET_BASE_URL`（dev/build 双方で必須）。本番ビルドは `build.assetsPrefix` で JS/CSS も同 URL を参照する。`npm run dev` には `assetsPrefix` は効かない（HMR は同一オリジンのまま）。オフラインは `npm run assets:dev`（画像のみ）または `assets:dev:with-astro`。
 - **型チェック**: `npm run typecheck`（`astro check`）。未使用変数などは hint 扱いで 0 errors なら成功。
 
 ### GitHub PR（Windows・非自明）
