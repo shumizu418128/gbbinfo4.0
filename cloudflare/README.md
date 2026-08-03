@@ -134,15 +134,9 @@ curl -X POST "https://gbbinfo-assets.pages.dev/avatar/upload" \
 ## 静的画像の追加・更新
 
 1. `cloudflare/public/images/` に webp を配置（パスは `/images/foo.webp` 形式で参照される）
-2. `main` へ push → CI（`.github/workflows/ci.yml`）が `public` + `/_astro` を合成してデプロイ
+2. `main` へ push → CI（[`.github/workflows/ci.yml`](../.github/workflows/ci.yml)）が `public` + `/_astro` を合成して Pages へデプロイし、続けて Render が同一 Dockerfile で HTML を再ビルドする
 
-手動デプロイ（`/_astro` も再生成して合成する）:
-
-```bash
-npm run assets:deploy
-```
-
-画像だけ素早く上げたいときは Actions の **Deploy assets to Cloudflare Pages**（`workflow_dispatch`）を使う。
+本番 Pages への正規経路は上記 CI のみ（Render HTML と `/_astro` ハッシュを揃えるため）。ローカル検証手順は [README.md](../README.md) を参照。
 
 ## ローカル開発
 
@@ -166,5 +160,5 @@ npm run dev
 ## 関連
 
 - [README.md](../README.md) — 環境変数・メインサイトのデプロイ
-- [.github/workflows/deploy-assets.yml](../.github/workflows/deploy-assets.yml) — 自動デプロイ
+- [.github/workflows/ci.yml](../.github/workflows/ci.yml) — Pages（`public` + `/_astro`）デプロイ
 - [.github/workflows/convert-r2-webp.yml](../.github/workflows/convert-r2-webp.yml) — R2 WebP 日次変換

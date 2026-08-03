@@ -63,7 +63,7 @@ npm run assets:dev
 # 本番相当: dist/_astro を合成してローカル Pages エミュレータで配信
 npm run assets:dev:with-astro
 
-# 静的アセット + /_astro を Cloudflare Pages へ手動デプロイ
+# ローカル検証用: public + /_astro を合成して Pages 相当をデプロイ（本番正規経路ではない）
 npm run assets:deploy
 ```
 

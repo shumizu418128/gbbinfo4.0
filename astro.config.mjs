@@ -59,8 +59,20 @@ const resolveAssetBaseUrl = () => {
     env.PUBLIC_ASSET_BASE_URL,
   ];
   for (const value of candidates) {
-    if (typeof value === "string" && value.trim()) {
-      return value.trim().replace(/\/+$/, "");
+    if (typeof value !== "string" || !value.trim()) {
+      continue;
+    }
+    try {
+      const parsed = new URL(value.trim());
+      if (parsed.protocol !== "http:" && parsed.protocol !== "https:") {
+        continue;
+      }
+      if (parsed.search || parsed.hash) {
+        continue;
+      }
+      return parsed.href.replace(/\/+$/, "");
+    } catch {
+      // 絶対 http(s) URL 以外はスキップ
     }
   }
   return "";

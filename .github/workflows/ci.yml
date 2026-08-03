@@ -99,20 +99,32 @@ jobs:
       - name: Verify HTML assetsPrefix targets exist in dist/_astro
         run: |
           echo "::group::verify assetsPrefix"
-          sample="$(find dist -path '*/2026/top/index.html' | head -n 1)"
-          if [ -z "$sample" ]; then
-            sample="$(find dist -name 'index.html' | head -n 1)"
+          mapfile -t html_files < <(find dist -type f -name '*.html' | sort)
+          if [ "${#html_files[@]}" -eq 0 ]; then
+            echo "No HTML files under dist/"
+            exit 1
           fi
-          echo "Checking $sample"
+          echo "Scanning ${#html_files[@]} HTML files for ${PUBLIC_ASSET_BASE_URL}/_astro/"
+          # pipefail 下で grep 0件を吸収し、空配列を明示 fail する（成功扱いにしない）
+          mapfile -t urls < <(
+            grep -ohE "${PUBLIC_ASSET_BASE_URL}/_astro/[^\"' )]+" "${html_files[@]}" \
+              | sort -u \
+              || true
+          )
+          if [ "${#urls[@]}" -eq 0 ]; then
+            echo "No assetsPrefix /_astro references found in generated HTML"
+            exit 1
+          fi
+          echo "Found ${#urls[@]} unique /_astro references"
           missing=0
-          while IFS= read -r url; do
+          for url in "${urls[@]}"; do
             file="${url##*/}"
             file="${file%%\?*}"
             if [ ! -f "dist/_astro/$file" ]; then
               echo "Missing dist/_astro/$file (from $url)"
               missing=1
             fi
-          done < <(grep -oE "${PUBLIC_ASSET_BASE_URL}/_astro/[^\"' )]+" "$sample" || true)
+          done
           if [ "$missing" -ne 0 ]; then
             echo "assetsPrefix targets missing from Docker export"
             exit 1
