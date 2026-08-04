@@ -57,10 +57,13 @@ npm run preview
 # 型チェック
 npm run typecheck
 
-# 静的アセットのローカル配信（http://127.0.0.1:8788）
+# 静的アセットのローカル配信（http://127.0.0.1:8788、画像のみ）
 npm run assets:dev
 
-# 静的アセットを Cloudflare Pages へ手動デプロイ
+# 本番相当: dist/_astro を合成してローカル Pages エミュレータで配信
+npm run assets:dev:with-astro
+
+# ローカル検証用: public + /_astro を合成して Pages 相当をデプロイ（本番正規経路ではない）
 npm run assets:deploy
 ```
 
@@ -85,15 +88,18 @@ npm run sync:tavily:cache
 
 ## デプロイ（GitHub Actions CI → Render After CI）
 
-`main` への push で **GitHub Actions が CI ゲート**（不足 Tavily 作成 + build-cache 同期）になり、成功後に Render が **Git 連携の Docker フルビルド**（`astro build` 含む）で **GBBinfo**（Render サービス `gbbinfo`）をデプロイします（Auto-Deploy: After CI Checks Pass）。
+`main` への push で **GitHub Actions が CI ゲート**（Tavily + build-cache + **Dockerfile export で `_astro` を Pages へ公開**）になり、成功後に Render が **同じ Dockerfile** でフルビルドして **GBBinfo** をデプロイします（Auto-Deploy: After CI Checks Pass）。
+
+HTML 内の JS/CSS は `build.assetsPrefix` により `PUBLIC_ASSET_BASE_URL`（Pages）を指す。Render イメージから `/_astro` は削除する。`npm run dev` の開発体験は従来どおり（assetsPrefix は production build のみ）。
 
 ```mermaid
 flowchart LR
   push[push main] --> gha[GHA CI]
   gha --> tavily[sync:tavily]
-  gha --> cache[sync:build-cache]
-  cache -->|checks pass| render[gbbinfo]
-  render --> docker[Dockerfile full build]
+  gha --> dockerExport[Docker export _astro]
+  dockerExport --> pages[Cloudflare Pages]
+  pages -->|checks pass| render[gbbinfo]
+  render --> docker[same Dockerfile build]
 ```
 
 | ブランチ | Render サービス | Tavily/DeepL | 備考 |

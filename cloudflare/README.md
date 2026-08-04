@@ -1,8 +1,9 @@
 # Cloudflare Pages 静的アセット + アバター proxy
 
-本番サイト（Render.com）の HTML とは別に、静的画像と SNS アバターを Cloudflare Pages から配信する。
+本番サイト（Render.com）の HTML とは別に、静的画像・Astro の `/_astro`（JS/CSS）・SNS アバターを Cloudflare Pages から配信する。
 
 - **静的画像**: `cloudflare/public/`（git 管理）
+- **`/_astro`**: CI が同じ Dockerfile でビルドした `dist/_astro` を `public` と合成してデプロイ
 - **SNS アバター**: Pages Function `/avatar` + R2 永続キャッシュ
 - **本番 URL**: `https://gbbinfo-assets.pages.dev`（プロジェクト名変更時は各所を揃える）
 
@@ -133,21 +134,9 @@ curl -X POST "https://gbbinfo-assets.pages.dev/avatar/upload" \
 ## 静的画像の追加・更新
 
 1. `cloudflare/public/images/` に webp を配置（パスは `/images/foo.webp` 形式で参照される）
-2. `main` へ push → GitHub Actions が `cloudflare/` から自動デプロイ（Functions + R2 binding 込み）
+2. `main` へ push → CI（[`.github/workflows/ci.yml`](../.github/workflows/ci.yml)）が `public` + `/_astro` を合成して Pages へデプロイし、続けて Render が同一 Dockerfile で HTML を再ビルドする
 
-手動デプロイ:
-
-```bash
-cd cloudflare
-npm install
-npm run deploy
-```
-
-ルートから:
-
-```bash
-npm run assets:deploy
-```
+本番 Pages への正規経路は上記 CI のみ（Render HTML と `/_astro` ハッシュを揃えるため）。ローカル検証手順は [README.md](../README.md) を参照。
 
 ## ローカル開発
 
@@ -171,5 +160,5 @@ npm run dev
 ## 関連
 
 - [README.md](../README.md) — 環境変数・メインサイトのデプロイ
-- [.github/workflows/deploy-assets.yml](../.github/workflows/deploy-assets.yml) — 自動デプロイ
+- [.github/workflows/ci.yml](../.github/workflows/ci.yml) — Pages（`public` + `/_astro`）デプロイ
 - [.github/workflows/convert-r2-webp.yml](../.github/workflows/convert-r2-webp.yml) — R2 WebP 日次変換
