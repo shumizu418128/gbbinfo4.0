@@ -3,12 +3,14 @@ import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import type { Country } from "~/db/tables.js";
 import type { ParticipantWithRelations } from "~/db/participantTypes.js";
 import { getCountryName } from "~/util/country.js";
+import { getParticipantDetailHref } from "~/util/participant.js";
 
-/** 地図マーカー上の出場者（詳細リンク生成に必要な最小情報）。 */
+/** 地図マーカー上の出場者（詳細リンクは SSG 時に確定させる）。 */
 export type WorldMapMarkerParticipant = {
   id: number;
   name: string;
   isTeam: boolean;
+  href: string | null;
 };
 
 /** 国別マーカー。island props に載せるため最小フィールドのみ。 */
@@ -117,6 +119,12 @@ export const buildWorldMapMarkers = (
         id: participant.id,
         name: participant.name,
         isTeam: participant.categoryInfo.isTeam,
+        href:
+          getParticipantDetailHref(locale, {
+            id: participant.id,
+            name: participant.name,
+            categoryInfo: { isTeam: participant.categoryInfo.isTeam },
+          }) ?? null,
       };
 
       if (existingMarker) {

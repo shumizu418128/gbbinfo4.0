@@ -1,0 +1,50 @@
+---
+import type { SupportedLanguage } from "~/constants/languageLabels";
+import {
+  MAP_HEIGHT_PX,
+  POPUP_FLAG_RESERVED_WIDTH,
+  POPUP_MAX_HEIGHT_PX,
+  POPUP_MAX_WIDTH,
+} from "~/constants/worldMap";
+import type { WorldMapMarker } from "~/util/worldMapMarkers";
+
+interface Props {
+  markers: WorldMapMarker[];
+  /** 呼び出し側互換用。リンクは markers 内の href に SSG 済み。 */
+  locale: SupportedLanguage;
+}
+
+const { markers } = Astro.props;
+const mapStyle = [
+  `height: ${MAP_HEIGHT_PX}px`,
+  "border-color: var(--button-border-color)",
+  "background-color: var(--background-color)",
+  `--popup-max-width: ${POPUP_MAX_WIDTH}px`,
+  `--popup-max-height: ${POPUP_MAX_HEIGHT_PX}px`,
+  `--popup-flag-width: ${POPUP_FLAG_RESERVED_WIDTH}px`,
+].join("; ");
+---
+
+{
+  markers.length > 0 && (
+    <section
+      class="relative z-0 w-full px-4 pt-16 pb-8 text-white"
+      style="background-color: var(--background-color)"
+    >
+      <div
+        class="participant-world-map mx-auto w-full max-w-5xl overflow-hidden border isolate [&_.leaflet-pane]:z-1 [&_.leaflet-top]:z-1 [&_.leaflet-bottom]:z-1 [&_.leaflet-control]:z-1 [&_.leaflet-marker-pane]:z-2 [&_.leaflet-popup-pane]:z-8"
+        style={mapStyle}
+        data-participant-world-map
+        data-markers={JSON.stringify(markers)}
+      >
+        <div class="h-full w-full" data-participant-world-map-canvas />
+      </div>
+    </section>
+  )
+}
+
+<script>
+  import { initParticipantWorldMaps } from "~/util/participantWorldMapClient";
+
+  initParticipantWorldMaps();
+</script>
