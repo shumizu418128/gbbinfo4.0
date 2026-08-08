@@ -1,0 +1,80 @@
+---
+/**
+ * ページ内の Twitter / Instagram 埋め込み用スクリプトを遅延読込する。
+ * SocialEmbed（SSR）のマークアップがあるページに1回置けばよい。
+ */
+---
+
+<script>
+  const loadScript = (src: string, id: string): Promise<void> =>
+    new Promise((resolve, reject) => {
+      if (document.getElementById(id)) {
+        resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.id = id;
+      script.src = src;
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.body.appendChild(script);
+    });
+
+  const loadEmbeds = async () => {
+    const hasTwitter = document.querySelector(".twitter-tweet") != null;
+    const hasInstagram = document.querySelector(".instagram-media") != null;
+
+    if (hasTwitter) {
+      await loadScript(
+        "https://platform.twitter.com/widgets.js",
+        "twitter-wjs",
+      );
+      const twttr = (
+        window as Window & {
+          twttr?: { widgets?: { load: (el?: Element) => void } };
+        }
+      ).twttr;
+      twttr?.widgets?.load();
+    }
+
+    if (hasInstagram) {
+      await loadScript(
+        "https://www.instagram.com/embed.js",
+        "instagram-embed-js",
+      );
+      const instgrm = (
+        window as Window & {
+          instgrm?: { Embeds?: { process: () => void } };
+        }
+      ).instgrm;
+      instgrm?.Embeds?.process();
+    }
+  };
+
+  const scheduleLoad = () => {
+    const requestIdleCallback = (
+      window as Window & {
+        requestIdleCallback?: (callback: () => void) => number;
+      }
+    ).requestIdleCallback;
+
+    if (typeof requestIdleCallback === "function") {
+      requestIdleCallback(() => {
+        void loadEmbeds();
+      });
+      return;
+    }
+    setTimeout(() => {
+      void loadEmbeds();
+    }, 200);
+  };
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", scheduleLoad, {
+      once: true,
+    });
+  } else {
+    scheduleLoad();
+  }
+</script>
