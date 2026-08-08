@@ -20,6 +20,7 @@ body {
   --button-background-color: rgba(255,255,255,0.1);
   --hover-background-color: rgba(255,255,255,0.2);
   --button-border-color: rgba(255,255,255,0.2);
+  --hamburger-menu-background-color: rgba(0,0,0,0.6);
   --gbb-color: rgb(255, 100, 20);
   --secondary-text-color: rgba(255,255,255,0.8);
   --post-it-color: rgba(255, 255, 255, 0.2);

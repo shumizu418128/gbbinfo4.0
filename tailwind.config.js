@@ -13,6 +13,7 @@ module.exports = {
         'rule-hover-text': 'var(--rule-hover-text)',
         'table-border-color': 'var(--table-border-color)',
         'table-body-color': 'var(--table-body-color)',
+        'hamburger-menu-background-color': 'var(--hamburger-menu-background-color)',
       }
     }
   }
