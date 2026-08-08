@@ -1,7 +1,7 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
 import { ParticipantsContent } from "~/views/2024/ParticipantsContent";
-import { ParticipantWorldMap } from "~/components/ParticipantWorldMap";
+import ParticipantWorldMap from "~/components/ParticipantWorldMap.astro";
 import { buildWorldMapMarkers } from "~/util/worldMapMarkers";
 import { getCommonYearData } from "~/util/staticPaths";
 import { findParticipants } from "~/db/participant";
@@ -75,7 +75,6 @@ const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
     avatarImageUrls={avatarImageUrls}
   />
   <ParticipantWorldMap
-    client:visible
     markers={mapMarkers}
     locale={locale}
   />

@@ -209,7 +209,7 @@ export const LinkCard = ({
 
   return (
     <a
-      className={`inline-flex items-center justify-center font-bold ${isLight ? "bg-white text-black hover:text-white" : "text-white bg-(--button-background-color)"} ${hoverBackgroundClass}`}
+      className={`inline-flex items-center justify-center font-bold ${isLight ? "bg-white text-(--gbb-color) hover:text-white" : "text-white bg-(--button-background-color)"} ${hoverBackgroundClass}`}
       style={wrapperStyle}
       {...interactiveWrapperProps}
     >

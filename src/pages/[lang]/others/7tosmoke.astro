@@ -1,5 +1,6 @@
 ---
 import SiteFrame from "~/layouts/SiteFrame.astro";
+import SocialEmbedLoader from "~/components/SocialEmbedLoader.astro";
 import { SevenToSmokeContent } from "~/views/others/SevenToSmokeContent";
 import { getHeaderFooterData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
@@ -25,5 +26,6 @@ const pageTitle = "7toSmokeとは";
   years={years}
   latestYearWithCountry={latestYearWithCountry}
 >
-  <SevenToSmokeContent client:idle locale={locale} year={latestYearWithCountry.year} />
+  <SevenToSmokeContent locale={locale} year={latestYearWithCountry.year} />
+  <SocialEmbedLoader />
 </SiteFrame>
