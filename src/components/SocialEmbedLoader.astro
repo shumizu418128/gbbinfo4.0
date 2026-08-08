@@ -21,35 +21,40 @@
       document.body.appendChild(script);
     });
 
+  const loadTwitterEmbeds = async () => {
+    if (document.querySelector(".twitter-tweet") == null) {
+      return;
+    }
+    await loadScript(
+      "https://platform.twitter.com/widgets.js",
+      "twitter-wjs",
+    );
+    const twttr = (
+      window as Window & {
+        twttr?: { widgets?: { load: (el?: Element) => void } };
+      }
+    ).twttr;
+    twttr?.widgets?.load();
+  };
+
+  const loadInstagramEmbeds = async () => {
+    if (document.querySelector(".instagram-media") == null) {
+      return;
+    }
+    await loadScript(
+      "https://www.instagram.com/embed.js",
+      "instagram-embed-js",
+    );
+    const instgrm = (
+      window as Window & {
+        instgrm?: { Embeds?: { process: () => void } };
+      }
+    ).instgrm;
+    instgrm?.Embeds?.process();
+  };
+
   const loadEmbeds = async () => {
-    const hasTwitter = document.querySelector(".twitter-tweet") != null;
-    const hasInstagram = document.querySelector(".instagram-media") != null;
-
-    if (hasTwitter) {
-      await loadScript(
-        "https://platform.twitter.com/widgets.js",
-        "twitter-wjs",
-      );
-      const twttr = (
-        window as Window & {
-          twttr?: { widgets?: { load: (el?: Element) => void } };
-        }
-      ).twttr;
-      twttr?.widgets?.load();
-    }
-
-    if (hasInstagram) {
-      await loadScript(
-        "https://www.instagram.com/embed.js",
-        "instagram-embed-js",
-      );
-      const instgrm = (
-        window as Window & {
-          instgrm?: { Embeds?: { process: () => void } };
-        }
-      ).instgrm;
-      instgrm?.Embeds?.process();
-    }
+    await Promise.allSettled([loadTwitterEmbeds(), loadInstagramEmbeds()]);
   };
 
   const scheduleLoad = () => {
