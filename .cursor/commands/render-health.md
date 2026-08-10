@@ -33,7 +33,8 @@ pwsh -File scripts/render-health.ps1
 
 ## 解釈の目安
 
-- Free プラン帯域の参考上限: **100 GB/月**（`month_to_date.freePlanUsedPercent`）
+- Free プラン帯域の参考上限: **5 GB/月**（2026-08 以降。以前は 100 GB/月）
+  - スクリプトの `month_to_date.freePlanUsedPercent` が旧 100GB 基準のままなら、当月 MB から **5GB 比を再計算**すること
 - よくある error（多くは致命傷ではない）:
   - `directory index ... forbidden` … 言語ルート等への探査
   - `No such file` の `/_astro/*.css` … 古い hashed アセット参照
@@ -49,7 +50,7 @@ pwsh -File scripts/render-health.ps1
 
 ### 帯域幅
 | 期間 | 使用量 | 備考 |
-| 直近24h / 7日 / 当月累計 | MB と GB | 当月は Free 100GB 比も |
+| 直近24h / 7日 / 当月累計 | MB と GB | 当月は Free 5GB 比も |
 | 日別（当月） | 表 | ピーク日を明示 |
 | ソース（7日） | http/total 等 | |
 
