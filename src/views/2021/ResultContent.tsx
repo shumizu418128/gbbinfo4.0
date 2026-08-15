@@ -4,12 +4,12 @@ import type {
   RankingResultWithRelations,
 } from "~/db/result.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
-import { Flag } from "~/components/Flag.js";
+import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { ParticipantCountries } from "~/components/ParticipantCountries.js";
-import { Table } from "~/components/Table.js";
+import { ResultCard } from "~/components/ResultCard.js";
 import { categorySlug } from "~/util/category.js";
 import { resolveParticipantCountries } from "~/util/country.js";
-import { toParticipantUrl } from "~/util/participant.js";
+import { getParticipantDetailHref } from "~/util/participant.js";
 
 const YEAR = 2021;
 
@@ -19,6 +19,7 @@ type ResultContentProps = {
   categoryNames: string[];
   tournamentResults: TournamentResultWithRelations[];
   rankingResults: RankingResultWithRelations[];
+  avatarImageUrls: Record<string, string>;
 };
 
 /**
@@ -57,131 +58,116 @@ const groupByRound = <T extends { round: string | null }>(
   return map;
 };
 
-const RESULT_TABLE_CLASS = "w-full border-collapse";
-const TOURNAMENT_COLUMN_WIDTHS = [5, 1, 4] as const;
-
 /**
- * トーナメント結果の Table 用データを組み立てる。
+ * トーナメント出場者を ResultCard 用のリンク付き人物データに変換する。
  *
  * Args:
- *   matches: ラウンド内の対戦一覧。
+ *   participant: 勝者または敗者の出場者。
  *   locale: 表示言語。
- *   isTeam: チーム部門かどうか。
  *
  * Returns:
- *   Table コンポーネント用の二次元配列。
+ *   ResultCard 用データ。不足時は null。
  */
-const buildTournamentTableData = (
-  matches: TournamentResultWithRelations[],
+const toResultCardPerson = (
+  participant:
+    | TournamentResultWithRelations["winnerParticipant"]
+    | TournamentResultWithRelations["loserParticipant"],
   locale: SupportedLanguage,
-  isTeam: boolean,
 ) => {
-  const rows = matches.flatMap((match) => {
-    const { winnerParticipant, loserParticipant } = match;
-    if (!winnerParticipant || !loserParticipant) return [];
+  if (!participant) {
+    return null;
+  }
 
-    const winnerCountries = resolveParticipantCountries(winnerParticipant);
-    const loserCountries = resolveParticipantCountries(loserParticipant);
-    const winnerHref = toParticipantUrl(locale, {
-      id: winnerParticipant.id,
-      isTeam,
-    });
-    const loserHref = toParticipantUrl(locale, {
-      id: loserParticipant.id,
-      isTeam,
-    });
-
-    return [
-      [
-        <a
-          key={`${match.id}-winner`}
-          href={winnerHref}
-          className="inline-flex items-center gap-2 text-(--gbb-color) hover:underline"
-        >
-          {winnerCountries.map((country) => (
-            <Flag key={country.isoCode} isoAlpha2={country.isoAlpha2} />
-          ))}
-          <span>{winnerParticipant.name.toUpperCase()}</span>
-        </a>,
-        <span
-          key={`${match.id}-vs`}
-          className="block text-center text-(--secondary-text-color)"
-        >
-          vs
-        </span>,
-        <a
-          key={`${match.id}-loser`}
-          href={loserHref}
-          className="inline-flex items-center gap-2 hover:underline"
-        >
-          {loserCountries.map((country) => (
-            <Flag key={country.isoCode} isoAlpha2={country.isoAlpha2} />
-          ))}
-          <span>{loserParticipant.name.toUpperCase()}</span>
-        </a>,
-      ],
-    ];
-  });
-
-  return [
-    [
-      <span key="winner-header" className="text-(--gbb-color)">
-        Winner
-      </span>,
-      "",
-      "Loser",
-    ],
-    ...rows,
-  ];
+  return {
+    name: participant.name,
+    href: getParticipantDetailHref(locale, {
+      id: participant.id,
+      name: participant.name,
+      categoryInfo: participant.categoryInfo ?? { isTeam: false },
+    }),
+    countries: resolveParticipantCountries(participant),
+  };
 };
 
 /**
- * ランキング結果の Table 用データを組み立てる。
+ * トーナメント1試合分を ResultCard で描画する。
  *
  * Args:
- *   entries: ラウンド内の順位一覧。
+ *   match: 対戦結果。
  *   locale: 表示言語。
- *   isTeam: チーム部門かどうか。
+ *   avatarImageUrls: 勝者アバター URL マップ。
  *
  * Returns:
- *   Table コンポーネント用の二次元配列。
+ *   試合カード。勝者/敗者が欠ける場合は null。
  */
-const buildRankingTableData = (
-  entries: RankingResultWithRelations[],
-  locale: SupportedLanguage,
-  isTeam: boolean,
-) => {
-  const rows = entries.flatMap((entry) => {
-    const participant = entry.participantInfo;
-    if (!participant) return [];
+const TournamentMatchRow = ({
+  match,
+  locale,
+  avatarImageUrls,
+}: {
+  match: TournamentResultWithRelations;
+  locale: SupportedLanguage;
+  avatarImageUrls: Record<string, string>;
+}) => {
+  const winner = toResultCardPerson(match.winnerParticipant, locale);
+  const loser = toResultCardPerson(match.loserParticipant, locale);
+  if (!winner || !loser) {
+    return null;
+  }
 
-    const countries = resolveParticipantCountries(participant);
-    const href = toParticipantUrl(locale, {
-      id: participant.id,
-      isTeam,
-    });
+  return (
+    <ResultCard
+      winner={{
+        ...winner,
+        imageUrl: avatarImageUrls[winner.name],
+      }}
+      loser={loser}
+    />
+  );
+};
 
-    return [
-      [
-        <span
-          key={`${entry.id}-rank`}
-          className="block text-center text-(--secondary-text-color)"
-        >
-          {entry.rank}
-        </span>,
-        <a
-          key={`${entry.id}-name`}
-          href={href}
-          className="inline-flex items-center gap-2 hover:underline"
-        >
+/**
+ * ランキング1件を ParticipantCard で描画する。
+ *
+ * Args:
+ *   entry: 順位エントリ。
+ *   locale: 表示言語。
+ *   avatarImageUrls: アバター URL マップ。
+ *
+ * Returns:
+ *   順位カード。出場者が欠ける場合は null。
+ */
+const RankingResultCard = ({
+  entry,
+  locale,
+  avatarImageUrls,
+}: {
+  entry: RankingResultWithRelations;
+  locale: SupportedLanguage;
+  avatarImageUrls: Record<string, string>;
+}) => {
+  const participant = entry.participantInfo;
+  if (!participant?.country || !participant.categoryInfo) {
+    return null;
+  }
+
+  const countries = resolveParticipantCountries(participant);
+
+  return (
+    <ParticipantCard
+      name={participant.name}
+      rank={entry.rank}
+      isCancelled={participant.isCancelled}
+      href={getParticipantDetailHref(locale, participant)}
+      imageUrl={avatarImageUrls[participant.name]}
+      primaryInfo={
+        countries.length > 0 ? (
           <ParticipantCountries countries={countries} locale={locale} />
-          <span>{participant.name.toUpperCase()}</span>
-        </a>,
-      ],
-    ];
-  });
-
-  return [["Rank", "Name"], ...rows];
+        ) : undefined
+      }
+      secondaryInfo={<span>{participant.ticketClass}</span>}
+    />
+  );
 };
 
 export const ResultContent = ({
@@ -190,6 +176,7 @@ export const ResultContent = ({
   categoryNames,
   tournamentResults,
   rankingResults,
+  avatarImageUrls,
 }: ResultContentProps) => {
   const basePath = `/${locale}/${YEAR}/result`;
   const categoryItems = categoryNames.map((name) => ({
@@ -227,15 +214,16 @@ export const ResultContent = ({
                 <h2 className="mb-4 text-xl font-bold">
                   {selectedCategory.name} - {round}
                 </h2>
-                <Table
-                  data={buildTournamentTableData(
-                    matches,
-                    locale,
-                    selectedCategory.isTeam,
-                  )}
-                  columnWidths={[...TOURNAMENT_COLUMN_WIDTHS]}
-                  className={RESULT_TABLE_CLASS}
-                />
+                <div className="space-y-8">
+                  {matches.map((match) => (
+                    <TournamentMatchRow
+                      key={match.id}
+                      match={match}
+                      locale={locale}
+                      avatarImageUrls={avatarImageUrls}
+                    />
+                  ))}
+                </div>
               </section>
             ))}
           </div>
@@ -246,14 +234,16 @@ export const ResultContent = ({
                 <h2 className="mb-4 text-xl font-bold">
                   {selectedCategory.name} - {round}
                 </h2>
-                <Table
-                  data={buildRankingTableData(
-                    entries,
-                    locale,
-                    selectedCategory.isTeam,
-                  )}
-                  className={RESULT_TABLE_CLASS}
-                />
+                <div className="space-y-8">
+                  {entries.map((entry) => (
+                    <RankingResultCard
+                      key={entry.id}
+                      entry={entry}
+                      locale={locale}
+                      avatarImageUrls={avatarImageUrls}
+                    />
+                  ))}
+                </div>
               </section>
             ))}
           </div>

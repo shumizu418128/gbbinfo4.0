@@ -7,11 +7,12 @@ import type {
 } from "~/constants/participantType.js";
 import {
   isUnknownParticipantName,
+  normalizeParticipantName,
   participantDetailPathFromMember,
   participantDetailPathFromParticipant,
+  sortParticipants,
 } from "~/util/participant.js";
 import { resolveParticipantCountries } from "~/util/country.js";
-import { sortParticipants } from "~/util/participant.js";
 import { findParticipantsFromStore, loadBuildCache } from "./buildCache.js";
 import { getDb } from "./client.js";
 import {
@@ -31,17 +32,6 @@ const UNKNOWN_ISO_CODE = 0;
 
 /** 過去年度ボタンから除外する開催年。 */
 const EXCLUDED_PAST_YEARS = new Set([2013, 2014, 2015, 2016]);
-
-/**
- * 参加者名を表示用に大文字へ正規化する。
- *
- * Args:
- *   name: 元の名前。
- *
- * Returns:
- *   大文字化した名前。
- */
-const normalizeParticipantName = (name: string): string => name.toUpperCase();
 
 /**
  * 指定年の Participant 一覧と関連データを取得する。
@@ -99,9 +89,9 @@ export const findParticipants = async (
   rows = sortParticipants(rows);
 
   // 名前を大文字に変換
-  rows.forEach(row => {
+  rows.forEach((row) => {
     if (row.name && typeof row.name === "string") {
-      row.name = row.name.toUpperCase();
+      row.name = normalizeParticipantName(row.name);
     }
   });
 
