@@ -10,6 +10,18 @@ import { UNKNOWN_PARTICIPANT_NAME } from "@shared/participant/constants.js";
 export { UNKNOWN_PARTICIPANT_NAME };
 
 /**
+ * 出場者名を表示用に大文字へ正規化する。
+ *
+ * Args:
+ *   name: 元の名前。
+ *
+ * Returns:
+ *   大文字化した名前。
+ */
+export const normalizeParticipantName = (name: string): string =>
+  name.toUpperCase();
+
+/**
  * 出場者未定の表示名かどうかを判定する。
  *
  * Args:

@@ -38,7 +38,13 @@ export async function getStaticPaths() {
     const winnerNames = tournamentResults.flatMap((match) =>
       match.winnerParticipant ? [match.winnerParticipant.name] : [],
     );
-    const avatarImageUrls = await buildAvatarImageUrlMap(winnerNames);
+    const rankingNames = rankingResults.flatMap((entry) =>
+      entry.participantInfo ? [entry.participantInfo.name] : [],
+    );
+    const avatarImageUrls = await buildAvatarImageUrlMap([
+      ...winnerNames,
+      ...rankingNames,
+    ]);
 
     for (const locale of locales) {
       paths.push({

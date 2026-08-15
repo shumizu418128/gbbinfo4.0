@@ -28,7 +28,7 @@ const NameRow = ({
       {countries.map((country) => (
         <Flag key={country.isoCode} isoAlpha2={country.isoAlpha2} />
       ))}
-      <span className="min-w-0 wrap-break-word">{name.toUpperCase()}</span>
+      <span className="min-w-0 wrap-break-word">{name}</span>
     </>
   );
 

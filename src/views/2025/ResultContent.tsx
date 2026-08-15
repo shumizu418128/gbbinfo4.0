@@ -4,15 +4,12 @@ import type {
   RankingResultWithRelations,
 } from "~/db/result.js";
 import { SelectMenu } from "~/components/SelectMenu.js";
+import { ParticipantCard } from "~/components/ParticipantCard.js";
 import { ParticipantCountries } from "~/components/ParticipantCountries.js";
 import { ResultCard } from "~/components/ResultCard.js";
-import { Table } from "~/components/Table.js";
 import { categorySlug } from "~/util/category.js";
 import { resolveParticipantCountries } from "~/util/country.js";
-import {
-  getParticipantDetailHref,
-  toParticipantUrl,
-} from "~/util/participant.js";
+import { getParticipantDetailHref } from "~/util/participant.js";
 
 const YEAR = 2025;
 
@@ -59,57 +56,6 @@ const groupByRound = <T extends { round: string | null }>(
     }
   }
   return map;
-};
-
-const RESULT_TABLE_CLASS = "w-full border-collapse";
-
-/**
- * ランキング結果の Table 用データを組み立てる。
- *
- * Args:
- *   entries: ラウンド内の順位一覧。
- *   locale: 表示言語。
- *   isTeam: チーム部門かどうか。
- *
- * Returns:
- *   Table コンポーネント用の二次元配列。
- */
-const buildRankingTableData = (
-  entries: RankingResultWithRelations[],
-  locale: SupportedLanguage,
-  isTeam: boolean,
-) => {
-  const rows = entries.flatMap((entry) => {
-    const participant = entry.participantInfo;
-    if (!participant) return [];
-
-    const countries = resolveParticipantCountries(participant);
-    const href = toParticipantUrl(locale, {
-      id: participant.id,
-      isTeam,
-    });
-
-    return [
-      [
-        <span
-          key={`${entry.id}-rank`}
-          className="block text-center text-(--secondary-text-color)"
-        >
-          {entry.rank}
-        </span>,
-        <a
-          key={`${entry.id}-name`}
-          href={href}
-          className="inline-flex items-center gap-2 hover:underline"
-        >
-          <ParticipantCountries countries={countries} locale={locale} />
-          <span>{participant.name.toUpperCase()}</span>
-        </a>,
-      ],
-    ];
-  });
-
-  return [["Rank", "Name"], ...rows];
 };
 
 /**
@@ -180,6 +126,50 @@ const TournamentMatchRow = ({
   );
 };
 
+/**
+ * ランキング1件を ParticipantCard で描画する。
+ *
+ * Args:
+ *   entry: 順位エントリ。
+ *   locale: 表示言語。
+ *   avatarImageUrls: アバター URL マップ。
+ *
+ * Returns:
+ *   順位カード。出場者が欠ける場合は null。
+ */
+const RankingResultCard = ({
+  entry,
+  locale,
+  avatarImageUrls,
+}: {
+  entry: RankingResultWithRelations;
+  locale: SupportedLanguage;
+  avatarImageUrls: Record<string, string>;
+}) => {
+  const participant = entry.participantInfo;
+  if (!participant?.country || !participant.categoryInfo) {
+    return null;
+  }
+
+  const countries = resolveParticipantCountries(participant);
+
+  return (
+    <ParticipantCard
+      name={participant.name}
+      rank={entry.rank}
+      isCancelled={participant.isCancelled}
+      href={getParticipantDetailHref(locale, participant)}
+      imageUrl={avatarImageUrls[participant.name]}
+      primaryInfo={
+        countries.length > 0 ? (
+          <ParticipantCountries countries={countries} locale={locale} />
+        ) : undefined
+      }
+      secondaryInfo={<span>{participant.ticketClass}</span>}
+    />
+  );
+};
+
 export const ResultContent = ({
   locale,
   selectedCategory,
@@ -244,14 +234,16 @@ export const ResultContent = ({
                 <h2 className="mb-4 text-xl font-bold">
                   {selectedCategory.name} - {round}
                 </h2>
-                <Table
-                  data={buildRankingTableData(
-                    entries,
-                    locale,
-                    selectedCategory.isTeam,
-                  )}
-                  className={RESULT_TABLE_CLASS}
-                />
+                <div className="space-y-8">
+                  {entries.map((entry) => (
+                    <RankingResultCard
+                      key={entry.id}
+                      entry={entry}
+                      locale={locale}
+                      avatarImageUrls={avatarImageUrls}
+                    />
+                  ))}
+                </div>
               </section>
             ))}
           </div>
