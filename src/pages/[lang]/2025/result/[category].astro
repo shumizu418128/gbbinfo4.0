@@ -9,6 +9,7 @@ import type {
 } from "~/db/result";
 import { findCategoriesByIds } from "~/db/category";
 import { categorySlug } from "~/util/category";
+import { buildAvatarImageUrlMap } from "~/util/participantAvatar";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
 
@@ -34,6 +35,11 @@ export async function getStaticPaths() {
       // DBエラー時は空データで続行
     }
 
+    const winnerNames = tournamentResults.flatMap((match) =>
+      match.winnerParticipant ? [match.winnerParticipant.name] : [],
+    );
+    const avatarImageUrls = await buildAvatarImageUrlMap(winnerNames);
+
     for (const locale of locales) {
       paths.push({
         params: { lang: locale, category: categorySlug(category.name) },
@@ -43,6 +49,7 @@ export async function getStaticPaths() {
           categoryNames,
           tournamentResults,
           rankingResults,
+          avatarImageUrls,
           ...common,
         },
       });
@@ -57,6 +64,7 @@ const {
   categoryNames,
   tournamentResults,
   rankingResults,
+  avatarImageUrls,
   yearWithCountry,
   years,
   latestYearWithCountry,
@@ -80,5 +88,6 @@ const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
     categoryNames={categoryNames}
     tournamentResults={tournamentResults}
     rankingResults={rankingResults}
+    avatarImageUrls={avatarImageUrls}
   />
 </SiteFrame>

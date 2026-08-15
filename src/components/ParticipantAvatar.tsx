@@ -20,16 +20,24 @@ export const ParticipantAvatar = ({
   if (isUnknownParticipantName(name) || !imageUrl) {
     return (
       <div
-        className="shrink-0"
-        style={{ width: size, height: size, backgroundColor: "var(--background-color)" }}
+        className="shrink-0 self-start"
+        style={{
+          width: size,
+          height: size,
+          backgroundColor: "var(--background-color)",
+        }}
       />
     );
   }
 
   return (
     <div
-      className="shrink-0"
-      style={{ width: size, height: size, backgroundColor: "var(--background-color)" }}
+      className="shrink-0 self-start overflow-hidden"
+      style={{
+        width: size,
+        height: size,
+        backgroundColor: "var(--background-color)",
+      }}
     >
       <img
         src={imageUrl}

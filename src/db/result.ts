@@ -22,12 +22,14 @@ export const findTournamentResults = async (year: number, categoryId: number) =>
       winnerParticipant: {
         with: {
           country: true,
+          categoryInfo: true,
           members: { with: { country: true } },
         },
       },
       loserParticipant: {
         with: {
           country: true,
+          categoryInfo: true,
           members: { with: { country: true } },
         },
       },
