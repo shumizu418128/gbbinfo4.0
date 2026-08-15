@@ -1,0 +1,86 @@
+---
+import { getAssetBaseUrl } from "~/util/staticAsset";
+
+const announcementUrl = `${getAssetBaseUrl()}/announcement`;
+---
+
+<aside
+  id="site-announcement"
+  class="mx-auto mb-8 hidden w-full max-w-4xl px-4"
+  hidden
+  aria-live="polite"
+>
+  <div
+    class="border-l-8 border-(--gbb-color) bg-(--post-it-color) px-4 py-4"
+  >
+    <p class="mb-2 text-sm font-bold tracking-wide text-(--gbb-color)">
+      [お知らせ]
+    </p>
+    <p
+      id="site-announcement-message"
+      class="whitespace-pre-wrap text-base leading-relaxed text-white"
+    >
+    </p>
+  </div>
+</aside>
+
+<script is:inline define:vars={{ announcementUrl }}>
+  const root = document.getElementById("site-announcement");
+  const messageEl = document.getElementById("site-announcement-message");
+
+  if (root instanceof HTMLElement && messageEl instanceof HTMLElement) {
+    const isVisible = (data) => {
+      if (!data || data.enabled !== true) {
+        return false;
+      }
+
+      const message = typeof data.message === "string" ? data.message.trim() : "";
+      if (!message) {
+        return false;
+      }
+
+      if (typeof data.expiresAt === "string" && data.expiresAt.length > 0) {
+        const expiresMs = Date.parse(data.expiresAt);
+        if (Number.isNaN(expiresMs) || expiresMs <= Date.now()) {
+          return false;
+        }
+      }
+
+      return true;
+    };
+
+    const hide = () => {
+      root.hidden = true;
+      root.classList.add("hidden");
+      messageEl.textContent = "";
+    };
+
+    const show = (message) => {
+      messageEl.textContent = message;
+      root.hidden = false;
+      root.classList.remove("hidden");
+    };
+
+    fetch(announcementUrl, {
+      method: "GET",
+      credentials: "omit",
+      cache: "no-cache",
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("announcement fetch failed");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!isVisible(data)) {
+          hide();
+          return;
+        }
+        show(String(data.message).trim());
+      })
+      .catch(() => {
+        hide();
+      });
+  }
+</script>

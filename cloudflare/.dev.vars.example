@@ -1,2 +1,3 @@
 # wrangler pages dev 用。cloudflare/.dev.vars にコピーして値を設定する。
 AVATAR_UPLOAD_SECRET=
+ANNOUNCEMENT_API_KEY=

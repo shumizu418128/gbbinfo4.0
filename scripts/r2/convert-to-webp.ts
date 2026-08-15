@@ -42,6 +42,26 @@ type ConvertStats = {
 const isWebpContentType = (contentType: string | undefined): boolean =>
   (contentType?.toLowerCase().startsWith(WEBP_CONTENT_TYPE) ?? false);
 
+/**
+ * WebP 変換対象の画像 Content-Type か判定する。
+ *
+ * Args:
+ *   contentType: オブジェクトの Content-Type。
+ *
+ * Returns:
+ *   変換対象の画像なら true。
+ */
+const isConvertibleImageContentType = (
+  contentType: string | undefined,
+): boolean => {
+  if (!contentType) {
+    return false;
+  }
+
+  const lower = contentType.toLowerCase();
+  return lower.startsWith("image/") && !isWebpContentType(lower);
+};
+
 type SdkStreamBody = {
   transformToByteArray: () => Promise<Uint8Array>;
 };
@@ -139,7 +159,7 @@ const convertObjectToWebp = async (
       new HeadObjectCommand({ Bucket: bucketName, Key: key }),
     );
 
-    if (isWebpContentType(head.ContentType)) {
+    if (!isConvertibleImageContentType(head.ContentType)) {
       return "skipped";
     }
 
