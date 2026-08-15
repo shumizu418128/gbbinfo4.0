@@ -24,6 +24,9 @@ body {
   --gbb-color: rgb(255, 100, 20);
   --secondary-text-color: rgba(255,255,255,0.8);
   --post-it-color: rgba(255, 255, 255, 0.2);
+  --notice-border-color: rgb(240, 200, 16);
+  --notice-background-color: rgba(255, 255, 255, 0.8);
+  --notice-text-color: rgb(31, 31, 31);
   --rule-hover-text: #fff;
   --table-border-color: rgba(255, 255, 255, 0.2);
   --table-body-color: rgba(255, 255, 255, 0.1);

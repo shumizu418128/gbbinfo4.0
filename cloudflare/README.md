@@ -5,6 +5,7 @@
 - **静的画像**: `cloudflare/public/`（git 管理）
 - **`/_astro`**: CI が同じ Dockerfile でビルドした `dist/_astro` を `public` と合成してデプロイ
 - **SNS アバター**: Pages Function `/avatar` + R2 永続キャッシュ
+- **サイト臨時お知らせ**: Pages Function `/announcement` + R2 JSON（編集 UI: `/announcement/admin`）
 - **本番 URL**: `https://gbbinfo-assets.pages.dev`（プロジェクト名変更時は各所を揃える）
 
 ## ディレクトリ
@@ -15,14 +16,19 @@ cloudflare/
     _headers          # 画像の Cache-Control
     images/           # webp 画像・国旗など
   functions/
-    avatar.ts         # GET /avatar — R2 キャッシュ付きアバター取得
-    avatar/upload.ts  # POST /avatar/upload — 手動アバターアップロード（要 secret）
+    avatar.ts              # GET /avatar — R2 キャッシュ付きアバター取得
+    avatar/upload.ts       # POST /avatar/upload — 手動アバターアップロード（要 secret）
+    announcement.ts        # GET/PUT /announcement — サイト臨時お知らせ（R2 JSON）
+    announcement/admin.ts  # GET /announcement/admin — スマホ向け編集 UI
   lib/
-    fetch-avatar.ts   # platform 別取得
-    og-image.ts       # og:image 抽出
+    fetch-avatar.ts            # platform 別取得
+    og-image.ts                # og:image 抽出
+    announcement-admin-html.ts # お知らせ編集 UI HTML
   package.json
   wrangler.toml
 shared/
+  announcement/       # お知らせ JSON スキーマ・定数
+  http/               # Bearer 認可など共通 HTTP ヘルパー
   avatar/             # Astro ビルドと Function で共有
     platforms.ts      # SNS プラットフォーム設定
     constants.ts      # proxy 許可値
@@ -130,6 +136,46 @@ curl -X POST "https://gbbinfo-assets.pages.dev/avatar/upload" \
 - 対応形式: JPEG / PNG / WebP / GIF（最大 5MB）
 - アップロード直後は元形式のまま。日次 WebP 変換バッチで `image/webp` に上書きされる（キーは変わらない）
 - 本番 R2 へのローカル dev テスト: `npm run assets:dev -- --remote`（`cloudflare/.dev.vars` に secret 必須）
+
+## サイト臨時お知らせ（`/announcement`）
+
+公開サイト（Render）がクライアント JS で `GET /announcement` を読み、有効時のみ `[お知らせ]` を表示する。本文は R2 キー `site/announcement.json` に保存（既存バケット `gbbinfo-avatar-cache`）。
+
+| メソッド | パス | 用途 | 認証 |
+|----------|------|------|------|
+| GET | `/announcement` | 公開 JSON | なし（CORS `*`） |
+| PUT | `/announcement` | 更新 | `Authorization: Bearer {ANNOUNCEMENT_API_KEY}` |
+| GET | `/announcement/admin` | スマホ向け編集 UI | なし（保存時のみ API キー） |
+
+シークレット未設定時、PUT は **404**（エンドポイント非公開）。
+
+### 初回セットアップ
+
+1. シークレット生成（例）: `openssl rand -hex 32`
+2. Cloudflare Dashboard → Workers & Pages → `gbbinfo-assets` → Settings → Environment variables → Production に `ANNOUNCEMENT_API_KEY` を **Encrypted** で登録
+3. ローカル wrangler: `cloudflare/.dev.vars` に同値を設定
+4. スマホ / PC で初回だけ次を開く（キーは URL ハッシュ経由で端末の localStorage に保存され、アドレスバーからは消える）:
+
+```
+https://gbbinfo-assets.pages.dev/announcement/admin#key=生成したAPIキー
+```
+
+5. 以降は `https://gbbinfo-assets.pages.dev/announcement/admin` をブックマークして編集
+
+### curl 例
+
+```bash
+curl -X PUT "https://gbbinfo-assets.pages.dev/announcement" \
+  -H "Authorization: Bearer $ANNOUNCEMENT_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d "{\"enabled\":true,\"message\":\"本日18時よりメンテナンス予定です\",\"expiresAt\":null}"
+```
+
+### 注意
+
+- 反映は CDN / ブラウザキャッシュのため最大約 60 秒かかることがある
+- API キーを HTML や git に埋め込まない（`#key=` は自分の端末だけで使う）
+- 日次 WebP 変換は画像のみ対象。`site/announcement.json` は変換されない
 
 ## 静的画像の追加・更新
 

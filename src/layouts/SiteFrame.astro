@@ -5,8 +5,10 @@ import HamburgerMenu from "~/components/HamburgerMenu.astro";
 import { HeroImage } from "~/components/HeroImage";
 import FooterMenu from "~/components/FooterMenu.astro";
 import LatestYearPrompt from "~/components/LatestYearPrompt.astro";
+import { SiteAnnouncement } from "~/components/SiteAnnouncement";
 import type { SupportedLanguage } from "~/constants/languageLabels";
 import type { YearWithCountry } from "~/db/year";
+import { getAssetBaseUrl } from "~/util/staticAsset";
 
 interface Props {
   locale: SupportedLanguage;
@@ -42,6 +44,7 @@ const heroCountdownTargetIso =
   Number.isFinite(startsAtMs) && startsAtMs > Date.now()
     ? new Date(startsAtMs).toISOString()
     : null;
+const announcementUrl = `${getAssetBaseUrl()}/announcement`;
 ---
 
 <Layout locale={locale} pageTitle={pageTitle} robots={robots}>
@@ -98,6 +101,7 @@ const heroCountdownTargetIso =
       </script>
     )
   }
+  <SiteAnnouncement client:load announcementUrl={announcementUrl} />
   <slot />
   <FooterMenu locale={locale} latestYearWithCountry={latestYearWithCountry} />
   <HamburgerMenu
