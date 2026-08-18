@@ -36,6 +36,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href={`/${locale}/${year}/ticket`} />
           <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} unavailable />
           <LinkCard text={m.result()} image="/images/winner.webp" href={`/${locale}/${year}/result`} unavailable />
+          <LinkCard text={`${m.reference_data()}：GBB 2021 ${m.time_table()}`} href={`/${locale}/2021/timetable`} fullWidth />
         </div>
       </div>
 
