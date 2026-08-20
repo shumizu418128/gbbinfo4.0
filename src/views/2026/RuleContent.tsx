@@ -672,7 +672,7 @@ export const RuleContent = ({ locale, year, seedData }: RuleContentProps) => {
                 {m.rule_judges_not_announced()}
               </>,
             ],
-            [m.rule_referee(), m.rule_update_pending()],
+            [m.rule_referee(), "KRISTÓF"],
           ]}
           textCenter
         />
