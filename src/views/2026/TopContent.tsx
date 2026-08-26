@@ -28,7 +28,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
             href={`/${locale}/${year}/participants`}
           />
           <LinkCard text={<span>{m.rules()}<br />{m.judges()}</span>} image="/images/mahiro.webp" href={`/${locale}/${year}/rule`} />
-          <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href={`/${locale}/${year}/timetable`} unavailable />
+          <LinkCard text={m.time_table()} image="/images/scott_jackson.webp" href={`/${locale}/${year}/timetable`} />
           <LinkCard text={teamLabel} image={teamImage} href={teamHref} />
         </div>
         <div className="mb-18 flex flex-wrap gap-4">
@@ -36,7 +36,6 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href={`/${locale}/${year}/ticket`} />
           <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} unavailable />
           <LinkCard text={m.result()} image="/images/winner.webp" href={`/${locale}/${year}/result`} unavailable />
-          <LinkCard text={`${m.reference_data()}：GBB 2021 ${m.time_table()}`} href={`/${locale}/2021/timetable`} fullWidth />
         </div>
       </div>
 
