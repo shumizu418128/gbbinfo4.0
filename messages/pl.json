@@ -242,6 +242,8 @@
   "stream_abema_exclusive": "Wyłączna transmisja ABEMA",
   "stream_check_latest": "Sprawdź najnowsze informacje o GBB {year}",
   "stream_companion_title": "Do towarzystwa podczas oglądania",
+  "stream_join_membership": "Dołącz do członkostwa {YouTube}",
+  "stream_members_only": "Transmisja na żywo GBB {year} jest przeznaczona wyłącznie dla członków {YouTube} {Swissbeatbox}.",
   "team_japan": "Reprezentacja Japonii",
   "team_korea": "Reprezentacja Korei",
   "ticket_city": "Warszawa, Polska",

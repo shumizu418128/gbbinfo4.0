@@ -242,6 +242,8 @@
   "stream_abema_exclusive": "ABEMA 독점 배송",
   "stream_check_latest": "GBB {year} 최신 정보를 확인하세요",
   "stream_companion_title": "관람의 동반자",
+  "stream_join_membership": "{YouTube} 멤버십 가입",
+  "stream_members_only": "GBB {year} 라이브 스트리밍은 {Swissbeatbox} {YouTube} 멤버 전용으로 진행됩니다.",
   "team_japan": "일본 대표",
   "team_korea": "한국 대표",
   "ticket_city": "폴란드 바르샤바",
