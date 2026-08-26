@@ -8,7 +8,7 @@ type StreamContentProps = {
   year: number;
 };
 
-const MEMBERSHIP_JOIN_URL = "https://www.youtube.com/@swissbeatbox/join";
+const STREAMS_URL = "https://www.youtube.com/@swissbeatbox/streams";
 
 export const StreamContent = ({ locale, year }: StreamContentProps) => {
   return (
@@ -24,8 +24,8 @@ export const StreamContent = ({ locale, year }: StreamContentProps) => {
 
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
-            text={m.stream_join_membership({ YouTube: YOUTUBE })}
-            href={MEMBERSHIP_JOIN_URL}
+            text={m.stream_watch_here()}
+            href={STREAMS_URL}
             fullWidth
           />
         </div>
