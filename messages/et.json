@@ -243,6 +243,7 @@
   "stream_check_latest": "Vaata GBB {year} viimaseid uudiseid",
   "stream_companion_title": "Vaatamise kõrvale",
   "stream_watch_here": "Otseülekanne on siin",
+  "stream_members_limited": "(Ainult liikmetele)",
   "stream_members_only": "GBB {year} otseülekanne on mõeldud ainult {Swissbeatbox}i {YouTube} liikmetele.",
   "team_japan": "Jaapani koondis",
   "team_korea": "Korea koondis",

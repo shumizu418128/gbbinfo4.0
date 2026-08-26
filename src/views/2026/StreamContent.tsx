@@ -24,7 +24,13 @@ export const StreamContent = ({ locale, year }: StreamContentProps) => {
 
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
-            text={m.stream_watch_here()}
+            text={
+              <span>
+                {m.stream_watch_here()}
+                <br />
+                {m.stream_members_limited()}
+              </span>
+            }
             href={STREAMS_URL}
             fullWidth
           />
