@@ -1,4 +1,6 @@
 {
+  "announcement": "Aviso",
+  "announcement_updated_at": "Última actualización: {datetime} ({japanTime})",
   "back_to_home": "Volver al inicio",
   "cancelled": "Retirada",
   "footer_nice_view": "Bonita vista, ¿verdad?",

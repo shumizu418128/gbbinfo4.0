@@ -1,4 +1,6 @@
 {
+  "announcement": "公告",
+  "announcement_updated_at": "最後更新: {datetime}（{japanTime}）",
   "back_to_home": "返回首頁",
   "cancelled": "退賽",
   "footer_nice_view": "風景不錯吧？",

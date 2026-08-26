@@ -1,4 +1,6 @@
 {
+  "announcement": "Meddelelse",
+  "announcement_updated_at": "Sidst opdateret: {datetime} ({japanTime})",
   "back_to_home": "Tilbage til forsiden",
   "cancelled": "Udtrædelse",
   "footer_nice_view": "Flot udsigt, ikke?",

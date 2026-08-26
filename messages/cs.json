@@ -1,4 +1,6 @@
 {
+  "announcement": "Oznámení",
+  "announcement_updated_at": "Naposledy aktualizováno: {datetime} ({japanTime})",
   "back_to_home": "Zpět na úvod",
   "cancelled": "Odstoupení",
   "footer_nice_view": "Krásný výhled, že?",

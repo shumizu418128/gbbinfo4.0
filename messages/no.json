@@ -1,4 +1,6 @@
 {
+  "announcement": "Kunngjøring",
+  "announcement_updated_at": "Sist oppdatert: {datetime} ({japanTime})",
   "back_to_home": "Tilbake til hjem",
   "cancelled": "Trukket seg",
   "footer_nice_view": "Fin utsikt, eller hva?",

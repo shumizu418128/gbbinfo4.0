@@ -1,4 +1,6 @@
 {
+  "announcement": "घोषणा",
+  "announcement_updated_at": "अंतिम अपडेट: {datetime} ({japanTime})",
   "back_to_home": "होम पर वापस जाएँ",
   "cancelled": "नाम वापसी",
   "footer_nice_view": "नज़ारा अच्छा है, है ना?",

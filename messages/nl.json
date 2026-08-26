@@ -1,4 +1,6 @@
 {
+  "announcement": "Mededeling",
+  "announcement_updated_at": "Laatst bijgewerkt: {datetime} ({japanTime})",
   "back_to_home": "Terug naar home",
   "cancelled": "Terugtrekking",
   "footer_nice_view": "Mooi uitzicht, toch?",
