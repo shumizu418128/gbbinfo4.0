@@ -1,4 +1,6 @@
 {
+  "announcement": "Pengumuman",
+  "announcement_updated_at": "Dikemas kini: {datetime} ({japanTime})",
   "back_to_home": "Kembali ke laman utama",
   "cancelled": "Penarikan diri",
   "footer_nice_view": "Pemandangan yang cantik, kan?",

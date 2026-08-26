@@ -101,7 +101,11 @@ const announcementUrl = `${getAssetBaseUrl()}/announcement`;
       </script>
     )
   }
-  <SiteAnnouncement client:load announcementUrl={announcementUrl} />
+  <SiteAnnouncement
+    client:load
+    announcementUrl={announcementUrl}
+    locale={locale}
+  />
   <slot />
   <FooterMenu locale={locale} latestYearWithCountry={latestYearWithCountry} />
   <HamburgerMenu

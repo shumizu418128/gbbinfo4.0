@@ -1,4 +1,6 @@
 {
+  "announcement": "お知らせ",
+  "announcement_updated_at": "最終更新: {datetime}（{japanTime}）",
   "back_to_home": "ホームへ戻る",
   "cancelled": "辞退",
   "footer_nice_view": "いい景色だろ？",

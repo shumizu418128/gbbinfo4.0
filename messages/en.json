@@ -1,4 +1,6 @@
 {
+  "announcement": "Announcement",
+  "announcement_updated_at": "Last updated: {datetime} ({japanTime})",
   "back_to_home": "Back to home",
   "cancelled": "Cancelled",
   "footer_nice_view": "Nice view, isn't it?",

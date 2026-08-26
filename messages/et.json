@@ -1,4 +1,6 @@
 {
+  "announcement": "Teadaanne",
+  "announcement_updated_at": "Viimati uuendatud: {datetime} ({japanTime})",
   "back_to_home": "Tagasi avalehele",
   "cancelled": "Loobumine",
   "footer_nice_view": "Ilus vaade, kas pole?",

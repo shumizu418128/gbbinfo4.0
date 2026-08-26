@@ -1,4 +1,6 @@
 {
+  "announcement": "Hinweis",
+  "announcement_updated_at": "Zuletzt aktualisiert: {datetime} ({japanTime})",
   "back_to_home": "Zur Startseite",
   "cancelled": "Storniert",
   "footer_nice_view": "Schöne Aussicht, oder?",

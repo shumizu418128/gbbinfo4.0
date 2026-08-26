@@ -1,4 +1,6 @@
 {
+  "announcement": "Ogłoszenie",
+  "announcement_updated_at": "Ostatnia aktualizacja: {datetime} ({japanTime})",
   "back_to_home": "Wróć do strony głównej",
   "cancelled": "Wycofanie",
   "footer_nice_view": "Niezły widok, co?",

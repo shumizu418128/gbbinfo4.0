@@ -1,15 +1,27 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { NoticeCallout } from "~/components/NoticeCallout.js";
+import type { SupportedLanguage } from "~/constants/languageLabels.js";
+import { formatJstDateTime } from "~/util/formatJstDateTime.js";
+import * as m from "../../paraglide/messages.js";
 
 type SiteAnnouncementData = {
   enabled?: boolean;
   message?: string;
+  updatedAt?: string;
   expiresAt?: string | null;
+};
+
+type VisibleAnnouncement = {
+  message: string;
+  updatedAtIso: string | null;
+  updatedAtLabel: string | null;
 };
 
 type SiteAnnouncementProps = {
   /** R2 公開 JSON の URL。 */
   announcementUrl: string;
+  /** 表示言語。 */
+  locale: SupportedLanguage;
 };
 
 /**
@@ -46,14 +58,18 @@ const isAnnouncementVisible = (data: SiteAnnouncementData): boolean => {
  *
  * Args:
  *   announcementUrl: 公開 JSON URL。
+ *   locale: 表示言語。
  *
  * Returns:
  *   お知らせセクション、または非表示時は null。
  */
 export const SiteAnnouncement = ({
   announcementUrl,
+  locale,
 }: SiteAnnouncementProps): ReactNode => {
-  const [message, setMessage] = useState<string | null>(null);
+  const [announcement, setAnnouncement] = useState<VisibleAnnouncement | null>(
+    null,
+  );
 
   useEffect(() => {
     let cancelled = false;
@@ -74,23 +90,42 @@ export const SiteAnnouncement = ({
           return;
         }
         if (!isAnnouncementVisible(data)) {
-          setMessage(null);
+          setAnnouncement(null);
           return;
         }
-        setMessage(String(data.message).trim());
+
+        const updatedAt =
+          typeof data.updatedAt === "string" ? data.updatedAt : "";
+        const datetime = updatedAt
+          ? formatJstDateTime(updatedAt, locale)
+          : null;
+
+        setAnnouncement({
+          message: String(data.message).trim(),
+          updatedAtIso: datetime ? updatedAt : null,
+          updatedAtLabel: datetime
+            ? m.announcement_updated_at(
+                {
+                  datetime,
+                  japanTime: m.timetable_japan_time({}, { locale }),
+                },
+                { locale },
+              )
+            : null,
+        });
       })
       .catch(() => {
         if (!cancelled) {
-          setMessage(null);
+          setAnnouncement(null);
         }
       });
 
     return () => {
       cancelled = true;
     };
-  }, [announcementUrl]);
+  }, [announcementUrl, locale]);
 
-  if (!message) {
+  if (!announcement) {
     return null;
   }
 
@@ -100,11 +135,18 @@ export const SiteAnnouncement = ({
       aria-live="polite"
     >
       <div className="mx-auto w-full max-w-4xl">
-        <NoticeCallout title="お知らせ">
+        <NoticeCallout title={m.announcement({}, { locale })}>
           <p className="whitespace-pre-wrap text-base leading-relaxed">
-            {message}
+            {announcement.message}
           </p>
         </NoticeCallout>
+        {announcement.updatedAtLabel && announcement.updatedAtIso ? (
+          <p className="text-sm text-(--secondary-text-color)">
+            <time dateTime={announcement.updatedAtIso}>
+              {announcement.updatedAtLabel}
+            </time>
+          </p>
+        ) : null}
       </div>
     </aside>
   );

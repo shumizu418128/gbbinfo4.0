@@ -1,4 +1,6 @@
 {
+  "announcement": "공지",
+  "announcement_updated_at": "최종 업데이트: {datetime} ({japanTime})",
   "back_to_home": "홈으로 돌아가기",
   "cancelled": "기권",
   "footer_nice_view": "멋진 경치지?",

@@ -1,4 +1,6 @@
 {
+  "announcement": "Közlemény",
+  "announcement_updated_at": "Utoljára frissítve: {datetime} ({japanTime})",
   "back_to_home": "Vissza a főoldalra",
   "cancelled": "Visszalépés",
   "footer_nice_view": "Szép kilátás, nem?",
