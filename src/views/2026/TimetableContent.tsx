@@ -35,7 +35,6 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
         <p className={paragraphClass}>{m.timetable_note_schedule()}</p>
-        <p className={paragraphClass}>{m.timetable_note_outline_only()}</p>
         <p className={paragraphClass}>{m.timetable_note_cest()}</p>
         <p className={paragraphClass}>{m.timetable_note_delay()}</p>
         <div className="mb-8 flex flex-wrap gap-4">
@@ -77,10 +76,16 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           data={[
             tableHeader,
             ["15:00", "22:00", m.timetable_doors_open()],
-            ["16:15", "23:15", m.timetable_livestream_start()],
-            ["-", "-", TAG_TEAM],
-            ["-", "-", LOOPSTATION],
-            ["-", "-", SHOWCASE],
+            ["16:00", "23:00", m.timetable_opening_set()],
+            ["16:15", "23:15", "GBB26 OFFICIAL OPENING"],
+            ["16:35", "23:35", m.timetable_opening_showcase({ SHOWCASE })],
+            ["16:55", "23:55", m.timetable_tag_team_prelim({ TagTeam: TAG_TEAM })],
+            ["17:35", "00:35", SHOWCASE],
+            ["17:45", "00:45", m.timetable_break()],
+            ["18:40", "01:40", SHOWCASE],
+            ["19:00", "02:00", m.timetable_loop_quarterfinal({ Loopstation: LOOPSTATION })],
+            ["20:30", "03:30", SHOWCASE],
+            ["21:00", "04:00", m.timetable_end()],
           ]}
           textCenter
         />
@@ -102,11 +107,19 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           data={[
             tableHeader,
             ["15:00", "22:00", m.timetable_doors_open()],
-            ["16:15", "23:15", m.timetable_livestream_start()],
-            ["-", "-", SOLO],
-            ["-", "-", CREW],
-            ["-", "-", LOOPSTATION],
-            ["-", "-", SHOWCASE],
+            ["15:55", "22:55", m.timetable_opening_showcase({ SHOWCASE })],
+            ["16:15", "23:15", "GBB26 OFFICIAL OPENING"],
+            ["16:25", "23:25", SHOWCASE],
+            ["16:45", "23:45", m.timetable_loop_semifinal({ Loopstation: LOOPSTATION })],
+            ["17:30", "00:30", SHOWCASE],
+            ["17:45", "00:45", m.timetable_break()],
+            ["18:40", "01:40", "ARTIST ON STAGE"],
+            ["18:50", "01:50", SHOWCASE],
+            ["19:10", "02:10", `${CREW} ${SHOWCASE}`],
+            ["19:30", "02:30", "LEGACY BATTLE: CODFISH VS WING"],
+            ["19:55", "02:55", m.timetable_solo_prelim({ Solo: SOLO })],
+            ["22:00", "05:00", SHOWCASE],
+            ["22:25", "05:25", m.timetable_end()],
           ]}
           textCenter
         />
@@ -131,12 +144,24 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           data={[
             tableHeader,
             ["13:30", "20:30", m.timetable_doors_open()],
-            ["14:50", "21:50", m.timetable_livestream_start()],
-            ["-", "-", SOLO],
-            ["-", "-", TAG_TEAM],
-            ["-", "-", CREW],
-            ["-", "-", LOOPSTATION],
-            ["-", "-", SHOWCASE],
+            ["14:20", "21:20", m.timetable_opening_showcase({ SHOWCASE })],
+            ["14:50", "21:50", "GBB26 OFFICIAL OPENING"],
+            ["15:00", "22:00", m.timetable_solo_quarterfinal({ Solo: SOLO })],
+            ["15:45", "22:45", m.timetable_crew_small_final({ Crew: CREW })],
+            ["16:00", "23:00", m.timetable_crew_final({ Crew: CREW })],
+            ["16:15", "23:15", m.timetable_break()],
+            ["17:00", "00:00", SHOWCASE],
+            ["17:25", "00:25", m.timetable_loop_small_final({ Loopstation: LOOPSTATION })],
+            ["17:45", "00:45", m.timetable_loop_final_only({ Loopstation: LOOPSTATION })],
+            ["18:05", "01:05", m.timetable_tag_team_semifinal({ TagTeam: TAG_TEAM })],
+            ["18:30", "01:30", m.timetable_solo_semifinal({ Solo: SOLO })],
+            ["18:55", "01:55", m.timetable_tag_team_small_final({ TagTeam: TAG_TEAM })],
+            ["19:10", "02:10", m.timetable_tag_team_final_only({ TagTeam: TAG_TEAM })],
+            ["19:20", "02:20", m.timetable_solo_small_final({ Solo: SOLO })],
+            ["19:30", "02:30", m.timetable_solo_final_only({ Solo: SOLO })],
+            ["19:45", "02:45", SHOWCASE],
+            ["20:00", "03:00", SHOWCASE],
+            ["20:45", "03:45", m.timetable_ceremony()],
           ]}
           textCenter
         />
