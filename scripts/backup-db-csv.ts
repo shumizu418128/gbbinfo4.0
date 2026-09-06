@@ -1,11 +1,14 @@
 /*
- * Supabase（Postgres）の public スキーマ全テーブルを CSV で backup/ に保存する。
+ * Supabase（Postgres）の public スキーマ全テーブルを CSV で backup/ に保存し、
+ * origin/main からブランチを切って PR を作成する。
  *
  * Usage:
  *   npm run backup:db
+ *   npm run backup:db -- --no-pr
  */
 
-import { mkdirSync, writeFileSync } from "node:fs";
+import { spawnSync } from "node:child_process";
+import { cpSync, mkdirSync, writeFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import postgres from "postgres";
@@ -17,6 +20,21 @@ const BACKUP_ROOT = path.join(ROOT_DIR, "backup");
 type TableRef = {
   schema: string;
   name: string;
+};
+
+type TableExport = {
+  name: string;
+  rows: number;
+};
+
+type RunOptions = {
+  cwd?: string;
+};
+
+type RunResult = {
+  status: number;
+  stdout: string;
+  stderr: string;
 };
 
 const escapeCsvCell = (value: unknown): string => {
@@ -109,6 +127,138 @@ const exportTable = async (
   return rows.length;
 };
 
+const runCommand = (
+  command: string,
+  args: string[],
+  options: RunOptions = {},
+): RunResult => {
+  const cwd = options.cwd ?? ROOT_DIR;
+  const names =
+    process.platform === "win32" ? [`${command}.exe`, command] : [command];
+
+  let lastError: NodeJS.ErrnoException | undefined;
+  for (const name of names) {
+    const result = spawnSync(name, args, {
+      cwd,
+      encoding: "utf-8",
+      windowsHide: true,
+    });
+    if (result.error) {
+      lastError = result.error;
+      continue;
+    }
+    return {
+      status: result.status ?? 1,
+      stdout: (result.stdout ?? "").trim(),
+      stderr: (result.stderr ?? "").trim(),
+    };
+  }
+
+  throw new Error(
+    `${command} が見つかりません。PATH を確認してください` +
+      (lastError?.message ? ` (${lastError.message})` : ""),
+  );
+};
+
+const runOrThrow = (
+  command: string,
+  args: string[],
+  options: RunOptions = {},
+): string => {
+  const result = runCommand(command, args, options);
+  if (result.status !== 0) {
+    const detail = result.stderr || result.stdout || `exit ${result.status}`;
+    throw new Error(`\`${command} ${args.join(" ")}\` failed: ${detail}`);
+  }
+  return result.stdout;
+};
+
+const assertGhAuth = (): void => {
+  const result = runCommand("gh", ["auth", "status"]);
+  if (result.status !== 0) {
+    throw new Error(
+      "gh にログインしていません。gh auth login を実行するか、GH_TOKEN を設定してください",
+    );
+  }
+};
+
+const buildPrBody = (stamp: string, tables: TableExport[]): string => {
+  const counts = tables
+    .map((table) => `${table.name}: ${table.rows}`)
+    .join(" / ");
+  return [
+    "## Summary",
+    "- Supabase publicスキーマ全テーブルをCSVでバックアップした",
+    `- 出力先は \`backup/${stamp}/\`（前回と同じ形式）`,
+    "",
+    "## Test plan",
+    `- [ ] \`backup/${stamp}/\` に${tables.length}ファイルがあること`,
+    "- [ ] 各CSVのヘッダーと行数がバックアップ実行結果と一致すること",
+    `  - ${counts}`,
+  ].join("\n");
+};
+
+const removeWorktree = (worktreeDir: string): void => {
+  const result = runCommand("git", [
+    "worktree",
+    "remove",
+    "--force",
+    worktreeDir,
+  ]);
+  if (result.status !== 0) {
+    console.warn(
+      `Failed to remove worktree: ${result.stderr || result.stdout}`,
+    );
+  }
+};
+
+const createBackupPullRequest = (
+  stamp: string,
+  tables: TableExport[],
+): string => {
+  assertGhAuth();
+
+  const dateStamp = stamp.slice(0, 8);
+  const branchName = `chore/db-backup-${stamp.replace("_", "-")}`;
+  const title = `chore: ${dateStamp}のDBバックアップを追加`;
+  const relativeBackupDir = path.posix.join("backup", stamp);
+  const worktreeDir = path.join(ROOT_DIR, ".cache", "backup-pr", stamp);
+
+  runOrThrow("git", ["fetch", "origin", "main"]);
+  runOrThrow("git", [
+    "worktree",
+    "add",
+    "-b",
+    branchName,
+    worktreeDir,
+    "origin/main",
+  ]);
+
+  try {
+    cpSync(path.join(BACKUP_ROOT, stamp), path.join(worktreeDir, "backup", stamp), {
+      recursive: true,
+    });
+    runOrThrow("git", ["add", relativeBackupDir], { cwd: worktreeDir });
+    runOrThrow("git", ["commit", "-m", title], { cwd: worktreeDir });
+    runOrThrow("git", ["push", "-u", "origin", "HEAD"], { cwd: worktreeDir });
+
+    return runOrThrow("gh", [
+      "pr",
+      "create",
+      "--base",
+      "main",
+      "--head",
+      branchName,
+      "--title",
+      title,
+      "--body",
+      buildPrBody(stamp, tables),
+    ]);
+  } finally {
+    removeWorktree(worktreeDir);
+  }
+};
+
 const main = async (): Promise<void> => {
   loadDotEnv();
 
@@ -135,11 +285,20 @@ const main = async (): Promise<void> => {
 
     console.log(`Exporting ${tables.length} tables → ${path.relative(ROOT_DIR, outDir)}`);
 
+    const tableExports: TableExport[] = [];
     for (const table of tables) {
       const count = await exportTable(sql, table, outDir);
+      tableExports.push({ name: table.name, rows: count });
       console.log(`  ${table.name}: ${count} rows`);
     }
 
+    if (process.argv.includes("--no-pr")) {
+      console.log("Done (PR skipped)");
+      return;
+    }
+
+    const prUrl = createBackupPullRequest(stamp, tableExports);
+    console.log(`Pull request: ${prUrl}`);
     console.log("Done");
   } finally {
     await sql.end({ timeout: 5 });
