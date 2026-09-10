@@ -3,15 +3,12 @@ import {
   FLAG_ICON_SIZE,
   FLAG_IMAGE_PATH_PREFIX,
   MAP_CENTER,
+  MAP_COASTLINE_COLOR,
+  MAP_COASTLINE_WIDTH,
   MAP_DEFAULT_ZOOM,
-  MAP_LAND_FILL_COLOR,
-  MAP_LAND_OUTLINE_COLOR,
-  MAP_LAND_OUTLINE_WIDTH,
   MAP_MAX_ZOOM,
   MAP_MIN_ZOOM,
   MAP_OCEAN_COLOR,
-  MAP_VECTOR_SOURCE_LAYER,
-  MAP_VECTOR_TILES_URL,
   POPUP_FLAG_HEIGHT,
   POPUP_MAX_WIDTH,
   POPUP_OFFSET_PX,
@@ -113,16 +110,16 @@ const readMarkers = (root: HTMLElement): WorldMapMarker[] | null => {
 type GlobeStyle = Exclude<NonNullable<MapOptions["style"]>, string>;
 
 /**
- * 海を黒、陸の輪郭を GBB カラーにした地球儀スタイルを生成する。
- * 陸ジオメトリは globe 投影で実績のあるベクトルタイルを使う。
+ * 海を黒、海岸線だけを GBB カラーにした地球儀スタイルを生成する。
  */
-const buildGlobeStyle = (): GlobeStyle => ({
+const buildGlobeStyle = (coastlineUrl: string): GlobeStyle => ({
   version: 8,
   projection: { type: "globe" },
   sources: {
-    maplibre: {
-      type: "vector",
-      url: MAP_VECTOR_TILES_URL,
+    coastline: {
+      type: "geojson",
+      data: coastlineUrl,
+      buffer: 256,
     },
   },
   layers: [
@@ -134,26 +131,16 @@ const buildGlobeStyle = (): GlobeStyle => ({
       },
     },
     {
-      id: "land-fill",
-      type: "fill",
-      source: "maplibre",
-      "source-layer": MAP_VECTOR_SOURCE_LAYER,
-      paint: {
-        "fill-color": MAP_LAND_FILL_COLOR,
-      },
-    },
-    {
-      id: "land-outline",
+      id: "coastline",
       type: "line",
-      source: "maplibre",
-      "source-layer": MAP_VECTOR_SOURCE_LAYER,
+      source: "coastline",
       layout: {
         "line-join": "round",
         "line-cap": "round",
       },
       paint: {
-        "line-color": MAP_LAND_OUTLINE_COLOR,
-        "line-width": MAP_LAND_OUTLINE_WIDTH,
+        "line-color": MAP_COASTLINE_COLOR,
+        "line-width": MAP_COASTLINE_WIDTH,
       },
     },
   ],
@@ -181,10 +168,13 @@ const mountMap = async (root: HTMLElement): Promise<void> => {
   await import("maplibre-gl/dist/maplibre-gl.css");
   // Vite の prebundle 先には worker が無いため、配布ファイルの URL を明示する。
   maplibregl.setWorkerUrl(maplibreWorkerUrl);
+  const { default: coastlineUrl } = await import(
+    "~/data/ne_10m_coastline.json?url"
+  );
 
   const map = new maplibregl.Map({
     container: canvas,
-    style: buildGlobeStyle(),
+    style: buildGlobeStyle(coastlineUrl),
     center: MAP_CENTER,
     zoom: MAP_DEFAULT_ZOOM,
     minZoom: MAP_MIN_ZOOM,

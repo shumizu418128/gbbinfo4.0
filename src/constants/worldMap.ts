@@ -1,21 +1,11 @@
 /** 海（背景）の塗り色。 */
 export const MAP_OCEAN_COLOR = "#000000";
 
-/** 陸の塗り色。 */
-export const MAP_LAND_FILL_COLOR = "#000000";
+/** 海岸線の色（`--gbb-color` / GBB_COLOR と一致。MapLibre 向け hex）。 */
+export const MAP_COASTLINE_COLOR = "#ff6414";
 
-/** 陸の輪郭色（`--gbb-color` / GBB_COLOR と一致。MapLibre 向け hex）。 */
-export const MAP_LAND_OUTLINE_COLOR = "#ff6414";
-
-/** 陸の輪郭幅。 */
-export const MAP_LAND_OUTLINE_WIDTH = 2;
-
-/** 地球儀用ベクトルタイル（MapLibre 公式デモ。globe 投影で GeoJSON より安定）。 */
-export const MAP_VECTOR_TILES_URL =
-  "https://demotiles.maplibre.org/tiles/tiles.json";
-
-/** ベクトルタイル内の陸ポリゴン layer 名。 */
-export const MAP_VECTOR_SOURCE_LAYER = "countries";
+/** 海岸線の幅。 */
+export const MAP_COASTLINE_WIDTH = 1;
 
 /** 地図の初期中心座標 [経度, 緯度]。 */
 export const MAP_CENTER: [number, number] = [0, 20];
