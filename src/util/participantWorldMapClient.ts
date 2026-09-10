@@ -1,19 +1,17 @@
+import type { MapOptions } from "maplibre-gl";
 import {
-  FLAG_ICON_ANCHOR,
   FLAG_ICON_SIZE,
   FLAG_IMAGE_PATH_PREFIX,
   MAP_CENTER,
+  MAP_COASTLINE_COLOR,
+  MAP_COASTLINE_WIDTH,
   MAP_DEFAULT_ZOOM,
-  MAP_MAX_BOUNDS,
   MAP_MAX_ZOOM,
   MAP_MIN_ZOOM,
-  MAP_ZOOM_DELTA,
-  MAP_ZOOM_SNAP,
-  NASA_GIBS_ATTR,
-  NASA_GIBS_SUBDOMAINS,
-  NASA_GIBS_TILES,
+  MAP_OCEAN_COLOR,
   POPUP_FLAG_HEIGHT,
   POPUP_MAX_WIDTH,
+  POPUP_OFFSET_PX,
   POPUP_SCROLL_THRESHOLD,
 } from "~/constants/worldMap.js";
 import { staticAssetUrl } from "~/util/staticAsset.js";
@@ -77,6 +75,23 @@ const buildPopupHtml = (marker: WorldMapMarker): string => {
 };
 
 /**
+ * 国旗マーカー用の DOM 要素を生成する。
+ */
+const createFlagMarkerElement = (marker: WorldMapMarker): HTMLImageElement => {
+  const element = document.createElement("img");
+  element.src = getLocalFlagImageUrl(marker.countryEnName);
+  element.alt = marker.countryName;
+  element.width = FLAG_ICON_SIZE[0];
+  element.height = FLAG_ICON_SIZE[1];
+  element.decoding = "async";
+  element.style.width = `${FLAG_ICON_SIZE[0]}px`;
+  element.style.height = `${FLAG_ICON_SIZE[1]}px`;
+  element.style.cursor = "pointer";
+  element.style.display = "block";
+  return element;
+};
+
+/**
  * data 属性からマーカー一覧を読む。
  */
 const readMarkers = (root: HTMLElement): WorldMapMarker[] | null => {
@@ -92,8 +107,50 @@ const readMarkers = (root: HTMLElement): WorldMapMarker[] | null => {
   }
 };
 
+type GlobeStyle = Exclude<NonNullable<MapOptions["style"]>, string>;
+
 /**
- * 可視になった地図コンテナへ Leaflet を遅延初期化する。
+ * 海を黒、海岸線だけを GBB カラーにした地球儀スタイルを生成する。
+ */
+const buildGlobeStyle = (coastlineUrl: string): GlobeStyle => ({
+  version: 8,
+  projection: { type: "globe" },
+  sources: {
+    coastline: {
+      type: "geojson",
+      data: coastlineUrl,
+      buffer: 256,
+    },
+  },
+  layers: [
+    {
+      id: "ocean",
+      type: "background",
+      paint: {
+        "background-color": MAP_OCEAN_COLOR,
+      },
+    },
+    {
+      id: "coastline",
+      type: "line",
+      source: "coastline",
+      layout: {
+        "line-join": "round",
+        "line-cap": "round",
+      },
+      paint: {
+        "line-color": MAP_COASTLINE_COLOR,
+        "line-width": MAP_COASTLINE_WIDTH,
+      },
+    },
+  ],
+  sky: {
+    "atmosphere-blend": 0,
+  },
+});
+
+/**
+ * 可視になった地図コンテナへ MapLibre GL JS の地球儀を遅延初期化する。
  */
 const mountMap = async (root: HTMLElement): Promise<void> => {
   const markers = readMarkers(root);
@@ -104,43 +161,66 @@ const mountMap = async (root: HTMLElement): Promise<void> => {
     return;
   }
 
-  const { default: L } = await import("leaflet");
-  await import("leaflet/dist/leaflet.css");
+  const maplibregl = await import("maplibre-gl");
+  const { default: maplibreWorkerUrl } = await import(
+    "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url"
+  );
+  await import("maplibre-gl/dist/maplibre-gl.css");
+  // Vite の prebundle 先には worker が無いため、配布ファイルの URL を明示する。
+  maplibregl.setWorkerUrl(maplibreWorkerUrl);
+  const { default: coastlineUrl } = await import(
+    "~/data/ne_10m_coastline.json?url"
+  );
 
-  const map = L.map(canvas, {
+  const map = new maplibregl.Map({
+    container: canvas,
+    style: buildGlobeStyle(coastlineUrl),
     center: MAP_CENTER,
     zoom: MAP_DEFAULT_ZOOM,
-    zoomControl: true,
     minZoom: MAP_MIN_ZOOM,
     maxZoom: MAP_MAX_ZOOM,
-    maxBounds: MAP_MAX_BOUNDS,
-    maxBoundsViscosity: 1.0,
-    zoomSnap: MAP_ZOOM_SNAP,
-    zoomDelta: MAP_ZOOM_DELTA,
+    renderWorldCopies: false,
+    maplibreLogo: false,
   });
 
-  L.tileLayer(NASA_GIBS_TILES, {
-    attribution: NASA_GIBS_ATTR,
-    subdomains: [...NASA_GIBS_SUBDOMAINS],
-    minZoom: MAP_MIN_ZOOM,
-    maxZoom: MAP_MAX_ZOOM,
-  }).addTo(map);
+  map.on("style.load", () => {
+    map.setProjection({ type: "globe" });
+    map.resize();
+  });
 
-  L.control.scale().addTo(map);
-
-  const markersLayer = L.layerGroup().addTo(map);
+  map.addControl(
+    new maplibregl.NavigationControl({
+      showCompass: true,
+      visualizePitch: true,
+    }),
+    "top-right",
+  );
+  map.addControl(new maplibregl.GlobeControl(), "top-right");
+  map.addControl(new maplibregl.ScaleControl(), "bottom-left");
 
   for (const marker of markers) {
-    const flagIcon = L.icon({
-      iconUrl: getLocalFlagImageUrl(marker.countryEnName),
-      iconSize: FLAG_ICON_SIZE,
-      iconAnchor: FLAG_ICON_ANCHOR,
-    });
-
-    L.marker([marker.lat, marker.lng], { icon: flagIcon })
-      .bindPopup(buildPopupHtml(marker), { maxWidth: POPUP_MAX_WIDTH })
-      .addTo(markersLayer);
+    new maplibregl.Marker({
+      element: createFlagMarkerElement(marker),
+      anchor: "bottom",
+    })
+      .setLngLat([marker.lng, marker.lat])
+      .setPopup(
+        new maplibregl.Popup({
+          maxWidth: `${POPUP_MAX_WIDTH}px`,
+          offset: POPUP_OFFSET_PX,
+          closeButton: true,
+        }).setHTML(buildPopupHtml(marker)),
+      )
+      .addTo(map);
   }
+
+  const resizeMap = (): void => {
+    map.resize();
+  };
+
+  map.once("load", resizeMap);
+  const resizeObserver = new ResizeObserver(resizeMap);
+  resizeObserver.observe(canvas);
 };
 
 /**

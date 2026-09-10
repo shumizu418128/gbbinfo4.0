@@ -32,7 +32,7 @@ const mapStyle = [
       style="background-color: var(--background-color)"
     >
       <div
-        class="participant-world-map mx-auto w-full max-w-5xl overflow-hidden border isolate [&_.leaflet-pane]:z-1 [&_.leaflet-top]:z-1 [&_.leaflet-bottom]:z-1 [&_.leaflet-control]:z-1 [&_.leaflet-marker-pane]:z-2 [&_.leaflet-popup-pane]:z-8"
+        class="participant-world-map mx-auto w-full max-w-5xl overflow-hidden border isolate [&_.maplibregl-ctrl-top-left]:z-1 [&_.maplibregl-ctrl-top-right]:z-1 [&_.maplibregl-ctrl-bottom-left]:z-1 [&_.maplibregl-ctrl-bottom-right]:z-1 [&_.maplibregl-ctrl]:z-1 [&_.maplibregl-marker]:z-2 [&_.maplibregl-popup]:z-8"
         style={mapStyle}
         data-participant-world-map
         data-markers={JSON.stringify(markers)}
