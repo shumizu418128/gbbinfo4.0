@@ -29,7 +29,7 @@
     "@emnapi/core": "^1.11.2",
     "@emnapi/runtime": "^1.11.2",
     "@tavily/core": "^0.7.6",
-    "astro": "^7.1.0",
+    "astro": "^7.2.8",
     "drizzle-orm": "^0.45.2",
     "lodash": "^4.18.1",
     "maplibre-gl": "^6.9.0",
