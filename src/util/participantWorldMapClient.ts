@@ -163,7 +163,7 @@ const mountMap = async (root: HTMLElement): Promise<void> => {
 
   const maplibregl = await import("maplibre-gl");
   const { default: maplibreWorkerUrl } = await import(
-    "maplibre-gl/dist/maplibre-gl-worker.mjs?url"
+    "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url"
   );
   await import("maplibre-gl/dist/maplibre-gl.css");
   // Vite の prebundle 先には worker が無いため、配布ファイルの URL を明示する。
