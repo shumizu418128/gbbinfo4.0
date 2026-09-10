@@ -32,21 +32,20 @@ body {
   --table-body-color: rgba(255, 255, 255, 0.1);
 }
 
-.participant-world-map .leaflet-container {
-  background: var(--background-color);
+.participant-world-map .maplibregl-map {
+  height: 100%;
+  width: 100%;
+  background: #000000;
 }
 
-.participant-world-map .leaflet-popup-content-wrapper {
-  border-radius: 0;
-}
-
-.participant-world-map .leaflet-popup-content {
+.participant-world-map .maplibregl-popup-content {
   margin: 0;
   padding: 16px;
+  border-radius: 0;
   line-height: 1.5;
 }
 
-.participant-world-map a.leaflet-popup-close-button {
+.participant-world-map .maplibregl-popup-close-button {
   top: 8px;
   right: 8px;
   width: 16px;
@@ -54,7 +53,7 @@ body {
   font: 16px/16px Tahoma, Verdana, sans-serif;
 }
 
-.participant-world-map .leaflet-popup-content p {
+.participant-world-map .maplibregl-popup-content p {
   margin: 0;
 }
 
