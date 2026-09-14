@@ -1,6 +1,9 @@
 import { eq } from "drizzle-orm";
 import { readLocalTavilyCache } from "@shared/tavily/local-cache-read.js";
-import type { AnswerTranslation } from "@shared/tavily/types.js";
+import type {
+  AnswerTranslation,
+  LocalTavilyCacheEntry,
+} from "@shared/tavily/types.js";
 import { findTavilyFromStore, loadBuildCache } from "./buildCache.js";
 import { getDb } from "./client.js";
 import { tavilyTable } from "./tables.js";
@@ -10,6 +13,25 @@ export type TavilyRow = typeof tavilyTable.$inferSelect;
 export type { AnswerTranslation };
 
 export { findTavilyByCacheKey, upsertTavilyRow } from "@shared/db/tavily.js";
+
+/**
+ * ローカル Tavily キャッシュをページ表示用行へ変換する。
+ *
+ * Args:
+ *   local: `.cache/tavily` のエントリ。
+ *
+ * Returns:
+ *   Tavily 行相当データ。
+ */
+const toTavilyRowFromLocalCache = (
+  local: LocalTavilyCacheEntry,
+): TavilyRow => ({
+  id: 0,
+  cacheKey: local.cacheKey,
+  searchResults: local.searchResults,
+  answerTranslation: local.answerTranslation,
+  createdAt: new Date(local.updatedAt),
+});
 
 /**
  * cache_key で Tavily 行を1件取得する（Astro 向け）。
@@ -48,16 +70,9 @@ export const findTavilyDataForPage = async (
 
   if (isDev) {
     const local = readLocalTavilyCache(cacheKey);
-    if (!local) {
-      return null;
+    if (local) {
+      return toTavilyRowFromLocalCache(local);
     }
-    return {
-      id: 0,
-      cacheKey: local.cacheKey,
-      searchResults: local.searchResults,
-      answerTranslation: local.answerTranslation,
-      createdAt: new Date(local.updatedAt),
-    };
   }
 
   const store = loadBuildCache();

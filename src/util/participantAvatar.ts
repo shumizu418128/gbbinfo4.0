@@ -1,4 +1,3 @@
-import { findTavilyFromStore, loadBuildCache } from "~/db/buildCache.js";
 import type { TavilyRow } from "~/db/tavily.js";
 import { findTavilyDataForPage } from "~/db/tavily.js";
 import { buildAvatarProxyUrlFromSearchResults } from "@shared/tavily/avatar.js";
@@ -34,7 +33,7 @@ export const resolveAvatarProxyUrlFromTavilyRow = (
 /**
  * 出場者名からアバター proxy URL を解決する。
  *
- * 優先順: ビルドキャッシュ → findTavilyDataForPage（dev 用）。
+ * 優先順: findTavilyDataForPage（dev ローカルキャッシュ → スナップショット → DB）。
  *
  * Args:
  *   name: 出場者名。
@@ -45,14 +44,6 @@ export const resolveAvatarProxyUrlFromTavilyRow = (
 export const resolveAvatarProxyUrl = async (
   name: string,
 ): Promise<string | null> => {
-  const store = loadBuildCache();
-  if (store) {
-    const row = findTavilyFromStore(store, toTavilyCacheKey(name));
-    const cached = resolveAvatarProxyUrlFromTavilyRow(name, row);
-    if (cached) {
-      return cached;
-    }
-  }
   const row = await findTavilyDataForPage(toTavilyCacheKey(name));
   return resolveAvatarProxyUrlFromTavilyRow(name, row);
 };

@@ -16,11 +16,11 @@ import {
   findParticipantDetailFromStore,
   findPastParticipationFromStore,
   findSameYearCategoryPeersFromStore,
-  findTavilyFromStore,
   getCommonYearDataFromStore,
   loadBuildCache,
   type BuildCacheStore,
 } from "~/db/buildCache.js";
+import { findTavilyDataForPage } from "~/db/tavily.js";
 import { getCommonYearData, type CommonYearData } from "~/util/staticPaths.js";
 import {
   buildProcessedBeatboxerSearch,
@@ -54,6 +54,7 @@ export type ParticipantDetailPageData = {
 
 /**
  * スナップショットから出場者詳細ページ用データを組み立てる。
+ * Tavily は findTavilyDataForPage（dev では .cache/tavily 優先）を使う。
  *
  * Args:
  *   store: ビルドキャッシュストア。
@@ -117,10 +118,7 @@ export const buildPageDataFromStore = async (
     categoryId,
     participantId,
   );
-  const tavilyRow = findTavilyFromStore(
-    store,
-    toTavilyCacheKey(displayName),
-  );
+  const tavilyRow = await findTavilyDataForPage(toTavilyCacheKey(displayName));
   const common = getCommonYearDataFromStore(store, year);
   const pastYearParticipation = computePastYearParticipation(
     pastParticipation,
@@ -176,7 +174,6 @@ export const loadParticipantDetailPageData = async (
 
   const { findParticipantDetail, findPastParticipation, findSameYearCategoryPeers } =
     await import("~/db/participant.js");
-  const { findTavilyDataForPage } = await import("~/db/tavily.js");
 
   const detailResult = await findParticipantDetail(id, type);
 
@@ -276,10 +273,10 @@ export const loadParticipantDetailPageData = async (
  *   Error: 本番ビルドでスナップショットが存在しない場合。
  */
 export const getParticipantDetailStaticPaths = async () => {
+  const isDev =
+    typeof import.meta !== "undefined" && import.meta.env?.DEV === true;
   const store = loadBuildCache();
   if (!store) {
-    const isDev =
-      typeof import.meta !== "undefined" && import.meta.env?.DEV === true;
     if (!isDev) {
       throw new Error(
         "Build cache not found. Run npm run sync:build-cache before astro build.",
@@ -298,6 +295,15 @@ export const getParticipantDetailStaticPaths = async () => {
   }
 
   const paths = findAllParticipantDetailPathsFromStore(store);
+
+  // dev では props を焼かず、リクエスト時に .cache/tavily を優先して読み込む
+  if (isDev) {
+    return paths.flatMap(({ id, type }) =>
+      locales.filter(isSupportedLanguage).map((locale) => ({
+        params: { lang: locale, type, id: String(id) },
+      })),
+    );
+  }
 
   const pathEntries = await Promise.all(
     paths.flatMap(({ id, type }) =>
