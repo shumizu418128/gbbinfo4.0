@@ -7,8 +7,8 @@
   "scripts": {
     "sync:locales": "tsx scripts/sync/inlang-locales.ts",
     "sync:build-cache": "tsx scripts/sync/build-cache.ts",
-    "sync:tavily": "tsx scripts/sync/tavily-db.ts",
-    "sync:tavily:cache": "tsx scripts/sync/tavily-cache.ts",
+    "sync:tavily:upload": "tsx scripts/sync/tavily-db.ts",
+    "sync:tavily:download": "tsx scripts/sync/tavily-cache.ts",
     "build": "npm run sync:locales && npm run sync:build-cache && astro build",
     "dev": "npm run sync:locales && npm run sync:build-cache -- --skip && astro dev",
     "preview": "astro preview",

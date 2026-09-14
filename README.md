@@ -79,11 +79,11 @@ npm run sync:build-cache
 # Supabase 同期をスキップ（dev で自動付与。既存 .cache/build/ をそのまま利用）
 npm run sync:build-cache -- --skip
 
-# Tavily 検索結果を Supabase へ upsert（要 DATABASE_URL, Tavily / DeepL API キー）
-npm run sync:tavily
+# Tavily 検索結果を Supabase へ upload（要 DATABASE_URL, Tavily / DeepL API キー）
+npm run sync:tavily:upload
 
-# Supabase Tavily テーブル → ローカルキャッシュ（.cache/tavily/）へダウンロード
-npm run sync:tavily:cache
+# Supabase Tavily テーブル → ローカルキャッシュ（.cache/tavily/）へ download
+npm run sync:tavily:download
 ```
 
 ## デプロイ（GitHub Actions CI → Render After CI）
@@ -95,7 +95,7 @@ HTML 内の JS/CSS は `build.assetsPrefix` により `PUBLIC_ASSET_BASE_URL`（
 ```mermaid
 flowchart LR
   push[push main] --> gha[GHA CI]
-  gha --> tavily[sync:tavily]
+  gha --> tavily[sync:tavily:upload]
   gha --> dockerExport[Docker export _astro]
   dockerExport --> pages[Cloudflare Pages]
   pages -->|checks pass| render[gbbinfo]
@@ -104,7 +104,7 @@ flowchart LR
 
 | ブランチ | Render サービス | Tavily/DeepL | 備考 |
 |----------|-----------------|--------------|------|
-| `main` | `gbbinfo` | GHA で `sync:tavily` | `DEPLOY_ENV=production` |
+| `main` | `gbbinfo` | GHA で `sync:tavily:upload` | `DEPLOY_ENV=production` |
 
 ワークフロー: [`.github/workflows/ci.yml`](.github/workflows/ci.yml)
 
@@ -115,8 +115,8 @@ flowchart LR
 | 名前 | 用途 |
 |------|------|
 | `DATABASE_URL` | build-cache / tavily（GHA と Render 双方） |
-| `TAVILY_API_KEY` | GHA の `sync:tavily` |
-| `DEEPL_API_KEY` | GHA の `sync:tavily` |
+| `TAVILY_API_KEY` | GHA の `sync:tavily:upload` |
+| `DEEPL_API_KEY` | GHA の `sync:tavily:upload` |
 
 ### ローカルでの Docker ビルド
 
@@ -137,8 +137,8 @@ docker build -t gbbinfo4.0:local \
 | `PUBLIC_ASSET_BASE_URL` | Cloudflare Pages の公開 URL（例: `https://gbbinfo-assets.pages.dev`。dev / build とも必須） |
 | `PUBLIC_SITE_URL` | （任意）サイト絶対 URL の上書き。未設定時は Render の `RENDER_EXTERNAL_URL`、それも無ければ本番既定 URL |
 | `RENDER_EXTERNAL_URL` | Render が自動注入（`https://xxx.onrender.com`）。手設定不要 |
-| `TAVILY_API_KEY` | `sync:tavily` 用（GHA / 手動同期） |
-| `DEEPL_API_KEY` | `sync:tavily` 用（GHA / 手動同期） |
+| `TAVILY_API_KEY` | `sync:tavily:upload` 用（GHA / 手動同期） |
+| `DEEPL_API_KEY` | `sync:tavily:upload` 用（GHA / 手動同期） |
 
 canonical / OGP / sitemap の絶対 URL はビルド時に確定する。Render ではサービス環境変数の `PUBLIC_SITE_URL`（または `RENDER_EXTERNAL_URL`）を使う。
 
