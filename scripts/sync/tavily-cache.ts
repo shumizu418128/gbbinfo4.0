@@ -3,8 +3,9 @@
  * dev 時の参加者詳細表示は `.cache/tavily/{cache_key}.json` を参照する。
  *
  * Usage:
- *   npm run sync:tavily:cache
- *   npm run sync:tavily:cache -- --force
+ *   npm run sync:tavily:download
+ *   npm run sync:tavily:download -- --force
+ *   npm run sync:tavily:download -- --force --name "Sora'"
  *
  * ローカルキャッシュ: .cache/tavily/{cache_key}.json（gitignore 済み）
  */
@@ -15,20 +16,30 @@ import { readLocalTavilyCache } from "../../shared/tavily/local-cache-read.ts";
 import { loadDotEnv } from "../lib/load-dotenv.ts";
 import { hydrateLocalCacheFromDb } from "../lib/tavily/db-sync.ts";
 import { isLocalTavilyCacheComplete } from "../lib/tavily/local-cache-write.ts";
-import { findTavilySyncTargetNames } from "../lib/tavily/sync-targets.ts";
+import {
+  filterTavilySyncNames,
+  findTavilySyncTargetNames,
+  parseTavilyNameFilter,
+} from "../lib/tavily/sync-targets.ts";
 
 const main = async (): Promise<void> => {
   loadDotEnv();
 
   const databaseUrl = process.env.DATABASE_URL;
   const force = process.argv.includes("--force");
+  const nameFilter = parseTavilyNameFilter(process.argv);
 
   if (!databaseUrl) {
     throw new Error("DATABASE_URL is required");
   }
 
-  const names = await findTavilySyncTargetNames();
-  console.log(`Found ${names.length} beatboxer names to download`);
+  const names = filterTavilySyncNames(
+    await findTavilySyncTargetNames(),
+    nameFilter,
+  );
+  console.log(
+    `Found ${names.length} beatboxer names to download name=${nameFilter ?? "*"}`,
+  );
 
   let downloaded = 0;
   let skipped = 0;
