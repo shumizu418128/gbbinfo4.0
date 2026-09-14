@@ -15,6 +15,12 @@ export const TAVILY_EXCLUDE_DOMAINS = [
   "reddit.com",
   "swissbeatbox.com",
   "gbbinfo-jpn.onrender.com",
+  "amazon.com",
+  "amazon.co.jp",
+  "amazon.jp",
+  "amzn.to",
+  "walmart.com",
+  "ebay.com",
 ] as const;
 
 /** ローカル Tavily キャッシュ（gitignore）。 */

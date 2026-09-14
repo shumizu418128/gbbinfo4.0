@@ -18,7 +18,7 @@ export const fetchTavilySearch = async (
   apiKey: string,
 ): Promise<TavilyApiResponse> => {
   const client = tavily({ apiKey });
-  return client.search(`${beatboxerName} beatbox`, {
+  return client.search(`"${beatboxerName}" beatboxer GBB`, {
     maxResults: 12,
     includeAnswer: "basic",
     includeFavicon: true,

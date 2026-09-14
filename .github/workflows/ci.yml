@@ -47,8 +47,8 @@ jobs:
           TAVILY_API_KEY: ${{ secrets.TAVILY_API_KEY }}
           DEEPL_API_KEY: ${{ secrets.DEEPL_API_KEY }}
         run: |
-          echo "::group::sync:tavily"
-          npm run sync:tavily
+          echo "::group::sync:tavily:upload"
+          npm run sync:tavily:upload
           echo "::endgroup::"
 
       - name: Sync locales

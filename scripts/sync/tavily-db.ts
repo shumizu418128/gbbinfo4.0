@@ -3,8 +3,9 @@
  * Supabase Tavily テーブルへ upsert する。翻訳（ja/ko）は DeepL API を使用。
  *
  * Usage:
- *   npm run sync:tavily
- *   npm run sync:tavily -- --force
+ *   npm run sync:tavily:upload
+ *   npm run sync:tavily:upload -- --force
+ *   npm run sync:tavily:upload -- --force --name "Sora'"
  */
 
 import { toTavilyCacheKey } from "../../shared/tavily/cache-key.ts";
@@ -14,7 +15,11 @@ import { loadDotEnv } from "../lib/load-dotenv.ts";
 import { fetchTavilySearch } from "../lib/tavily/api.ts";
 import { buildTranslations } from "../lib/tavily/deepl.ts";
 import { getCachedTavilyStatus } from "../lib/tavily/db-sync.ts";
-import { findTavilySyncTargetNames } from "../lib/tavily/sync-targets.ts";
+import {
+  filterTavilySyncNames,
+  findTavilySyncTargetNames,
+  parseTavilyNameFilter,
+} from "../lib/tavily/sync-targets.ts";
 
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -30,6 +35,7 @@ const main = async (): Promise<void> => {
   const tavilyApiKey = process.env.TAVILY_API_KEY;
   const deeplApiKey = process.env.DEEPL_API_KEY;
   const force = process.argv.includes("--force");
+  const nameFilter = parseTavilyNameFilter(process.argv);
   const startedAt = Date.now();
 
   if (!databaseUrl) {
@@ -42,8 +48,11 @@ const main = async (): Promise<void> => {
     throw new Error("DEEPL_API_KEY is required");
   }
 
-  console.log(`[tavily] start force=${force}`);
-  const names = await findTavilySyncTargetNames();
+  console.log(`[tavily] start force=${force} name=${nameFilter ?? "*"}`);
+  const names = filterTavilySyncNames(
+    await findTavilySyncTargetNames(),
+    nameFilter,
+  );
   const total = names.length;
   console.log(`[tavily] Found ${total} beatboxer names to sync`);
 
@@ -108,7 +117,7 @@ const main = async (): Promise<void> => {
 
       const cachedForExisting = await getCachedTavilyStatus(cacheKey);
       const priorTranslations =
-        cachedForExisting.kind === "missing"
+        force || cachedForExisting.kind === "missing"
           ? {}
           : cachedForExisting.answerTranslation;
 

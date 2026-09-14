@@ -21,8 +21,8 @@ flowchart TB
   end
 
   subgraph manual [手動または GHA main]
-    T1[sync:tavily]
-    T2[sync:tavily:cache]
+    T1[sync:tavily:upload]
+    T2[sync:tavily:download]
   end
 
   B2 --> Supabase[(Supabase)]
@@ -40,8 +40,8 @@ flowchart TB
 |---|---|---|---|
 | `sync:locales` | なし | `project.inlang/settings.json` | 両方 |
 | `sync:build-cache` | あり（4 bulk SELECT） | `.cache/build/` | build のみ（dev は `--skip`） |
-| `sync:tavily` | あり（upsert） | Supabase `Tavily` テーブル | **GHA（main）のみ自動**。ローカルは手動 |
-| `sync:tavily:cache` | あり（読み取り） | `.cache/tavily/` | なし |
+| `sync:tavily:upload` | あり（upsert） | Supabase `Tavily` テーブル | **GHA（main）のみ自動**。ローカルは手動 |
+| `sync:tavily:download` | あり（読み取り） | `.cache/tavily/` | なし |
 | `dev` | 上記に依存 | — | — |
 | `build` | 上記に依存 | `dist/` | ローカル / GHA |
 
@@ -101,9 +101,9 @@ npm run sync:build-cache
 
 ---
 
-## `sync:tavily`
+## `sync:tavily:upload`
 
-出場者名ごとに Tavily API で検索し、DeepL で翻訳した結果を Supabase `Tavily` テーブルへ upsert する。
+出場者名ごとに Tavily API で検索し、DeepL で翻訳した結果を Supabase `Tavily` テーブルへ upload する。
 
 - **目的**: 本番データの Tavily 検索結果・answer 翻訳を更新する（不足分のみ。`--force` で再取得）
 - **いつ実行するか**:
@@ -113,15 +113,15 @@ npm run sync:build-cache
 - **必要な環境変数**: `DATABASE_URL`, `TAVILY_API_KEY`, `DEEPL_API_KEY`
 
 ```bash
-npm run sync:tavily
-npm run sync:tavily -- --force   # 既存 answer があっても再取得
+npm run sync:tavily:upload
+npm run sync:tavily:upload -- --force   # 既存 answer があっても再取得
 ```
 
 ---
 
-## `sync:tavily:cache`
+## `sync:tavily:download`
 
-Supabase `Tavily` テーブルから `.cache/tavily/{cache_key}.json` へダウンロードする。
+Supabase `Tavily` テーブルから `.cache/tavily/{cache_key}.json` へ download する。
 
 - **目的**: **開発時**の出場者詳細ページで Tavily 表示を DB なしで行う
 - **参照タイミング**: `astro dev` 中、`findTavilyDataForPage` がローカルキャッシュを優先
@@ -129,14 +129,14 @@ Supabase `Tavily` テーブルから `.cache/tavily/{cache_key}.json` へダウ�
 - **必要な環境変数**: `DATABASE_URL`
 
 ```bash
-npm run sync:tavily:cache
-npm run sync:tavily:cache -- --force
+npm run sync:tavily:download
+npm run sync:tavily:download -- --force
 ```
 
 Tavily データ更新の典型フロー:
 
-1. `npm run sync:tavily` — Supabase を更新
-2. `npm run sync:tavily:cache` — ローカル dev 用キャッシュを更新（dev で Tavily を見る場合）
+1. `npm run sync:tavily:upload` — Supabase へ upload
+2. `npm run sync:tavily:download` — ローカル dev 用キャッシュを download（dev で Tavily を見る場合）
 3. `npm run sync:build-cache` — 本番ビルド用スナップショットを更新
 
 ---
@@ -169,7 +169,7 @@ npm run build
 2. `sync:build-cache` — Supabase から最新スナップショットを取得
 3. `astro build` — 静的 HTML を `dist/` に生成
 
-デプロイ経路では、GHA CI が `sync:tavily` → `sync:locales` → `sync:build-cache` を実行し、成功後に Render（`gbbinfo`）が Git 連携の Dockerfile で `npm run build`（locales → build-cache → `astro build`）を行う（After CI Checks Pass）。SSG は Render のみ。詳細は [README.md](../README.md) のデプロイ節を参照。
+デプロイ経路では、GHA CI が `sync:tavily:upload` → `sync:locales` → `sync:build-cache` を実行し、成功後に Render（`gbbinfo`）が Git 連携の Dockerfile で `npm run build`（locales → build-cache → `astro build`）を行う（After CI Checks Pass）。SSG は Render のみ。詳細は [README.md](../README.md) のデプロイ節を参照。
 
 ---
 
@@ -181,9 +181,9 @@ npm run build
 | DB の最新出場者を dev で見たい | `npm run sync:build-cache` → `npm run dev` |
 | 本番デプロイ前の確認 | `npm run build` |
 | 言語を追加した | `languageLabels.ts` 編集 → `npm run dev` または `npm run build`（locales 同期は自動） |
-| Tavily 表示を dev で確認したい | `sync:tavily:cache`（必要なら先に `sync:tavily`） |
+| Tavily 表示を dev で確認したい | `sync:tavily:download`（必要なら先に `sync:tavily:upload`） |
 | Tavily データを更新しつつ本番デプロイ | `main` へ push（GHA CI → Render After CI） |
-| Tavily だけ手動更新 | `npm run sync:tavily` |
+| Tavily だけ手動更新 | `npm run sync:tavily:upload` |
 
 ---
 
