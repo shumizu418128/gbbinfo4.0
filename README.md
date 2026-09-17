@@ -38,6 +38,7 @@ gbbinfo3.0 の Flask/Jinja 実装を、Render.com（Docker）上の **Astro 静�
 | `scripts/` | ロケール同期・Tavily 同期などの補助スクリプト |
 | `docs/DATABASE.md` | データベーススキーマ |
 | `cloudflare/` | 静的画像アセットと Cloudflare Pages デプロイ設定 |
+| `vercel/` | サイト内検索 API（TypeSafe） |
 
 ## 開発コマンド
 
@@ -48,7 +49,7 @@ npm install
 # ローカル開発（locales 同期 → build-cache 同期 → astro dev）
 npm run dev
 
-# 本番ビルド（locales 同期 → build-cache 同期 → astro build）
+# 本番ビルド（locales → build-cache → search-catalog → astro build）
 npm run build
 
 # ビルド成果物のプレビュー
@@ -78,6 +79,9 @@ npm run sync:build-cache
 
 # Supabase 同期をスキップ（dev で自動付与。既存 .cache/build/ をそのまま利用）
 npm run sync:build-cache -- --skip
+
+# 検索ハブカタログを vercel/data/page-catalog.json へ書き出す
+npm run sync:search-catalog
 
 # Tavily 検索結果を Supabase へ upload（要 DATABASE_URL, Tavily / DeepL API キー）
 npm run sync:tavily:upload
@@ -139,6 +143,7 @@ docker build -t gbbinfo4.0:local \
 | `RENDER_EXTERNAL_URL` | Render が自動注入（`https://xxx.onrender.com`）。手設定不要 |
 | `TAVILY_API_KEY` | `sync:tavily:upload` 用（GHA / 手動同期） |
 | `DEEPL_API_KEY` | `sync:tavily:upload` 用（GHA / 手動同期） |
+| `PUBLIC_SEARCH_API_URL` | サイト内検索 API のベース URL（例: `https://xxx.vercel.app`。未設定時は検索ボタンがエラー表示） |
 
 canonical / OGP / sitemap の絶対 URL はビルド時に確定する。Render ではサービス環境変数の `PUBLIC_SITE_URL`（または `RENDER_EXTERNAL_URL`）を使う。
 

@@ -7,9 +7,10 @@
   "scripts": {
     "sync:locales": "tsx scripts/sync/inlang-locales.ts",
     "sync:build-cache": "tsx scripts/sync/build-cache.ts",
+    "sync:search-catalog": "tsx scripts/sync/search-catalog.ts",
     "sync:tavily:upload": "tsx scripts/sync/tavily-db.ts",
     "sync:tavily:download": "tsx scripts/sync/tavily-cache.ts",
-    "build": "npm run sync:locales && npm run sync:build-cache && astro build",
+    "build": "npm run sync:locales && npm run sync:build-cache && npm run sync:search-catalog && astro build",
     "dev": "npm run sync:locales && npm run sync:build-cache -- --skip && astro dev",
     "preview": "astro preview",
     "start": "astro preview",

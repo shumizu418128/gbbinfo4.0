@@ -3,6 +3,7 @@
 
 interface ImportMetaEnv {
   readonly PUBLIC_ASSET_BASE_URL?: string;
+  readonly PUBLIC_SEARCH_API_URL?: string;
 }
 
 interface ImportMeta {

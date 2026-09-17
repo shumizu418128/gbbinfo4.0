@@ -5,6 +5,7 @@ import {
   type SupportedLanguage,
 } from "~/constants/languageLabels";
 import * as m from "../../paraglide/messages";
+import SiteSearch from "./SiteSearch.astro";
 
 interface Props {
   lang: SupportedLanguage;
@@ -44,7 +45,8 @@ const languageSubmenuClass =
     : "bg-(--background-color)/30";
 ---
 
-<div class="fixed bottom-32 right-8 z-50">
+<div class="fixed bottom-32 right-8 z-50 flex flex-col items-end gap-2">
+  <SiteSearch lang={lang} year={year} />
   <details class="hamburger-menu relative">
     <summary
       class="flex min-h-16 min-w-16 cursor-pointer list-none flex-col items-center justify-center gap-2 border border-(--button-border-color) bg-(--hamburger-menu-background-color) px-2 py-2 transition-colors duration-150 hover:bg-(--gbb-color) [&::-webkit-details-marker]:hidden"

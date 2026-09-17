@@ -16,8 +16,9 @@ flowchart TB
   subgraph buildFlow [npm run build]
     L2[sync:locales]
     B2[sync:build-cache]
+    S2[sync:search-catalog]
     A[astro build]
-    L2 --> B2 --> A
+    L2 --> B2 --> S2 --> A
   end
 
   subgraph manual [手動または GHA main]
@@ -42,6 +43,7 @@ flowchart TB
 | `sync:build-cache` | あり（4 bulk SELECT） | `.cache/build/` | build のみ（dev は `--skip`） |
 | `sync:tavily:upload` | あり（upsert） | Supabase `Tavily` テーブル | **GHA（main）のみ自動**。ローカルは手動 |
 | `sync:tavily:download` | あり（読み取り） | `.cache/tavily/` | なし |
+| `sync:search-catalog` | なし | `vercel/data/page-catalog.json` | build のみ |
 | `dev` | 上記に依存 | — | — |
 | `build` | 上記に依存 | `dist/` | ローカル / GHA |
 
@@ -167,7 +169,8 @@ npm run build
 
 1. `sync:locales`
 2. `sync:build-cache` — Supabase から最新スナップショットを取得
-3. `astro build` — 静的 HTML を `dist/` に生成
+3. `sync:search-catalog` — ハブページ一覧を `vercel/data/page-catalog.json` へ書く
+4. `astro build` — 静的 HTML を `dist/` に生成
 
 デプロイ経路では、GHA CI が `sync:tavily:upload` → `sync:locales` → `sync:build-cache` を実行し、成功後に Render（`gbbinfo`）が Git 連携の Dockerfile で `npm run build`（locales → build-cache → `astro build`）を行う（After CI Checks Pass）。SSG は Render のみ。詳細は [README.md](../README.md) のデプロイ節を参照。
 
