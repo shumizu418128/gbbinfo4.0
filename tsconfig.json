@@ -1,7 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "node_modules", "build", ".react-router", "paraglide", "cloudflare"],
+  "exclude": ["dist", "node_modules", "build", ".react-router", "paraglide", "cloudflare", "vercel"],
   "compilerOptions": {
     "paths": {
       "~/*": ["./src/*"],

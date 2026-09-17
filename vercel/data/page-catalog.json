@@ -1,0 +1,154 @@
+{
+  "years": [
+    2026,
+    2025,
+    2024,
+    2023,
+    2022,
+    2021,
+    2020,
+    2019,
+    2018,
+    2017,
+    2016,
+    2015,
+    2014,
+    2013
+  ],
+  "yearSections": {
+    "2013": [
+      "japan",
+      "korea",
+      "participants",
+      "top"
+    ],
+    "2014": [
+      "japan",
+      "korea",
+      "participants",
+      "top"
+    ],
+    "2015": [
+      "japan",
+      "korea",
+      "participants",
+      "top"
+    ],
+    "2016": [
+      "japan",
+      "korea",
+      "participants",
+      "top"
+    ],
+    "2017": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "ticket",
+      "top"
+    ],
+    "2018": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "ticket",
+      "top"
+    ],
+    "2019": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "ticket",
+      "top"
+    ],
+    "2020": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "ticket",
+      "top"
+    ],
+    "2021": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "ticket",
+      "timetable",
+      "top"
+    ],
+    "2022": [
+      "top"
+    ],
+    "2023": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "stream",
+      "ticket",
+      "timetable",
+      "top",
+      "top_7tosmoke",
+      "wildcards"
+    ],
+    "2024": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "stream",
+      "ticket",
+      "timetable",
+      "top",
+      "top_7tosmoke",
+      "wildcards"
+    ],
+    "2025": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "stream",
+      "ticket",
+      "timetable",
+      "top",
+      "top_7tosmoke",
+      "wildcards"
+    ],
+    "2026": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "stream",
+      "ticket",
+      "timetable",
+      "top",
+      "top_7tosmoke",
+      "wildcards"
+    ]
+  }
+}

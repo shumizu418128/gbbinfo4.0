@@ -1,0 +1,172 @@
+---
+interface Props {
+  lang: string;
+  year: number;
+}
+
+const { lang, year } = Astro.props;
+const searchApiBase = import.meta.env.PUBLIC_SEARCH_API_URL ?? "";
+const buttonClass =
+  "flex size-16 cursor-pointer list-none items-center justify-center border border-(--button-border-color) bg-(--hamburger-menu-background-color) transition-colors duration-150 hover:bg-(--gbb-color) [&::-webkit-details-marker]:hidden";
+---
+
+<details class="site-search relative">
+  <summary class={buttonClass} aria-label="Search">
+    <span class="site-search-icon-open">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#FFFFFF"
+      >
+        <path
+          d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+        ></path>
+      </svg>
+    </span>
+    <span class="site-search-icon-close hidden">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        height="24px"
+        viewBox="0 -960 960 960"
+        width="24px"
+        fill="#FFFFFF"
+      >
+        <path
+          d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z"
+        ></path>
+      </svg>
+    </span>
+  </summary>
+
+  <form
+    class="site-search-form absolute right-0 bottom-full mb-2 w-80 border border-(--button-border-color) bg-zinc-800/80 p-4 shadow-lg backdrop-blur-md"
+    data-search-api={searchApiBase}
+    data-lang={lang}
+    data-year={String(year)}
+  >
+    <div class="flex items-stretch gap-2">
+      <label class="sr-only" for="site-search-query">Search</label>
+      <input
+        id="site-search-query"
+        name="query"
+        type="search"
+        autocomplete="off"
+        class="min-h-10 min-w-0 flex-1 border border-(--button-border-color) bg-black/40 px-4 py-2 text-base text-white outline-none"
+        placeholder="Search"
+      />
+      <button
+        type="submit"
+        class="flex size-10 shrink-0 cursor-pointer items-center justify-center border border-(--button-border-color) bg-(--hamburger-menu-background-color) text-white hover:bg-(--gbb-color) disabled:cursor-not-allowed disabled:opacity-50"
+        aria-label="Search"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="currentColor"
+        >
+          <path
+            d="M784-120 532-372q-30 24-69 38t-83 14q-109 0-184.5-75.5T120-580q0-109 75.5-184.5T380-840q109 0 184.5 75.5T640-580q0 44-14 83t-38 69l252 252-56 56ZM380-400q75 0 127.5-52.5T560-580q0-75-52.5-127.5T380-760q-75 0-127.5 52.5T200-580q0 75 52.5 127.5T380-400Z"
+          ></path>
+        </svg>
+      </button>
+    </div>
+    <p class="site-search-error mt-2 hidden text-xs text-red-400"></p>
+  </form>
+</details>
+
+<style>
+  details.site-search[open] .site-search-icon-open {
+    display: none;
+  }
+  details.site-search[open] .site-search-icon-close {
+    display: block;
+  }
+</style>
+
+<script>
+  document.querySelectorAll("form.site-search-form").forEach((form) => {
+    if (!(form instanceof HTMLFormElement)) return;
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const errorEl = form.querySelector(".site-search-error");
+      const input = form.querySelector("input[name='query']");
+      if (!(errorEl instanceof HTMLElement) || !(input instanceof HTMLInputElement)) {
+        return;
+      }
+
+      const query = input.value.trim();
+      const apiBase = form.dataset.searchApi ?? "";
+      const lang = form.dataset.lang ?? "";
+      const year = Number(form.dataset.year);
+
+      const showError = (message: string) => {
+        errorEl.textContent = message;
+        errorEl.classList.remove("hidden");
+      };
+
+      errorEl.classList.add("hidden");
+      errorEl.textContent = "";
+
+      if (!query) {
+        showError("Enter a search.");
+        return;
+      }
+      if (!apiBase) {
+        showError("Search is not configured.");
+        return;
+      }
+
+      const submitButton = form.querySelector("button[type='submit']");
+      if (submitButton instanceof HTMLButtonElement) {
+        submitButton.disabled = true;
+      }
+
+      try {
+        const response = await fetch(`${apiBase.replace(/\/$/, "")}/api/search`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ query, lang, year }),
+        });
+        const payload = (await response.json()) as {
+          path?: string;
+          error?: string;
+        };
+
+        if (response.ok && typeof payload.path === "string") {
+          window.location.assign(payload.path);
+          return;
+        }
+        if (payload.error === "no_match") {
+          window.location.assign("/");
+          return;
+        }
+        if (payload.error === "credits_exhausted") {
+          showError("Search is temporarily unavailable.");
+          return;
+        }
+        showError("Search failed.");
+      } catch {
+        showError("Search failed.");
+      } finally {
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.disabled = false;
+        }
+      }
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    document.querySelectorAll("details.site-search[open]").forEach((details) => {
+      if (details instanceof HTMLDetailsElement && !details.contains(target)) {
+        details.open = false;
+      }
+    });
+  });
+</script>

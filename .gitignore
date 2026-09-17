@@ -21,3 +21,8 @@
 /cloudflare/.wrangler/
 /cloudflare/.dev.vars
 /cloudflare/dist-pages/
+
+# Vercel search API
+/vercel/node_modules/
+/vercel/.vercel/
+.vercel
