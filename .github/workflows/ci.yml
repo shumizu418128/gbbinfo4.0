@@ -14,6 +14,7 @@ env:
   NODE_VERSION: "24.10.0"
   PUBLIC_ASSET_BASE_URL: https://gbbinfo-assets.pages.dev
   PUBLIC_SITE_URL: https://gbbinfo-jpn.onrender.com
+  PUBLIC_SEARCH_API_URL: ${{ vars.PUBLIC_SEARCH_API_URL }}
 
 jobs:
   ci:
@@ -88,6 +89,7 @@ jobs:
             --build-arg DATABASE_URL="$DATABASE_URL" \
             --build-arg PUBLIC_ASSET_BASE_URL="$PUBLIC_ASSET_BASE_URL" \
             --build-arg PUBLIC_SITE_URL="$PUBLIC_SITE_URL" \
+            --build-arg PUBLIC_SEARCH_API_URL="$PUBLIC_SEARCH_API_URL" \
             --build-arg DEPLOY_ENV=production \
             .
           rm -rf dist

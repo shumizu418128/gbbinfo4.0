@@ -129,6 +129,7 @@ docker build -t gbbinfo4.0:local \
   --build-arg DATABASE_URL=... \
   --build-arg PUBLIC_ASSET_BASE_URL=https://gbbinfo-assets.pages.dev \
   --build-arg PUBLIC_SITE_URL=https://gbbinfo-jpn.onrender.com \
+  --build-arg PUBLIC_SEARCH_API_URL=https://gbbinfo-ai.vercel.app \
   --build-arg DEPLOY_ENV=production \
   .
 ```
@@ -143,7 +144,7 @@ docker build -t gbbinfo4.0:local \
 | `RENDER_EXTERNAL_URL` | Render が自動注入（`https://xxx.onrender.com`）。手設定不要 |
 | `TAVILY_API_KEY` | `sync:tavily:upload` 用（GHA / 手動同期） |
 | `DEEPL_API_KEY` | `sync:tavily:upload` 用（GHA / 手動同期） |
-| `PUBLIC_SEARCH_API_URL` | サイト内検索 API のベース URL（例: `https://xxx.vercel.app`。未設定時は検索ボタンがエラー表示） |
+| `PUBLIC_SEARCH_API_URL` | サイト内検索 API のベース URL（例: `https://gbbinfo-ai.vercel.app`）。**ビルド時**に HTML へ埋め込まれる。Render の Docker では `ARG` 経由。未設定時は検索が「Search is not configured.」になる |
 
 canonical / OGP / sitemap の絶対 URL はビルド時に確定する。Render ではサービス環境変数の `PUBLIC_SITE_URL`（または `RENDER_EXTERNAL_URL`）を使う。
 
