@@ -1,6 +1,5 @@
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
-import { handle } from "hono/vercel";
 import { getCachedSearch, setCachedSearch } from "../src/cache.js";
 import { isCreditsExhausted } from "../src/credits.js";
 import { DENYLIST_PATH, isDeniedQuery } from "../src/denylist.js";
@@ -46,18 +45,46 @@ app.use(
   }),
 );
 
-const readBody = async (
-  c: Context,
-): Promise<{ query: string; lang: string; year: number }> => {
-  const body = (await c.req.json()) as {
-    query?: unknown;
-    lang?: unknown;
-    year?: unknown;
-  };
-  const query = typeof body.query === "string" ? body.query : "";
-  const lang = typeof body.lang === "string" ? body.lang : "";
-  const year = typeof body.year === "number" ? body.year : Number(body.year);
-  return { query, lang, year };
+type SearchBody = {
+  query: string;
+  lang: string;
+  year: number | "";
+};
+
+/**
+ * year を数値として採用できるか判定する。null / false / 空文字は拒否する。
+ *
+ * Args:
+ *   value: JSON の year フィールド。
+ *
+ * Returns:
+ *   有限数。不正なら空文字。
+ */
+const parseYear = (value: unknown): number | "" => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : "";
+  }
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : "";
+  }
+  return "";
+};
+
+const readBody = async (c: Context): Promise<SearchBody | null> => {
+  let body: unknown;
+  try {
+    body = await c.req.json();
+  } catch {
+    return null;
+  }
+  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+    return null;
+  }
+  const record = body as Record<string, unknown>;
+  const query = typeof record.query === "string" ? record.query : "";
+  const lang = typeof record.lang === "string" ? record.lang : "";
+  return { query, lang, year: parseYear(record.year) };
 };
 
 const logSearch = (
@@ -87,9 +114,14 @@ app.post("/search", async (c) => {
 
   try {
     const parsed = await readBody(c);
+    if (!parsed) {
+      logSearch(query, lang, year, "", "", "error", "invalid request");
+      return c.json({ error: "invalid_request" }, 400);
+    }
+
     query = parsed.query;
     lang = parsed.lang;
-    year = Number.isFinite(parsed.year) ? parsed.year : "";
+    year = parsed.year;
 
     if (!query.trim()) {
       logSearch(query, lang, year, "", "", "error", "empty query");
@@ -153,4 +185,6 @@ app.post("/search", async (c) => {
   }
 });
 
-export default handle(app);
+// Vercel Node の default 関数は (req, res) => void。handle() が返す
+// Response は無視され、クライアントが応答待ちのまま固まる。
+export default app;

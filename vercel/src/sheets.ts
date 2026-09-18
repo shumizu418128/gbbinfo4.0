@@ -1,19 +1,15 @@
 import { google } from "googleapis";
 import type { SearchStatus } from "./types.js";
 
-const DEFAULT_RANGE = "Sheet1!A:H";
-const SPREADSHEET_TITLE = "gbbinfo-jpn";
-const SCOPES = [
-  "https://www.googleapis.com/auth/spreadsheets",
-  "https://www.googleapis.com/auth/drive.readonly",
-];
+const DEFAULT_RANGE = "typesafe!A:H";
+const APPEND_TIMEOUT_MS = 5000;
+const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
+const SPREADSHEET_ID_IN_URL = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
 
 type ServiceAccount = {
   client_email: string;
   private_key: string;
 };
-
-let cachedSpreadsheetId: string | null = null;
 
 /**
  * 3.0 と同じ GOOGLE_SHEET_CREDENTIALS（サービスアカウント JSON）を読む。
@@ -53,41 +49,25 @@ const createAuth = (credentials: ServiceAccount) =>
     scopes: SCOPES,
   });
 
-type SheetsAuth = ReturnType<typeof createAuth>;
-
 /**
- * スプレッドシート ID を解決する。3.0 と同様、未指定ならブック名 gbbinfo-jpn。
- *
- * Args:
- *   auth: サービスアカウント JWT。
+ * GOOGLE_SHEETS_URL からスプレッドシート ID を取り出す。
  *
  * Returns:
- *   スプレッドシート ID。見つからなければ null。
+ *   スプレッドシート ID。URL が無いか不正なら null。
  */
-const resolveSpreadsheetId = async (
-  auth: SheetsAuth,
-): Promise<string | null> => {
-  if (cachedSpreadsheetId) {
-    return cachedSpreadsheetId;
-  }
-  const fromEnv = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
-  if (fromEnv) {
-    cachedSpreadsheetId = fromEnv;
-    return fromEnv;
-  }
-
-  const drive = google.drive({ version: "v3", auth });
-  const listed = await drive.files.list({
-    q: `name = '${SPREADSHEET_TITLE}' and mimeType = 'application/vnd.google-apps.spreadsheet' and trashed = false`,
-    fields: "files(id, name)",
-    pageSize: 1,
-  });
-  const id = listed.data.files?.[0]?.id;
-  if (!id) {
+const parseSpreadsheetId = (): string | null => {
+  const raw = process.env.GOOGLE_SHEETS_URL?.trim();
+  if (!raw) {
     return null;
   }
-  cachedSpreadsheetId = id;
-  return id;
+  const matched = raw.match(SPREADSHEET_ID_IN_URL);
+  if (matched?.[1]) {
+    return matched[1];
+  }
+  if (/^[a-zA-Z0-9-_]+$/.test(raw)) {
+    return raw;
+  }
+  return null;
 };
 
 /**
@@ -112,34 +92,37 @@ export const appendSearchLog = async (row: {
     return;
   }
 
+  const spreadsheetId = parseSpreadsheetId();
+  if (!spreadsheetId) {
+    console.error("[sheets] missing or invalid GOOGLE_SHEETS_URL");
+    return;
+  }
+
   try {
     const auth = createAuth(credentials);
-    const spreadsheetId = await resolveSpreadsheetId(auth);
-    if (!spreadsheetId) {
-      console.error(`[sheets] spreadsheet ${SPREADSHEET_TITLE} not found`);
-      return;
-    }
-
     const sheets = google.sheets({ version: "v4", auth });
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: process.env.GOOGLE_SHEETS_RANGE ?? DEFAULT_RANGE,
-      valueInputOption: "USER_ENTERED",
-      requestBody: {
-        values: [
-          [
-            new Date().toISOString(),
-            row.query,
-            row.lang,
-            row.year,
-            row.path,
-            row.confidence,
-            row.status,
-            row.error,
+    await sheets.spreadsheets.values.append(
+      {
+        spreadsheetId,
+        range: DEFAULT_RANGE,
+        valueInputOption: "RAW",
+        requestBody: {
+          values: [
+            [
+              new Date().toISOString(),
+              row.query,
+              row.lang,
+              row.year,
+              row.path,
+              row.confidence,
+              row.status,
+              row.error,
+            ],
           ],
-        ],
+        },
       },
-    });
+      { timeout: APPEND_TIMEOUT_MS, signal: AbortSignal.timeout(APPEND_TIMEOUT_MS) },
+    );
   } catch (error) {
     console.error("[sheets] append failed", error);
   }

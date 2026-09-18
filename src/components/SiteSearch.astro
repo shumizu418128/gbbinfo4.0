@@ -131,6 +131,7 @@ const buttonClass =
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ query, lang, year }),
+          signal: AbortSignal.timeout(20000),
         });
         const payload = (await response.json()) as {
           path?: string;

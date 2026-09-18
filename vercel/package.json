@@ -2,10 +2,10 @@
   "private": true,
   "type": "module",
   "engines": {
-    "node": ">=20"
+    "node": ">=24 <25"
   },
   "scripts": {
-    "dev": "vercel dev --listen 3000",
+    "dev": "npx vercel dev --listen 3000",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

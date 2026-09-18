@@ -61,5 +61,17 @@ export const findYearWithSection = (
   if (yearHasSection(catalog, preferredYear, section)) {
     return preferredYear;
   }
-  return catalog.years.find((year) => yearHasSection(catalog, year, section));
+  let nearest: number | undefined;
+  let nearestDistance = Number.POSITIVE_INFINITY;
+  for (const year of catalog.years) {
+    if (!yearHasSection(catalog, year, section)) {
+      continue;
+    }
+    const distance = Math.abs(year - preferredYear);
+    if (distance < nearestDistance) {
+      nearest = year;
+      nearestDistance = distance;
+    }
+  }
+  return nearest;
 };
