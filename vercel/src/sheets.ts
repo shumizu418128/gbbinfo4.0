@@ -2,6 +2,7 @@ import { google } from "googleapis";
 import type { SearchStatus } from "./types.js";
 
 const DEFAULT_RANGE = "typesafe!A:H";
+const APPEND_TIMEOUT_MS = 5000;
 const SCOPES = ["https://www.googleapis.com/auth/spreadsheets"];
 const SPREADSHEET_ID_IN_URL = /\/spreadsheets\/d\/([a-zA-Z0-9-_]+)/;
 
@@ -100,25 +101,28 @@ export const appendSearchLog = async (row: {
   try {
     const auth = createAuth(credentials);
     const sheets = google.sheets({ version: "v4", auth });
-    await sheets.spreadsheets.values.append({
-      spreadsheetId,
-      range: DEFAULT_RANGE,
-      valueInputOption: "RAW",
-      requestBody: {
-        values: [
-          [
-            new Date().toISOString(),
-            row.query,
-            row.lang,
-            row.year,
-            row.path,
-            row.confidence,
-            row.status,
-            row.error,
+    await sheets.spreadsheets.values.append(
+      {
+        spreadsheetId,
+        range: DEFAULT_RANGE,
+        valueInputOption: "RAW",
+        requestBody: {
+          values: [
+            [
+              new Date().toISOString(),
+              row.query,
+              row.lang,
+              row.year,
+              row.path,
+              row.confidence,
+              row.status,
+              row.error,
+            ],
           ],
-        ],
+        },
       },
-    });
+      { timeout: APPEND_TIMEOUT_MS, signal: AbortSignal.timeout(APPEND_TIMEOUT_MS) },
+    );
   } catch (error) {
     console.error("[sheets] append failed", error);
   }

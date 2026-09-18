@@ -87,7 +87,7 @@ const readBody = async (c: Context): Promise<SearchBody | null> => {
   return { query, lang, year: parseYear(record.year) };
 };
 
-const logSearch = async (
+const logSearch = (
   query: string,
   lang: string,
   year: number | "",
@@ -95,8 +95,8 @@ const logSearch = async (
   confidence: number | "",
   status: SearchStatus,
   error = "",
-): Promise<void> => {
-  await appendSearchLog({
+): void => {
+  void appendSearchLog({
     query,
     lang,
     year,
@@ -115,7 +115,7 @@ app.post("/search", async (c) => {
   try {
     const parsed = await readBody(c);
     if (!parsed) {
-      await logSearch(query, lang, year, "", "", "error", "invalid request");
+      logSearch(query, lang, year, "", "", "error", "invalid request");
       return c.json({ error: "invalid_request" }, 400);
     }
 
@@ -124,35 +124,35 @@ app.post("/search", async (c) => {
     year = parsed.year;
 
     if (!query.trim()) {
-      await logSearch(query, lang, year, "", "", "error", "empty query");
+      logSearch(query, lang, year, "", "", "error", "empty query");
       return c.json({ error: "empty_query" }, 400);
     }
 
     if (!lang || year === "") {
-      await logSearch(query, lang, year, "", "", "error", "invalid request");
+      logSearch(query, lang, year, "", "", "error", "invalid request");
       return c.json({ error: "invalid_request" }, 400);
     }
 
     if (isDeniedQuery(query)) {
-      await logSearch(query, lang, year, DENYLIST_PATH, 1, "denylist");
+      logSearch(query, lang, year, DENYLIST_PATH, 1, "denylist");
       return c.json({ path: DENYLIST_PATH, confidence: 1 });
     }
 
     const cached = getCachedSearch(lang, year, query);
     if (cached) {
-      await logSearch(query, lang, year, cached.path, cached.confidence, "cached");
+      logSearch(query, lang, year, cached.path, cached.confidence, "cached");
       return c.json(cached);
     }
 
     const selected = await selectPage(query, lang, year);
     if (selected.kind === "no_match") {
-      await logSearch(query, lang, year, "/", selected.confidence, "no_match");
+      logSearch(query, lang, year, "/", selected.confidence, "no_match");
       setCachedSearch(lang, year, query, "/", selected.confidence);
       return c.json({ path: "/", confidence: selected.confidence });
     }
 
     setCachedSearch(lang, year, query, selected.path, selected.confidence);
-    await logSearch(query, lang, year, selected.path, selected.confidence, "ok");
+    logSearch(query, lang, year, selected.path, selected.confidence, "ok");
     return c.json({
       path: selected.path,
       confidence: selected.confidence,
@@ -174,13 +174,13 @@ app.post("/search", async (c) => {
         query,
         requestId,
       });
-      await logSearch(query, lang, year, "", "", "credits_exhausted", message);
+      logSearch(query, lang, year, "", "", "credits_exhausted", message);
       return c.json({ error: "credits_exhausted" }, 503);
     }
 
     const message = error instanceof Error ? error.message : String(error);
     console.error("[search]", error);
-    await logSearch(query, lang, year, "", "", "error", message);
+    logSearch(query, lang, year, "", "", "error", message);
     return c.json({ error: "search_failed" }, 500);
   }
 });
