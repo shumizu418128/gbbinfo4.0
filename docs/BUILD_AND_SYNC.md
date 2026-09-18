@@ -172,7 +172,7 @@ npm run build
 3. `sync:search-catalog` — ハブページ一覧を `vercel/data/page-catalog.json` へ書く
 4. `astro build` — 静的 HTML を `dist/` に生成
 
-デプロイ経路では、GHA CI が `sync:tavily:upload` → `sync:locales` → `sync:build-cache` を実行し、成功後に Render（`gbbinfo`）が Git 連携の Dockerfile で `npm run build`（locales → build-cache → `astro build`）を行う（After CI Checks Pass）。SSG は Render のみ。詳細は [README.md](../README.md) のデプロイ節を参照。
+デプロイ経路では、GHA CI が `sync:tavily:upload` → `sync:locales` → `sync:build-cache` を実行し、成功後に Render（`gbbinfo`）が Git 連携の Dockerfile で `npm run build`（locales → build-cache → search-catalog → `astro build`）を行う（After CI Checks Pass）。SSG は Render のみ。詳細は [README.md](../README.md) のデプロイ節を参照。
 
 ---
 

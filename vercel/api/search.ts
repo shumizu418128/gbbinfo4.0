@@ -1,6 +1,5 @@
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
-import { handle } from "hono/vercel";
 import { getCachedSearch, setCachedSearch } from "../src/cache.js";
 import { isCreditsExhausted } from "../src/credits.js";
 import { DENYLIST_PATH, isDeniedQuery } from "../src/denylist.js";
@@ -46,21 +45,49 @@ app.use(
   }),
 );
 
-const readBody = async (
-  c: Context,
-): Promise<{ query: string; lang: string; year: number }> => {
-  const body = (await c.req.json()) as {
-    query?: unknown;
-    lang?: unknown;
-    year?: unknown;
-  };
-  const query = typeof body.query === "string" ? body.query : "";
-  const lang = typeof body.lang === "string" ? body.lang : "";
-  const year = typeof body.year === "number" ? body.year : Number(body.year);
-  return { query, lang, year };
+type SearchBody = {
+  query: string;
+  lang: string;
+  year: number | "";
 };
 
-const logSearch = (
+/**
+ * year を数値として採用できるか判定する。null / false / 空文字は拒否する。
+ *
+ * Args:
+ *   value: JSON の year フィールド。
+ *
+ * Returns:
+ *   有限数。不正なら空文字。
+ */
+const parseYear = (value: unknown): number | "" => {
+  if (typeof value === "number") {
+    return Number.isFinite(value) ? value : "";
+  }
+  if (typeof value === "string" && value.trim() !== "") {
+    const parsed = Number(value);
+    return Number.isFinite(parsed) ? parsed : "";
+  }
+  return "";
+};
+
+const readBody = async (c: Context): Promise<SearchBody | null> => {
+  let body: unknown;
+  try {
+    body = await c.req.json();
+  } catch {
+    return null;
+  }
+  if (body === null || typeof body !== "object" || Array.isArray(body)) {
+    return null;
+  }
+  const record = body as Record<string, unknown>;
+  const query = typeof record.query === "string" ? record.query : "";
+  const lang = typeof record.lang === "string" ? record.lang : "";
+  return { query, lang, year: parseYear(record.year) };
+};
+
+const logSearch = async (
   query: string,
   lang: string,
   year: number | "",
@@ -68,8 +95,8 @@ const logSearch = (
   confidence: number | "",
   status: SearchStatus,
   error = "",
-): void => {
-  void appendSearchLog({
+): Promise<void> => {
+  await appendSearchLog({
     query,
     lang,
     year,
@@ -87,40 +114,45 @@ app.post("/search", async (c) => {
 
   try {
     const parsed = await readBody(c);
+    if (!parsed) {
+      await logSearch(query, lang, year, "", "", "error", "invalid request");
+      return c.json({ error: "invalid_request" }, 400);
+    }
+
     query = parsed.query;
     lang = parsed.lang;
-    year = Number.isFinite(parsed.year) ? parsed.year : "";
+    year = parsed.year;
 
     if (!query.trim()) {
-      logSearch(query, lang, year, "", "", "error", "empty query");
+      await logSearch(query, lang, year, "", "", "error", "empty query");
       return c.json({ error: "empty_query" }, 400);
     }
 
     if (!lang || year === "") {
-      logSearch(query, lang, year, "", "", "error", "invalid request");
+      await logSearch(query, lang, year, "", "", "error", "invalid request");
       return c.json({ error: "invalid_request" }, 400);
     }
 
     if (isDeniedQuery(query)) {
-      logSearch(query, lang, year, DENYLIST_PATH, 1, "denylist");
+      await logSearch(query, lang, year, DENYLIST_PATH, 1, "denylist");
       return c.json({ path: DENYLIST_PATH, confidence: 1 });
     }
 
     const cached = getCachedSearch(lang, year, query);
     if (cached) {
-      logSearch(query, lang, year, cached.path, cached.confidence, "cached");
+      await logSearch(query, lang, year, cached.path, cached.confidence, "cached");
       return c.json(cached);
     }
 
     const selected = await selectPage(query, lang, year);
     if (selected.kind === "no_match") {
-      logSearch(query, lang, year, "/", selected.confidence, "no_match");
+      await logSearch(query, lang, year, "/", selected.confidence, "no_match");
       setCachedSearch(lang, year, query, "/", selected.confidence);
       return c.json({ path: "/", confidence: selected.confidence });
     }
 
     setCachedSearch(lang, year, query, selected.path, selected.confidence);
-    logSearch(query, lang, year, selected.path, selected.confidence, "ok");
+    await logSearch(query, lang, year, selected.path, selected.confidence, "ok");
     return c.json({
       path: selected.path,
       confidence: selected.confidence,
@@ -142,15 +174,17 @@ app.post("/search", async (c) => {
         query,
         requestId,
       });
-      logSearch(query, lang, year, "", "", "credits_exhausted", message);
+      await logSearch(query, lang, year, "", "", "credits_exhausted", message);
       return c.json({ error: "credits_exhausted" }, 503);
     }
 
     const message = error instanceof Error ? error.message : String(error);
     console.error("[search]", error);
-    logSearch(query, lang, year, "", "", "error", message);
+    await logSearch(query, lang, year, "", "", "error", message);
     return c.json({ error: "search_failed" }, 500);
   }
 });
 
-export default handle(app);
+// Vercel Node の default 関数は (req, res) => void。handle() が返す
+// Response は無視され、クライアントが応答待ちのまま固まる。
+export default app;

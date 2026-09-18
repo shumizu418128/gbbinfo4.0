@@ -37,14 +37,20 @@ export const notifyCreditsExhausted = async (payload: {
     .filter((line): line is string => line != null)
     .join("\n");
 
-  const response = await fetch(webhookUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ text }),
-  });
+  try {
+    const response = await fetch(webhookUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ text }),
+      signal: AbortSignal.timeout(5000),
+    });
 
-  if (!response.ok) {
-    console.error(`[slack] webhook failed: ${response.status}`);
+    if (!response.ok) {
+      console.error(`[slack] webhook failed: ${response.status}`);
+      return;
+    }
+  } catch (error) {
+    console.error("[slack] webhook failed", error);
     return;
   }
 

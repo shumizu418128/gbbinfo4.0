@@ -65,6 +65,7 @@ const resolveYear = (
  *   lang: 表示言語。
  *   year: 解決した GBB 年。
  *   section: TypeSafe の section choice。
+ *   allowYearFallback: 指定年にページが無いとき近い年へ寄せるか。
  *
  * Returns:
  *   相対パス。マッチしなければ null。
@@ -73,6 +74,7 @@ const buildPath = (
   lang: string,
   year: number,
   section: HubSection,
+  allowYearFallback: boolean,
 ): string | null => {
   const catalog = loadPageCatalog();
   if (section === "no_match") {
@@ -81,14 +83,17 @@ const buildPath = (
   if (!isYearSection(section)) {
     return null;
   }
-  const resolvedYear = findYearWithSection(catalog, year, section);
-  if (resolvedYear === undefined) {
+  if (allowYearFallback) {
+    const resolvedYear = findYearWithSection(catalog, year, section);
+    if (resolvedYear === undefined) {
+      return null;
+    }
+    return `/${lang}/${resolvedYear}/${section}`;
+  }
+  if (!yearHasSection(catalog, year, section)) {
     return null;
   }
-  if (!yearHasSection(catalog, resolvedYear, section)) {
-    return null;
-  }
-  return `/${lang}/${resolvedYear}/${section}`;
+  return `/${lang}/${year}/${section}`;
 };
 
 /**
@@ -127,9 +132,10 @@ export const selectPage = async (
   const sectionAnswer = response.answers.section;
   const yearAnswer = response.answers.year;
   const year = resolveYear(yearAnswer.choice, pageYear, catalog.years);
+  const allowYearFallback = yearAnswer.choice === YEAR_UNSPECIFIED;
 
   if (isPerson >= PERSON_NOUL_THRESHOLD) {
-    const path = buildPath(lang, year, "participants");
+    const path = buildPath(lang, year, "participants", allowYearFallback);
     if (path) {
       return { kind: "ok", path, confidence: isPerson };
     }
@@ -143,7 +149,7 @@ export const selectPage = async (
     return { kind: "no_match", confidence: sectionAnswer.confidence };
   }
 
-  const path = buildPath(lang, year, section);
+  const path = buildPath(lang, year, section, allowYearFallback);
   if (!path) {
     return { kind: "no_match", confidence: sectionAnswer.confidence };
   }
