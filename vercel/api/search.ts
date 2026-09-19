@@ -1,3 +1,4 @@
+import { waitUntil } from "@vercel/functions";
 import { Hono, type Context } from "hono";
 import { cors } from "hono/cors";
 import { getCachedSearch, setCachedSearch } from "../src/cache.js";
@@ -96,15 +97,18 @@ const logSearch = (
   status: SearchStatus,
   error = "",
 ): void => {
-  void appendSearchLog({
-    query,
-    lang,
-    year,
-    path,
-    confidence,
-    status,
-    error,
-  });
+  // 応答後に関数が凍結されると追記が消えるため waitUntil で寿命を延ばす。
+  waitUntil(
+    appendSearchLog({
+      query,
+      lang,
+      year,
+      path,
+      confidence,
+      status,
+      error,
+    }),
+  );
 };
 
 app.post("/search", async (c) => {
