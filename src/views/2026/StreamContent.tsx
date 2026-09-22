@@ -58,6 +58,17 @@ export const StreamContent = ({ locale, year }: StreamContentProps) => {
             />
           </div>
         </div>
+
+        <p className="mb-8 text-(--secondary-text-color)">
+          {m.stream_no_afterparty()}
+        </p>
+        <img
+          alt="image-5"
+          src="https://live.staticflickr.com/65535/55543339313_4b186b3953_z.jpg"
+          className="mx-auto mb-8 block w-full"
+          loading="lazy"
+          decoding="async"
+        />
       </div>
     </main>
   );
