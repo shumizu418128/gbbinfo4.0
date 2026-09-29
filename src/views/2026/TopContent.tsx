@@ -35,7 +35,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
           <LinkCard text={m.withdrawn_list()} image="/images/b4start.webp" href={`/${locale}/${year}/cancel`} />
           <LinkCard text={m.venue_tickets()} image="/images/dice.webp" href={`/${locale}/${year}/ticket`} />
           <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} />
-          <LinkCard text={m.result()} image="/images/winner.webp" href={`/${locale}/${year}/result`} unavailable />
+          <LinkCard text={m.result()} image="/images/winner.webp" href={`/${locale}/${year}/result`} />
         </div>
       </div>
 
