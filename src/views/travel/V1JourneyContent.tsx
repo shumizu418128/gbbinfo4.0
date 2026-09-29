@@ -216,15 +216,6 @@ export const V1JourneyContent = ({ locale }: V1JourneyContentProps) => {
           />
         </div>
 
-        <PostIt>
-          <p className="font-bold mb-2">撮影制限について</p>
-          <p>
-            ポーランドでは、鉄道、橋、政府関連の建物などでの撮影が法律で禁止されています。<br />
-            これは、ウクライナでの情勢悪化に伴う安全保障の観点から制定された、スパイ活動を念頭に置いた法律です。<strong>ポーランドは、ウクライナ・ロシアと国境を接しています。</strong><br />
-            違反した場合、拘束・法的措置を受ける可能性がありますので、ご注意ください。
-          </p>
-        </PostIt>
-
         <div className="flex flex-wrap gap-4 mt-16 mb-4">
           <LinkCard
             text={
