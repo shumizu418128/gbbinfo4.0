@@ -3,6 +3,7 @@
   "announcement_updated_at": "Last updated: {datetime} ({japanTime})",
   "back_to_home": "Back to home",
   "cancelled": "Cancelled",
+  "event_date_undecided": "Dates not yet announced",
   "footer_nice_view": "Nice view, isn't it?",
   "go_to_poland": "Go to Poland",
   "how_to_plan": "How to plan your live viewing trip",
