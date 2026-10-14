@@ -1,0 +1,55 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { ParticipantsPendingContent } from "~/views/2027/ParticipantsPendingContent";
+import { GBB_2027_YEAR, getGbb2027CommonData } from "~/util/gbb2027";
+import { findCategoriesByIds } from "~/db/category";
+import { categorySlug } from "~/util/category";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+// Astro の静的パス生成は export async function getStaticPaths で公開する。
+export async function getStaticPaths() {
+  const common = await getGbb2027CommonData();
+  const validCategories = await findCategoriesByIds(
+    common.yearWithCountry.categories ?? [],
+  );
+
+  if (validCategories.length === 0) {
+    return locales.map((locale) => ({
+      params: { lang: locale },
+      props: { locale, target: null, ...common },
+    }));
+  }
+
+  const firstSlug = categorySlug(validCategories[0].name);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: {
+      locale,
+      target: `/${locale}/${GBB_2027_YEAR}/participants/${firstSlug}`,
+      ...common,
+    },
+  }));
+}
+
+const { locale, target, yearWithCountry, years, latestYearWithCountry } =
+  Astro.props;
+
+if (target) {
+  return Astro.redirect(target);
+}
+
+const heroSubtitle = m.participants();
+const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  pageTitle={pageTitle}
+  heroSubtitle={heroSubtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <ParticipantsPendingContent />
+</SiteFrame>

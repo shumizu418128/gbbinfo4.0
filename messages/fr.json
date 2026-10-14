@@ -3,6 +3,7 @@
   "announcement_updated_at": "Dernière mise à jour : {datetime} ({japanTime})",
   "back_to_home": "Retour à l'accueil",
   "cancelled": "Forfait",
+  "event_date_undecided": "Dates non annoncées",
   "footer_nice_view": "Belle vue, non ?",
   "go_to_poland": "Direction la Pologne",
   "how_to_plan": "Comment organiser votre voyage pour assister à l'événement",

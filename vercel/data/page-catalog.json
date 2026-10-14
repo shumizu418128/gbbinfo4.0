@@ -1,5 +1,6 @@
 {
   "years": [
+    2027,
     2026,
     2025,
     2024,
@@ -149,6 +150,12 @@
       "top",
       "top_7tosmoke",
       "wildcards"
+    ],
+    "2027": [
+      "participants",
+      "rule",
+      "ticket",
+      "top"
     ]
   }
 }

@@ -3,6 +3,7 @@
   "announcement_updated_at": "Viimati uuendatud: {datetime} ({japanTime})",
   "back_to_home": "Tagasi avalehele",
   "cancelled": "Loobumine",
+  "event_date_undecided": "Kuupäevad on teadmata",
   "footer_nice_view": "Ilus vaade, kas pole?",
   "go_to_poland": "Lähme Poola",
   "how_to_plan": "Kuidas planeerida reisi, et näha võistlust kohapeal",

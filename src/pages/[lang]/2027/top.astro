@@ -1,0 +1,31 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { TopContent } from "~/views/2027/TopContent";
+import { getGbb2027CommonData } from "~/util/gbb2027";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+// Astro の静的パス生成は export async function getStaticPaths で公開する。
+export async function getStaticPaths() {
+  const common = await getGbb2027CommonData();
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, ...common },
+  }));
+}
+
+const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
+const pageTitle = `GBB ${yearWithCountry.year}`;
+const heroSubtitle = `${m.event_date_undecided()}\n${m.ticket_city()}`;
+---
+
+<SiteFrame
+  locale={locale}
+  pageTitle={pageTitle}
+  heroSubtitle={heroSubtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <TopContent locale={locale} yearWithCountry={yearWithCountry} />
+</SiteFrame>
