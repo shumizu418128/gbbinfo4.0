@@ -65,7 +65,7 @@ export const getCachedSearch = (
  *   year: ページ上の年。
  *   query: 生クエリ。
  *   path: 選出したパス。
- *   confidence: TypeSafe の confidence。
+ *   confidence: Clef-flash の confidence。
  */
 export const setCachedSearch = (
   lang: string,

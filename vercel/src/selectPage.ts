@@ -1,9 +1,9 @@
-import { TypeSafeClient } from "@typesafe-ai/sdk";
 import {
   findYearWithSection,
   loadPageCatalog,
   yearHasSection,
 } from "./catalog.js";
+import { runClef } from "./clef.js";
 import {
   buildSearchQuestions,
   PERSON_NOUL_THRESHOLD,
@@ -18,25 +18,13 @@ import type { SelectResult } from "./types.js";
 const isYearSection = (value: string): value is YearSection =>
   (YEAR_SECTIONS as readonly string[]).includes(value);
 
-let client: TypeSafeClient | null = null;
-
-const getClient = (): TypeSafeClient => {
-  if (client) {
-    return client;
-  }
-  client = new TypeSafeClient({
-    retry: { maxRetries: 1 },
-  });
-  return client;
-};
-
 const calendarYearNow = (): number => new Date().getFullYear();
 
 /**
  * Choice の年キーを実際の開催年へ落とす。
  *
  * Args:
- *   selected: TypeSafe の year choice。
+ *   selected: Clef-flash の year choice。
  *   pageYear: リクエストの表示年。
  *   availableYears: カタログの年。
  *
@@ -64,7 +52,7 @@ const resolveYear = (
  * Args:
  *   lang: 表示言語。
  *   year: 解決した GBB 年。
- *   section: TypeSafe の section choice。
+ *   section: Clef-flash の section choice。
  *   allowYearFallback: 指定年にページが無いとき近い年へ寄せるか。
  *
  * Returns:
@@ -97,7 +85,7 @@ const buildPath = (
 };
 
 /**
- * TypeSafe でハブページを選ぶ。人名は participants へ寄せる。
+ * Clef-flash でハブページを選ぶ。人名は participants へ寄せる。
  *
  * Args:
  *   query: 検索クエリ。
@@ -108,7 +96,7 @@ const buildPath = (
  *   選出したパス、または no_match。
  *
  * Raises:
- *   TypeSafe API エラー（クレジット切れを含む）。
+ *   ClefError: Workers AI の失敗（日次 Neurons 上限を含む）。
  */
 export const selectPage = async (
   query: string,
@@ -123,10 +111,7 @@ export const selectPage = async (
     catalog.years,
   );
 
-  const response = await getClient().systemOne({
-    state: { query, lang, pageYear },
-    questions,
-  });
+  const response = await runClef({ query, lang, pageYear }, questions);
 
   const isPerson = response.answers.isPerson.noul;
   const sectionAnswer = response.answers.section;

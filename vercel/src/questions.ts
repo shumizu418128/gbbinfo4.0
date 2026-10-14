@@ -1,5 +1,3 @@
-import { choice, noul } from "@typesafe-ai/sdk";
-
 /** 人名なら participants へ寄せる Noul 閾値。 */
 export const PERSON_NOUL_THRESHOLD = 0.55;
 
@@ -29,6 +27,42 @@ export type YearSection = (typeof YEAR_SECTIONS)[number];
 
 export type HubSection = YearSection | "no_match";
 
+type NoulQuestion = {
+  type: "noul";
+  instructions: string;
+  criteria: { true: string; false: string };
+};
+
+type ChoiceQuestion<T extends Record<string, string>> = {
+  type: "choice";
+  instructions: string;
+  criteria: T;
+};
+
+export type SearchQuestions = {
+  isPerson: NoulQuestion;
+  section: ChoiceQuestion<Record<HubSection, string>>;
+  year: ChoiceQuestion<Record<string, string>>;
+};
+
+const noul = (
+  instructions: string,
+  criteria: { true: string; false: string },
+): NoulQuestion => ({
+  type: "noul",
+  instructions,
+  criteria,
+});
+
+const choice = <T extends Record<string, string>>(
+  instructions: string,
+  criteria: T,
+): ChoiceQuestion<T> => ({
+  type: "choice",
+  instructions,
+  criteria,
+});
+
 const YEAR_SECTION_CRITERIA: Record<YearSection, string> = {
   top: "The year hub / top page",
   timetable: "Timetable listing the on-site event categories and schedule",
@@ -46,7 +80,7 @@ const YEAR_SECTION_CRITERIA: Record<YearSection, string> = {
 };
 
 /**
- * TypeSafe に渡す質問を組み立てる。西暦は instructions に埋め込む。
+ * Clef-flash に渡す質問を組み立てる。西暦は instructions に埋め込む。
  *
  * Args:
  *   calendarYear: 実行時点の西暦。
@@ -60,7 +94,7 @@ export const buildSearchQuestions = (
   calendarYear: number,
   pageYear: number,
   availableYears: number[],
-) => {
+): SearchQuestions => {
   const lastCalendarYear = calendarYear - 1;
   const yearPhrase = `The current calendar year is ${calendarYear}. "this year" / 「今年」 means ${calendarYear}. "last year" / 「去年」 / 「昨年」 means ${lastCalendarYear}.`;
 

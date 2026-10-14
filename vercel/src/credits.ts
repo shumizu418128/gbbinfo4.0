@@ -1,7 +1,8 @@
-import { APIError } from "@typesafe-ai/sdk";
+import { ClefError } from "./clef.js";
 
-const CREDIT_PATTERN =
-  /credit|quota|billing|balance|payment required|insufficient/i;
+const QUOTA_ERROR_CODE = 3036;
+const CAPACITY_ERROR_CODE = 3040;
+const ALLOCATION_PATTERN = /daily free allocation|10,000 neurons/i;
 
 const stringifyBody = (body: unknown): string => {
   if (typeof body === "string") {
@@ -15,23 +16,26 @@ const stringifyBody = (body: unknown): string => {
 };
 
 /**
- * TypeSafe エラーがクレジット切れかどうかを判定する。
+ * Workers AI の失敗が日次 Neurons 上限かどうかを判定する。
  *
  * Args:
  *   error: catch した値。
  *
  * Returns:
- *   クレジット切れなら true。
+ *   日次枠の超過なら true。容量不足（3040）は false。
  */
 export const isCreditsExhausted = (error: unknown): boolean => {
-  if (!(error instanceof APIError)) {
+  if (!(error instanceof ClefError)) {
     return false;
   }
-  if (error.status === 402) {
+  if (error.codes.includes(QUOTA_ERROR_CODE)) {
     return true;
   }
-  if (error.status !== 401 && error.status !== 403 && error.status !== 429) {
+  if (error.codes.includes(CAPACITY_ERROR_CODE)) {
     return false;
   }
-  return CREDIT_PATTERN.test(`${error.message} ${stringifyBody(error.body)}`);
+  if (error.status !== 429) {
+    return false;
+  }
+  return ALLOCATION_PATTERN.test(`${error.message} ${stringifyBody(error.body)}`);
 };
