@@ -38,7 +38,7 @@ gbbinfo3.0 の Flask/Jinja 実装を、Render.com（Docker）上の **Astro 静�
 | `scripts/` | ロケール同期・Tavily 同期などの補助スクリプト |
 | `docs/DATABASE.md` | データベーススキーマ |
 | `cloudflare/` | 静的画像アセットと Cloudflare Pages デプロイ設定 |
-| `vercel/` | サイト内検索 API（TypeSafe） |
+| `vercel/` | サイト内検索 API（Clef-flash） |
 
 ## 開発コマンド
 

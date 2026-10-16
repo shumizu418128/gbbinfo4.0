@@ -28,7 +28,7 @@ export const notifyCreditsExhausted = async (payload: {
 
   const queryPreview = payload.query.slice(0, 80);
   const text = [
-    "TypeSafe credits may be exhausted.",
+    "Clef-flash daily neuron allocation may be exhausted.",
     `status: ${payload.status ?? "unknown"}`,
     `query: ${queryPreview}`,
     payload.requestId ? `requestId: ${payload.requestId}` : null,
