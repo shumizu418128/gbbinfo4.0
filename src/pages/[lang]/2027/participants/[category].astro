@@ -10,21 +10,21 @@ import { categorySlug } from "~/util/category";
 import { buildAvatarImageUrlMap } from "~/util/participantAvatar";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
 
-// Astro の静的パス生成は export async function getStaticPaths で公開する。
 export async function getStaticPaths() {
   const YEAR = 2027;
   const common = await getCommonYearData(YEAR);
   const validCategories = await findCategoriesByIds(
     common.yearWithCountry.categories ?? [],
   );
-  const categoryNames = validCategories.map((category) => category.name);
-  const paths = [];
+  const categoryNames = validCategories.map((c) => c.name);
 
+  const paths = [];
   for (const category of validCategories) {
     const participants = await findParticipants(YEAR, category.id, null);
     const avatarImageUrls = await buildAvatarImageUrlMap(
-      participants.map((participant) => participant.name),
+      participants.map((p) => p.name),
     );
     for (const locale of locales) {
       paths.push({
@@ -55,7 +55,7 @@ const {
 } = Astro.props;
 
 const mapMarkers = buildWorldMapMarkers(participants, locale);
-const heroSubtitle = m.participants();
+const heroSubtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
 const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
 ---
 
@@ -74,5 +74,8 @@ const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
     categoryNames={categoryNames}
     avatarImageUrls={avatarImageUrls}
   />
-  <ParticipantWorldMap markers={mapMarkers} locale={locale} />
+  <ParticipantWorldMap
+    markers={mapMarkers}
+    locale={locale}
+  />
 </SiteFrame>

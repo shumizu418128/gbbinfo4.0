@@ -152,10 +152,18 @@
       "wildcards"
     ],
     "2027": [
+      "cancel",
+      "japan",
+      "korea",
       "participants",
+      "result",
       "rule",
+      "stream",
       "ticket",
-      "top"
+      "timetable",
+      "top",
+      "top_7tosmoke",
+      "wildcards"
     ]
   }
 }

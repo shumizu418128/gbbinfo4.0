@@ -1,10 +1,16 @@
+import type { SupportedLanguage } from "~/constants/languageLabels.js";
 import * as m from "../../../paraglide/messages.js";
 
-export const TicketContent = () => {
+type TicketContentProps = {
+  locale: SupportedLanguage;
+  year: number;
+};
+
+export const TicketContent = (_props: TicketContentProps) => {
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
-        <ul className="list-disc space-y-2 pl-8 text-base">
+        <ul className="list-disc pl-8 space-y-2 text-base">
           <li>{m.event_date_undecided()}</li>
           <li>{m.ticket_city()}</li>
           <li>

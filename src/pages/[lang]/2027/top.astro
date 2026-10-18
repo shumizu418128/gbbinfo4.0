@@ -5,7 +5,6 @@ import { getCommonYearData } from "~/util/staticPaths";
 import { locales } from "@paraglide/runtime.js";
 import * as m from "@paraglide/messages.js";
 
-// Astro の静的パス生成は export async function getStaticPaths で公開する。
 export async function getStaticPaths() {
   const YEAR = 2027;
   const common = await getCommonYearData(YEAR);

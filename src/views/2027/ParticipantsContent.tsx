@@ -31,9 +31,7 @@ export const ParticipantsContent = ({
     label: name,
     isActive: name === selectedCategory.name,
   }));
-  const isShowcaseCategory = selectedCategory.name
-    .toUpperCase()
-    .startsWith(SHOWCASE);
+  const isShowcaseCategory = selectedCategory.name.toUpperCase().startsWith(SHOWCASE);
 
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
