@@ -5,8 +5,9 @@ import { SelectMenu } from "~/components/SelectMenu.js";
 import { ParticipantsCards } from "~/components/ParticipantsCards.js";
 import { LinkCard } from "~/components/LinkCard.js";
 import { SHOWCASE } from "~/constants/i18nTerms.js";
-import { GBB_2027_YEAR } from "~/util/gbb2027.js";
 import * as m from "../../../paraglide/messages.js";
+
+const YEAR = 2027;
 
 type ParticipantsContentProps = {
   participants: ParticipantWithRelations[];
@@ -23,7 +24,7 @@ export const ParticipantsContent = ({
   categoryNames,
   avatarImageUrls,
 }: ParticipantsContentProps) => {
-  const basePath = `/${locale}/${GBB_2027_YEAR}/participants`;
+  const basePath = `/${locale}/${YEAR}/participants`;
   const categoryItems = categoryNames.map((name) => ({
     key: name,
     href: `${basePath}/${categorySlug(name)}`,
@@ -56,7 +57,7 @@ export const ParticipantsContent = ({
           <div className="mt-8 flex flex-wrap justify-center gap-2">
             <LinkCard
               text={`${SHOWCASE} ${m.rules()}`}
-              href={`/${locale}/${GBB_2027_YEAR}/rule`}
+              href={`/${locale}/${YEAR}/rule`}
             />
           </div>
         ) : null}
