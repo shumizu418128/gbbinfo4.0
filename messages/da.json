@@ -3,6 +3,7 @@
   "announcement_updated_at": "Sidst opdateret: {datetime} ({japanTime})",
   "back_to_home": "Tilbage til forsiden",
   "cancelled": "Udtrædelse",
+  "event_date_undecided": "Datoen er ikke meldt",
   "footer_nice_view": "Flot udsigt, ikke?",
   "go_to_poland": "Lad os tage til Polen",
   "how_to_plan": "Sådan planlægger du din rejse for at se det live",

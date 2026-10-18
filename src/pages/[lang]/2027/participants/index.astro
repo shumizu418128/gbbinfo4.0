@@ -1,0 +1,69 @@
+---
+import FaviconLink from "~/components/FaviconLink.astro";
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { getCommonYearData } from "~/util/staticPaths";
+import { findCategoriesByIds } from "~/db/category";
+import { categorySlug } from "~/util/category";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+import { WILDCARD } from "~/constants/i18nTerms.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2027;
+  const common = await getCommonYearData(YEAR);
+  const validCategories = await findCategoriesByIds(
+    common.yearWithCountry.categories ?? [],
+  );
+
+  if (validCategories.length === 0) {
+    return locales.map((locale) => ({
+      params: { lang: locale },
+      props: { locale, target: null, ...common },
+    }));
+  }
+
+  const firstSlug = categorySlug(validCategories[0].name);
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, target: `/${locale}/${YEAR}/participants/${firstSlug}`, ...common },
+  }));
+}
+
+const { locale, target, yearWithCountry, years, latestYearWithCountry } =
+  Astro.props;
+const heroSubtitle = m.wildcard_result_and_participants({ Wildcard: WILDCARD });
+const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
+---
+
+{
+  target ? (
+    <html>
+      <head>
+        <meta charset="utf-8" />
+        <meta name="robots" content="noindex, follow" />
+        <FaviconLink />
+        <meta http-equiv="refresh" content={`0; url=${target}`} />
+        <link rel="canonical" href={new URL(target, Astro.site).href} />
+        <script is:inline define:vars={{ target }}>
+          window.location.replace(target);
+        </script>
+      </head>
+      <body />
+    </html>
+  ) : (
+    <SiteFrame
+      locale={locale}
+      pageTitle={pageTitle}
+      heroSubtitle={heroSubtitle}
+      yearWithCountry={yearWithCountry}
+      years={years}
+      latestYearWithCountry={latestYearWithCountry}
+    >
+      <main class="pt-16 pb-8 text-white" style="background-color: var(--background-color)">
+        <div class="mx-auto w-full max-w-2xl px-4">
+          <p class="py-40 text-center text-2xl text-(--secondary-text-color)">coming soon...</p>
+        </div>
+      </main>
+    </SiteFrame>
+  )
+}

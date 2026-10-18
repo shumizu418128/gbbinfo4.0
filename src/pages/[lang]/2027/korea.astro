@@ -1,0 +1,39 @@
+---
+import SiteFrame from "~/layouts/SiteFrame.astro";
+import { KoreaContent } from "~/views/2027/KoreaContent";
+import { getCommonYearData } from "~/util/staticPaths";
+import { findParticipants } from "~/db/participant";
+import { buildAvatarImageUrlMap } from "~/util/participantAvatar";
+import { locales } from "@paraglide/runtime.js";
+import * as m from "@paraglide/messages.js";
+
+export async function getStaticPaths() {
+  const YEAR = 2027;
+  const KOREA_ISO_CODE = 410;
+  const common = await getCommonYearData(YEAR);
+  const participants = await findParticipants(YEAR, null, null, KOREA_ISO_CODE);
+  const avatarImageUrls = await buildAvatarImageUrlMap(
+    participants.map((p) => p.name),
+  );
+  return locales.map((locale) => ({
+    params: { lang: locale },
+    props: { locale, participants, avatarImageUrls, ...common },
+  }));
+}
+
+const { locale, participants, avatarImageUrls, yearWithCountry, years, latestYearWithCountry } =
+  Astro.props;
+const heroSubtitle = m.team_korea();
+const pageTitle = `GBB ${yearWithCountry.year} ${heroSubtitle}`;
+---
+
+<SiteFrame
+  locale={locale}
+  pageTitle={pageTitle}
+  heroSubtitle={heroSubtitle}
+  yearWithCountry={yearWithCountry}
+  years={years}
+  latestYearWithCountry={latestYearWithCountry}
+>
+  <KoreaContent participants={participants} locale={locale} avatarImageUrls={avatarImageUrls} />
+</SiteFrame>

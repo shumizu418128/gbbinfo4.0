@@ -3,6 +3,7 @@
   "announcement_updated_at": "Utoljára frissítve: {datetime} ({japanTime})",
   "back_to_home": "Vissza a főoldalra",
   "cancelled": "Visszalépés",
+  "event_date_undecided": "Az időpont még nincs meg",
   "footer_nice_view": "Szép kilátás, nem?",
   "go_to_poland": "Irány Lengyelország",
   "how_to_plan": "Hogyan tervezd meg a helyszíni látogatást",

@@ -1,5 +1,6 @@
 {
   "years": [
+    2027,
     2026,
     2025,
     2024,
@@ -137,6 +138,20 @@
       "wildcards"
     ],
     "2026": [
+      "cancel",
+      "japan",
+      "korea",
+      "participants",
+      "result",
+      "rule",
+      "stream",
+      "ticket",
+      "timetable",
+      "top",
+      "top_7tosmoke",
+      "wildcards"
+    ],
+    "2027": [
       "cancel",
       "japan",
       "korea",
