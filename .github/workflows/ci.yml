@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: "24.10.0"
+  NODE_VERSION: "24.22.1"
   PUBLIC_ASSET_BASE_URL: https://gbbinfo-assets.pages.dev
   PUBLIC_SITE_URL: https://gbbinfo-jpn.onrender.com
   PUBLIC_SEARCH_API_URL: ${{ vars.PUBLIC_SEARCH_API_URL }}

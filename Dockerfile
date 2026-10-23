@@ -2,7 +2,7 @@
 # Vite content hash を GHA（Pages へ上げる _astro）と Render で揃えるため、
 # どちらもこの Dockerfile の build ステージ（Alpine）だけで astro build する。
 # package-lock.json に固定した依存ツリーを厳密に使うため npm ci を使う。
-FROM node:24.10.0-alpine AS build
+FROM node:24.22.1-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci --no-audit --no-fund
