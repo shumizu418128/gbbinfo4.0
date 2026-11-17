@@ -16,7 +16,7 @@ export async function getStaticPaths() {
 
 const { locale, yearWithCountry, years, latestYearWithCountry } = Astro.props;
 const pageTitle = `GBB ${yearWithCountry.year}`;
-const heroSubtitle = `${m.event_date_undecided()}\n${m.ticket_city()}`;
+const heroSubtitle = m.ticket_city();
 ---
 
 <SiteFrame
