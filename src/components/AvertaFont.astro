@@ -1,0 +1,22 @@
+---
+import { staticAssetUrl } from "~/util/staticAsset";
+
+const avertaFontUrl = staticAssetUrl("/fonts/Averta-ExtraBold.woff2");
+---
+
+<link
+  rel="preload"
+  href={avertaFontUrl}
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+<style is:global set:html={`
+@font-face {
+  font-family: "Averta ExtraBold";
+  src: url("${avertaFontUrl}") format("woff2");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+`} />
