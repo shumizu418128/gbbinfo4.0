@@ -1,5 +1,6 @@
 ---
 import "../app.css";
+import AvertaFont from "~/components/AvertaFont.astro";
 import FaviconLink from "~/components/FaviconLink.astro";
 import ThirdPartyScripts from "~/components/ThirdPartyScripts.astro";
 import { createMeta } from "~/util/meta";
@@ -53,10 +54,7 @@ const ogLocale = isSupportedLanguage(locale)
     <meta name="theme-color" content={THEME_COLOR} />
     {robotsContent && <meta name="robots" content={robotsContent} />}
     <FaviconLink />
-    <link
-      rel="stylesheet"
-      href="https://db.onlinewebfonts.com/c/efc5d27fcf85239bbfee077b689e3ac9?family=Averta+ExtraBold"
-    />
+    <AvertaFont />
     <title>{metaTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonicalUrl} />
