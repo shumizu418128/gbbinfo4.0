@@ -96,6 +96,13 @@ const languageSubmenuClass =
         {m.participants_list()}
       </a>
 
+      <a
+        href={`/${lang}/${year}/judges`}
+        class="block border-b border-(--button-border-color) px-4 py-3 font-bold text-white hover:bg-(--gbb-color)"
+      >
+        {m.judges()}
+      </a>
+
       <details class="hamburger-submenu border-b border-(--button-border-color)">
         <summary
           class="flex cursor-pointer list-none items-center justify-between px-4 py-3 font-bold text-white hover:bg-(--gbb-color) [&::-webkit-details-marker]:hidden"

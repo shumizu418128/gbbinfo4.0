@@ -1,7 +1,7 @@
 import path from "node:path";
 
 /** ビルド用スナップショットのバージョン。スキーマ変更時にインクリメントする。 */
-export const BUILD_CACHE_VERSION = 1;
+export const BUILD_CACHE_VERSION = 2;
 
 /** ローカルビルドキャッシュ（gitignore）。 */
 export const LOCAL_BUILD_CACHE_DIR = path.join(process.cwd(), ".cache/build");

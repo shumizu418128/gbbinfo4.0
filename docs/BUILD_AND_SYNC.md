@@ -40,7 +40,7 @@ flowchart TB
 | コマンド | Supabase 接続 | 主な出力先 | dev / build で自動実行 |
 |---|---|---|---|
 | `sync:locales` | なし | `project.inlang/settings.json` | 両方 |
-| `sync:build-cache` | あり（4 bulk SELECT） | `.cache/build/` | build のみ（dev は `--skip`） |
+| `sync:build-cache` | あり（5 bulk SELECT） | `.cache/build/` | build のみ（dev は `--skip`） |
 | `sync:tavily:upload` | あり（upsert） | Supabase `Tavily` テーブル | **GHA（main）のみ自動**。ローカルは手動 |
 | `sync:tavily:download` | あり（読み取り） | `.cache/tavily/` | なし |
 | `sync:search-catalog` | なし | `vercel/data/page-catalog.json` | build のみ |
@@ -68,11 +68,12 @@ npm run sync:locales
 
 Supabase から SSG 用データを **一括取得** し、`.cache/build/snapshot.json` に保存する。
 
-取得対象（4 並列 bulk SELECT）:
+取得対象（5 並列 bulk SELECT）:
 
 - `Year` + `Country`
 - `Participant`（関連込み）
 - `ParticipantMember`（関連込み）
+- `Judge`（関連込み）
 - `Tavily`
 
 `astro build` はこのスナップショットを参照し、出場者詳細ページ生成中は DB にアクセスしない。
