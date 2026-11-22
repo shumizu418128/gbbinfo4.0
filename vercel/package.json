@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@vercel/functions": "^3.10.5",
-    "hono": "^4.13.14"
+    "hono": "^4.13.16"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
