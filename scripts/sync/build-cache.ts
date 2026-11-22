@@ -47,7 +47,7 @@ const main = async (): Promise<void> => {
   writeBuildCacheSnapshot(snapshot);
 
   console.log(
-    `[build-cache] Wrote snapshot: ${snapshot.years.length} years, ${snapshot.participants.length} participants, ${snapshot.members.length} members, ${snapshot.tavily.length} tavily rows`,
+    `[build-cache] Wrote snapshot: ${snapshot.years.length} years, ${snapshot.participants.length} participants, ${snapshot.members.length} members, ${snapshot.judges.length} judges, ${snapshot.tavily.length} tavily rows`,
   );
 };
 

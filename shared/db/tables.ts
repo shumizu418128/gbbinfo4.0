@@ -138,6 +138,28 @@ export const tournamentResultTable = pgTable("TournamentResult", {
 export type TournamentResult = typeof tournamentResultTable.$inferSelect;
 
 /**
+ * MARK: Judge
+ * 本戦（main）と Wildcard（wildcard）を panel で区別する。
+ * レフェリーは Category「Referee」（id 99）の 1 行で、部門ごとに複製しない。
+ */
+export const judgeTable = pgTable("Judge", {
+  id: integer("id").primaryKey().generatedByDefaultAsIdentity(),
+  name: varchar("name").notNull(),
+  year: integer("year")
+    .notNull()
+    .references(() => yearTable.year, { onDelete: "cascade" }),
+  isoCode: integer("iso_code")
+    .notNull()
+    .references(() => countryTable.isoCode, { onDelete: "cascade" }),
+  category: integer("category")
+    .notNull()
+    .references(() => categoryTable.id, { onDelete: "cascade" }),
+  panel: varchar("panel").notNull(),
+});
+
+export type Judge = typeof judgeTable.$inferSelect;
+
+/**
  * MARK: Tavily
  */
 export const tavilyTable = pgTable("Tavily", {

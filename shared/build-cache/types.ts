@@ -64,6 +64,18 @@ export type SnapshotParticipantMemberDetail = {
   participantInfo: SnapshotParticipant;
 };
 
+/** JSON シリアライズ可能な Judge（関連込み）。 */
+export type SnapshotJudge = {
+  id: number;
+  name: string;
+  year: number;
+  isoCode: number;
+  category: number;
+  panel: "main" | "wildcard";
+  country: SnapshotCountry;
+  categoryInfo: SnapshotCategory;
+};
+
 /** JSON シリアライズ可能な Tavily 行。 */
 export type SnapshotTavilyRow = {
   id: number;
@@ -83,6 +95,7 @@ export type BuildCacheSnapshot = {
   allYears: number[];
   participants: SnapshotParticipant[];
   members: SnapshotParticipantMemberDetail[];
+  judges: SnapshotJudge[];
   tavily: SnapshotTavilyRow[];
 };
 

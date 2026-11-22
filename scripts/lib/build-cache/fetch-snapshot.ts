@@ -1,8 +1,8 @@
-import { desc } from "drizzle-orm";
+import { asc, desc } from "drizzle-orm";
 import { BUILD_CACHE_VERSION } from "../../../shared/build-cache/constants.ts";
 import type { BuildCacheSnapshot } from "../../../shared/build-cache/types.ts";
 import { getDb } from "@shared/db/client.js";
-import { yearTable } from "@shared/db/tables.js";
+import { judgeTable, yearTable } from "@shared/db/tables.js";
 
 const participantWithRelationsQuery = {
   country: true,
@@ -44,12 +44,12 @@ const timed = async <T>(
  * Supabase からビルド用スナップショットを一括取得する。
  *
  * Returns:
- *   years / participants / members / tavily を含むスナップショット。
+ *   years / participants / members / judges / tavily を含むスナップショット。
  */
 export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => {
   const db = getDb();
   const startedAt = Date.now();
-  console.log("[build-cache] Fetching 4 bulk queries in parallel...");
+  console.log("[build-cache] Fetching 5 bulk queries in parallel...");
 
   const yearPromise = timed("years", () =>
     db.query.yearTable.findMany({
@@ -67,12 +67,19 @@ export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => 
       with: memberWithRelationsQuery,
     }),
   );
+  const judgesPromise = timed("judges", () =>
+    db.query.judgeTable.findMany({
+      with: { country: true, categoryInfo: true },
+      orderBy: [asc(judgeTable.id)],
+    }),
+  );
   const tavilyPromise = timed("tavily", () => db.query.tavilyTable.findMany());
 
-  const [yearRows, participants, members, tavilyRows] = await Promise.all([
+  const [yearRows, participants, members, judges, tavilyRows] = await Promise.all([
     yearPromise,
     participantsPromise,
     membersPromise,
+    judgesPromise,
     tavilyPromise,
   ]);
 
@@ -161,6 +168,27 @@ export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => 
     };
   });
 
+  const snapshotJudges = judges.map((row) => {
+    if (!row.country || !row.categoryInfo) {
+      throw new Error(`Judge relations missing: id=${row.id}`);
+    }
+    if (row.panel !== "main" && row.panel !== "wildcard") {
+      throw new Error(`Judge panel invalid: id=${row.id}`);
+    }
+    const panel: "main" | "wildcard" =
+      row.panel === "wildcard" ? "wildcard" : "main";
+    return {
+      id: row.id,
+      name: row.name,
+      year: row.year,
+      isoCode: row.isoCode,
+      category: row.category,
+      panel,
+      country: row.country,
+      categoryInfo: row.categoryInfo,
+    };
+  });
+
   const elapsed = ((Date.now() - startedAt) / 1000).toFixed(1);
   console.log(`[build-cache] All queries finished (${elapsed}s)`);
 
@@ -171,6 +199,7 @@ export const fetchBuildCacheSnapshot = async (): Promise<BuildCacheSnapshot> => 
     allYears: yearRows.map((row) => row.year),
     participants: snapshotParticipants,
     members: snapshotMembers,
+    judges: snapshotJudges,
     tavily: tavilyRows.map((row) => ({
       id: row.id,
       cacheKey: row.cacheKey,

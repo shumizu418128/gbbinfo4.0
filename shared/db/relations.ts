@@ -2,6 +2,7 @@ import { relations } from "drizzle-orm";
 import {
   categoryTable,
   countryTable,
+  judgeTable,
   participantMemberTable,
   participantTable,
   rankingResultTable,
@@ -14,12 +15,14 @@ export const categoryRelations = relations(categoryTable, ({ many }) => ({
   participants: many(participantTable),
   rankingResults: many(rankingResultTable),
   tournamentResults: many(tournamentResultTable),
+  judges: many(judgeTable),
 }));
 
 export const countryRelations = relations(countryTable, ({ many }) => ({
   years: many(yearTable),
   participants: many(participantTable),
   participantMembers: many(participantMemberTable),
+  judges: many(judgeTable),
 }));
 
 export const yearRelations = relations(yearTable, ({ one, many }) => ({
@@ -30,6 +33,7 @@ export const yearRelations = relations(yearTable, ({ one, many }) => ({
   participants: many(participantTable),
   rankingResults: many(rankingResultTable),
   tournamentResults: many(tournamentResultTable),
+  judges: many(judgeTable),
 }));
 
 export const participantRelations = relations(participantTable, ({ one, many }) => ({
@@ -104,6 +108,21 @@ export const tournamentResultRelations = relations(
   }),
 );
 
+export const judgeRelations = relations(judgeTable, ({ one }) => ({
+  yearInfo: one(yearTable, {
+    fields: [judgeTable.year],
+    references: [yearTable.year],
+  }),
+  country: one(countryTable, {
+    fields: [judgeTable.isoCode],
+    references: [countryTable.isoCode],
+  }),
+  categoryInfo: one(categoryTable, {
+    fields: [judgeTable.category],
+    references: [categoryTable.id],
+  }),
+}));
+
 export const schema = {
   categoryTable,
   countryTable,
@@ -112,6 +131,7 @@ export const schema = {
   participantMemberTable,
   rankingResultTable,
   tournamentResultTable,
+  judgeTable,
   tavilyTable,
   categoryRelations,
   countryRelations,
@@ -120,6 +140,7 @@ export const schema = {
   participantMemberRelations,
   rankingResultRelations,
   tournamentResultRelations,
+  judgeRelations,
 };
 
 export type Schema = typeof schema;

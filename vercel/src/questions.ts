@@ -15,6 +15,7 @@ export const YEAR_SECTIONS = [
   "ticket",
   "stream",
   "participants",
+  "judges",
   "result",
   "cancel",
   "wildcards",
@@ -66,11 +67,13 @@ const choice = <T extends Record<string, string>>(
 const YEAR_SECTION_CRITERIA: Record<YearSection, string> = {
   top: "The year hub / top page",
   timetable: "Timetable listing the on-site event categories and schedule",
-  rule: "Rules and judges — mainly Wildcard qualifier rules for entering GBB, plus Wildcard and on-site judges",
+  rule: "Competition rules, mainly Wildcard qualifier rules for entering GBB",
   ticket: "Tickets and the event venue",
   stream: "Livestream, watch online, YouTube",
   participants:
     "Participant list: beatboxer names, teams, Wildcard qualifier results, and seeded-entry lists",
+  judges:
+    "Judge roster for a GBB year: on-site main judges, Wildcard judges, and the referee",
   result: "Final competition results. Does not include Wildcard qualifier results",
   cancel: "Withdrawn / cancelled participants",
   wildcards: "List of Wildcard qualifier videos",

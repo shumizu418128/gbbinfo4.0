@@ -8,6 +8,7 @@ import {
 } from "@shared/build-cache/constants.js";
 import type {
   BuildCacheSnapshot,
+  SnapshotJudge,
   SnapshotParticipant,
   SnapshotParticipantMemberDetail,
   SnapshotTavilyRow,
@@ -24,6 +25,7 @@ import {
 } from "~/util/participant.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { sortParticipants } from "~/util/participant.js";
+import type { JudgeWithRelations } from "./judgeTypes.js";
 import type {
   ParticipantDetailMember,
   ParticipantDetailParticipant,
@@ -55,6 +57,7 @@ export type BuildCacheStore = {
   membersById: Map<number, ParticipantDetailMember>;
   participantsByNormalizedName: Map<string, SnapshotParticipant[]>;
   membersByNormalizedName: Map<string, SnapshotParticipantMemberDetail[]>;
+  judgesByYear: Map<number, JudgeWithRelations[]>;
   tavilyByCacheKey: Map<string, TavilyRow>;
 };
 
@@ -117,14 +120,31 @@ const toYearWithCountry = (row: SnapshotYearWithCountry): YearWithCountry =>
   }) as YearWithCountry;
 
 /**
- * SnapshotTavilyRow を TavilyRow に変換する。
+ * SnapshotJudge を表示用 Judge に変換する。
  *
  * Args:
  *   row: スナップショット行。
  *
  * Returns:
- *   Tavily 行。
+ *   名前を大文字化した Judge。
+ *
+ * Raises:
+ *   Error: panel または関連が不正な場合。
  */
+const toJudgeWithRelations = (row: SnapshotJudge): JudgeWithRelations => {
+  if (row.panel !== "main" && row.panel !== "wildcard") {
+    throw new Error(`Judge panel invalid: id=${row.id}`);
+  }
+  if (!row.country || !row.categoryInfo) {
+    throw new Error(`Judge relations missing: id=${row.id}`);
+  }
+  return {
+    ...row,
+    name: normalizeParticipantName(row.name),
+    panel: row.panel,
+  };
+};
+
 const toTavilyRow = (row: SnapshotTavilyRow): TavilyRow =>
   ({
     ...row,
@@ -198,6 +218,14 @@ export const buildStoreFromSnapshot = (
 
   const allYears = orderBy(snapshot.allYears, [], ["desc"]);
 
+  const judgesByYear = new Map<number, JudgeWithRelations[]>();
+  for (const row of snapshot.judges) {
+    const judge = toJudgeWithRelations(row);
+    const list = judgesByYear.get(judge.year) ?? [];
+    list.push(judge);
+    judgesByYear.set(judge.year, list);
+  }
+
   const tavilyByCacheKey = new Map<string, TavilyRow>();
   for (const row of snapshot.tavily) {
     tavilyByCacheKey.set(row.cacheKey, toTavilyRow(row));
@@ -212,6 +240,7 @@ export const buildStoreFromSnapshot = (
     membersById,
     participantsByNormalizedName,
     membersByNormalizedName,
+    judgesByYear,
     tavilyByCacheKey,
   };
 };
