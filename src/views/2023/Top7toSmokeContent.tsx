@@ -40,7 +40,7 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
           <LinkCard
             text={m.time_table()}
             image="/images/scott_jackson.webp"
-            href={`/${locale}/${year}/timetable?scroll=7tosmoke`}
+            href={`/${locale}/${year}/timetable`}
           />
           <LinkCard text={m.livestream()} image="/images/sinjo.webp" href={`/${locale}/${year}/stream`} />
         </div>

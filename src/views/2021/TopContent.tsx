@@ -22,7 +22,7 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
       style={{ backgroundColor: "var(--background-color)" }}
     >
       <div className="mx-auto w-full max-w-2xl px-4">
-        <div className="mb-16 flex flex-wrap gap-4">
+        <div className="mb-18 flex flex-wrap gap-4">
           <LinkCard
             text={<span>{m.wildcard_result({ Wildcard: WILDCARD })}<br />{m.participants()}</span>}
             image="/images/sora.webp"
@@ -60,29 +60,29 @@ export const TopContent = ({ locale, year }: TopContentProps) => {
             href={`/${locale}/${year}/result`}
           />
         </div>
+      </div>
 
-        <div className="flex justify-center">
-          <ul className="w-full max-w-md list-disc space-y-4 px-8 text-left">
-            <li>
-              <a href={`/${locale}/others/url_change`} className={anchorClass}>
-                {m.site_url_notice()}
-              </a>
-            </li>
-            <li>
-              <a
-                href={`/${locale}/others/result_stream`}
-                className={anchorClass}
-              >
-                {m.wildcard_stream({ Wildcard: WILDCARD })}
-              </a>
-            </li>
-            <li>
-              <a href={`/${locale}/others/7tosmoke`} className={anchorClass}>
-                {m.top7tosmoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
-              </a>
-            </li>
-          </ul>
-        </div>
+      <div className="flex justify-center w-full">
+        <ul className="mb-18 w-full max-w-md list-disc space-y-4 px-8 text-left">
+          <li>
+            <a href={`/${locale}/others/url_change`} className={anchorClass}>
+              {m.site_url_notice()}
+            </a>
+          </li>
+          <li>
+            <a
+              href={`/${locale}/others/result_stream`}
+              className={anchorClass}
+            >
+              {m.wildcard_stream({ Wildcard: WILDCARD })}
+            </a>
+          </li>
+          <li>
+            <a href={`/${locale}/others/7tosmoke`} className={anchorClass}>
+              {m.top7tosmoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
+            </a>
+          </li>
+        </ul>
       </div>
     </main>
   );

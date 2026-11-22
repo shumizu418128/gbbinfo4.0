@@ -35,7 +35,7 @@ export const ParticipantsContent = ({
       style={{ backgroundColor: "var(--background-color)" }}
     >
       <div className="mx-auto w-full max-w-2xl px-4">
-        <div className="mb-8 flex justify-center">
+        <div className="mb-10 flex justify-center">
           <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
         <ParticipantsCards
@@ -44,7 +44,7 @@ export const ParticipantsContent = ({
           label={selectedCategory.name}
           avatarImageUrls={avatarImageUrls}
         />
-        <div className="mt-8 flex justify-center">
+        <div className="mt-10 flex justify-center">
           <SelectMenu label={selectedCategory.name} items={categoryItems} />
         </div>
       </div>

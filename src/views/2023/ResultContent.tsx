@@ -214,7 +214,7 @@ export const ResultContent = ({
           </div>
         ) : !hasResults ? (
           <div className="py-40 text-center text-2xl text-(--secondary-text-color)">
-            {m.rule_update_pending()}
+            coming soon...
           </div>
         ) : hasTournament && tournamentByRound ? (
           <div className="space-y-8">

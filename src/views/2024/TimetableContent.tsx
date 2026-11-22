@@ -182,7 +182,7 @@ export const TimetableContent = ({ locale, year }: TimetableContentProps) => {
           />
         </div>
 
-        <h2 id="seven-to-smoke" className={sectionHeadingClass}>
+        <h2 id="seven-to-smoke" data-scroll-key="7tosmoke" className={sectionHeadingClass}>
           7toSmoke - 11/4
         </h2>
         <p className={paragraphClass}>Spotify O-EAST</p>

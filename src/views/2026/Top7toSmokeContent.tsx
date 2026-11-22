@@ -12,10 +12,25 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <div className="mb-16 text-center">
+          <p className="mb-4 text-xl">
+            {SEVEN_TO_SMOKE}: {m.rule_update_pending()}
+          </p>
+          <p className="text-(--secondary-text-color)">
+            {m.top7tosmoke_tagline()}
+            <br />
+            {m.top7tosmoke_subtitle({ year: String(year), SevenToSmoke: SEVEN_TO_SMOKE })}
+          </p>
+        </div>
 
         <div className="mb-16 flex flex-wrap gap-4">
           <LinkCard
             text={m.top7tosmoke_about({ SevenToSmoke: SEVEN_TO_SMOKE })}
+            image="/images/afterparty.webp"
+            href={`/${locale}/others/7tosmoke`}
+          />
+          <LinkCard
+            text={m.top7tosmoke_rules({ SevenToSmoke: SEVEN_TO_SMOKE })}
             image="/images/afterparty.webp"
             href={`/${locale}/others/7tosmoke`}
           />
@@ -28,6 +43,10 @@ export const Top7toSmokeContent = ({ locale, year }: Top7toSmokeContentProps) =>
           <LinkCard text={m.go_to_poland()} image="/images/zenhit.webp" href={`/${locale}/travel/top`} />
         </div>
 
+        <div className="mb-16 space-y-4 text-(--secondary-text-color)">
+          <p>{m.top7tosmoke_info_delay({ SevenToSmoke: SEVEN_TO_SMOKE })}</p>
+          <p>{m.top7tosmoke_give_up()}</p>
+        </div>
       </div>
     </main>
   );
