@@ -29,7 +29,7 @@ export const StreamContent = ({ locale, year }: StreamContentProps) => {
         </div>
 
         <div className="mb-16">
-          <h2 className="mb-8 text-xl font-bold">{m.stream_companion_title()}</h2>
+          <h2 className="my-8 text-xl font-bold">{m.stream_companion_title()}</h2>
           <p className="mb-8 text-(--secondary-text-color)">
             {m.stream_check_latest({ year: String(year) })}
           </p>

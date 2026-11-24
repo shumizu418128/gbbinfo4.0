@@ -24,10 +24,10 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
       style={{ backgroundColor: "var(--background-color)" }}
     >
       <div className="mx-auto w-full max-w-2xl px-4">
-        <p className="mb-16 text-center leading-relaxed">
+        <p className="mb-18 text-center leading-relaxed">
           {m.top_legacy_participants_only()}
         </p>
-        <div className="mb-16 flex flex-wrap gap-4">
+        <div className="mb-18 flex flex-wrap gap-4">
           <LinkCard
             text={
               <span>
@@ -48,7 +48,7 @@ export const TopContent = ({ locale, yearWithCountry }: TopContentProps) => {
         </div>
       </div>
       <div className="flex justify-center">
-        <ul className="mb-16 w-full max-w-md list-disc space-y-4 px-8 text-left">
+        <ul className="mb-18 w-full max-w-md list-disc space-y-4 px-8 text-left">
           <li>
             <a href={`/${locale}/others/url_change`} className={anchorClass}>
               {m.site_url_notice()}

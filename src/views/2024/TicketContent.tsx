@@ -9,7 +9,6 @@ type TicketContentProps = {
 };
 
 const GBB_VENUE = "Toyosu PIT";
-const SEVEN_TO_SMOKE_VENUE = "Spotify O-EAST";
 
 export const TicketContent = ({ locale, year }: TicketContentProps) => {
   const teamHref =
@@ -23,7 +22,6 @@ export const TicketContent = ({ locale, year }: TicketContentProps) => {
           <li>
             GBB {year} {m.ticket_venue()}：{GBB_VENUE}
           </li>
-          <li>7toSmoke {m.ticket_venue()}：{SEVEN_TO_SMOKE_VENUE}</li>
           <li>{m.ticket_sales_page()}：✖</li>
         </ul>
 

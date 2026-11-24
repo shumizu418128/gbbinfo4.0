@@ -10,7 +10,6 @@ import { ResultCard } from "~/components/ResultCard.js";
 import { categorySlug } from "~/util/category.js";
 import { resolveParticipantCountries } from "~/util/country.js";
 import { getParticipantDetailHref } from "~/util/participant.js";
-import * as m from "../../../paraglide/messages.js";
 
 const YEAR = 2019;
 
@@ -206,7 +205,7 @@ export const ResultContent = ({
 
         {!hasResults ? (
           <div className="py-40 text-center text-2xl text-(--secondary-text-color)">
-            {m.rule_update_pending()}
+            coming soon...
           </div>
         ) : hasTournament && tournamentByRound ? (
           <div className="space-y-8">

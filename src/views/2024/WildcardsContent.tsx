@@ -11,7 +11,6 @@ import {
   WILDCARD,
   YOUTUBE,
 } from "~/constants/i18nTerms.js";
-import { anchorClass } from "~/constants/linkStyle.js";
 import * as m from "../../../paraglide/messages.js";
 
 type WildcardsContentProps = {
@@ -54,13 +53,13 @@ const PLAYLISTS: PlaylistItem[] = [
 ];
 
 export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
-  const teamHref =
-    locale === "ko" ? `/${locale}/${year}/korea` : `/${locale}/${year}/japan`;
-  const teamLabel = locale === "ko" ? m.team_korea() : m.team_japan();
-
   return (
     <main className="pt-16 pb-8 text-white" style={{ backgroundColor: "var(--background-color)" }}>
       <div className="mx-auto w-full max-w-2xl px-4">
+        <PostIt>
+          <p>{m.wildcard_unofficial_notice()}</p>
+        </PostIt>
+
         <p className="mb-8 text-(--secondary-text-color)">
           {m.wildcard_list_cet_note()}
         </p>
@@ -107,30 +106,6 @@ export const WildcardsContent = ({ locale, year }: WildcardsContentProps) => {
           </section>
         ))}
 
-        <PostIt>
-          <p className="mb-4">{m.wildcard_unofficial_notice()}</p>
-          <p className="mb-4">
-            {m.wildcard_list_unofficial_intro({ Wildcard: WILDCARD })}
-            <a
-              href="https://twitter.com/_NURUYU_"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={`ml-1 ${anchorClass}`}
-            >
-              {m.wildcard_list_creator()}
-            </a>
-          </p>
-          <p className="mb-4">{m.wildcard_list_manual_warning()}</p>
-          <p>{m.wildcard_list_video_warning({ Wildcard: WILDCARD })}</p>
-        </PostIt>
-
-        <div className="mt-16 flex flex-wrap gap-4">
-          <LinkCard
-            text={m.how_to_plan()}
-            href={`/${locale}/others/how_to_plan`}
-          />
-          <LinkCard text={teamLabel} href={teamHref} />
-        </div>
       </div>
     </main>
   );
